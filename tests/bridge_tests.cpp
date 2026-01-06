@@ -37,10 +37,40 @@ TEST_CASE("Bridge authentication", "[bridge]") {
 }
 
 TEST_CASE("Bridge discovery", "[bridge]") {
-    SECTION("Discover returns empty vector (not implemented)") {
+    SECTION("Discover returns vector (may be empty if no bridges found)") {
         auto bridges = Bridge::discover();
-        // Should return empty since not implemented yet
+        // Should return a vector (empty or with bridges)
+        // We can't guarantee bridges will be found in test environment
+        REQUIRE(true); // Test passes if no exception thrown
+    }
+    
+    SECTION("DiscoverNUPnP returns vector") {
+        auto bridges = Bridge::discoverNUPnP();
+        // N-UPnP discovery should complete without throwing
+        // Result may be empty if no bridges are registered with the service
+        REQUIRE(true); // Test passes if no exception thrown
+    }
+    
+    SECTION("DiscoverMDNS returns empty (not implemented)") {
+        auto bridges = Bridge::discoverMDNS();
+        // mDNS not yet implemented
         REQUIRE(bridges.empty());
+    }
+}
+
+TEST_CASE("Bridge reachability", "[bridge]") {
+    SECTION("Bridge with no IP is not reachable") {
+        Bridge bridge;
+        REQUIRE_FALSE(bridge.isReachable());
+    }
+    
+    SECTION("Bridge with invalid IP is not reachable") {
+        BridgeInfo info;
+        info.ip_address = "999.999.999.999";
+        info.id = "test-id";
+        
+        Bridge bridge(info);
+        REQUIRE_FALSE(bridge.isReachable());
     }
 }
 
