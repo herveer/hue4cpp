@@ -7,6 +7,8 @@ set(TEST_SOURCES
     bridge_tests.cpp
     light_tests.cpp
     state_tests.cpp
+    http_client_tests.cpp
+    json_utils_tests.cpp
 )
 
 # Create test executable
