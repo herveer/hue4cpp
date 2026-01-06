@@ -49,7 +49,11 @@ namespace json_utils {
         
         try {
             return json[key].get<T>();
-        } catch (...) {
+        } catch (const nlohmann::json::type_error&) {
+            // Type mismatch
+            return std::nullopt;
+        } catch (const nlohmann::json::exception&) {
+            // Other JSON errors
             return std::nullopt;
         }
     }

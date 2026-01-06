@@ -4,6 +4,10 @@
 namespace hue4cpp {
 
 // HttpClient::Impl definition
+// Uses the pImpl (Pointer to Implementation) idiom to:
+// - Hide cpr library details from the public API
+// - Reduce compilation dependencies for library users
+// - Allow changing implementation without breaking ABI
 class HttpClient::Impl {
 public:
     std::chrono::milliseconds timeout;
@@ -16,6 +20,16 @@ public:
         if (!verify_ssl) {
             session.SetVerifySsl(cpr::VerifySsl{false});
         }
+    }
+    
+    // Helper to check if Content-Type header is already set (case-insensitive)
+    bool hasContentType(const std::map<std::string, std::string>& headers) const {
+        for (const auto& [key, value] : headers) {
+            if (key == "Content-Type" || key == "content-type") {
+                return true;
+            }
+        }
+        return false;
     }
     
     HttpResponse convertResponse(const cpr::Response& response) {
@@ -82,14 +96,10 @@ HttpResponse HttpClient::post(const std::string& url,
     
     // Set default Content-Type if not provided
     cpr::Header cpr_headers;
-    bool has_content_type = false;
     for (const auto& [key, value] : headers) {
         cpr_headers[key] = value;
-        if (key == "Content-Type" || key == "content-type") {
-            has_content_type = true;
-        }
     }
-    if (!has_content_type) {
+    if (!pImpl->hasContentType(headers)) {
         cpr_headers["Content-Type"] = "application/json";
     }
     session.SetHeader(cpr_headers);
@@ -108,14 +118,10 @@ HttpResponse HttpClient::put(const std::string& url,
     
     // Set default Content-Type if not provided
     cpr::Header cpr_headers;
-    bool has_content_type = false;
     for (const auto& [key, value] : headers) {
         cpr_headers[key] = value;
-        if (key == "Content-Type" || key == "content-type") {
-            has_content_type = true;
-        }
     }
-    if (!has_content_type) {
+    if (!pImpl->hasContentType(headers)) {
         cpr_headers["Content-Type"] = "application/json";
     }
     session.SetHeader(cpr_headers);
