@@ -34,17 +34,20 @@ Bridge::Bridge(Bridge&&) noexcept = default;
 Bridge& Bridge::operator=(Bridge&&) noexcept = default;
 
 std::vector<Bridge> Bridge::discover() {
-    // For now, use N-UPnP discovery as it's simpler and doesn't require mDNS
+    // For now, use remote discovery as it's simpler and doesn't require mDNS libraries
     // In the future, we can combine this with mDNS discovery for better results
-    return discoverNUPnP();
+    return discoverRemote();
 }
 
 std::vector<Bridge> Bridge::discoverMDNS() {
     // TODO: Implement mDNS discovery
+    // Requires platform-specific mDNS libraries (Avahi on Linux, Bonjour on macOS/Windows)
+    // mDNS service name: _hue._tcp.local
+    // Bridge name format: "Philips Hue - XXXXXX" where XXXXXX is last 6 digits of bridge ID
     return {};
 }
 
-std::vector<Bridge> Bridge::discoverNUPnP() {
+std::vector<Bridge> Bridge::discoverRemote() {
     std::vector<Bridge> bridges;
     
     try {
@@ -52,8 +55,9 @@ std::vector<Bridge> Bridge::discoverNUPnP() {
         HttpClient client;
         client.setTimeout(std::chrono::milliseconds(5000));
         
-        // Query the Philips Hue discovery service
-        // This is the official N-UPnP (Network UPnP) endpoint
+        // Query the Philips Hue cloud discovery endpoint
+        // This endpoint returns bridges on the same network (same public IP)
+        // The Hue bridge periodically updates the cloud with its local IP
         auto response = client.get("https://discovery.meethue.com/");
         
         if (!response.isSuccess()) {
@@ -89,7 +93,7 @@ std::vector<Bridge> Bridge::discoverNUPnP() {
             
             // Optional fields
             info.name = json_utils::getValueOr<std::string>(bridge_json, "name", "");
-            info.model_id = json_utils::getValueOr<std::string>(bridge_json, "modelid", "");
+            // Note: modelid is not always present in the discovery response
             
             bridges.push_back(Bridge(info));
         }

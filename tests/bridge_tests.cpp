@@ -44,10 +44,10 @@ TEST_CASE("Bridge discovery", "[bridge]") {
         REQUIRE(true); // Test passes if no exception thrown
     }
     
-    SECTION("DiscoverNUPnP returns vector") {
-        auto bridges = Bridge::discoverNUPnP();
-        // N-UPnP discovery should complete without throwing
-        // Result may be empty if no bridges are registered with the service
+    SECTION("DiscoverRemote returns vector") {
+        auto bridges = Bridge::discoverRemote();
+        // Remote discovery should complete without throwing
+        // Result may be empty if no bridges are on the same network
         REQUIRE(true); // Test passes if no exception thrown
     }
     

@@ -59,10 +59,17 @@ public:
     static std::vector<Bridge> discoverMDNS();
     
     /**
-     * @brief Discover bridges using N-UPnP (broker-based)
+     * @brief Discover bridges using the remote discovery endpoint
+     * 
+     * Uses the Philips Hue cloud discovery endpoint (https://discovery.meethue.com)
+     * to find bridges. This method works when the application is on the same network
+     * as the bridge (same public IP). The Hue cloud maintains a mapping of bridge IDs
+     * to local IP addresses.
+     * 
      * @return Vector of discovered bridges
+     * @note This is a fallback method. Prefer mDNS for local discovery when possible.
      */
-    static std::vector<Bridge> discoverNUPnP();
+    static std::vector<Bridge> discoverRemote();
     
     /**
      * @brief Authenticate with the bridge

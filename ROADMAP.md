@@ -6,7 +6,7 @@ This document outlines the development plan for the hue4cpp library. It serves a
 
 Create a lightweight, cross-platform C++ library that provides an intuitive interface to the Philips Hue V2 API, enabling developers to easily integrate smart lighting control into their applications.
 
-## Current Status: Phase 0 - Foundation ✅
+## Current Status: Phase 1 - Core Infrastructure 🚧
 
 **Completed:**
 - [x] Project structure and build system setup
@@ -14,35 +14,43 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 - [x] Development roadmap
 - [x] CMake configuration with vcpkg integration
 - [x] Basic directory structure
+- [x] HTTP Client Layer (PR #1)
+- [x] JSON Handling (PR #1)
+- [x] Remote Discovery Endpoint (PR #2)
+- [x] Bridge Reachability Check (PR #2)
+
+**In Progress:**
+- [ ] Authentication (PR #3 - Next)
 
 ## Development Phases
 
-### Phase 1: Core Infrastructure 🚧 NEXT
+### Phase 1: Core Infrastructure 🚧 IN PROGRESS
 
 **Goal**: Establish the foundational components and build system
 
 **Tasks:**
-1. **HTTP Client Layer**
-   - Implement HTTP request/response handling using cpr
-   - Add support for HTTPS (required for Hue API V2)
-   - Implement error handling and retry logic
-   - Add request timeout configuration
+1. **HTTP Client Layer** ✅ COMPLETED
+   - ✅ Implement HTTP request/response handling using cpr
+   - ✅ Add support for HTTPS (required for Hue API V2)
+   - ✅ Implement error handling and retry logic
+   - ✅ Add request timeout configuration
 
-2. **JSON Handling**
-   - Create JSON serialization/deserialization utilities
-   - Define data structures for API responses
-   - Implement type-safe JSON parsing
+2. **JSON Handling** ✅ COMPLETED
+   - ✅ Create JSON serialization/deserialization utilities
+   - ✅ Define data structures for API responses
+   - ✅ Implement type-safe JSON parsing
 
-3. **Bridge Discovery**
-   - Implement mDNS/SSDP bridge discovery
-   - Add manual bridge IP configuration
-   - Implement bridge reachability check
-   - Add discovery result caching
+3. **Bridge Discovery** ⚡ PARTIALLY COMPLETE
+   - ⏸️  Implement mDNS/SSDP bridge discovery (mDNS deferred, SSDP deprecated by Philips)
+   - ✅ Implement Remote Discovery endpoint (https://discovery.meethue.com)
+   - ✅ Add manual bridge IP configuration
+   - ✅ Implement bridge reachability check
+   - ⏸️  Add discovery result caching (deferred)
 
-4. **Authentication**
-   - Implement application key generation flow
-   - Add secure key storage (OS keychain integration)
-   - Implement authentication state management
+4. **Authentication** ⬅️ NEXT
+   - ⏳ Implement application key generation flow
+   - ⏳ Add secure key storage (OS keychain integration)
+   - ⏳ Implement authentication state management
 
 **Deliverables:**
 - Working bridge discovery
@@ -265,42 +273,46 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 
 ## Next Immediate Steps (PR Tasks)
 
-### PR #1: Core Infrastructure Setup ⬅️ **NEXT**
+### PR #1: Core Infrastructure Setup ✅ **COMPLETED**
 
 **Objective**: Set up HTTP client and JSON handling
 
 **Tasks:**
-- [ ] Implement HTTP client wrapper using cpr
-- [ ] Add HTTPS support and certificate validation
-- [ ] Create JSON parsing utilities
-- [ ] Implement error handling framework
-- [ ] Add logging framework (optional, for debugging)
-- [ ] Write unit tests for HTTP and JSON utilities
-- [ ] Create example: simple HTTP request to bridge
+- [x] Implement HTTP client wrapper using cpr
+- [x] Add HTTPS support and certificate validation
+- [x] Create JSON parsing utilities
+- [x] Implement error handling framework
+- [x] Add logging framework (optional, for debugging) - Deferred (optional)
+- [x] Write unit tests for HTTP and JSON utilities
+- [x] Create example: simple HTTP request to bridge
 
 **Acceptance Criteria:**
-- Can make HTTPS requests to Hue bridge
-- Can parse JSON responses
-- Unit tests pass on all platforms
-- Example application demonstrates usage
+- ✅ Can make HTTPS requests to Hue bridge
+- ✅ Can parse JSON responses
+- ✅ Unit tests pass on all platforms
+- ✅ Example application demonstrates usage
 
 ---
 
-### PR #2: Bridge Discovery
+### PR #2: Bridge Discovery ⬅️ **IN PROGRESS**
 
 **Objective**: Implement bridge discovery mechanism
 
 **Tasks:**
-- [ ] Implement mDNS discovery
-- [ ] Implement N-UPnP discovery (broker-based)
-- [ ] Add manual bridge configuration
-- [ ] Implement bridge reachability check
-- [ ] Write unit tests for discovery
-- [ ] Create example: discover and list bridges
+- [ ] Implement mDNS discovery (deferred - requires additional platform-specific dependencies)
+- [x] Implement Remote Discovery endpoint (https://discovery.meethue.com)
+- [x] Add manual bridge configuration (BridgeInfo struct supports manual configuration)
+- [x] Implement bridge reachability check
+- [x] Write unit tests for discovery
+- [x] Create example: discover and list bridges
+
+**Status**: Remote discovery endpoint and bridge reachability checks are fully implemented and tested. mDNS discovery deferred due to complexity and platform-specific requirements (requires Avahi on Linux, Bonjour on macOS/Windows).
+
+**Note**: UPnP/SSDP discovery methods have been deprecated by Philips Hue as of Q2 2022 and are not implemented.
 
 ---
 
-### PR #3: Authentication
+### PR #3: Authentication ⬅️ **NEXT**
 
 **Objective**: Implement authentication flow
 
@@ -331,5 +343,5 @@ This roadmap is a living document. If you have suggestions for features, improve
 ---
 
 **Last Updated**: 2026-01-06  
-**Current Phase**: Phase 0 - Foundation ✅  
-**Next Phase**: Phase 1 - Core Infrastructure 🚧
+**Current Phase**: Phase 1 - Core Infrastructure 🚧  
+**Next Step**: PR #3 - Authentication

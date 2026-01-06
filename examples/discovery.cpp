@@ -6,7 +6,7 @@
  * @brief Discovery example showing how to find Hue bridges
  * 
  * This example demonstrates:
- * - Different discovery methods (mDNS and N-UPnP)
+ * - Different discovery methods (mDNS and Remote Discovery)
  * - Displaying bridge information
  * - Checking bridge reachability
  */
@@ -49,9 +49,9 @@ int main() {
     std::cout << "Found " << mdns_bridges.size() << " bridge(s) via mDNS" << std::endl;
     
     std::cout << std::endl;
-    std::cout << "=== Trying N-UPnP discovery ===" << std::endl;
-    auto nupnp_bridges = hue4cpp::Bridge::discoverNUPnP();
-    std::cout << "Found " << nupnp_bridges.size() << " bridge(s) via N-UPnP" << std::endl;
+    std::cout << "=== Trying Remote Discovery ===" << std::endl;
+    auto remote_bridges = hue4cpp::Bridge::discoverRemote();
+    std::cout << "Found " << remote_bridges.size() << " bridge(s) via Remote Discovery" << std::endl;
     
     std::cout << std::endl;
     std::cout << "Discovery example completed!" << std::endl;
