@@ -139,10 +139,16 @@ class ClassName;
 
 ### Error Handling
 
-- Use custom exception types from `exceptions.h`
-- Throw exceptions for exceptional conditions (network errors, invalid input)
-- Use `std::optional` for operations that may not return a value
-- Provide clear, actionable error messages
+- **Use custom exception types** from `exceptions.h` for:
+  - Network failures (connection errors, timeouts)
+  - Invalid API responses or malformed data
+  - Authentication failures
+  - Resource not found errors
+- **Use `std::optional`** for operations that may legitimately not return a value:
+  - Optional configuration values
+  - Queries that may not find results
+  - Feature detection (capabilities that may not be present)
+- **Provide clear, actionable error messages** that help users understand what went wrong and how to fix it
 
 ### Compiler Warnings
 
@@ -234,6 +240,13 @@ External Dependencies (cpr, nlohmann-json, Catch2)
 - Use CMake for portable build configuration
 - Test on all major platforms: Windows, Linux, macOS
 - Use vcpkg for consistent dependency management
+
+### API Usage Guidelines
+
+- **Rate Limiting**: The Philips Hue API has rate limits; design for reasonable request frequency
+- **Connection Management**: Reuse connections when possible to minimize overhead
+- **Event Streaming**: Use SSE (Server-Sent Events) for real-time updates instead of polling
+- **Graceful Degradation**: Handle API unavailability gracefully with appropriate error messages
 
 ## Common Tasks
 
