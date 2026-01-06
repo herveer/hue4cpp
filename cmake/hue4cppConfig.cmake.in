@@ -1,0 +1,10 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(cpr)
+find_dependency(nlohmann_json)
+
+include("${CMAKE_CURRENT_LIST_DIR}/hue4cppTargets.cmake")
+
+check_required_components(hue4cpp)

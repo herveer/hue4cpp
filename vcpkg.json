@@ -1,0 +1,22 @@
+{
+  "name": "hue4cpp",
+  "version-string": "0.1.0",
+  "description": "A modern C++ library for the Philips Hue V2 API",
+  "homepage": "https://github.com/herve-er/hue4cpp",
+  "license": "MIT",
+  "dependencies": [
+    {
+      "name": "cpr",
+      "version>=": "1.10.5"
+    },
+    {
+      "name": "nlohmann-json",
+      "version>=": "3.11.2"
+    },
+    {
+      "name": "catch2",
+      "version>=": "3.4.0"
+    }
+  ],
+  "builtin-baseline": "none"
+}
