@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<!-- saved from url=(0093)https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/ -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/tms_code.js.télécharger"></script>  
+	
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+		<!-- Meta Tag Manager -->
+		<meta name="PHILIPS.METRICS.DIVISION" content="CP">
+		<meta name="PHILIPS.METRICS.COUNTRY" content="Global">
+		<meta name="PHILIPS.METRICS.LANGUAGE" content="En">
+		<meta name="PHILIPS.METRICS.SECTION" content="hue_developer_program_portal">
+		<meta name="PHILIPS.METRICS.MICROSITEID" content="UNKNOWN">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="home">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="explore">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="develop">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="support">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="job_vacancies">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="forum">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="my_apps">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="account">
+		<meta name="PHILIPS.METRICS.PAGENAME" content="develop:application_design_guidance:hue_tap_scene_programming">
+		<!-- / Meta Tag Manager -->
+
+	<!-- This site is optimized with the Yoast SEO plugin v23.5 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Hue Tap Scene Programming - Philips Hue Developer Program</title>
+	<link rel="canonical" href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Hue Tap Scene Programming - Philips Hue Developer Program">
+	<meta property="og:description" content="If you found/commissioned your hue tap via the Android/iOS App, you will notice that the App creates 4 default Rules for the tap in the bridge. URL /api/&lt;username&gt;/rules Method GET Version 1.3 Permission whitelist Each rule has conditions and actions. So, for example we may have a condition: If button 2 pressed then perform this […]">
+	<meta property="og:url" content="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/">
+	<meta property="og:site_name" content="Philips Hue Developer Program">
+	<meta property="article:modified_time" content="2019-07-19T21:28:23+00:00">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@philipshuedev">
+	<meta name="twitter:label1" content="Est. reading time">
+	<meta name="twitter:data1" content="2 minutes">
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/","url":"https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/","name":"Hue Tap Scene Programming - Philips Hue Developer Program","isPartOf":{"@id":"https://developers.meethue.com/#website"},"datePublished":"2018-02-12T09:28:34+00:00","dateModified":"2019-07-19T21:28:23+00:00","breadcrumb":{"@id":"https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/"]}]},{"@type":"BreadcrumbList","@id":"https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://developers.meethue.com/"},{"@type":"ListItem","position":2,"name":"Develop","item":"https://developers.meethue.com/develop/"},{"@type":"ListItem","position":3,"name":"Application Design Guidance","item":"https://developers.meethue.com/develop/application-design-guidance/"},{"@type":"ListItem","position":4,"name":"Hue Tap Scene Programming"}]},{"@type":"WebSite","@id":"https://developers.meethue.com/#website","url":"https://developers.meethue.com/","name":"Philips Hue Developer Program","description":"Philips Hue Developer Program","publisher":{"@id":"https://developers.meethue.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://developers.meethue.com/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"en-US"},{"@type":"Organization","@id":"https://developers.meethue.com/#organization","name":"Signify","url":"https://developers.meethue.com/","logo":{"@type":"ImageObject","inLanguage":"en-US","@id":"https://developers.meethue.com/#/schema/logo/image/","url":"https://developers.meethue.com/wp-content/uploads/2019/03/Philips_Hue_Freestanding_1P_Vert_Jul20176.png","contentUrl":"https://developers.meethue.com/wp-content/uploads/2019/03/Philips_Hue_Freestanding_1P_Vert_Jul20176.png","width":591,"height":427,"caption":"Signify"},"image":{"@id":"https://developers.meethue.com/#/schema/logo/image/"},"sameAs":["https://x.com/philipshuedev"]}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel="alternate" type="application/rss+xml" title="Philips Hue Developer Program » Feed" href="https://developers.meethue.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Philips Hue Developer Program » Comments Feed" href="https://developers.meethue.com/comments/feed/">
+<script type="text/javascript">
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/developers.meethue.com\/wp-includes\/js\/wp-emoji-release.min.js"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83e\udef1\ud83c\udffb\u200d\ud83e\udef2\ud83c\udfff","\ud83e\udef1\ud83c\udffb\u200b\ud83e\udef2\ud83c\udfff")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+/* ]]> */
+</script>
+<style id="wp-emoji-styles-inline-css" type="text/css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel="stylesheet" id="wp-block-library-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/style.min.css" type="text/css" media="all">
+<style id="classic-theme-styles-inline-css" type="text/css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id="global-styles-inline-css" type="text/css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel="stylesheet" id="tabulate-timepicker-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/jquery-ui-timepicker-addon.css" type="text/css" media="all">
+<link rel="stylesheet" id="tabulate-leaflet-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/leaflet.css" type="text/css" media="all">
+<link rel="stylesheet" id="tabulate-jquery-ui-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/jquery-ui.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="tabulate-styles-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="hue_developer_theme-style-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/style(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="newsletter-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/style(2).css" type="text/css" media="all">
+<link rel="stylesheet" id="enlighterjs-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/enlighterjs.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_fonticons_ii-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-fonticons-ii.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_fonticons_fa-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-fonticons-fa.css" type="text/css" media="all">
+<link rel="stylesheet" id="select2-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/select2.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_crop-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-crop.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_modal-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-modal.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_styles-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-styles.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_profile-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-profile.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_account-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-account.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_misc-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-misc.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_fileupload-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-fileupload.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_datetime-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/default.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_datetime_date-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/default.date.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_datetime_time-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/default.time.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_raty-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-raty.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_scrollbar-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/simplebar.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_tipsy-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-tipsy.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_responsive-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-responsive.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_default_css-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-old-default.css" type="text/css" media="all">
+<link rel="stylesheet" id="um_old_css-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um_old_settings.css" type="text/css" media="all">
+<link rel="stylesheet" id="icwp-wpsf-userprofile-css" href="./Hue Tap Scene Programming - Philips Hue Developer Program_files/shield-userprofile.bundle.css" type="text/css" media="all">
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/jquery-3.5.1.min.js.télécharger" id="jquery-core-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/jquery-migrate-3.3.2.min.js.télécharger" id="jquery-migrate-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/my-scripts.js.télécharger" id="my-scripts-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-gdpr.min.js.télécharger" id="um-gdpr-js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://developers.meethue.com/xmlrpc.php?rsd">
+
+<link rel="shortlink" href="https://developers.meethue.com/?p=211">
+		<style type="text/css">
+			.um_request_name {
+				display: none !important;
+			}
+		</style>
+	<link rel="icon" href="https://developers.meethue.com/wp-content/uploads/2025/09/cropped-hue_site_icon-32x32.png" sizes="32x32">
+<link rel="icon" href="https://developers.meethue.com/wp-content/uploads/2025/09/cropped-hue_site_icon-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://developers.meethue.com/wp-content/uploads/2025/09/cropped-hue_site_icon-180x180.png">
+<meta name="msapplication-TileImage" content="https://developers.meethue.com/wp-content/uploads/2025/09/cropped-hue_site_icon-270x270.png">
+		<style type="text/css" id="wp-custom-css">
+			div #gridcontainer h2 {
+	margin-top:0;
+	margin-bottom:0;	
+}
+div #gridcontainer p{
+	float:left;
+}
+
+div #gridcontainer h2 a {
+	height:auto;
+	margin-bottom:0px;
+}
+
+div #gridcontainer .postimage {
+	height:0;
+}
+
+div #gridcontainer .postimage img {
+	height:0;
+}
+
+div.entry-content a, div.entry-content a:link,div.entry-contenta:visited, div.entry-content a:hover  {
+	color:orange;!important
+}
+
+
+		</style>
+		</head>
+
+<body class="page-template-default page page-id-211 page-child parent-pageid-154 logged-in wp-custom-logo">
+	<div id="page" class="site">
+		<a class="skip-link screen-reader-text" href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#content">Skip to content</a>
+
+		<header>
+			<a href="https://developers.meethue.com/"><img id="imgm" class="" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/moblogo.png"></a>
+			<div class="bannerDev">
+				<nav id="site-navigation" class="main-navigation">
+
+					<div class="myNavigation">
+
+						<div class="hueLogo"><a href="https://developers.meethue.com/"><img id="imgd" class="" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/site_logo.png"></a>
+
+						</div>
+						<br>	
+						<div class="primary-menu-div">
+
+							<div class="menu-main-menu-loggedin-container"><ul id="primary-menu" class="menu"><li id="menu-item-1137" class="leftMain menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1137"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#">Explore</a>
+<ul class="sub-menu">
+	<li id="menu-item-1138" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1138"><a href="https://developers.meethue.com/explore/why-develop-for-hue/">Why Develop for Hue</a></li>
+	<li id="menu-item-2664" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2664"><a href="https://developers.meethue.com/explore/hue-app-showcase/">Hue App Showcase</a></li>
+</ul>
+</li>
+<li id="menu-item-1140" class="leftMain menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1140 active"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#">Develop</a>
+<ul class="sub-menu">
+	<li id="menu-item-3907" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3907"><a href="https://developers.meethue.com/develop/hue-api-v2/getting-started/">Getting started</a></li>
+	<li id="menu-item-3903" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-3903"><a href="https://developers.meethue.com/develop/application-design-guidance/">Application Design Guidance</a></li>
+	<li id="menu-item-1143" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1143"><a href="https://developers.meethue.com/develop/hue-api/">Hue API V1</a></li>
+	<li id="menu-item-3537" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3537"><a href="https://developers.meethue.com/develop/hue-api-v2/">Hue API V2</a></li>
+	<li id="menu-item-1354" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1354"><a href="https://developers.meethue.com/develop/hue-entertainment/">Hue Entertainment</a></li>
+	<li id="menu-item-1144" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1144"><a href="https://developers.meethue.com/develop/tools-and-sdks/">Tools and SDKs</a></li>
+</ul>
+</li>
+<li id="menu-item-1145" class="leftMain menu-item menu-item-type-post_type menu-item-object-page menu-item-1145"><a href="https://developers.meethue.com/support/">Support</a></li>
+<li id="menu-item-1452" class="leftMain menu-item menu-item-type-post_type menu-item-object-page menu-item-1452"><a href="https://developers.meethue.com/job-vacancies/">Job Vacancies</a></li>
+<li id="menu-item-1147" class="leftMain menu-item menu-item-type-custom menu-item-object-custom menu-item-1147"><a href="https://developers.meethue.com/forum">Forum</a></li>
+<li id="menu-item-1148" class="rightMain menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1148"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#">Hervé</a>
+<ul class="sub-menu">
+	<li id="menu-item-1181" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1181"><a href="https://developers.meethue.com/my-apps/">Remote Hue API appids</a></li>
+	<li id="menu-item-1321" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1321"><a href="https://developers.meethue.com/account/">Profile</a></li>
+	<li id="menu-item-1150" class="menu-item menu-item-type-custom menu-item-object-custom  last_item menu-item-1150"><a href="https://developers.meethue.com/wp-login.php?action=logout&amp;_wpnonce=61cb0818c9">Log out</a></li>
+</ul>
+</li>
+</ul></div>						</div>
+						<p class="titleExplore">How to <span class="boldTitle">develop for Hue?</span></p>						</div>
+					</nav><!-- #site-navigation -->
+
+				</div>
+			</header><!-- #masthead -->
+
+
+			<div id="content" class="site-content">
+
+<div id="primary" class="">
+
+    <div class="localnavDiv">
+
+        
+        <ul class="localNav">
+
+
+            <div class="menu-develop_menulocal-menu-container"><ul id="menu-develop_menulocal-menu" class="localNav"><li id="menu-item-174" class="localLeft menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-174"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#">Develop</a>
+<ul class="sub-menu">
+	<li id="menu-item-160" class="localRight menu-item menu-item-type-post_type menu-item-object-page menu-item-160"><a href="https://developers.meethue.com/develop/tools-and-sdks/">Tools and SDKs</a></li>
+	<li id="menu-item-1361" class="localRight menu-item menu-item-type-post_type menu-item-object-page menu-item-1361"><a href="https://developers.meethue.com/develop/hue-entertainment/">Hue Entertainment</a></li>
+	<li id="menu-item-3531" class="localRight menu-item menu-item-type-post_type menu-item-object-page menu-item-3531"><a href="https://developers.meethue.com/develop/hue-api-v2/">Hue API V2</a></li>
+	<li id="menu-item-161" class="localRight menu-item menu-item-type-post_type menu-item-object-page menu-item-161"><a href="https://developers.meethue.com/develop/hue-api/">Hue API V1</a></li>
+	<li id="menu-item-3900" class="localRight menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-3900 active"><a href="https://developers.meethue.com/develop/application-design-guidance/">Application Design Guidance</a></li>
+	<li id="menu-item-3904" class="localRight menu-item menu-item-type-post_type menu-item-object-page  last_item menu-item-3904"><a href="https://developers.meethue.com/develop/hue-api-v2/getting-started/">Getting started</a></li>
+</ul>
+</li>
+</ul></div>
+        </ul>
+
+    </div>
+
+    <main id="main" class="site-main">
+
+        <div class="menu-develop_menuapi-guidance-location-container"><ul id="menu-develop_menuapi-guidance-location" class="nav-menu"><li id="menu-item-1094" class="localLi menu-item menu-item-type-custom menu-item-object-custom menu-item-1094"><a href="https://developers.meethue.com/develop/application-design-guidance/">Overview</a></li>
+<li id="menu-item-210" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-210"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-bridge-discovery/">Hue Bridge Discovery</a></li>
+<li id="menu-item-3417" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-3417"><a href="https://developers.meethue.com/develop/application-design-guidance/using-https/">Using HTTPS</a></li>
+<li id="menu-item-220" class="localLi menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-211 current_page_item menu-item-220 active"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/" aria-current="page">Hue Tap Scene Programming</a></li>
+<li id="menu-item-223" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-223"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-dimmer-switch-programming/">Hue Dimmer Switch Programming</a></li>
+<li id="menu-item-230" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-230"><a href="https://developers.meethue.com/develop/application-design-guidance/bridge-maximum-settings/">Bridge – Maximum Settings</a></li>
+<li id="menu-item-233" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-233"><a href="https://developers.meethue.com/develop/application-design-guidance/color-conversion-formulas-rgb-to-xy-and-back/">Color Conversion Formulas RGB to XY and back</a></li>
+<li id="menu-item-246" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-246"><a href="https://developers.meethue.com/develop/application-design-guidance/how-to-use-ip-sensors/">How to use IP Sensors</a></li>
+<li id="menu-item-264" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-264"><a href="https://developers.meethue.com/develop/application-design-guidance/create-a-hue-tap-toggle-button/">Create a Hue Tap Toggle Button</a></li>
+<li id="menu-item-276" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-276"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-system-performance/">Hue System Performance</a></li>
+<li id="menu-item-296" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-296"><a href="https://developers.meethue.com/develop/application-design-guidance/watch-that-transition-time/">Watch that Transition Time!</a></li>
+<li id="menu-item-428" class="localLi menu-item menu-item-type-post_type menu-item-object-page menu-item-428"><a href="https://developers.meethue.com/develop/application-design-guidance/hue-groups-rooms-and-scene-control/">Hue Groups, Rooms and Scene Control</a></li>
+<li id="menu-item-285" class="localLi menu-item menu-item-type-post_type menu-item-object-page  last_item menu-item-285"><a href="https://developers.meethue.com/develop/application-design-guidance/best-practice-on-rules-and-sensors/">Rules and Sensors</a></li>
+</ul></div>
+<article id="post-211" class="post-211 page type-page status-publish hentry category-uncategorized">
+	<header class="entry-header">
+		<h1 class="entry-title">Hue Tap Scene Programming</h1>		<span style="font-family:CentraleSans-Light; ;font-size:18px;"> Tap Buttons are programmed via Rules, using the new Rule Engine. This is a bridge feature.     <span>
+		</span></span></header><!-- .entry-header -->
+		<img id="imgm" class="" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/moblogo.png"> 
+				<div class="entry-content">
+
+			<p class="bookText">If you found/commissioned your hue tap via the Android/iOS App, you will notice that the App creates 4 default Rules for the tap in the bridge.</p>
+<div class="contGetStarted">
+<table>
+<tbody>
+<tr>
+<td style="width: 81px;">URL</td>
+<td style="width: 175px;"><span style="font-size: 16px;"><code><span style="font-size: 16px;"> /api/&lt;username&gt;/rules</span></code></span></td>
+</tr>
+<tr>
+<td style="width: 81px;">Method</td>
+<td style="width: 175px;"><code><span style="font-size: 16px;">GET</span></code></td>
+</tr>
+<tr>
+<td style="width: 81px;">Version</td>
+<td style="width: 175px;">1.3</td>
+</tr>
+<tr>
+<td style="width: 81px;">Permission</td>
+<td style="width: 175px;">whitelist</td>
+</tr>
+</tbody>
+</table>
+<p class="bookText">Each rule has conditions and actions. So, for example we may have a condition: If button 2 pressed then perform this action (e.g. activate a scene).</p>
+<p class="bookText">Each tap button has a button event id mapping, these are currently:</p>
+<table>
+<tbody>
+<tr>
+<td>Button</td>
+<td>Code</td>
+</tr>
+<tr>
+<td>
+<p class="bookText">Button 1 (1 dot)</p>
+</td>
+<td>
+<p class="bookText">34</p>
+</td>
+</tr>
+<tr>
+<td>
+<p class="bookText">Button 2 (2 dots)</p>
+</td>
+<td>
+<p class="bookText">16</p>
+</td>
+</tr>
+<tr>
+<td>
+<p class="bookText">Button 3 (3 dots)</p>
+</td>
+<td>
+<p class="bookText">17</p>
+</td>
+</tr>
+<tr>
+<td>
+<p class="bookText">Button 4 (4 dots)</p>
+</td>
+<td>
+<p class="bookText">18</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="bookText">So, if you want to assign a button to a scene you have 2 ways. You can either update an existing rule (i.e. find the rule with the buttonevent id you wish to change) or create a another rule (however, if you do this the bridge will execute all rules for that button).</p>
+<p class="bookText">You will need to know the Scene ID of the rule you wish to assign the button to. Usually you would create a scene in your app, for which your scene id should be known. You can find the bridge scenes by:</p>
+<p><code><span style="font-size: 16px;">https://&lt;Your Bridge IP&gt;/api/&lt;username&gt;/scenes</span></code></p>
+<p class="bookText">To update an existing rule:</p>
+<table>
+<tbody>
+<tr>
+<td>URL</td>
+<td><span style="font-size: 16px;"><code><span style="font-size: 16px;"> /api/&lt;username&gt;/rules/&lt;id&gt;</span></code></span></td>
+</tr>
+<tr>
+<td>Method</td>
+<td><code><span style="font-size: 16px;">PUT</span></code></td>
+</tr>
+<tr>
+<td>Version</td>
+<td>1.3</td>
+</tr>
+<tr>
+<td>Permission</td>
+<td>whitelist</td>
+</tr>
+</tbody>
+</table>
+<h2 id="findme" class="vTitles"><a id="Response"></a>Sample Response</h2>
+<div class="enlighter-default enlighter-v-standard enlighter-t-atomic enlighter-l-cpp enlighter-hover "><div class="enlighter-toolbar-top enlighter-toolbar"><div class="enlighter-btn enlighter-btn-raw"><div class="enlighter-tooltip">Plain text</div></div><div class="enlighter-btn enlighter-btn-copy"><div class="enlighter-tooltip">Copy to clipboard</div></div><div class="enlighter-btn enlighter-btn-window"><div class="enlighter-tooltip">Open code in new window</div></div><div class="enlighter-btn enlighter-btn-website"><div class="enlighter-tooltip">EnlighterJS 3 Syntax Highlighter</div></div></div><div class="enlighter-code"><div class="enlighter" style=""><div class=""><div><span class="enlighter-g1">{</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text">    </span><span class="enlighter-s0">"actions"</span><span class="enlighter-text">: </span><span class="enlighter-g1">[</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text">        </span><span class="enlighter-g1">{</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text">            </span><span class="enlighter-s0">"address"</span><span class="enlighter-text">: </span><span class="enlighter-s0">"/groups/0/action"</span><span class="enlighter-text">,</span></div></div><div class=""><div><span class="enlighter-text">            </span><span class="enlighter-s0">"method"</span><span class="enlighter-text">: </span><span class="enlighter-s0">"PUT"</span><span class="enlighter-text">,</span></div></div><div class=""><div><span class="enlighter-text">            </span><span class="enlighter-s0">"body"</span><span class="enlighter-text">: </span><span class="enlighter-g1">{</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text">                </span><span class="enlighter-s0">"scene"</span><span class="enlighter-text">: </span><span class="enlighter-s0">"&lt;SCENE ID&gt;"</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text">            </span><span class="enlighter-g1">}</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text">        </span><span class="enlighter-g1">}</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text">    </span><span class="enlighter-g1">]</span><span class="enlighter-text"></span></div></div><div class=""><div><span class="enlighter-text"></span><span class="enlighter-g1">}</span></div></div></div><div class="enlighter-raw">{
+    "actions": [
+        {
+            "address": "/groups/0/action",
+            "method": "PUT",
+            "body": {
+                "scene": "&lt;SCENE ID&gt;"
+            }
+        }
+    ]
+}</div></div><div class="enlighter-toolbar-bottom enlighter-toolbar"></div></div><pre class="EnlighterJSRAW enlighter-origin" data-enlighter-language="null">{
+    "actions": [
+        {
+            "address": "/groups/0/action",
+            "method": "PUT",
+            "body": {
+                "scene": "&lt;SCENE ID&gt;"
+            }
+        }
+    ]
+}</pre>
+<p class="bookText">To add a new rule for a button:</p>
+<p class="bookText">In this case you need to know the sensor ID of your Hue Tap, you can find this by <a href="https://developers.meethue.com/develop/5-sensors-api/#get-all-sensors"><span style="color: #fa8e2f;">Getting all the sensors</span></a> (this will be the sensor of type “ZGPSwitch”)</p>
+<table>
+<tbody>
+<tr>
+<td>URL</td>
+<td><span style="font-size: 16px;"><code><span style="font-size: 16px;"> /api/&lt;username&gt;/rules/&lt;id&gt;</span></code></span></td>
+</tr>
+<tr>
+<td>Method</td>
+<td><code><span style="font-size: 16px;">POST</span></code></td>
+</tr>
+<tr>
+<td>Version</td>
+<td>1.3</td>
+</tr>
+<tr>
+<td>Permission</td>
+<td>whitelist</td>
+</tr>
+</tbody>
+</table>
+<p class="bookText">So, if the above 2 conditions are satisfied: i.e. if button 2 (event 16) is pressed and lastupdated has changed (this ensures the rule is triggered everytime you press the button) then activate the Scene (with your passed Scene ID).</p>
+<p class="bookText">Note that integers and booleans are passed as JSON strings in the conditions.</p>
+</div>
+
+			</div><!-- .entry-content -->
+
+			<script>
+
+
+
+				//  <div id="entry-anchor" class="entry-anchor">
+
+				//var anchor_div = document.getElementById("entry-anchor");
+				var anchor = document.getElementsByTagName("h2"); //take all h2
+
+				if( anchor.length>0)
+				{
+
+					var anchor_div = document.createElement("div");
+					anchor_div.setAttribute("class","entry-anchor");
+ 
+					var para = document.createElement("p");
+					para.setAttribute("class", "anchor-title");
+					var text = document.createTextNode("On this page:");
+					para.appendChild(text);
+					anchor_div.appendChild(para);
+
+					for (var i = 0; i < anchor.length; i++) {
+
+						var children = anchor[i].children; //take all children, hopefully anchors  
+						for (var ch = 0; ch < children.length; ch++) {
+							var c = children[ch];
+							if (c.nodeName == "A"); { //if the element is anchor    
+								var id = c.id; // get the the id of each anchor
+								var text = "";
+								var text = anchor[i].innerHTML;
+								var a = document.createElement("a");
+								a.setAttribute("class","findthem");
+								a.href="#"+id;
+								a.innerHTML = text;
+								linebreak = document.createElement("br");
+								if (i > 0){
+									var hr = document.createElement("hr");
+									anchor_div.appendChild(hr);
+								}
+								// anchor_div.appendChild(linebreak);
+								anchor_div.appendChild(a); //div+anchors
+							}
+
+						}
+					}  
+ 
+					var article= document.getElementsByTagName("article");//find the article where i need the div
+
+					article[0].appendChild(anchor_div);
+
+
+				}
+
+				</script><div class="entry-anchor"><p class="anchor-title">On this page:</p><a class="findthem" href="https://developers.meethue.com/develop/application-design-guidance/hue-tap-scene-programming/#Response"><a id="Response"></a>Sample Response</a></div>
+
+
+				</article><!-- #post-211 -->
+
+
+
+
+    </main><!-- #main -->
+</div>
+</div>
+</div>  
+<!-- #primary -->
+
+
+        
+<footer class="hue-footer">
+	<div class="mobileTest">
+			<div class="hue-footer-nav" style="padding-top:25px">
+				<a class="navLink" href="https://developers.meethue.com/support/">Contact</a>
+				<a class="navLink" href="https://developers.meethue.com/terms-of-use-and-conditions/">Terms &amp; Conditions</a>
+				<a class="navLink" href="https://www.signify.com/global/privacy/legal-information/privacy-notice">Privacy</a>
+				<a class="navLink" href="https://www.signify.com/global/product-security">Product Security</a>
+			</div>
+    
+			<div class="hue-footer-copyright">
+				<p class="rights">©2025 Signify Holding. All rights reserved.</p>
+			</div>
+
+		</div>
+	</footer><!-- #colophon -->
+
+	
+<div id="um_upload_single" style="display:none"></div>
+<div id="um_view_photo" style="display:none">
+
+	<a href="javascript:void(0);" data-action="um_remove_modal" class="um-modal-close" aria-label="Close view photo modal">
+		<i class="um-faicon-times"></i>
+	</a>
+
+	<div class="um-modal-body photo">
+		<div class="um-modal-photo"></div>
+	</div>
+
+</div><script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/navigation.js.télécharger" id="hue_developer_theme-navigation-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/skip-link-focus-fix.js.télécharger" id="hue_developer_theme-skip-link-focus-fix-js"></script>
+<script type="text/javascript" id="newsletter-js-extra">
+/* <![CDATA[ */
+var newsletter_data = {"action_url":"https:\/\/developers.meethue.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/main.js.télécharger" id="newsletter-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/enlighterjs.min.js.télécharger" id="enlighterjs-js"></script>
+<script type="text/javascript" id="enlighterjs-js-after">
+/* <![CDATA[ */
+!function(e,n){if("undefined"!=typeof EnlighterJS){var o={"selectors":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"options":{"indent":4,"ampersandCleanup":true,"linehover":true,"rawcodeDbclick":true,"textOverflow":"break","linenumbers":false,"theme":"atomic","language":"cpp","retainCssClasses":false,"collapse":false,"toolbarOuter":"","toolbarTop":"{BTN_RAW}{BTN_COPY}{BTN_WINDOW}{BTN_WEBSITE}","toolbarBottom":""}};(e.EnlighterJSINIT=function(){EnlighterJS.init(o.selectors.block,o.selectors.inline,o.options)})()}else{(n&&(n.error||n.log)||function(){})("Error: EnlighterJS resources not loaded yet!")}}(window,console);
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/select2.full.min.js.télécharger" id="select2-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/underscore.min.js.télécharger" id="underscore-js"></script>
+<script type="text/javascript" id="wp-util-js-extra">
+/* <![CDATA[ */
+var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/wp-util.min.js.télécharger" id="wp-util-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-crop.min.js.télécharger" id="um_crop-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-modal.min.js.télécharger" id="um_modal-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-jquery-form.min.js.télécharger" id="um_jquery_form-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-fileupload.js.télécharger" id="um_fileupload-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/picker.js.télécharger" id="um_datetime-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/picker.date.js.télécharger" id="um_datetime_date-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/picker.time.js.télécharger" id="um_datetime_time-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/wp-polyfill-inert.min.js.télécharger" id="wp-polyfill-inert-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/regenerator-runtime.min.js.télécharger" id="regenerator-runtime-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/wp-polyfill.min.js.télécharger" id="wp-polyfill-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/hooks.min.js.télécharger" id="wp-hooks-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/i18n.min.js.télécharger" id="wp-i18n-js"></script>
+<script type="text/javascript" id="wp-i18n-js-after">
+/* <![CDATA[ */
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-raty.min.js.télécharger" id="um_raty-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-tipsy.min.js.télécharger" id="um_tipsy-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/imagesloaded.min.js.télécharger" id="imagesloaded-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/masonry.min.js.télécharger" id="masonry-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/jquery.masonry.min.js.télécharger" id="jquery-masonry-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/simplebar.min.js.télécharger" id="um_scrollbar-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-functions.min.js.télécharger" id="um_functions-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-responsive.min.js.télécharger" id="um_responsive-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-conditional.min.js.télécharger" id="um_conditional-js"></script>
+<script type="text/javascript" id="um_scripts-js-extra">
+/* <![CDATA[ */
+var um_scripts = {"max_upload_size":"2097152","nonce":"aa2bf2e423"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-scripts.min.js.télécharger" id="um_scripts-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-profile.min.js.télécharger" id="um_profile-js"></script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/um-account.min.js.télécharger" id="um_account-js"></script>
+<script type="text/javascript" id="icwp-wpsf-notbot-js-extra">
+/* <![CDATA[ */
+var shield_vars_notbot = {"strings":{"select_action":"Please select an action to perform.","are_you_sure":"Are you sure?","absolutely_sure":"Are you absolutely sure?"},"comps":{"notbot":{"ajax":{"not_bot":{"action":"shield_action","ex":"capture_not_bot","exnonce":"be999cb3ef","ajaxurl":"https:\/\/developers.meethue.com\/wp-admin\/admin-ajax.php","_wpnonce":"2be3503dd6","_rest_url":"https:\/\/developers.meethue.com\/wp-json\/shield\/v1\/action\/capture_not_bot?exnonce=be999cb3ef&_wpnonce=2be3503dd6"}},"flags":{"skip":false,"required":false}}}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/shield-notbot.bundle.js.télécharger" id="icwp-wpsf-notbot-js"></script>
+		<script type="text/javascript">
+			jQuery( window ).on( 'load', function() {
+				jQuery('input[name="um_request"]').val('');
+			});
+		</script>
+		<script src="./Hue Tap Scene Programming - Philips Hue Developer Program_files/wa_code.js.télécharger" async=""></script> 
+	<script>window._satellite && _satellite.pageBottom();</script><script>_satellite["_runScript1"](function(event, target, Promise) {
+function targetPageParams() {
+    console.log("targetPageParams function called");
+    return {
+      "at_property": "87adce41-5759-8745-4cc7-bb0ad87fbdb5"
+    };
+}
+
+if (_satellite.getVar('DL|Lookup|Installer_page') == "true") {
+  targetPageParams();
+  console.log("pageParams added");
+}
+
+});</script><script>_satellite["_runScript2"](function(event, target, Promise) {
+//configure the dataLayer
+ window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', _satellite.getVar("GTAG|LookUp|AccountID"));
+
+
+// setting the default Google Consent, denying all settings. 
+function setDefaultGoogleConsent (){
+gtag('consent', 'default', {
+  'ad_storage': 'denied',
+  'ad_user_data': 'denied',
+  'ad_personalization': 'denied',
+});
+console.log("default consent set");
+}
+
+setDefaultGoogleConsent();
+
+var cc = _satellite.getVar('consentLevelObject')
+var action = _satellite.getVar("DL|Event|Action", event);
+
+
+if(cc.advertising){
+gtag('consent', 'update', {
+  'ad_storage': 'granted',
+  'ad_user_data': 'granted',
+  'ad_personalization': 'granted',
+});
+console.log("advertising consent set");
+}
+
+});</script><script>_satellite["_runScript3"](function(event, target, Promise) {
+/**
+ * Signify Event-driven Datalayer - Martijn Schoenmakers <martijn.schoenmakers@signify.com>
+ * Version: 1.0.0
+ * Build: 2020-01-17
+ */
+if (!window.EDLFactory) {
+    !function(){"use strict";function t(t,n){for(var e=0;e<n.length;e++){var r=n[e];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}function c(t){return(c=Object.setPrototypeOf?Object.getPrototypeOf:function(t){return t.__proto__||Object.getPrototypeOf(t)})(t)}function u(t,n){return(u=Object.setPrototypeOf||function(t,n){return t.__proto__=n,t})(t,n)}function o(t,n,e){return(o=function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],function(){})),!0}catch(t){return!1}}()?Reflect.construct:function(t,n,e){var r=[null];r.push.apply(r,n);var o=new(Function.bind.apply(t,r));return e&&u(o,e.prototype),o}).apply(null,arguments)}function n(t){var r="function"==typeof Map?new Map:void 0;return(n=function(t){if(null===t||(n=t,-1===Function.toString.call(n).indexOf("[native code]")))return t;var n;if("function"!=typeof t)throw new TypeError("Super expression must either be null or a function");if(void 0!==r){if(r.has(t))return r.get(t);r.set(t,e)}function e(){return o(t,arguments,c(this).constructor)}return e.prototype=Object.create(t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),u(e,t)})(t)}function a(t,n){if(t!==n)throw new TypeError("Cannot instantiate an arrow function")}function f(t,n,e){return(f="undefined"!=typeof Reflect&&Reflect.get?Reflect.get:function(t,n,e){var r=function(t,n){for(;!Object.prototype.hasOwnProperty.call(t,n)&&null!==(t=c(t)););return t}(t,n);if(r){var o=Object.getOwnPropertyDescriptor(r,n);return o.get?o.get.call(e):o.value}})(t,n,e||t)}var e=setTimeout;function s(t){return Boolean(t&&void 0!==t.length)}function r(){}function i(t){if(!(this instanceof i))throw new TypeError("Promises must be constructed via new");if("function"!=typeof t)throw new TypeError("not a function");this._state=0,this._handled=!1,this._value=void 0,this._deferreds=[],d(t,this)}function l(e,r){for(;3===e._state;)e=e._value;0!==e._state?(e._handled=!0,i._immediateFn(function(){var t=1===e._state?r.onFulfilled:r.onRejected;if(null!==t){var n;try{n=t(e._value)}catch(t){return void h(r.promise,t)}p(r.promise,n)}else(1===e._state?p:h)(r.promise,e._value)})):e._deferreds.push(r)}function p(n,t){try{if(t===n)throw new TypeError("A promise cannot be resolved with itself.");if(t&&("object"==typeof t||"function"==typeof t)){var e=t.then;if(t instanceof i)return n._state=3,n._value=t,void y(n);if("function"==typeof e)return void d((r=e,o=t,function(){r.apply(o,arguments)}),n)}n._state=1,n._value=t,y(n)}catch(t){h(n,t)}var r,o}function h(t,n){t._state=2,t._value=n,y(t)}function y(t){2===t._state&&0===t._deferreds.length&&i._immediateFn(function(){t._handled||i._unhandledRejectionFn(t._value)});for(var n=0,e=t._deferreds.length;n<e;n++)l(t,t._deferreds[n]);t._deferreds=null}function v(t,n,e){this.onFulfilled="function"==typeof t?t:null,this.onRejected="function"==typeof n?n:null,this.promise=e}function d(t,n){var e=!1;try{t(function(t){e||(e=!0,p(n,t))},function(t){e||(e=!0,h(n,t))})}catch(t){if(e)return;e=!0,h(n,t)}}function b(t,n,e){var r=this;e.onRegEx.test(n.event)&&new i(function(){a(this,r);try{e.callback(n.event,n.data,t)}catch(t){}}.bind(this))}i.prototype.catch=function(t){return this.then(null,t)},i.prototype.then=function(t,n){var e=new this.constructor(r);return l(this,new v(t,n,e)),e},i.prototype.finally=function(n){var e=this.constructor;return this.then(function(t){return e.resolve(n()).then(function(){return t})},function(t){return e.resolve(n()).then(function(){return e.reject(t)})})},i.all=function(n){return new i(function(r,o){if(!s(n))return o(new TypeError("Promise.all accepts an array"));var i=Array.prototype.slice.call(n);if(0===i.length)return r([]);var c=i.length;function u(n,t){try{if(t&&("object"==typeof t||"function"==typeof t)){var e=t.then;if("function"==typeof e)return void e.call(t,function(t){u(n,t)},o)}i[n]=t,0==--c&&r(i)}catch(t){o(t)}}for(var t=0;t<i.length;t++)u(t,i[t])})},i.resolve=function(n){return n&&"object"==typeof n&&n.constructor===i?n:new i(function(t){t(n)})},i.reject=function(e){return new i(function(t,n){n(e)})},i.race=function(o){return new i(function(t,n){if(!s(o))return n(new TypeError("Promise.race accepts an array"));for(var e=0,r=o.length;e<r;e++)i.resolve(o[e]).then(t,n)})},i._immediateFn="function"==typeof setImmediate&&function(t){setImmediate(t)}||function(t){e(t,0)},i._unhandledRejectionFn=function(t){"undefined"!=typeof console&&console};var w={publish:function(t,n){t.events.push({event:n.event,data:Object.assign({},n.data)}),function(n,e){var r=this;if(e.event)try{Object.values(n.subscribers).forEach(function(t){a(this,r),b(n,e,t)}.bind(this))}catch(t){}}(t,n)},subscribe:function(t,n){if(n.force||!Object.prototype.hasOwnProperty.call(t.subscribers,n.name)){var e={name:n.name,callback:n.callback,on:n.on,onRegEx:new RegExp("^".concat(n.on,"$"),"i"),skipHistory:n.skipHistory};e.skipHistory||function(n,e){var r=this;try{n.events.forEach(function(t){a(this,r),b(n,t,e)}.bind(this))}catch(t){}}(t,e),t.subscribers[e.name]=e}},unsubscribe:function(t,n){Object.prototype.hasOwnProperty.call(t.subscribers,n.name)&&delete t.subscribers[n.name]}},_=function(){function i(t,n){var e,r=this;return function(t){if(!(t instanceof i))throw new TypeError("Cannot call a class as a function")}(this),(e=function(t,n){return!n||"object"!=typeof n&&"function"!=typeof n?function(t){if(void 0===t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return t}(t):n}(this,c(i).call(this))).name=t,e.events=[],e.subscribers={},Array.isArray(n)&&n.forEach(function(t){a(this,r),e.push(t)}.bind(this)),e}return function(t,n){if("function"!=typeof n&&null!==n)throw new TypeError("Super expression must either be null or a function");t.prototype=Object.create(n&&n.prototype,{constructor:{value:t,writable:!0,configurable:!0}}),n&&u(t,n)}(i,n(Array)),t(i.prototype,[{key:"push",value:function(t){var n;if(!t.action)throw SyntaxError("Invalid EDL input.");for(var e=arguments.length,r=new Array(1<e?e-1:0),o=1;o<e;o++)r[o-1]=arguments[o];if(!Object.prototype.hasOwnProperty.call(w,t.action))throw SyntaxError("Invalid action");w[t.action].apply(w,[this,t].concat(r)),(n=f(c(i.prototype),"push",this)).call.apply(n,[this,t].concat(r))}}]),i}();"function"!=typeof Object.assign&&Object.defineProperty(Object,"assign",{value:function(t,n){if(null==t)throw new TypeError("Cannot convert undefined or null to object");for(var e=Object(t),r=1;r<arguments.length;r++){var o=arguments[r];if(null!=o)for(var i in o)Object.prototype.hasOwnProperty.call(o,i)&&(e[i]=o[i])}return e},writable:!0,configurable:!0}),Object.values||(Object.values=function(n){var e=this;return Object.keys(n).map(function(t){return a(this,e),n[t]}.bind(this))});var O={},EDLFactory={get:function(n){var e=this,t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:void 0;return Object.prototype.hasOwnProperty.call(O,n)?void 0!==t&&t!==O[n]&&t.forEach(function(t){a(this,e),O[n].push(t)}.bind(this)):O[n]=new _(n,t),O[n]},getAll:function(){return O},version:"1.0.0"};window.EDLFactory=EDLFactory}();
+}
+
+if (!window['consent-aware-layer'] || !window['consent-aware-layer'].hasOwnProperty('events')) {
+    window['consent-aware-layer'] = window['consent-aware-layer'] || [];
+    window['consent-aware-layer'] = EDLFactory.get('consent-aware-layer', window['consent-aware-layer']);
+    window['consent-aware-layer'].push({
+        action: 'publish',
+        event: 'consent/init',
+        data: {
+            consentLevels: _satellite.getVar('consentLevelObject'),
+            timestamp: Date.now()
+        }
+    });
+}
+
+});</script><script>_satellite["_runScript4"](function(event, target, Promise) {
+/*
+ Signify TrustArc cookie consent manager
+ Author: Martijn Schoenmakers
+ Last updated: May 17, 2021
+*/
+
+var country = _satellite.getVar("dlCountry") || "global";
+if (country === "ce") {
+  country = "mx"
+}else if( country === "aa"){
+  country = "global"
+}
+
+(function(p,h,k){var d=country,m=k.getVar("dlLanguage")||"en",f=p.location.hostname,t=k.getVar("dlPageName"),g,l=!0,q=!1,u=/(cookie|cookies|privacy)_notice$/i,v=function(e,c){var a=document.createElement("script");a.type="text/javascript";a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,c()}:a.onload=function(){c()};try{a.crossOrigin="anonymous"}catch(b){}a.src=e;h.getElementsByTagName("head")[0].appendChild(a)};
+p=function(){var e="#0073b4",c="#0089c4";(function(){var a=h.createElement("div");a.id="truste-button";a.style.cssText="visibility:hidden;position:fixed;bottom:0px;left:0px;z-index:999;";/^.+iltiluce\.com$/i.test(f)&&(e=c="#f68326");var b=h.createElement("div");b.id="teconsent";b.style.cssText="background:"+c+";border-radius:2px;display:inline-block;padding:11px 24px 10px;";b.onmouseover=function(){this.style.background=e};b.onmouseout=function(){this.style.background=c};a.appendChild(b);h.getElementsByTagName("body")[0].appendChild(a);
+a=h.createElement("style");a.innerText="#truste-button a{font:14px/14px centrale_sans_book,tahoma,arial,helvetica,sans-serif;color:#fff}";h.getElementsByTagName("head")[0].appendChild(a)})();v(function(a,b){a=a||"//consent.truste.com/notice";b=b||{domain:k.getVar("consentDomain"),c:"teconsent",text:"true",country:d,language:m+"_"+d.toUpperCase(),behavior:"expressed",pn:"0",cookieLink:g,privacypolicylink:g,cookieName:"li_cm_prefs",pcookie:"1",gtm:"1"};u.test(t)&&(b.behavior="implied",b.pn="1");return a+
+"?"+Object.keys(b).map(function(r){return b.hasOwnProperty(r)?r+"="+encodeURIComponent(b[r]):""}).join("&")}(),function(){if(q){var a=h.getElementById("truste-button");a&&a.style&&(a.style.visibility="visible")}})};var n=function(e){var c=1;e=(e||f).split(".").reverse();c+=e[c]&&/^(com|co)$/i.test(e[c])?1:0;c+=e[c]&&/^philips$/i.test(e[c])?1:0;return e.slice(0,c+1).reverse().join(".")};(function(){var e=function(a){var b="/cookie-notice";a=a||"www."+n(f);/\.usa\.lighting\.philips\./i.test(f)?a="www.usa.lighting.philips.com":
+"fr"!==m||"be"!==d&&"ch"!==d?"global"===d&&(b="/main/privacy/legal-information/cookie-notice"):b="/fr/"+b;return"//"+a+b},c=function(a){var b="/"+m+"-"+d+"/cookies-notice";a=a||"www."+n(f);"global"===d&&(b="/global/privacy/legal-information/cookies-notice",d="gb");return"//"+a+b};0<="be be bg hr cz hu lv lt pt ro sk si ee gr rs se no fi dk at ch ch de es fr ie it nl gb pl us br mx ar co ce cl pe ca au nz ae cn eg gh hk id in jp ke kr ma my ng pa ph pk ru sa sg th tr tw ua vn za".split(" ").indexOf(d)||"global"===d?(/\.lighting\.philips\./i.test(f)?g=e():/\.signify\./i.test(f)?g=c():/\.meethue\./i.test(f)||
+/\.philips-?hue\./i.test(f)?("global"===d&&(d="gb"),g="//www."+n(f)+("/"+m+"-"+d+"/cookie-notice")):/\.iltiluce\./i.test(f)?g="//www."+n(f)+"/cookie-notice":/\.interact-lighting\./i.test(f)?g=c("www.signify.com"):(c=f.match(/\.philips\.\w{2,3}(?:\.\w{2,3})?$/i),g=e(c?"www.lighting"+c[0]:"www.lighting.philips.com")),"global"===d&&(d="gb")):(l=!1,d="xx")})();u.test(t)&&"XX"!==d?q=l=!0:l&&k.readCookie("li_cm_prefs")&&(l=!1);(l||q)&&p()})(window,document,_satellite);
+});</script><script>_satellite["_runScript5"](function(event, target, Promise) {
+/**
+ * @file Hook onto the truste consent manager and make sure that DTM rules previously blocked due to consent restrains, will be reevaluated.
+ * @author Martijn Schoenmakers
+ * @version v1.1.0 23 June 2020
+ */
+
+(function(_satellite){
+    var DEBUG = false;
+
+    // function capitalize(s){
+    //     if (typeof(s) != "string") return "";
+    //     return s.charAt(0).toUpperCase() + s.slice(1);
+    // }
+
+    // function reEvaluatePageLoadRules(newState, oldState) {
+    //     DEBUG && console.log("Running reEvaluatePageLoadRules");
+    //     newState = newState || _satellite.getVar('consentLevelObject');
+    //     oldState = oldState || {};
+
+    //     var newlyEnabled = [];
+    //     Object.keys(newState).forEach(function(key){
+    //         if (newState[key] && !oldState[key]) {
+    //             newlyEnabled.push(key);
+    //         }
+    //     });
+
+    //     (function () {
+    //         var location = document.location;
+    
+    //         // Find all blocked rules
+    //         // 1. First find the names by checking the logs
+    //         var blockedRulesNames = [],
+    //             executedRulesNames = [],
+    //             name;
+    //         _satellite.Logger.messages.forEach(function (rule) {
+    //             var name, matcher;
+    //             if (rule && rule[1]) {
+    //                 // Check has fired after update
+    //                 name = rule[1].match(/^Rule "(.+)" fired(?: after consent update)?.$/);
+    //                 if (name && name[1]) {
+    //                     executedRulesNames.push(name[1])
+    //                 } else {
+    //                     // Else check wether this is a message about the rule being blocked due to consent.
+    //                     newlyEnabled.forEach(function(type){
+    //                         matcher = RegExp('^Condition .+consentFor' + capitalize(type) + '.+ for rule "(.+)" not met.$');
+    //                         name = rule[1].match(matcher);
+    //                         if (name && name[1]) {
+    //                             blockedRulesNames.push(name[1]);
+    //                         }
+    //                     });
+    //                 }
+    //             }
+    //         });
+    
+    //         // 2. Then find the actual rule and fire it if we can now
+    //         // var blockedRules = [];
+    //         _satellite.pageLoadRules.forEach(function (rule) {
+    //             if (rule.name && blockedRulesNames.indexOf(rule.name) >= 0 && executedRulesNames.indexOf(rule.name) < 0) {
+    //                 // blockedRules.push(rule);
+    //                 var eventDetails = {
+    //                     target: location,
+    //                     type: rule.event
+    //                 };
+    //                 _satellite.ruleMatches(rule, eventDetails, location) && (_satellite.notify('Rule "' + rule.name + '" fired after consent update.', 1), _satellite.fireRule(rule, eventDetails, location));
+    //             }
+    //         });
+    
+    
+    //     })();
+    // }
+
+    function pushConsentUpdateEvent(state) {
+        state = state || _satellite.getVar('consentLevelObject');
+        // Push changes into datalayer
+        window['consent-aware-layer'] = window['consent-aware-layer'] || [];
+        window['consent-aware-layer'].push({
+            action: "publish",
+            event: "consent/update",
+            data: {
+                consentLevels: state
+            }
+        });
+        // Trigger direct call rule attached to rules to reëvaluate the rule
+        _satellite.track("advertising_accepted");
+    }
+    
+    
+    var _STATE = {};
+    
+    function runOnce() {
+        if (!_STATE.hasRunOnce && window.truste && truste.eu && truste.eu.prefclose) {
+            _STATE.hasRunOnce = true;
+            _STATE.i && clearInterval(_STATE.i);
+            DEBUG && console.log("Run once TrustE code");
+            //_STATE.oldValue = _satellite.getVar("consentLevel");//parseInt(truste.eu.bindMap.prefCookie);
+            _STATE.oldValue = truste.eu.bindMap.prefCookie;
+            _STATE.oldValueObj = _satellite.getVar('consentLevelObject')
+            _STATE.oldMethod = truste.eu.prefclose;
+            truste.eu.prefclose = function () {
+                var result = _STATE.oldMethod();
+                // if (_STATE.oldValue != parseInt(truste.eu.bindMap.prefCookie)) setTimeout(function () {
+                // if (_STATE.oldValue != _satellite.getVar("consentLevel")) setTimeout(function () {
+                if (_STATE.oldValue != truste.eu.bindMap.prefCookie) setTimeout(function () {
+                    valueObj = _satellite.getVar('consentLevelObject')
+                    pushConsentUpdateEvent(valueObj);
+                    //reEvaluatePageLoadRules(valueObj, _STATE.oldValueObj);
+                }, 20);
+                return result;
+            };
+        }
+    }
+    _STATE.i = setInterval(runOnce, 10)
+})(window._satellite);
+});</script> 
+
+
+
+</body></html>
