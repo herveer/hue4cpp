@@ -88,3 +88,4 @@ doxygen_warnings.txt
 *.bak
 *.tmp
 /tmp/
+_codeql_detected_source_root
