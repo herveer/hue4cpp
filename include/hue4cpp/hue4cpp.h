@@ -8,6 +8,9 @@
  */
 
 #include "hue4cpp/types.h"
+#include "hue4cpp/exceptions.h"
+#include "hue4cpp/http_client.h"
+#include "hue4cpp/json_utils.h"
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/light.h"
 #include "hue4cpp/state.h"

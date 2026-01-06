@@ -9,6 +9,7 @@ set(TEST_SOURCES
     state_tests.cpp
     http_client_tests.cpp
     json_utils_tests.cpp
+    exceptions_tests.cpp
 )
 
 # Create test executable
