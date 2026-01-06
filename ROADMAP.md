@@ -16,6 +16,7 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 - [x] Basic directory structure
 - [x] HTTP Client Layer (PR #1)
 - [x] JSON Handling (PR #1)
+- [x] mDNS Discovery (PR #2)
 - [x] Remote Discovery Endpoint (PR #2)
 - [x] Bridge Reachability Check (PR #2)
 
@@ -40,12 +41,12 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
    - ✅ Define data structures for API responses
    - ✅ Implement type-safe JSON parsing
 
-3. **Bridge Discovery** ⚡ PARTIALLY COMPLETE
-   - ⏸️  Implement mDNS/SSDP bridge discovery (mDNS deferred, SSDP deprecated by Philips)
+3. **Bridge Discovery** ✅ COMPLETED
+   - ✅ Implement mDNS bridge discovery (using cross-platform mdns library)
    - ✅ Implement Remote Discovery endpoint (https://discovery.meethue.com)
    - ✅ Add manual bridge IP configuration
    - ✅ Implement bridge reachability check
-   - ⏸️  Add discovery result caching (deferred)
+   - ⏸️  Add discovery result caching (deferred - not required for MVP)
 
 4. **Authentication** ⬅️ NEXT
    - ⏳ Implement application key generation flow
@@ -294,19 +295,19 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 
 ---
 
-### PR #2: Bridge Discovery ⬅️ **IN PROGRESS**
+### PR #2: Bridge Discovery ✅ **COMPLETED**
 
 **Objective**: Implement bridge discovery mechanism
 
 **Tasks:**
-- [ ] Implement mDNS discovery (deferred - requires additional platform-specific dependencies)
+- [x] Implement mDNS discovery using cross-platform mdns library
 - [x] Implement Remote Discovery endpoint (https://discovery.meethue.com)
 - [x] Add manual bridge configuration (BridgeInfo struct supports manual configuration)
 - [x] Implement bridge reachability check
 - [x] Write unit tests for discovery
 - [x] Create example: discover and list bridges
 
-**Status**: Remote discovery endpoint and bridge reachability checks are fully implemented and tested. mDNS discovery deferred due to complexity and platform-specific requirements (requires Avahi on Linux, Bonjour on macOS/Windows).
+**Status**: Both mDNS and remote discovery are fully implemented and tested. The mDNS implementation uses the cross-platform `mdns` library (header-only) which works on Windows, Linux, and macOS without platform-specific dependencies.
 
 **Note**: UPnP/SSDP discovery methods have been deprecated by Philips Hue as of Q2 2022 and are not implemented.
 

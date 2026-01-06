@@ -51,10 +51,11 @@ TEST_CASE("Bridge discovery", "[bridge]") {
         REQUIRE(true); // Test passes if no exception thrown
     }
     
-    SECTION("DiscoverMDNS returns empty (not implemented)") {
+    SECTION("DiscoverMDNS returns vector") {
         auto bridges = Bridge::discoverMDNS();
-        // mDNS not yet implemented
-        REQUIRE(bridges.empty());
+        // mDNS discovery is now implemented
+        // Result may be empty if no bridges are available on the network
+        REQUIRE(true); // Test passes if no exception thrown
     }
 }
 

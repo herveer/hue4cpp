@@ -26,6 +26,7 @@ target_include_directories(hue4cpp
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${MDNS_INCLUDE_DIRS}
 )
 
 # Link dependencies

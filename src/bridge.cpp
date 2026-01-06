@@ -5,7 +5,145 @@
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/exceptions.h"
 
+#include <mdns.h>
+
+#include <vector>
+#include <string>
+#include <cstring>
+#include <thread>
+#include <chrono>
+#include <mutex>
+#include <algorithm>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <iphlpapi.h>
+#else
+#include <netdb.h>
+#include <ifaddrs.h>
+#include <net/if.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#endif
+
 namespace hue4cpp {
+
+// Helper structure to collect mDNS results
+struct MDNSDiscoveryResult {
+    std::string name;
+    std::string ip_address;
+    std::string bridge_id;
+    std::string model_id;
+    uint16_t port;
+};
+
+// Callback for mDNS query responses
+static int mdns_query_callback(int sock, const struct sockaddr* from, size_t addrlen,
+                                mdns_entry_type_t entry, uint16_t query_id,
+                                uint16_t rtype, uint16_t rclass, uint32_t ttl,
+                                const void* data, size_t size, size_t name_offset,
+                                size_t name_length, size_t record_offset,
+                                size_t record_length, void* user_data) {
+    (void)sock;
+    (void)from;
+    (void)addrlen;
+    (void)query_id;
+    (void)rclass;
+    (void)ttl;
+    (void)name_offset;
+    (void)name_length;
+    
+    auto* results = static_cast<std::vector<MDNSDiscoveryResult>*>(user_data);
+    
+    char namebuffer[256];
+    char addrbuffer[64];
+    
+    if (entry == MDNS_ENTRYTYPE_ANSWER) {
+        if (rtype == MDNS_RECORDTYPE_PTR) {
+            // PTR record - service instance name
+            mdns_record_parse_ptr(data, size, record_offset, record_length,
+                                  namebuffer, sizeof(namebuffer));
+        } else if (rtype == MDNS_RECORDTYPE_SRV) {
+            // SRV record - contains hostname and port
+            mdns_record_srv_t srv = mdns_record_parse_srv(data, size, record_offset,
+                                                          record_length,
+                                                          namebuffer, sizeof(namebuffer));
+            
+            MDNSDiscoveryResult result;
+            result.name = std::string(namebuffer);
+            result.port = srv.port;
+            
+            // Extract bridge ID from service name if present
+            // Format: "Philips Hue - XXXXXX._hue._tcp.local"
+            std::string service_name(namebuffer);
+            size_t pos = service_name.find("Philips Hue - ");
+            if (pos != std::string::npos) {
+                size_t id_start = pos + 14; // Length of "Philips Hue - "
+                size_t id_end = service_name.find('.', id_start);
+                if (id_end != std::string::npos) {
+                    std::string last6 = service_name.substr(id_start, id_end - id_start);
+                    // Bridge ID would need to be constructed, but we'll get it from TXT records
+                }
+            }
+            
+            // Store partial result
+            results->push_back(result);
+        } else if (rtype == MDNS_RECORDTYPE_A) {
+            // A record - IPv4 address
+            struct sockaddr_in addr;
+            mdns_record_parse_a(data, size, record_offset, record_length, &addr);
+            
+            // Convert IPv4 address to string
+            if (inet_ntop(AF_INET, &(addr.sin_addr), addrbuffer, sizeof(addrbuffer))) {
+                // Find existing result and add IP
+                if (!results->empty()) {
+                    results->back().ip_address = std::string(addrbuffer);
+                }
+            }
+        } else if (rtype == MDNS_RECORDTYPE_AAAA) {
+            // AAAA record - IPv6 address
+            struct sockaddr_in6 addr;
+            mdns_record_parse_aaaa(data, size, record_offset, record_length, &addr);
+            
+            // Convert IPv6 address to string
+            if (inet_ntop(AF_INET6, &(addr.sin6_addr), addrbuffer, sizeof(addrbuffer))) {
+                // We prefer IPv4, so only use IPv6 if no IPv4 is available
+                if (!results->empty() && results->back().ip_address.empty()) {
+                    results->back().ip_address = std::string(addrbuffer);
+                }
+            }
+        } else if (rtype == MDNS_RECORDTYPE_TXT) {
+            // TXT record - contains bridgeid and modelid
+            mdns_record_txt_t txt_records[16];
+            size_t parsed = mdns_record_parse_txt(data, size, record_offset, record_length,
+                                                  txt_records, sizeof(txt_records) / sizeof(mdns_record_txt_t));
+            
+            for (size_t itxt = 0; itxt < parsed; ++itxt) {
+                std::string key(txt_records[itxt].key.str, txt_records[itxt].key.length);
+                std::string value(txt_records[itxt].value.str, txt_records[itxt].value.length);
+                
+                if (!results->empty()) {
+                    if (key == "bridgeid") {
+                        results->back().bridge_id = value;
+                    } else if (key == "modelid") {
+                        results->back().model_id = value;
+                    }
+                }
+            }
+        }
+    }
+    
+    return 0;
+}
+
+// Open a socket for mDNS
+static int mdns_open_socket() {
+    int sock = mdns_socket_open_ipv4(nullptr);
+    if (sock < 0)
+        return -1;
+    return sock;
+}
 
 // Bridge::Impl definition
 class Bridge::Impl {
@@ -34,17 +172,90 @@ Bridge::Bridge(Bridge&&) noexcept = default;
 Bridge& Bridge::operator=(Bridge&&) noexcept = default;
 
 std::vector<Bridge> Bridge::discover() {
-    // For now, use remote discovery as it's simpler and doesn't require mDNS libraries
-    // In the future, we can combine this with mDNS discovery for better results
-    return discoverRemote();
+    // Try mDNS discovery first (preferred local discovery method)
+    std::vector<Bridge> bridges = discoverMDNS();
+    
+    // If mDNS didn't find anything, try remote discovery as fallback
+    if (bridges.empty()) {
+        bridges = discoverRemote();
+    }
+    
+    return bridges;
 }
 
 std::vector<Bridge> Bridge::discoverMDNS() {
-    // TODO: Implement mDNS discovery
-    // Requires platform-specific mDNS libraries (Avahi on Linux, Bonjour on macOS/Windows)
-    // mDNS service name: _hue._tcp.local
-    // Bridge name format: "Philips Hue - XXXXXX" where XXXXXX is last 6 digits of bridge ID
-    return {};
+    std::vector<Bridge> bridges;
+    std::vector<MDNSDiscoveryResult> mdns_results;
+    
+    try {
+        // Open mDNS socket
+        int sock = mdns_open_socket();
+        if (sock < 0) {
+            // Failed to open socket, return empty vector
+            return bridges;
+        }
+        
+        // Query for Hue bridges using the registered mDNS service name
+        // Service: _hue._tcp.local
+        const char* service = "_hue._tcp.local";
+        
+        // Send mDNS query
+        if (mdns_query_send(sock, MDNS_RECORDTYPE_PTR,
+                           service, strlen(service),
+                           nullptr, 0, 0) < 0) {
+            mdns_socket_close(sock);
+            return bridges;
+        }
+        
+        // Wait for responses (3 seconds timeout)
+        // mDNS responses may come from multiple bridges
+        auto start_time = std::chrono::steady_clock::now();
+        auto timeout = std::chrono::seconds(3);
+        
+        while (std::chrono::steady_clock::now() - start_time < timeout) {
+            struct timeval tv;
+            tv.tv_sec = 0;
+            tv.tv_usec = 100000; // 100ms
+            
+            fd_set readfs;
+            FD_ZERO(&readfs);
+            FD_SET(sock, &readfs);
+            
+            int nfds = sock + 1;
+            if (select(nfds, &readfs, nullptr, nullptr, &tv) > 0) {
+                if (FD_ISSET(sock, &readfs)) {
+                    // Receive and parse mDNS response
+                    mdns_query_recv(sock, nullptr, 0, mdns_query_callback,
+                                   &mdns_results, 1);
+                }
+            }
+        }
+        
+        // Close socket
+        mdns_socket_close(sock);
+        
+        // Convert mDNS results to Bridge objects
+        for (const auto& result : mdns_results) {
+            // Skip incomplete results
+            if (result.ip_address.empty() || result.bridge_id.empty()) {
+                continue;
+            }
+            
+            BridgeInfo info;
+            info.ip_address = result.ip_address;
+            info.id = result.bridge_id;
+            info.name = result.name;
+            info.model_id = result.model_id;
+            
+            bridges.push_back(Bridge(info));
+        }
+        
+    } catch (const std::exception&) {
+        // If anything goes wrong, return what we have collected so far
+        return bridges;
+    }
+    
+    return bridges;
 }
 
 std::vector<Bridge> Bridge::discoverRemote() {
