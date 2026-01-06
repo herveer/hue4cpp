@@ -75,6 +75,8 @@ TEST_CASE("Color types", "[types]") {
     
     SECTION("ColorTemperature from Kelvin") {
         auto ct = ColorTemperature::fromKelvin(2700);
-        REQUIRE(ct.toKelvin() == 2700);
+        // Allow for rounding error (mireds = 1000000 / kelvin)
+        REQUIRE(ct.toKelvin() >= 2698);
+        REQUIRE(ct.toKelvin() <= 2702);
     }
 }

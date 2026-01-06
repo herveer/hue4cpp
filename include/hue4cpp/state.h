@@ -3,6 +3,7 @@
 #include "types.h"
 #include <functional>
 #include <string>
+#include <memory>
 
 /**
  * @file state.h
