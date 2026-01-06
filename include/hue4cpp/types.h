@@ -129,4 +129,21 @@ struct Result {
     operator bool() const { return isSuccess(); }
 };
 
+/**
+ * @brief Specialization for void Result
+ */
+template<>
+struct Result<void> {
+    ErrorCode error;
+    std::string error_message;
+    
+    Result() : error(ErrorCode::Success) {}
+    Result(ErrorCode err, const std::string& msg = "")
+        : error(err), error_message(msg) {}
+    
+    bool isSuccess() const { return error == ErrorCode::Success; }
+    
+    operator bool() const { return isSuccess(); }
+};
+
 } // namespace hue4cpp

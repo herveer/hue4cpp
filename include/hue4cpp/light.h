@@ -3,6 +3,7 @@
 #include "types.h"
 #include <string>
 #include <optional>
+#include <memory>
 
 /**
  * @file light.h
