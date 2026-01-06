@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <chrono>
+#include <stdexcept>
 
 /**
  * @file types.h
@@ -47,16 +48,24 @@ struct ColorTemperature {
      * @brief Create from Kelvin temperature
      * @param kelvin Temperature in Kelvin (2000-6500)
      * @return ColorTemperature in mireds
+     * @throws std::invalid_argument if kelvin is out of range
      */
     static ColorTemperature fromKelvin(uint16_t kelvin) {
+        if (kelvin < 2000 || kelvin > 6500) {
+            throw std::invalid_argument("Kelvin temperature must be between 2000 and 6500");
+        }
         return ColorTemperature(static_cast<uint16_t>(1000000 / kelvin));
     }
     
     /**
      * @brief Convert to Kelvin temperature
      * @return Temperature in Kelvin
+     * @throws std::invalid_argument if mireds is invalid
      */
     uint16_t toKelvin() const {
+        if (mireds == 0) {
+            throw std::invalid_argument("Mireds value cannot be zero");
+        }
         return static_cast<uint16_t>(1000000 / mireds);
     }
 };
@@ -74,6 +83,10 @@ struct LightCapabilities {
 
 /**
  * @brief Transition time for light changes
+ * 
+ * The Hue API supports transition times from 0ms to approximately 6553500ms.
+ * Default transition time is typically 400ms.
+ * A value of 0ms causes an instant change.
  */
 using TransitionTime = std::chrono::milliseconds;
 

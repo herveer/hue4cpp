@@ -33,7 +33,7 @@ StateManager& StateManager::operator=(StateManager&&) noexcept = default;
 
 Result<void> StateManager::start() {
     // TODO: Implement SSE connection
-    pImpl->running = true;
+    // For now, just indicate not implemented without changing running state
     return Result<void>(ErrorCode::UnknownError, "Not implemented");
 }
 
