@@ -36,6 +36,12 @@ target_link_libraries(hue4cpp
         nlohmann_json::nlohmann_json
 )
 
+# Platform-specific libraries for mDNS support
+if(WIN32)
+    # Windows requires Winsock for socket operations
+    target_link_libraries(hue4cpp PRIVATE ws2_32 iphlpapi)
+endif()
+
 # Compiler warnings
 if(MSVC)
     target_compile_options(hue4cpp PRIVATE /W4)
