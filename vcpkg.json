@@ -7,30 +7,7 @@
   "dependencies": [
     "cpr",
     "nlohmann-json",
-    "catch2"
-  ],
-  "overrides": [
-    {
-      "name": "mdns",
-      "version": "1.4.3"
-    }
-  ],
-  "features": {
-    "mdns-discovery": {
-      "description": "Enable mDNS bridge discovery",
-      "dependencies": [
-        {
-          "name": "mdns",
-          "platform": "!windows"
-        },
-        {
-          "name": "mdnsresponder",
-          "platform": "windows"
-        }
-      ]
-    }
-  },
-  "default-features": [
-    "mdns-discovery"
+    "catch2",
+    "mdns"
   ]
 }

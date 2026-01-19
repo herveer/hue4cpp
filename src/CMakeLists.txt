@@ -26,7 +26,7 @@ target_include_directories(hue4cpp
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
-        $<$<NOT:$<PLATFORM_ID:Windows>>:${MDNS_INCLUDE_DIRS}>
+        ${MDNS_INCLUDE_DIRS}
 )
 
 # Link dependencies
@@ -38,8 +38,8 @@ target_link_libraries(hue4cpp
 
 # Platform-specific libraries for mDNS support
 if(WIN32)
-    # Windows uses Bonjour/DNS-SD (mdnsresponder)
-    target_link_libraries(hue4cpp PRIVATE mdnsresponder::mdnsresponder)
+    # Windows requires Winsock for socket operations used by mdns library
+    target_link_libraries(hue4cpp PRIVATE ws2_32 iphlpapi)
 endif()
 
 # Compiler warnings

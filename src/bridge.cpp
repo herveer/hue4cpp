@@ -5,6 +5,8 @@
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/exceptions.h"
 
+#include <mdns.h>
+
 #include <vector>
 #include <string>
 #include <cstring>
@@ -12,16 +14,12 @@
 #include <chrono>
 #include <mutex>
 #include <algorithm>
-#include <condition_variable>
 
 #ifdef _WIN32
-// Windows: Use Bonjour/DNS-SD API
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <dns_sd.h>
+#include <iphlpapi.h>
 #else
-// Linux/macOS: Use mdns library
-#include <mdns.h>
 #include <netdb.h>
 #include <ifaddrs.h>
 #include <net/if.h>
@@ -39,151 +37,6 @@ struct MDNSDiscoveryResult {
     std::string model_id;
     uint16_t port;
 };
-
-#ifdef _WIN32
-// Windows DNS-SD implementation
-
-struct DNSSDContext {
-    std::vector<MDNSDiscoveryResult> results;
-    std::mutex mutex;
-    std::condition_variable cv;
-    bool browse_finished = false;
-    bool resolve_finished = false;
-};
-
-// DNS-SD Browse callback
-static void DNSSD_API browse_callback(
-    DNSServiceRef sdRef,
-    DNSServiceFlags flags,
-    uint32_t interfaceIndex,
-    DNSServiceErrorType errorCode,
-    const char* serviceName,
-    const char* regtype,
-    const char* replyDomain,
-    void* context) {
-    
-    (void)sdRef;
-    (void)regtype;
-    (void)replyDomain;
-    
-    if (errorCode != kDNSServiceErr_NoError) {
-        return;
-    }
-    
-    auto* ctx = static_cast<DNSSDContext*>(context);
-    
-    if (flags & kDNSServiceFlagsAdd) {
-        // Found a service, now resolve it
-        DNSServiceRef resolveRef;
-        DNSServiceResolve(&resolveRef, 0, interfaceIndex,
-                         serviceName, regtype, replyDomain,
-                         nullptr, context);  // We'll handle resolution separately
-        DNSServiceRefDeallocate(resolveRef);
-    }
-}
-
-// DNS-SD Resolve callback
-static void DNSSD_API resolve_callback(
-    DNSServiceRef sdRef,
-    DNSServiceFlags flags,
-    uint32_t interfaceIndex,
-    DNSServiceErrorType errorCode,
-    const char* fullname,
-    const char* hosttarget,
-    uint16_t port,
-    uint16_t txtLen,
-    const unsigned char* txtRecord,
-    void* context) {
-    
-    (void)sdRef;
-    (void)flags;
-    (void)interfaceIndex;
-    (void)hosttarget;
-    
-    if (errorCode != kDNSServiceErr_NoError) {
-        return;
-    }
-    
-    auto* ctx = static_cast<DNSSDContext*>(context);
-    std::lock_guard<std::mutex> lock(ctx->mutex);
-    
-    MDNSDiscoveryResult result;
-    result.name = fullname ? fullname : "";
-    result.port = ntohs(port);
-    
-    // Parse TXT records for bridgeid and modelid
-    if (txtLen > 0 && txtRecord) {
-        uint16_t keyLen;
-        const char* key;
-        uint8_t valueLen;
-        const void* value;
-        
-        const unsigned char* ptr = txtRecord;
-        while (ptr < txtRecord + txtLen) {
-            uint8_t len = *ptr++;
-            if (len == 0) break;
-            
-            const char* equals = (const char*)memchr(ptr, '=', len);
-            if (equals) {
-                keyLen = equals - (const char*)ptr;
-                key = (const char*)ptr;
-                valueLen = len - keyLen - 1;
-                value = equals + 1;
-                
-                std::string keyStr(key, keyLen);
-                std::string valueStr((const char*)value, valueLen);
-                
-                if (keyStr == "bridgeid") {
-                    result.bridge_id = valueStr;
-                } else if (keyStr == "modelid") {
-                    result.model_id = valueStr;
-                }
-            }
-            ptr += len;
-        }
-    }
-    
-    ctx->results.push_back(result);
-}
-
-// DNS-SD GetAddrInfo callback
-static void DNSSD_API getaddr_callback(
-    DNSServiceRef sdRef,
-    DNSServiceFlags flags,
-    uint32_t interfaceIndex,
-    DNSServiceErrorType errorCode,
-    const char* hostname,
-    const struct sockaddr* address,
-    uint32_t ttl,
-    void* context) {
-    
-    (void)sdRef;
-    (void)flags;
-    (void)interfaceIndex;
-    (void)hostname;
-    (void)ttl;
-    
-    if (errorCode != kDNSServiceErr_NoError || !address) {
-        return;
-    }
-    
-    auto* ctx = static_cast<DNSSDContext*>(context);
-    std::lock_guard<std::mutex> lock(ctx->mutex);
-    
-    char addr_str[INET6_ADDRSTRLEN];
-    if (address->sa_family == AF_INET) {
-        auto* addr_in = (const struct sockaddr_in*)address;
-        inet_ntop(AF_INET, &addr_in->sin_addr, addr_str, sizeof(addr_str));
-        
-        // Update the last result with IP address
-        if (!ctx->results.empty()) {
-            ctx->results.back().ip_address = addr_str;
-        }
-    }
-}
-
-#else
-// Linux/macOS mdns library implementation
 
 // Callback for mDNS query responses
 static int mdns_query_callback(int sock, const struct sockaddr* from, size_t addrlen,
@@ -255,7 +108,7 @@ static int mdns_query_callback(int sock, const struct sockaddr* from, size_t add
             
             // Convert IPv6 address to string
             if (inet_ntop(AF_INET6, &(addr.sin6_addr), addrbuffer, sizeof(addrbuffer))) {
-                // We prefer IPv4, so only use IPv6 if no IPv6 is available
+                // We prefer IPv4, so only use IPv6 if no IPv4 is available
                 if (!results->empty() && results->back().ip_address.empty()) {
                     results->back().ip_address = std::string(addrbuffer);
                 }
@@ -291,8 +144,6 @@ static int mdns_open_socket() {
         return -1;
     return sock;
 }
-
-#endif
 
 // Bridge::Impl definition
 class Bridge::Impl {
@@ -334,73 +185,9 @@ std::vector<Bridge> Bridge::discover() {
 
 std::vector<Bridge> Bridge::discoverMDNS() {
     std::vector<Bridge> bridges;
+    std::vector<MDNSDiscoveryResult> mdns_results;
     
     try {
-#ifdef _WIN32
-        // Windows implementation using DNS-SD (Bonjour) API
-        DNSSDContext context;
-        DNSServiceRef browseRef = nullptr;
-        
-        // Browse for _hue._tcp services
-        DNSServiceErrorType err = DNSServiceBrowse(
-            &browseRef,
-            0,  // flags
-            0,  // interface index (0 = all interfaces)
-            "_hue._tcp",
-            nullptr,  // domain (nullptr = default domains)
-            browse_callback,
-            &context);
-        
-        if (err != kDNSServiceErr_NoError) {
-            return bridges;
-        }
-        
-        // Process events for 3 seconds
-        auto start_time = std::chrono::steady_clock::now();
-        auto timeout = std::chrono::seconds(3);
-        
-        while (std::chrono::steady_clock::now() - start_time < timeout) {
-            int dns_sd_fd = DNSServiceRefSockFD(browseRef);
-            if (dns_sd_fd < 0) {
-                break;
-            }
-            
-            fd_set readfds;
-            FD_ZERO(&readfds);
-            FD_SET(dns_sd_fd, &readfds);
-            
-            struct timeval tv;
-            tv.tv_sec = 0;
-            tv.tv_usec = 100000;  // 100ms
-            
-            int result = select(dns_sd_fd + 1, &readfds, nullptr, nullptr, &tv);
-            if (result > 0 && FD_ISSET(dns_sd_fd, &readfds)) {
-                DNSServiceProcessResult(browseRef);
-            }
-        }
-        
-        DNSServiceRefDeallocate(browseRef);
-        
-        // Convert DNS-SD results to Bridge objects
-        std::lock_guard<std::mutex> lock(context.mutex);
-        for (const auto& result : context.results) {
-            // Skip incomplete results
-            if (result.ip_address.empty() || result.bridge_id.empty()) {
-                continue;
-            }
-            
-            BridgeInfo info;
-            info.ip_address = result.ip_address;
-            info.id = result.bridge_id;
-            info.name = result.name;
-            info.model_id = result.model_id;
-            
-            bridges.push_back(Bridge(info));
-        }
-#else
-        // Linux/macOS implementation using mdns library
-        std::vector<MDNSDiscoveryResult> mdns_results;
-        
         // Open mDNS socket
         int sock = mdns_open_socket();
         if (sock < 0) {
@@ -462,7 +249,6 @@ std::vector<Bridge> Bridge::discoverMDNS() {
             
             bridges.push_back(Bridge(info));
         }
-#endif
         
     } catch (const std::exception&) {
         // If anything goes wrong, return what we have collected so far
