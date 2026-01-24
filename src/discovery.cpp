@@ -14,12 +14,16 @@ namespace hue4cpp {
 
 namespace {
 
+// Constants for discovery timeouts
+constexpr std::chrono::milliseconds BRIDGE_VERIFY_TIMEOUT{5000};  // 5 seconds for verification
+constexpr std::chrono::milliseconds BRIDGE_REACHABLE_TIMEOUT{3000}; // 3 seconds for quick reachability check
+
 // Helper function to verify bridge by getting its configuration
 bool verifyBridge(BridgeInfo& info) {
     try {
         HttpClient client;
         client.setVerifySsl(false);  // Hue bridges use self-signed certificates
-        client.setTimeout(std::chrono::milliseconds(5000));  // 5 second timeout
+        client.setTimeout(BRIDGE_VERIFY_TIMEOUT);
         
         std::string url = "https://" + info.ip_address + "/api/0/config";
         auto response = client.get(url);
@@ -155,7 +159,7 @@ bool Bridge::isReachable() const {
     try {
         HttpClient client;
         client.setVerifySsl(false);  // Hue bridges use self-signed certificates
-        client.setTimeout(std::chrono::milliseconds(3000));  // 3 second timeout
+        client.setTimeout(BRIDGE_REACHABLE_TIMEOUT);
         
         std::string url = "https://" + info.ip_address + "/api/0/config";
         auto response = client.get(url);
