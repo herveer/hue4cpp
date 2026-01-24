@@ -26,21 +26,7 @@ Bridge::~Bridge() = default;
 Bridge::Bridge(Bridge&&) noexcept = default;
 Bridge& Bridge::operator=(Bridge&&) noexcept = default;
 
-std::vector<Bridge> Bridge::discover() {
-    // TODO: Implement discovery
-    // Will combine mDNS and N-UPnP methods
-    return {};
-}
-
-std::vector<Bridge> Bridge::discoverMDNS() {
-    // TODO: Implement mDNS discovery
-    return {};
-}
-
-std::vector<Bridge> Bridge::discoverNUPnP() {
-    // TODO: Implement N-UPnP discovery
-    return {};
-}
+// Discovery methods are implemented in discovery.cpp
 
 Result<std::string> Bridge::authenticate(const std::string& app_name,
                                          const std::string& device_name) {
@@ -74,9 +60,6 @@ StateManager& Bridge::getStateManager() {
     return *pImpl->state_manager;
 }
 
-bool Bridge::isReachable() const {
-    // TODO: Implement reachability check
-    return false;
-}
+// isReachable is implemented in discovery.cpp
 
 } // namespace hue4cpp
