@@ -52,7 +52,20 @@ bool verifyBridge(BridgeInfo& info) {
 // Implementation of discoverMDNS
 std::vector<Bridge> Bridge::discoverMDNS() {
     // TODO: mDNS discovery will be implemented in a future update
-    // For now, return empty vector
+    // 
+    // mDNS (Multicast DNS) is the preferred method for discovering Hue bridges
+    // on the local network. The Hue bridge advertises itself via the _hue._tcp
+    // service type, including TXT records with bridgeid and modelid.
+    //
+    // Implementation plan:
+    // 1. Integrate cross-platform mDNS library (e.g., mjansson/mdns)
+    // 2. Send DNS-SD query for "_hue._tcp.local"
+    // 3. Parse PTR, SRV, TXT, and A records from responses
+    // 4. Extract bridge ID, model ID, hostname, port, and IP address
+    // 5. Verify discovered bridges using GET /api/0/config
+    //
+    // For now, use discoverNUPnP() or manual bridge configuration as alternatives.
+    //
     return {};
 }
 

@@ -17,38 +17,39 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 
 ## Development Phases
 
-### Phase 1: Core Infrastructure 🚧 NEXT
+### Phase 1: Core Infrastructure 🚧 IN PROGRESS
 
 **Goal**: Establish the foundational components and build system
 
 **Tasks:**
-1. **HTTP Client Layer**
+1. **HTTP Client Layer** ✅
    - Implement HTTP request/response handling using cpr
    - Add support for HTTPS (required for Hue API V2)
    - Implement error handling and retry logic
    - Add request timeout configuration
 
-2. **JSON Handling**
+2. **JSON Handling** ✅
    - Create JSON serialization/deserialization utilities
    - Define data structures for API responses
    - Implement type-safe JSON parsing
 
-3. **Bridge Discovery**
-   - Implement mDNS/SSDP bridge discovery
-   - Add manual bridge IP configuration
-   - Implement bridge reachability check
-   - Add discovery result caching
+3. **Bridge Discovery** ⚠️ Partially Complete
+   - ~~Implement mDNS/SSDP bridge discovery~~ (mDNS postponed)
+   - ✅ Implement N-UPnP discovery
+   - ✅ Add manual bridge IP configuration
+   - ✅ Implement bridge reachability check
+   - Add discovery result caching (future enhancement)
 
-4. **Authentication**
+4. **Authentication** ⏳
    - Implement application key generation flow
    - Add secure key storage (OS keychain integration)
    - Implement authentication state management
 
 **Deliverables:**
-- Working bridge discovery
-- Authentication mechanism
-- Basic HTTP communication layer
-- Unit tests for all components
+- ✅ Working bridge discovery (N-UPnP)
+- ⏳ Authentication mechanism
+- ✅ Basic HTTP communication layer
+- ✅ Unit tests for all components
 
 **Estimated Completion**: 2-3 weeks
 
@@ -265,42 +266,44 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 
 ## Next Immediate Steps (PR Tasks)
 
-### PR #1: Core Infrastructure Setup ⬅️ **NEXT**
+### PR #1: Core Infrastructure Setup ✅ **COMPLETE**
 
 **Objective**: Set up HTTP client and JSON handling
 
 **Tasks:**
-- [ ] Implement HTTP client wrapper using cpr
-- [ ] Add HTTPS support and certificate validation
-- [ ] Create JSON parsing utilities
-- [ ] Implement error handling framework
-- [ ] Add logging framework (optional, for debugging)
-- [ ] Write unit tests for HTTP and JSON utilities
-- [ ] Create example: simple HTTP request to bridge
+- [x] Implement HTTP client wrapper using cpr
+- [x] Add HTTPS support and certificate validation
+- [x] Create JSON parsing utilities
+- [x] Implement error handling framework
+- [x] Add logging framework (optional, for debugging) - skipped for now
+- [x] Write unit tests for HTTP and JSON utilities
+- [x] Create example: simple HTTP request to bridge
 
 **Acceptance Criteria:**
-- Can make HTTPS requests to Hue bridge
-- Can parse JSON responses
-- Unit tests pass on all platforms
-- Example application demonstrates usage
+- Can make HTTPS requests to Hue bridge ✓
+- Can parse JSON responses ✓
+- Unit tests pass on all platforms ✓
+- Example application demonstrates usage ✓
 
 ---
 
-### PR #2: Bridge Discovery
+### PR #2: Bridge Discovery ⬅️ **CURRENT** (Partially Complete)
 
 **Objective**: Implement bridge discovery mechanism
 
 **Tasks:**
-- [ ] Implement mDNS discovery
-- [ ] Implement N-UPnP discovery (broker-based)
-- [ ] Add manual bridge configuration
-- [ ] Implement bridge reachability check
-- [ ] Write unit tests for discovery
-- [ ] Create example: discover and list bridges
+- [ ] Implement mDNS discovery (postponed - will implement in future update)
+- [x] Implement N-UPnP discovery (broker-based)
+- [x] Add manual bridge configuration (can pass BridgeInfo to constructor)
+- [x] Implement bridge reachability check
+- [x] Write unit tests for discovery
+- [x] Create example: discover and list bridges
+
+**Status**: N-UPnP discovery is fully functional. mDNS discovery stub is in place but not yet implemented (will require cross-platform mDNS library integration).
 
 ---
 
-### PR #3: Authentication
+### PR #3: Authentication ⬅️ **NEXT**
 
 **Objective**: Implement authentication flow
 
@@ -330,6 +333,6 @@ This roadmap is a living document. If you have suggestions for features, improve
 
 ---
 
-**Last Updated**: 2026-01-06  
-**Current Phase**: Phase 0 - Foundation ✅  
-**Next Phase**: Phase 1 - Core Infrastructure 🚧
+**Last Updated**: 2026-01-24  
+**Current Phase**: Phase 1 - Core Infrastructure 🚧  
+**Next Step**: Authentication implementation
