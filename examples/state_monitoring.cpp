@@ -47,7 +47,7 @@ void printEventInfo(const Event& event) {
     
     switch (event.type) {
         case EventType::LightStateChanged:
-            std::cout << "🔄 Light state changed: " << event.resource_id << "\n";
+            std::cout << "Light state changed: " << event.resource_id << "\n";
             if (!event.data.empty()) {
                 // Pretty print the light state (simplified)
                 std::cout << "   Data: " << event.data.substr(0, 100);
@@ -57,24 +57,24 @@ void printEventInfo(const Event& event) {
             break;
             
         case EventType::LightAdded:
-            std::cout << "➕ Light added: " << event.resource_id << "\n";
+            std::cout << "Light added: " << event.resource_id << "\n";
             break;
             
         case EventType::LightRemoved:
-            std::cout << "➖ Light removed: " << event.resource_id << "\n";
+            std::cout << "Light removed: " << event.resource_id << "\n";
             break;
             
         case EventType::BridgeConnected:
-            std::cout << "✅ Bridge connected\n";
+            std::cout << "Bridge connected\n";
             break;
             
         case EventType::BridgeDisconnected:
-            std::cout << "❌ Bridge disconnected\n";
+            std::cout << "Bridge disconnected\n";
             break;
             
         case EventType::Unknown:
         default:
-            std::cout << "❓ Unknown event\n";
+            std::cout << "Unknown event\n";
             break;
     }
 }
@@ -208,7 +208,7 @@ int main() {
         // Step 4: Set up state manager and register callbacks
         std::cout << "Setting up real-time state monitoring...\n";
         auto& state_manager = bridge.getStateManager();
-        
+		state_manager.setBridge(&bridge);
         // Register event callback
         auto callback_id = state_manager.registerCallback(printEventInfo);
         
