@@ -218,13 +218,114 @@ Result<void> Bridge::validateAuthentication() const {
 }
 
 std::vector<Light> Bridge::getLights() {
-    // TODO: Implement get lights
-    return {};
+    if (!isAuthenticated()) {
+        return {};
+    }
+    
+    if (pImpl->info.ip_address.empty()) {
+        return {};
+    }
+    
+    try {
+        HttpClient client;
+        client.setVerifySsl(false);
+        client.setTimeout(std::chrono::milliseconds(5000));
+        
+        std::string url = "https://" + pImpl->info.ip_address + "/clip/v2/resource/light";
+        
+        std::map<std::string, std::string> headers;
+        headers["hue-application-key"] = pImpl->auth_key;
+        
+        auto response = client.get(url, headers);
+        
+        if (!response.isSuccess()) {
+            return {};
+        }
+        
+        auto json_response = json_utils::parse(response.body);
+        
+        // Check if response contains errors
+        if (json_response.contains("errors") && json_response["errors"].is_array()) {
+            auto errors = json_response["errors"];
+            if (!errors.empty()) {
+                return {};
+            }
+        }
+        
+        // Extract lights from the data array
+        if (!json_response.contains("data") || !json_response["data"].is_array()) {
+            return {};
+        }
+        
+        std::vector<Light> lights;
+        auto data = json_response["data"];
+        
+        for (const auto& light_data : data) {
+            std::string id = json_utils::getValueOr<std::string>(light_data, "id", "");
+            if (!id.empty()) {
+                Light light(id, this);
+                // Parse and set light properties from JSON
+                light.updateFromJson(light_data);
+                lights.push_back(std::move(light));
+            }
+        }
+        
+        return lights;
+        
+    } catch (const std::exception&) {
+        return {};
+    }
 }
 
 std::optional<Light> Bridge::getLight(const std::string& light_id) {
-    // TODO: Implement get light
-    return std::nullopt;
+    if (!isAuthenticated() || pImpl->info.ip_address.empty() || light_id.empty()) {
+        return std::nullopt;
+    }
+    
+    try {
+        HttpClient client;
+        client.setVerifySsl(false);
+        client.setTimeout(std::chrono::milliseconds(5000));
+        
+        std::string url = "https://" + pImpl->info.ip_address + 
+                         "/clip/v2/resource/light/" + light_id;
+        
+        std::map<std::string, std::string> headers;
+        headers["hue-application-key"] = pImpl->auth_key;
+        
+        auto response = client.get(url, headers);
+        
+        if (!response.isSuccess()) {
+            return std::nullopt;
+        }
+        
+        auto json_response = json_utils::parse(response.body);
+        
+        // Check if response contains errors
+        if (json_response.contains("errors") && json_response["errors"].is_array()) {
+            auto errors = json_response["errors"];
+            if (!errors.empty()) {
+                return std::nullopt;
+            }
+        }
+        
+        // Extract light from the data array
+        if (!json_response.contains("data") || !json_response["data"].is_array()) {
+            return std::nullopt;
+        }
+        
+        auto data = json_response["data"];
+        if (data.empty()) {
+            return std::nullopt;
+        }
+        
+        Light light(light_id, this);
+        light.updateFromJson(data[0]);
+        return light;
+        
+    } catch (const std::exception&) {
+        return std::nullopt;
+    }
 }
 
 const BridgeInfo& Bridge::getInfo() const {

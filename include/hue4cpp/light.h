@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include <nlohmann/json.hpp>
 #include <string>
 #include <optional>
 #include <memory>
@@ -170,9 +171,18 @@ public:
      */
     Result<void> refresh();
     
+    /**
+     * @brief Update light state from JSON data
+     * @param json JSON object containing light data from API
+     * @note This is an internal method used by Bridge to populate light data
+     */
+    void updateFromJson(const nlohmann::json& json);
+    
 private:
     class Impl;
     std::unique_ptr<Impl> pImpl;
+    
+    friend class Bridge;
 };
 
 } // namespace hue4cpp

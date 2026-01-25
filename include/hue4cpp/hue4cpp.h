@@ -14,6 +14,7 @@
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/light.h"
 #include "hue4cpp/state.h"
+#include "hue4cpp/color_utils.h"
 
 /**
  * @namespace hue4cpp
