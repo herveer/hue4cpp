@@ -139,6 +139,7 @@ namespace hue4cpp {
 					ctx->host_to_ip[owner_name] = ip;
 					auto& svc = ctx->services[owner_name];
 					svc.ip_address = ip;
+					svc.is_ipv6 = false;
 				}
 			}
 
@@ -151,6 +152,9 @@ namespace hue4cpp {
 					char ip[INET6_ADDRSTRLEN];
 					inet_ntop(AF_INET6, &addr.sin6_addr, ip, sizeof(ip));
 					ctx->host_to_ip[owner_name] = ip;
+					auto& svc = ctx->services[owner_name];
+					svc.ip_address = ip;
+					svc.is_ipv6 = true;
 				}
 			}
 
