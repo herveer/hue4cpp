@@ -162,7 +162,12 @@ int main() {
     std::cout << std::endl;
     
     // Step 5: Save the authentication key
-    std::string auth_key = auth_result.value.value();
+    if (!auth_result.hasValue()) {
+        std::cerr << "✗ Authentication succeeded but no key returned!" << std::endl;
+        return 1;
+    }
+    
+    std::string auth_key = *auth_result.value;
     std::cout << "Step 5: Saving authentication key" << std::endl;
     std::cout << "  Key: " << auth_key << std::endl;
     
