@@ -50,9 +50,7 @@ void printEventInfo(const Event& event) {
             std::cout << "Light state changed: " << event.resource_id << "\n";
             if (!event.data.empty()) {
                 // Pretty print the light state (simplified)
-                std::cout << "   Data: " << event.data.substr(0, 100);
-                if (event.data.length() > 100) std::cout << "...";
-                std::cout << "\n";
+                std::cout << "   Data: " << event.data << std::endl;
             }
             break;
             
