@@ -8,9 +8,10 @@ A modern, lightweight C++ library providing a developer-friendly interface to th
 
 ## Features
 
-- ✨ **Light Control**: Control individual lights (on/off, brightness, color)
-- 🔍 **Automatic Bridge Discovery**: Find Hue bridges on your network automatically
-- 🔄 **Real-time State Updates**: Keep internal state synchronized via Server-Sent Events (SSE)
+- 🔍 **Automatic Bridge Discovery**: Find Hue bridges on your network automatically (mDNS and N-UPnP)
+- 🔐 **Secure Authentication**: Interactive authentication flow with key storage
+- ✨ **Light Control**: Control individual lights (on/off, brightness, color) *(in progress)*
+- 🔄 **Real-time State Updates**: Keep internal state synchronized via Server-Sent Events (SSE) *(planned)*
 - 🎨 **Capability-aware**: Automatically adapts to device capabilities
 - 🚀 **Lightweight**: Minimal dependencies, fast and efficient
 - 🔧 **Cross-platform**: Works on Windows, Linux, and macOS
