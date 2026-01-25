@@ -27,6 +27,7 @@ target_include_directories(hue4cpp
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
+        ${MDNS_INCLUDE_DIRS}
 )
 
 # Link dependencies
@@ -35,6 +36,10 @@ target_link_libraries(hue4cpp
         cpr::cpr
         nlohmann_json::nlohmann_json
 )
+
+if (WIN32)
+    target_link_libraries(hue4cpp PUBLIC ws2_32)
+endif()
 
 # Compiler warnings
 if(MSVC)
