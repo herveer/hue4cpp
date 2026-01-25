@@ -161,7 +161,7 @@ namespace hue4cpp {
 
 
 		if (!pImpl->bridge) {
-			std::cout << "Bridge pointer is null in isOn()" << std::endl;
+			// No bridge - cannot get state, return false
 			return false;
 		}
 
@@ -236,7 +236,7 @@ namespace hue4cpp {
 			};
 
 		if (!pImpl->bridge) {
-			std::cout << "Bridge pointer is null in getBrightness()" << std::endl;
+			// No bridge - cannot get state
 			return std::nullopt;
 		}
 
@@ -300,7 +300,7 @@ namespace hue4cpp {
 
 		// Ask bridge for light state (cache-first, API-fallback)
 		if (!pImpl->bridge) {
-			std::cout << "Bridge pointer is null in getColor()" << std::endl;
+			// No bridge - cannot get state
 			return std::nullopt;
 		}
 
@@ -373,7 +373,7 @@ namespace hue4cpp {
 			};
 
 		if(!pImpl->bridge) {
-			std::cout << "Bridge pointer is null in getColorTemperature()" << std::endl;
+			// No bridge - cannot get state
 			return std::nullopt;
 		}
 

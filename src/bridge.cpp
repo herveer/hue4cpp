@@ -40,7 +40,12 @@ namespace hue4cpp {
 
 	Bridge::Bridge(const BridgeInfo& info) : pImpl(std::make_unique<Impl>(info, this)) {}
 
-	Bridge::~Bridge() = default;
+	Bridge::~Bridge() {
+		// Stop SSE connection when bridge is destroyed
+		if (pImpl && pImpl->state_manager && pImpl->state_manager->isRunning()) {
+			pImpl->state_manager->stop();
+		}
+	}
 
 	Bridge::Bridge(Bridge&&) noexcept = default;
 	Bridge& Bridge::operator=(Bridge&&) noexcept = default;
@@ -105,6 +110,7 @@ namespace hue4cpp {
 					if (success.contains("username")) {
 						std::string username = success["username"].get<std::string>();
 						pImpl->auth_key = username;
+						// Note: SSE connection must be manually started via getStateManager().start()
 						return Result<std::string>(username);
 					}
 				}
@@ -155,6 +161,7 @@ namespace hue4cpp {
 
 	void Bridge::setAuthenticationKey(const std::string& key) {
 		pImpl->auth_key = key;
+		// Note: SSE connection must be manually started via getStateManager().start()
 	}
 
 	std::string Bridge::getAuthenticationKey() const {

@@ -119,10 +119,14 @@ namespace hue4cpp {
 		// Set up connection state callback
 		pImpl->sse_client->onConnectionChange([this](bool connected) {
 			if (connected) {
+				// Clear cache on reconnection to get fresh state
+				clearCache();
 				Event event(EventType::BridgeConnected, "", "");
 				pImpl->notifyCallbacks(event);
 			}
 			else {
+				// Clear cache on disconnection
+				clearCache();
 				Event event(EventType::BridgeDisconnected, "", "");
 				pImpl->notifyCallbacks(event);
 			}
@@ -270,6 +274,11 @@ namespace hue4cpp {
 
 	void StateManager::setBridge(Bridge* bridge) {
 		pImpl->bridge = bridge;
+	}
+
+	void StateManager::clearCache() {
+		std::lock_guard<std::mutex> lock(pImpl->state_mutex);
+		pImpl->resource_states.clear();
 	}
 
 } // namespace hue4cpp

@@ -134,6 +134,11 @@ namespace hue4cpp {
 		 */
 		void setBridge(Bridge* bridge);
 
+		/**
+		 * @brief Clear all cached resource states
+		 */
+		void clearCache();
+
 	private:
 		class Impl;
 		std::unique_ptr<Impl> pImpl;
