@@ -142,7 +142,7 @@ public:
                 
                 std::function<bool(std::string_view, intptr_t)> write_callback = 
                     [&](std::string_view data, intptr_t) -> bool {
-                    buffer += data;
+                    buffer.append(data.data(), data.size());
                     
                     // Process complete lines
                     size_t newline_pos;
