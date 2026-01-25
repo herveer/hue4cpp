@@ -26,13 +26,105 @@ TEST_CASE("Bridge construction", "[bridge]") {
 TEST_CASE("Bridge authentication", "[bridge]") {
     Bridge bridge;
     
+    SECTION("Not authenticated by default") {
+        REQUIRE_FALSE(bridge.isAuthenticated());
+        REQUIRE(bridge.getAuthenticationKey().empty());
+    }
+    
     SECTION("Set authentication key") {
         bridge.setAuthenticationKey("test-key-12345");
         REQUIRE(bridge.isAuthenticated());
+        REQUIRE(bridge.getAuthenticationKey() == "test-key-12345");
     }
     
-    SECTION("Not authenticated by default") {
+    SECTION("Get authentication key after setting") {
+        std::string test_key = "my-app-key-67890";
+        bridge.setAuthenticationKey(test_key);
+        REQUIRE(bridge.getAuthenticationKey() == test_key);
+    }
+    
+    SECTION("Clear authentication key") {
+        bridge.setAuthenticationKey("test-key");
+        REQUIRE(bridge.isAuthenticated());
+        
+        bridge.setAuthenticationKey("");
         REQUIRE_FALSE(bridge.isAuthenticated());
+        REQUIRE(bridge.getAuthenticationKey().empty());
+    }
+}
+
+TEST_CASE("Bridge authentication flow", "[bridge][auth]") {
+    SECTION("Authenticate without IP address fails") {
+        Bridge bridge;
+        auto result = bridge.authenticate("TestApp", "TestDevice");
+        
+        REQUIRE_FALSE(result.isSuccess());
+        REQUIRE(result.error == ErrorCode::InvalidParameter);
+    }
+    
+    SECTION("Authenticate with empty app name fails") {
+        BridgeInfo info;
+        info.ip_address = "192.168.1.100";
+        Bridge bridge(info);
+        
+        auto result = bridge.authenticate("", "TestDevice");
+        
+        REQUIRE_FALSE(result.isSuccess());
+        REQUIRE(result.error == ErrorCode::InvalidParameter);
+    }
+    
+    SECTION("Authenticate constructs devicetype correctly") {
+        // This is a unit test - we can't actually test against a real bridge
+        // but we verify the parameters are validated correctly
+        BridgeInfo info;
+        info.ip_address = "192.168.1.100";
+        Bridge bridge(info);
+        
+        // This will fail because there's no actual bridge, but it tests parameter handling
+        auto result = bridge.authenticate("MyApp");
+        REQUIRE_FALSE(result.isSuccess());
+        // Could be network error or timeout (no real bridge to connect to)
+        REQUIRE((result.error == ErrorCode::NetworkError || 
+                 result.error == ErrorCode::TimeoutError ||
+                 result.error == ErrorCode::AuthenticationFailed));
+    }
+}
+
+TEST_CASE("Bridge authentication validation", "[bridge][auth]") {
+    SECTION("Validate without authentication key fails") {
+        BridgeInfo info;
+        info.ip_address = "192.168.1.100";
+        Bridge bridge(info);
+        
+        auto result = bridge.validateAuthentication();
+        
+        REQUIRE_FALSE(result.isSuccess());
+        REQUIRE(result.error == ErrorCode::AuthenticationRequired);
+    }
+    
+    SECTION("Validate without IP address fails") {
+        Bridge bridge;
+        bridge.setAuthenticationKey("test-key");
+        
+        auto result = bridge.validateAuthentication();
+        
+        REQUIRE_FALSE(result.isSuccess());
+        REQUIRE(result.error == ErrorCode::InvalidParameter);
+    }
+    
+    SECTION("Validate with key and IP attempts connection") {
+        // This will fail because there's no actual bridge, but it tests the flow
+        BridgeInfo info;
+        info.ip_address = "192.168.1.100";
+        Bridge bridge(info);
+        bridge.setAuthenticationKey("test-key-12345");
+        
+        auto result = bridge.validateAuthentication();
+        
+        // Should get network error or authentication failed (no real bridge)
+        REQUIRE_FALSE(result.isSuccess());
+        REQUIRE((result.error == ErrorCode::NetworkError || 
+                 result.error == ErrorCode::AuthenticationFailed));
     }
 }
 

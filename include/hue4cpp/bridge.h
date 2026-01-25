@@ -80,10 +80,22 @@ public:
     void setAuthenticationKey(const std::string& key);
     
     /**
+     * @brief Get the current authentication key
+     * @return The authentication key, or empty string if not authenticated
+     */
+    std::string getAuthenticationKey() const;
+    
+    /**
      * @brief Check if bridge is authenticated
      * @return true if authenticated, false otherwise
      */
     bool isAuthenticated() const;
+    
+    /**
+     * @brief Validate the current authentication key with the bridge
+     * @return Result indicating if the key is valid
+     */
+    Result<void> validateAuthentication() const;
     
     /**
      * @brief Get all lights connected to this bridge

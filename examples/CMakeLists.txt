@@ -16,6 +16,14 @@ set_target_properties(discovery PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+# Authentication example
+add_executable(authentication authentication.cpp)
+target_link_libraries(authentication PRIVATE hue4cpp)
+set_target_properties(authentication PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
 # HTTP request example
 add_executable(http_request_example http_request_example.cpp)
 target_link_libraries(http_request_example PRIVATE hue4cpp)
@@ -23,4 +31,3 @@ set_target_properties(http_request_example PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
-

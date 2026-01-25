@@ -89,3 +89,9 @@ doxygen_warnings.txt
 *.tmp
 /tmp/
 _codeql_detected_source_root
+
+################################################################################
+# Authentication keys and secrets
+################################################################################
+hue_auth_key.txt
+*.key
