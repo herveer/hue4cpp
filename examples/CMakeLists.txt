@@ -8,6 +8,14 @@ set_target_properties(basic_control PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+# Color control example
+add_executable(color_control color_control.cpp)
+target_link_libraries(color_control PRIVATE hue4cpp)
+set_target_properties(color_control PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
 # Discovery example
 add_executable(discovery discovery.cpp)
 target_link_libraries(discovery PRIVATE hue4cpp)

@@ -10,9 +10,20 @@ A modern, lightweight C++ library providing a developer-friendly interface to th
 
 - 🔍 **Automatic Bridge Discovery**: Find Hue bridges on your network automatically (mDNS and N-UPnP)
 - 🔐 **Secure Authentication**: Interactive authentication flow with key storage
-- ✨ **Light Control**: Control individual lights (on/off, brightness, color) *(in progress)*
+- ✨ **Comprehensive Light Control**: Complete control of individual lights
+  - Power: On/off with smooth transitions
+  - Brightness: 0-100% dimming control
+  - Color: RGB/XY color space with automatic conversion
+  - Color Temperature: Kelvin/mireds support (2000K-6500K)
+  - Preset Colors: Built-in color palette
+  - Effects: Alert/notification patterns
+- 🎨 **Advanced Color Support**: 
+  - RGB ↔ XY color space conversion
+  - HSV ↔ RGB color conversion
+  - 17+ preset colors (Red, Blue, WarmWhite, etc.)
+  - Custom color temperature presets
 - 🔄 **Real-time State Updates**: Keep internal state synchronized via Server-Sent Events (SSE) *(planned)*
-- 🎨 **Capability-aware**: Automatically adapts to device capabilities
+- 🔧 **Capability-aware**: Automatically detects and adapts to device capabilities
 - 🚀 **Lightweight**: Minimal dependencies, fast and efficient
 - 🔧 **Cross-platform**: Works on Windows, Linux, and macOS
 - 📦 **Easy Integration**: CMake build system with vcpkg dependency management
@@ -78,8 +89,10 @@ All dependencies are managed via vcpkg:
 #include <hue4cpp/hue4cpp.h>
 
 int main() {
+    using namespace hue4cpp;
+    
     // Discover bridges on the network
-    auto bridges = hue4cpp::Bridge::discover();
+    auto bridges = Bridge::discover();
     
     if (bridges.empty()) {
         std::cerr << "No bridges found!" << std::endl;
@@ -88,22 +101,46 @@ int main() {
     
     // Connect to the first bridge
     auto& bridge = bridges[0];
-    bridge.authenticate("your-app-name");
+    
+    // Authenticate with the bridge (press the button first!)
+    auto auth_result = bridge.authenticate("your-app-name");
+    if (!auth_result.isSuccess()) {
+        std::cerr << "Authentication failed!" << std::endl;
+        return 1;
+    }
     
     // Get all lights
     auto lights = bridge.getLights();
     
-    // Turn on the first light and set it to blue
+    // Control the first light
     if (!lights.empty()) {
         auto& light = lights[0];
-        light.turnOn();
-        light.setBrightness(100);
-        light.setColor(0.0f, 0.0f, 255.0f);  // RGB
+        
+        // Turn on with smooth transition
+        light.turnOn(std::chrono::milliseconds(1000));
+        
+        // Set brightness to 75%
+        light.setBrightness(75);
+        
+        // Set color using RGB
+        light.setColor(colors::Blue);  // Use preset color
+        // Or use custom RGB values
+        light.setColor(RGBColor(255, 0, 128));
+        
+        // Set color temperature (warm white)
+        auto temp = ColorTemperature::fromKelvin(2700);
+        light.setColorTemperature(temp);
     }
     
     return 0;
 }
 ```
+
+For more examples, see the `examples/` directory:
+- `basic_control.cpp` - Basic light control operations
+- `color_control.cpp` - Advanced color control and effects
+- `discovery.cpp` - Bridge discovery
+- `authentication.cpp` - Authentication flow
 
 ## Building
 
@@ -159,22 +196,35 @@ hue4cpp/
 │       ├── hue4cpp.h       # Main header
 │       ├── bridge.h        # Bridge discovery and connection
 │       ├── light.h         # Light control
+│       ├── color_utils.h   # Color conversion utilities
 │       ├── state.h         # State management
-│       └── types.h         # Common types
+│       ├── types.h         # Common types
+│       ├── http_client.h   # HTTP client wrapper
+│       ├── json_utils.h    # JSON utilities
+│       └── exceptions.h    # Exception types
 ├── src/                    # Implementation files
 │   ├── CMakeLists.txt
 │   ├── bridge.cpp
 │   ├── light.cpp
-│   └── state.cpp
+│   ├── color_utils.cpp
+│   ├── state.cpp
+│   ├── http_client.cpp
+│   ├── json_utils.cpp
+│   └── discovery.cpp
 ├── tests/                  # Unit tests
 │   ├── CMakeLists.txt
 │   ├── bridge_tests.cpp
 │   ├── light_tests.cpp
-│   └── state_tests.cpp
+│   ├── color_utils_tests.cpp
+│   ├── state_tests.cpp
+│   ├── http_client_tests.cpp
+│   └── json_utils_tests.cpp
 ├── examples/               # Example applications
 │   ├── CMakeLists.txt
 │   ├── basic_control.cpp
-│   └── discovery.cpp
+│   ├── color_control.cpp
+│   ├── discovery.cpp
+│   └── authentication.cpp
 └── doc/                    # Documentation
     └── hueApiV2/           # API V2 documentation
 ```
