@@ -350,11 +350,13 @@ namespace hue4cpp {
 		return *pImpl->state_manager;
 	}
 
-	std::string Bridge::getLightState(const std::string& light_id) {
+	std::string Bridge::getLightState(const std::string& light_id, bool refreshCache) {
 		// First, check StateManager cache
-		std::string cached_state = pImpl->state_manager->getResourceState(light_id);
-		if (!cached_state.empty()) {
-			return cached_state;
+		if (!refreshCache) {
+			std::string cached_state = pImpl->state_manager->getResourceState(light_id);
+			if (!cached_state.empty()) {
+				return cached_state;
+			}
 		}
 
 		// Cache miss - fetch from bridge API
