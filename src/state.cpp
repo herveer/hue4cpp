@@ -133,6 +133,12 @@ bool StateManager::isRunning() const {
 uint64_t StateManager::registerCallback(EventCallback callback) {
     std::lock_guard<std::mutex> lock(pImpl->callback_mutex);
     uint64_t id = pImpl->next_callback_id++;
+    
+    // Handle overflow (unlikely but defensive)
+    if (pImpl->next_callback_id == 0) {
+        pImpl->next_callback_id = 1;
+    }
+    
     pImpl->callbacks[id] = callback;
     return id;
 }
