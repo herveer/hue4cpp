@@ -160,10 +160,9 @@ public:
     
     /**
      * @brief Trigger alert effect (light blinks)
-     * @param long_alert If true, use long alert; otherwise short alert
      * @return Result indicating success or failure
      */
-    Result<void> alert(bool long_alert = false);
+    Result<void> alert();
     
     /**
      * @brief Refresh light state from bridge
