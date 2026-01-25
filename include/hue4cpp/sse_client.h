@@ -87,7 +87,7 @@ public:
      * @param max_delay Maximum delay between reconnect attempts
      */
     void setReconnection(bool enabled, 
-                        std::chrono::seconds initial_delay = std::chrono::seconds(1),
+                        std::chrono::seconds initial_delay = std::chrono::seconds(0),
                         std::chrono::seconds max_delay = std::chrono::seconds(60));
     
     /**

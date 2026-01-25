@@ -40,10 +40,10 @@ public:
     
     Impl(const std::string& endpoint_url)
         : url(endpoint_url)
-        , timeout(30)
+        , timeout(std::chrono::minutes(5))
         , verify_ssl(false)  // Hue bridges use self-signed certs
         , reconnection_enabled(true)
-        , reconnect_initial_delay(1)
+        , reconnect_initial_delay(0)
         , reconnect_max_delay(60)
         , connected(false)
         , should_run(false)
@@ -205,6 +205,7 @@ public:
                 std::this_thread::sleep_for(current_retry_delay);
                 
                 // Exponential backoff
+                if (current_retry_delay == std::chrono::seconds(0)) current_retry_delay = std::chrono::seconds(1);
                 current_retry_delay = (std::min)(current_retry_delay * RECONNECT_BACKOFF_MULTIPLIER, reconnect_max_delay);
             }
         }
