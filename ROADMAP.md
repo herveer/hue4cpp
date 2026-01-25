@@ -34,11 +34,10 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
    - Implement type-safe JSON parsing
 
 3. **Bridge Discovery** ⚠️ Partially Complete
-   - ~~Implement mDNS/SSDP bridge discovery~~ (mDNS postponed)
+   - Implement mDNS/SSDP bridge discovery
    - ✅ Implement N-UPnP discovery
    - ✅ Add manual bridge IP configuration
    - ✅ Implement bridge reachability check
-   - Add discovery result caching (future enhancement)
 
 4. **Authentication** ⏳
    - Implement application key generation flow
@@ -46,7 +45,7 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
    - Implement authentication state management
 
 **Deliverables:**
-- ✅ Working bridge discovery (N-UPnP)
+- ✅ Working bridge discovery (N-UPnP & mDns)
 - ⏳ Authentication mechanism
 - ✅ Basic HTTP communication layer
 - ✅ Unit tests for all components
