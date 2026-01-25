@@ -1,5 +1,6 @@
 #include "hue4cpp/light.h"
 #include "hue4cpp/bridge.h"
+#include "hue4cpp/state.h"
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/color_utils.h"
@@ -141,6 +142,27 @@ LightCapabilities Light::getCapabilities() const {
 }
 
 bool Light::isOn() const {
+    // Try to get state from StateManager cache first
+    if (pImpl->bridge) {
+        auto& state_manager = pImpl->bridge->getStateManager();
+        auto cached_state = state_manager.getLightState(pImpl->id);
+        
+        if (!cached_state.empty()) {
+            try {
+                auto state_json = json_utils::parse(cached_state);
+                if (state_json.contains("on") && state_json["on"].is_object()) {
+                    auto on_obj = state_json["on"];
+                    if (on_obj.contains("on") && on_obj["on"].is_boolean()) {
+                        return on_obj["on"].template get<bool>();
+                    }
+                }
+            } catch (...) {
+                // Fall through to return cached value
+            }
+        }
+    }
+    
+    // Fall back to locally cached value
     return pImpl->is_on;
 }
 
@@ -187,6 +209,28 @@ Result<void> Light::toggle(TransitionTime transition) {
 }
 
 std::optional<uint8_t> Light::getBrightness() const {
+    // Try to get state from StateManager cache first
+    if (pImpl->bridge) {
+        auto& state_manager = pImpl->bridge->getStateManager();
+        auto cached_state = state_manager.getLightState(pImpl->id);
+        
+        if (!cached_state.empty()) {
+            try {
+                auto state_json = json_utils::parse(cached_state);
+                if (state_json.contains("dimming") && state_json["dimming"].is_object()) {
+                    auto dimming = state_json["dimming"];
+                    if (dimming.contains("brightness") && dimming["brightness"].is_number()) {
+                        double brightness_val = dimming["brightness"].template get<double>();
+                        return static_cast<uint8_t>(std::round(brightness_val));
+                    }
+                }
+            } catch (...) {
+                // Fall through to return cached value
+            }
+        }
+    }
+    
+    // Fall back to locally cached value
     return pImpl->brightness;
 }
 
@@ -213,6 +257,34 @@ Result<void> Light::setBrightness(uint8_t brightness, TransitionTime transition)
 }
 
 std::optional<XYColor> Light::getColor() const {
+    // Try to get state from StateManager cache first
+    if (pImpl->bridge) {
+        auto& state_manager = pImpl->bridge->getStateManager();
+        auto cached_state = state_manager.getLightState(pImpl->id);
+        
+        if (!cached_state.empty()) {
+            try {
+                auto state_json = json_utils::parse(cached_state);
+                if (state_json.contains("color") && state_json["color"].is_object()) {
+                    auto color_obj = state_json["color"];
+                    if (color_obj.contains("xy") && color_obj["xy"].is_object()) {
+                        auto xy = color_obj["xy"];
+                        if (xy.contains("x") && xy.contains("y") && 
+                            xy["x"].is_number() && xy["y"].is_number()) {
+                            XYColor color;
+                            color.x = static_cast<float>(xy["x"].template get<double>());
+                            color.y = static_cast<float>(xy["y"].template get<double>());
+                            return color;
+                        }
+                    }
+                }
+            } catch (...) {
+                // Fall through to return cached value
+            }
+        }
+    }
+    
+    // Fall back to locally cached value
     return pImpl->color;
 }
 
@@ -255,6 +327,29 @@ Result<void> Light::setColor(float r, float g, float b, TransitionTime transitio
 }
 
 std::optional<ColorTemperature> Light::getColorTemperature() const {
+    // Try to get state from StateManager cache first
+    if (pImpl->bridge) {
+        auto& state_manager = pImpl->bridge->getStateManager();
+        auto cached_state = state_manager.getLightState(pImpl->id);
+        
+        if (!cached_state.empty()) {
+            try {
+                auto state_json = json_utils::parse(cached_state);
+                if (state_json.contains("color_temperature") && 
+                    state_json["color_temperature"].is_object()) {
+                    auto ct_obj = state_json["color_temperature"];
+                    if (ct_obj.contains("mirek") && ct_obj["mirek"].is_number()) {
+                        uint16_t mirek = static_cast<uint16_t>(ct_obj["mirek"].template get<int>());
+                        return ColorTemperature(mirek);
+                    }
+                }
+            } catch (...) {
+                // Fall through to return cached value
+            }
+        }
+    }
+    
+    // Fall back to locally cached value
     return pImpl->color_temp;
 }
 
