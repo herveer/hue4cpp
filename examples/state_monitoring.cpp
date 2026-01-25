@@ -11,6 +11,9 @@
 
 #include <hue4cpp/hue4cpp.h>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <iomanip>
 #include <chrono>
 #include <thread>
@@ -76,6 +79,59 @@ void printEventInfo(const Event& event) {
     }
 }
 
+
+// Simple file-based key storage for demonstration
+// In production, use OS keychain integration for better security
+const std::string KEY_FILE = "hue_auth_key.txt";
+
+/**
+ * @brief Save authentication key to a file
+ */
+bool saveAuthKey(const std::string& bridge_id, const std::string& key) {
+    try {
+        std::ofstream file(KEY_FILE);
+        if (!file.is_open()) {
+            return false;
+        }
+        file << bridge_id << std::endl;
+        file << key << std::endl;
+        file.close();
+        return true;
+    }
+    catch (...) {
+        return false;
+    }
+}
+
+/**
+ * @brief Load authentication key from a file
+ */
+std::string loadAuthKey(const std::string& bridge_id) {
+    try {
+        std::ifstream file(KEY_FILE);
+        if (!file.is_open()) {
+            return "";
+        }
+
+        std::string saved_bridge_id;
+        std::string key;
+
+        std::getline(file, saved_bridge_id);
+        std::getline(file, key);
+        file.close();
+
+        // Check if the key is for the same bridge
+        if (saved_bridge_id == bridge_id) {
+            return key;
+        }
+
+        return "";
+    }
+    catch (...) {
+        return "";
+    }
+}
+
 int main() {
     // Set up signal handler for graceful shutdown
     signal(SIGINT, signalHandler);
@@ -87,7 +143,7 @@ int main() {
     
     try {
         // Step 1: Discover bridges
-        std::cout << "🔍 Discovering bridges...\n";
+        std::cout << "Discovering bridges...\n";
         auto bridges = Bridge::discover();
         
         if (bridges.empty()) {
@@ -95,54 +151,76 @@ int main() {
             return 1;
         }
         
-        std::cout << "✅ Found " << bridges.size() << " bridge(s)\n";
+        std::cout << "Found " << bridges.size() << " bridge(s)\n";
         auto& bridge = bridges[0];
         const auto& info = bridge.getInfo();
         std::cout << "   Bridge: " << info.name << " (" << info.ip_address << ")\n\n";
         
-        // Step 2: Check authentication
-        std::cout << "🔑 Checking authentication...\n";
+        // Authenticate if needed
         if (!bridge.isAuthenticated()) {
-            std::cout << "   Not authenticated. Starting authentication flow...\n";
-            std::cout << "   Please press the link button on your bridge now...\n";
-            
-            auto auth_result = bridge.authenticate("hue4cpp-state-monitor", "example-device");
-            if (!auth_result) {
-                std::cout << "❌ Authentication failed: " << auth_result.error_message << "\n";
-                return 1;
+
+            // Try to load saved authentication key
+            std::cout << "\nChecking for saved authentication key..." << std::endl;
+            std::string saved_key = loadAuthKey(info.id);
+            if (!saved_key.empty()) {
+                std::cout << "Found saved authentication key!" << std::endl;
+                bridge.setAuthenticationKey(saved_key);
+                std::cout << "Validating key with bridge..." << std::endl;
+                auto validation_result = bridge.validateAuthentication();
+                if (validation_result.isSuccess()) {
+                    std::cout << "Saved key is valid!" << std::endl;
+                }
             }
-            
-            std::cout << "✅ Authentication successful!\n";
-            std::cout << "   Key: " << auth_result.value.value() << "\n\n";
-        } else {
-            std::cout << "✅ Already authenticated\n\n";
+            // If still not authenticated, perform authentication
+            if (!bridge.isAuthenticated()) {
+                std::cout << "\nPlease press the button on your Hue bridge..." << std::endl;
+                std::cout << "Press Enter when ready...";
+                std::cin.get();
+
+                auto auth_result = bridge.authenticate("hue4cpp-color-example", "computer");
+                if (!auth_result.isSuccess()) {
+                    std::cerr << "Authentication failed: " << auth_result.error_message << std::endl;
+                    return 1;
+                }
+
+                std::cout << "Authentication successful!" << std::endl;
+                // Save the new key
+                if (auth_result.hasValue()) {
+                    std::string auth_key = auth_result.value.value();
+                    if (saveAuthKey(info.id, auth_key)) {
+                        std::cout << "Authentication key saved." << std::endl;
+                    }
+                }
+            }
+
         }
+
         
         // Step 3: Get available lights
-        std::cout << "💡 Fetching lights...\n";
+        std::cout << "Fetching lights...\n";
         auto lights = bridge.getLights();
-        std::cout << "✅ Found " << lights.size() << " light(s)\n";
+        std::cout << "Found " << lights.size() << " light(s)\n";
         for (const auto& light : lights) {
             std::cout << "   - " << light.getName() << " (" << light.getId() << ")\n";
         }
         std::cout << "\n";
         
         // Step 4: Set up state manager and register callbacks
-        std::cout << "📡 Setting up real-time state monitoring...\n";
+        std::cout << "Setting up real-time state monitoring...\n";
         auto& state_manager = bridge.getStateManager();
         
         // Register event callback
         auto callback_id = state_manager.registerCallback(printEventInfo);
         
         // Step 5: Start monitoring
-        std::cout << "▶️  Starting SSE connection...\n";
+        std::cout << "Starting SSE connection...\n";
         auto start_result = state_manager.start();
         if (!start_result) {
-            std::cout << "❌ Failed to start state manager: " << start_result.error_message << "\n";
+            std::cout << "Failed to start state manager: " << start_result.error_message << "\n";
             return 1;
         }
         
-        std::cout << "✅ State monitoring active!\n\n";
+        std::cout << "State monitoring active!\n\n";
         std::cout << "===========================================\n";
         std::cout << "  Monitoring light events... (Ctrl+C to stop)\n";
         std::cout << "  Try changing lights via the Hue app!\n";
@@ -154,17 +232,17 @@ int main() {
         }
         
         // Step 7: Clean shutdown
-        std::cout << "\n🛑 Stopping state monitoring...\n";
+        std::cout << "\nStopping state monitoring...\n";
         state_manager.stop();
         state_manager.unregisterCallback(callback_id);
         
-        std::cout << "✅ Shutdown complete.\n";
+        std::cout << "Shutdown complete.\n";
         
     } catch (const HueException& e) {
-        std::cout << "❌ Hue error: " << e.what() << "\n";
+        std::cout << "Hue error: " << e.what() << "\n";
         return 1;
     } catch (const std::exception& e) {
-        std::cout << "❌ Error: " << e.what() << "\n";
+        std::cout << "Error: " << e.what() << "\n";
         return 1;
     }
     
