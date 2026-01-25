@@ -155,25 +155,50 @@ TEST_CASE("StateManager event processing", "[state]") {
     SECTION("Process light removed event") {
         EventType received_type = EventType::Unknown;
         
+        // First add a light
+        nlohmann::json add_event = nlohmann::json::array();
+        nlohmann::json add_item = {
+            {"type", "add"},
+            {"data", nlohmann::json::array({
+                {
+                    {"id", "light-to-remove"},
+                    {"type", "light"},
+                    {"on", {{"on", true}}}
+                }
+            })}
+        };
+        add_event.push_back(add_item);
+        state_manager.updateFromEvent(add_event.dump());
+        
+        // Verify it's in the cache
+        auto state_before = state_manager.getLightState("light-to-remove");
+        REQUIRE_FALSE(state_before.empty());
+        
+        // Register callback to capture remove event
         state_manager.registerCallback([&](const Event& event) {
             received_type = event.type;
         });
         
-        nlohmann::json event_json = nlohmann::json::array();
-        nlohmann::json event_item = {
+        // Now delete the light
+        nlohmann::json delete_event = nlohmann::json::array();
+        nlohmann::json delete_item = {
             {"type", "delete"},
             {"data", nlohmann::json::array({
                 {
-                    {"id", "light-removed"},
+                    {"id", "light-to-remove"},
                     {"type", "light"}
                 }
             })}
         };
-        event_json.push_back(event_item);
+        delete_event.push_back(delete_item);
         
-        state_manager.updateFromEvent(event_json.dump());
+        state_manager.updateFromEvent(delete_event.dump());
         
         REQUIRE(received_type == EventType::LightRemoved);
+        
+        // Verify it's removed from the cache
+        auto state_after = state_manager.getLightState("light-to-remove");
+        REQUIRE(state_after.empty());
     }
     
     SECTION("Handle invalid JSON gracefully") {

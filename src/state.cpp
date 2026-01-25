@@ -200,7 +200,13 @@ void StateManager::updateFromEvent(const std::string& event_json) {
                     // Update internal state cache
                     {
                         std::lock_guard<std::mutex> lock(pImpl->state_mutex);
-                        pImpl->light_states[resource_id] = resource.dump();
+                        if (event_type == "delete") {
+                            // Remove from cache on delete
+                            pImpl->light_states.erase(resource_id);
+                        } else {
+                            // Add or update cache for add/update events
+                            pImpl->light_states[resource_id] = resource.dump();
+                        }
                     }
                     
                     // Determine event type
