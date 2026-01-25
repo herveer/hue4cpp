@@ -9,10 +9,145 @@
 #include "hue4cpp/exceptions.h"
 #include <set>
 #include <chrono>
+#include <map>
+#include <vector>
+#include <cstring>
+
+// mDNS library for service discovery
+extern "C" {
+#include <mdns.h>
+}
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/select.h>
+#endif
 
 namespace hue4cpp {
 
 namespace {
+
+// Structure to hold discovered bridge information during mDNS scan
+struct DiscoveredBridge {
+    std::string ip_address;
+    std::string id;
+    std::string hostname;
+    uint16_t port = 443;  // Default HTTPS port
+};
+
+// User data structure for mDNS callback
+struct MDNSUserData {
+    std::map<std::string, DiscoveredBridge> bridges;  // Map by bridge ID to avoid duplicates
+    char name_buffer[256];
+    char txt_buffer[256];
+};
+
+// mDNS callback function to process discovered services
+int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
+                  mdns_entry_type_t entry, uint16_t query_id, uint16_t rtype,
+                  uint16_t rclass, uint32_t ttl, const void* data, size_t size,
+                  size_t name_offset, size_t name_length, size_t record_offset,
+                  size_t record_length, void* user_data) {
+    (void)sock;
+    (void)query_id;
+    (void)rclass;
+    (void)ttl;
+    
+    if (!user_data) {
+        return 0;
+    }
+    
+    MDNSUserData* mdns_data = static_cast<MDNSUserData*>(user_data);
+    
+    // We're only interested in answer records
+    if (entry != MDNS_ENTRYTYPE_ANSWER) {
+        return 0;
+    }
+    
+    // Handle different record types
+    if (rtype == MDNS_RECORDTYPE_PTR) {
+        // PTR record points to a service instance
+        mdns_string_t name = mdns_record_parse_ptr(data, size, record_offset, record_length,
+                                                     mdns_data->name_buffer, sizeof(mdns_data->name_buffer));
+        // Store for later processing - we'll get more info from SRV and A records
+        (void)name; // Name will be used in subsequent SRV queries
+    }
+    else if (rtype == MDNS_RECORDTYPE_SRV) {
+        // SRV record contains hostname and port
+        mdns_record_srv_t srv = mdns_record_parse_srv(data, size, record_offset, record_length,
+                                                        mdns_data->name_buffer, sizeof(mdns_data->name_buffer));
+        // We need to extract bridge info from hostname or wait for TXT records
+        (void)srv; // Will be used with A records
+    }
+    else if (rtype == MDNS_RECORDTYPE_A) {
+        // A record contains IPv4 address
+        struct sockaddr_in addr;
+        if (mdns_record_parse_a(data, size, record_offset, record_length, &addr)) {
+            char ip_str[INET_ADDRSTRLEN];
+            inet_ntop(AF_INET, &addr.sin_addr, ip_str, INET_ADDRSTRLEN);
+            
+            // Create a temporary bridge entry (will be updated with TXT record data)
+            DiscoveredBridge bridge;
+            bridge.ip_address = ip_str;
+            // We'll set the ID from TXT records if available
+            // For now, use IP as a temporary key
+            mdns_data->bridges[ip_str] = bridge;
+        }
+    }
+    else if (rtype == MDNS_RECORDTYPE_AAAA) {
+        // AAAA record contains IPv6 address
+        struct sockaddr_in6 addr;
+        if (mdns_record_parse_aaaa(data, size, record_offset, record_length, &addr)) {
+            char ip_str[INET6_ADDRSTRLEN];
+            inet_ntop(AF_INET6, &addr.sin6_addr, ip_str, INET6_ADDRSTRLEN);
+            
+            // For now, we prefer IPv4 for Hue bridges
+            // But store IPv6 as fallback
+            DiscoveredBridge bridge;
+            bridge.ip_address = std::string("[") + ip_str + "]";  // IPv6 format for URLs
+            mdns_data->bridges[ip_str] = bridge;
+        }
+    }
+    else if (rtype == MDNS_RECORDTYPE_TXT) {
+        // TXT records contain bridge metadata like bridgeid and modelid
+        mdns_record_txt_t txt_records[16];
+        size_t txt_count = mdns_record_parse_txt(data, size, record_offset, record_length,
+                                                   txt_records, sizeof(txt_records) / sizeof(mdns_record_txt_t));
+        
+        // Extract bridge ID from TXT records
+        std::string bridge_id;
+        for (size_t i = 0; i < txt_count; ++i) {
+            std::string key(txt_records[i].key.str, txt_records[i].key.length);
+            std::string value(txt_records[i].value.str, txt_records[i].value.length);
+            
+            if (key == "bridgeid") {
+                bridge_id = value;
+                break;
+            }
+        }
+        
+        // Update existing bridge entries with the bridge ID
+        if (!bridge_id.empty() && !mdns_data->bridges.empty()) {
+            // Get the most recent bridge entry and update its ID
+            auto it = mdns_data->bridges.rbegin();
+            if (it != mdns_data->bridges.rend() && it->second.id.empty()) {
+                it->second.id = bridge_id;
+                // Re-key the map entry by bridge ID instead of IP
+                DiscoveredBridge bridge = it->second;
+                std::string old_key = it->first;
+                mdns_data->bridges.erase(old_key);
+                mdns_data->bridges[bridge_id] = bridge;
+            }
+        }
+    }
+    
+    return 0;  // Continue processing
+}
 
 // Constants for discovery timeouts
 constexpr std::chrono::milliseconds BRIDGE_VERIFY_TIMEOUT{5000};  // 5 seconds for verification
@@ -55,22 +190,83 @@ bool verifyBridge(BridgeInfo& info) {
 
 // Implementation of discoverMDNS
 std::vector<Bridge> Bridge::discoverMDNS() {
-    // TODO: mDNS discovery will be implemented in a future update
-    // 
-    // mDNS (Multicast DNS) is the preferred method for discovering Hue bridges
-    // on the local network. The Hue bridge advertises itself via the _hue._tcp
-    // service type, including TXT records with bridgeid and modelid.
-    //
-    // Implementation plan:
-    // 1. Integrate cross-platform mDNS library (e.g., mjansson/mdns)
-    // 2. Send DNS-SD query for "_hue._tcp.local"
-    // 3. Parse PTR, SRV, TXT, and A records from responses
-    // 4. Extract bridge ID, model ID, hostname, port, and IP address
-    // 5. Verify discovered bridges using GET /api/0/config
-    //
-    // For now, use discoverNUPnP() or manual bridge configuration as alternatives.
-    //
-    return {};
+    std::vector<Bridge> result;
+    
+    // Open mDNS socket for IPv4
+    int sock = mdns_socket_open_ipv4(nullptr);
+    if (sock < 0) {
+        // Failed to open socket, return empty result
+        return result;
+    }
+    
+    // Prepare query for Hue service
+    const char* service_name = "_hue._tcp.local";
+    size_t service_name_length = strlen(service_name);
+    
+    // Buffer for mDNS packets (must be 32-bit aligned)
+    alignas(4) char buffer[2048];
+    
+    // Send mDNS query for Hue bridges
+    int query_result = mdns_query_send(sock, MDNS_RECORDTYPE_PTR, 
+                                        service_name, service_name_length,
+                                        buffer, sizeof(buffer), 0);
+    
+    if (query_result < 0) {
+        mdns_socket_close(sock);
+        return result;
+    }
+    
+    // Wait for responses (with timeout)
+    MDNSUserData user_data;
+    
+    // Set up select for timeout
+    fd_set readfs;
+    FD_ZERO(&readfs);
+    FD_SET(sock, &readfs);
+    
+    struct timeval timeout;
+    timeout.tv_sec = 2;  // 2 second timeout
+    timeout.tv_usec = 0;
+    
+    int nfds = sock + 1;
+    int select_result = select(nfds, &readfs, nullptr, nullptr, &timeout);
+    
+    if (select_result > 0) {
+        // Receive responses
+        mdns_query_recv(sock, buffer, sizeof(buffer), mdns_callback, &user_data, 0);
+        
+        // Give it a bit more time to receive all responses
+        timeout.tv_sec = 0;
+        timeout.tv_usec = 500000;  // 500ms
+        select_result = select(nfds, &readfs, nullptr, nullptr, &timeout);
+        if (select_result > 0) {
+            mdns_query_recv(sock, buffer, sizeof(buffer), mdns_callback, &user_data, 0);
+        }
+    }
+    
+    // Close the socket
+    mdns_socket_close(sock);
+    
+    // Convert discovered bridges to Bridge objects
+    for (const auto& entry : user_data.bridges) {
+        const DiscoveredBridge& discovered = entry.second;
+        
+        // Skip if we don't have an IP address
+        if (discovered.ip_address.empty()) {
+            continue;
+        }
+        
+        BridgeInfo info;
+        info.ip_address = discovered.ip_address;
+        info.id = discovered.id;
+        
+        // Verify the bridge and get additional information
+        if (verifyBridge(info)) {
+            result.emplace_back(info);
+        }
+    }
+    
+    return result;
 }
 
 // Implementation of discoverNUPnP

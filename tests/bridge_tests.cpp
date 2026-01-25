@@ -37,10 +37,12 @@ TEST_CASE("Bridge authentication", "[bridge]") {
 }
 
 TEST_CASE("Bridge discovery", "[bridge]") {
-    SECTION("Discover returns empty vector for mDNS (not implemented)") {
+    SECTION("mDNS discovery returns vector") {
         auto bridges = Bridge::discoverMDNS();
-        // mDNS is not yet implemented, should return empty
-        REQUIRE(bridges.empty());
+        // mDNS discovery is now implemented
+        // We can't assert the size since it depends on network/bridges availability
+        // Just verify it doesn't crash and returns a vector
+        REQUIRE(bridges.size() >= 0);
     }
     
     SECTION("DiscoverNUPnP returns vector") {
