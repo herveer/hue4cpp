@@ -37,6 +37,10 @@ target_link_libraries(hue4cpp
         nlohmann_json::nlohmann_json
 )
 
+if (WIN32)
+    target_link_libraries(hue4cpp PUBLIC ws2_32)
+endif()
+
 # Compiler warnings
 if(MSVC)
     target_compile_options(hue4cpp PRIVATE /W4)
