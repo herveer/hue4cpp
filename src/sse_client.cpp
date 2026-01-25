@@ -140,7 +140,8 @@ public:
                 std::string buffer;
                 SSEEvent current_event;
                 
-                auto write_callback = [&](std::string data, intptr_t) -> bool {
+                std::function<bool(std::string_view, intptr_t)> write_callback = 
+                    [&](std::string_view data, intptr_t) -> bool {
                     buffer += data;
                     
                     // Process complete lines
@@ -214,8 +215,17 @@ SSEClient::~SSEClient() {
     disconnect();
 }
 
-SSEClient::SSEClient(SSEClient&&) noexcept = default;
-SSEClient& SSEClient::operator=(SSEClient&&) noexcept = default;
+SSEClient::SSEClient(SSEClient&& other) noexcept : pImpl(std::move(other.pImpl)) {
+    // pImpl is moved, other.pImpl is now nullptr
+}
+
+SSEClient& SSEClient::operator=(SSEClient&& other) noexcept {
+    if (this != &other) {
+        disconnect(); // Clean up our own resources first
+        pImpl = std::move(other.pImpl);
+    }
+    return *this;
+}
 
 void SSEClient::setAuthHeader(const std::string& header_name, const std::string& header_value) {
     pImpl->auth_header_name = header_name;
@@ -260,12 +270,14 @@ Result<void> SSEClient::connect() {
 }
 
 void SSEClient::disconnect() {
-    pImpl->stopConnection();
-    pImpl->connected = false;
+    if (pImpl) {
+        pImpl->stopConnection();
+        pImpl->connected = false;
+    }
 }
 
 bool SSEClient::isConnected() const {
-    return pImpl->connected;
+    return pImpl && pImpl->connected;
 }
 
 } // namespace hue4cpp
