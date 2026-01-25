@@ -199,7 +199,10 @@ namespace hue4cpp {
 
 				// Process each resource in the event
 				for (const auto& resource : data_array) {
+					EventType evt_type = EventType::Unknown;
 					if (!resource.contains("id") || !resource.contains("type")) {
+						Event event(evt_type, "", resource.dump());
+						pImpl->notifyCallbacks(event);
 						continue;
 					}
 
@@ -222,7 +225,7 @@ namespace hue4cpp {
 						}
 
 						// Determine event type
-						EventType evt_type = EventType::LightStateChanged;
+						evt_type = EventType::LightStateChanged;
 						if (event_type == "add") {
 							evt_type = EventType::LightAdded;
 						}
@@ -231,10 +234,11 @@ namespace hue4cpp {
 						}
 
 						// Notify callbacks
-						Event event(evt_type, resource_id, resource.dump());
-						pImpl->notifyCallbacks(event);
 					}
-					// Can add more resource types here (rooms, zones, scenes, etc.)
+					// TODO: Add more resource types here (buttons, rooms, zones, scenes, etc.)
+					Event event(evt_type, resource_id, resource.dump());
+					pImpl->notifyCallbacks(event);
+
 				}
 			}
 		}
@@ -246,6 +250,5 @@ namespace hue4cpp {
 	void StateManager::setBridge(Bridge* bridge) {
 		pImpl->bridge = bridge;
 	}
-
 
 } // namespace hue4cpp
