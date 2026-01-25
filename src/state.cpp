@@ -256,15 +256,15 @@ namespace hue4cpp {
 
 						// Notify callbacks with current state
 						std::string current_state = getResourceState(resource_id);
-						Event event(evt_type, resource_id, current_state);
+						Event event(evt_type, resource_id, resource.dump());
 						pImpl->notifyCallbacks(event);
 					}
 					// TODO: Add more resource types here (buttons, rooms, zones, scenes, etc.)
 				}
 			}
 		}
-		catch (const std::exception&) {
-			// Ignore JSON parsing errors
+		catch (const std::exception& e) {
+			std::cout << "StateManager::updateFromEvent: Failed to parse event JSON " << e.what() << std::endl;
 		}
 	}
 
