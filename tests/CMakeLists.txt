@@ -11,6 +11,7 @@ set(TEST_SOURCES
     json_utils_tests.cpp
     exceptions_tests.cpp
     color_utils_tests.cpp
+    sse_client_tests.cpp
 )
 
 # Create test executable
