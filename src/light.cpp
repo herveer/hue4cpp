@@ -285,10 +285,10 @@ Result<void> Light::setColorTemperature(const ColorTemperature& temperature,
     return result;
 }
 
-Result<void> Light::alert(bool long_alert) {
+Result<void> Light::alert() {
     nlohmann::json update;
     update["alert"] = {
-        {"action", long_alert ? "breathe" : "select"}
+        {"action", "breathe"}
     };
     
     return pImpl->sendUpdate(update);

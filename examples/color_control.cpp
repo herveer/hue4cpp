@@ -83,6 +83,37 @@ void printColorNames() {
 	std::cout << std::endl;
 }
 
+void demonstrateBrightnessControl(Light& light) {
+	std::cout << "\n=== Demonstrating Brightness Control ===" << std::endl;
+	// Turn on the light first
+	light.turnOn();
+	std::this_thread::sleep_for(500ms);
+	// Gradually increase brightness from 0% to 100%
+	std::cout << "Increasing brightness from 0% to 100%..." << std::endl;
+	for (uint8_t b = 0; b <= 100; b += 10) {
+		light.setBrightness(b, 500ms);
+		std::this_thread::sleep_for(1s);
+	}
+	// Gradually decrease brightness from 100% to 0%
+	std::cout << "Decreasing brightness from 100% to 0%..." << std::endl;
+	for (int b = 100; b >= 0; b -= 10) {
+		light.setBrightness(static_cast<uint8_t>(b), 500ms);
+		std::this_thread::sleep_for(1s);
+	}
+}
+
+void demonstrateAlertEffect(Light& light) {
+	std::cout << "\n=== Demonstrating Alert Effect ===" << std::endl;
+	// Turn on the light first
+	light.turnOn();
+	std::this_thread::sleep_for(500ms);
+	// Trigger alert effect
+	std::cout << "Triggering select alert effect (blink)..." << std::endl;
+	light.alert();
+	std::this_thread::sleep_for(3s);
+	light.turnOff();
+}
+
 void demonstratePresetColors(Light& light) {
 	std::cout << "\n=== Demonstrating Preset Colors ===" << std::endl;
 
@@ -380,6 +411,8 @@ int main() {
 
 	// Run demonstrations
 	try {
+		demonstrateAlertEffect(*color_light);
+		demonstrateBrightnessControl(*color_light);
 		demonstratePresetColors(*color_light);
 		demonstrateColorTemperature(*color_light);
 		demonstrateHSVColors(*color_light);
