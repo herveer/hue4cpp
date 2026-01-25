@@ -1,9 +1,11 @@
 #include "hue4cpp/light.h"
 #include "hue4cpp/bridge.h"
+#include "hue4cpp/http_client.h"
+#include "hue4cpp/json_utils.h"
+#include "hue4cpp/color_utils.h"
+#include <cmath>
 
 namespace hue4cpp {
-
-// Light::Impl definition
 class Light::Impl {
 public:
     std::string id;
@@ -30,6 +32,65 @@ public:
         capabilities.color = false;
         capabilities.color_temperature = false;
         capabilities.effects = false;
+    }
+    
+    // Helper to send a PUT request to update light state
+    Result<void> sendUpdate(const nlohmann::json& state_update) {
+        if (!bridge || !bridge->isAuthenticated()) {
+            return Result<void>(ErrorCode::AuthenticationRequired, 
+                "Bridge not authenticated");
+        }
+        
+        const auto& bridge_info = bridge->getInfo();
+        if (bridge_info.ip_address.empty() || id.empty()) {
+            return Result<void>(ErrorCode::InvalidParameter, 
+                "Bridge IP or light ID not set");
+        }
+        
+        try {
+            HttpClient client;
+            client.setVerifySsl(false);
+            client.setTimeout(std::chrono::milliseconds(5000));
+            
+            std::string url = "https://" + bridge_info.ip_address + 
+                             "/clip/v2/resource/light/" + id;
+            
+            std::map<std::string, std::string> headers;
+            headers["hue-application-key"] = bridge->getAuthenticationKey();
+            
+            std::string body = json_utils::toString(state_update);
+            auto response = client.put(url, body, headers);
+            
+            if (!response.isSuccess()) {
+                if (response.status_code == 401 || response.status_code == 403) {
+                    return Result<void>(ErrorCode::AuthenticationFailed, 
+                        "Authentication failed");
+                }
+                return Result<void>(ErrorCode::NetworkError, 
+                    "HTTP request failed: " + response.error_message);
+            }
+            
+            // Parse response to check for errors
+            auto json_response = json_utils::parse(response.body);
+            
+            if (json_response.contains("errors") && json_response["errors"].is_array()) {
+                auto errors = json_response["errors"];
+                if (!errors.empty()) {
+                    std::string error_desc = json_utils::getValueOr<std::string>(
+                        errors[0], "description", "Unknown error");
+                    return Result<void>(ErrorCode::InvalidRequest, error_desc);
+                }
+            }
+            
+            return Result<void>();
+            
+        } catch (const JsonParseException& e) {
+            return Result<void>(ErrorCode::InvalidRequest, 
+                std::string("JSON error: ") + e.what());
+        } catch (const std::exception& e) {
+            return Result<void>(ErrorCode::UnknownError, 
+                std::string("Error: ") + e.what());
+        }
     }
 };
 
@@ -70,18 +131,55 @@ bool Light::isOn() const {
 }
 
 Result<void> Light::turnOn(TransitionTime transition) {
-    // TODO: Implement turn on
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    if (!pImpl->capabilities.on_off) {
+        return Result<void>(ErrorCode::InvalidRequest, 
+            "Light does not support on/off control");
+    }
+    
+    nlohmann::json update;
+    update["on"] = {{"on", true}};
+    
+    // Add transition time in deciseconds (API uses 1/10 second units)
+    if (transition.count() > 0) {
+        int deciseconds = static_cast<int>(transition.count() / 100);
+        update["dynamics"] = {{"duration", deciseconds * 100}};  // Convert back to milliseconds
+    }
+    
+    auto result = pImpl->sendUpdate(update);
+    if (result.isSuccess()) {
+        pImpl->is_on = true;
+    }
+    return result;
 }
 
 Result<void> Light::turnOff(TransitionTime transition) {
-    // TODO: Implement turn off
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    if (!pImpl->capabilities.on_off) {
+        return Result<void>(ErrorCode::InvalidRequest, 
+            "Light does not support on/off control");
+    }
+    
+    nlohmann::json update;
+    update["on"] = {{"on", false}};
+    
+    // Add transition time in deciseconds (API uses 1/10 second units)
+    if (transition.count() > 0) {
+        int deciseconds = static_cast<int>(transition.count() / 100);
+        update["dynamics"] = {{"duration", deciseconds * 100}};
+    }
+    
+    auto result = pImpl->sendUpdate(update);
+    if (result.isSuccess()) {
+        pImpl->is_on = false;
+    }
+    return result;
 }
 
 Result<void> Light::toggle(TransitionTime transition) {
-    // TODO: Implement toggle
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    if (pImpl->is_on) {
+        return turnOff(transition);
+    } else {
+        return turnOn(transition);
+    }
 }
 
 std::optional<uint8_t> Light::getBrightness() const {
@@ -89,8 +187,30 @@ std::optional<uint8_t> Light::getBrightness() const {
 }
 
 Result<void> Light::setBrightness(uint8_t brightness, TransitionTime transition) {
-    // TODO: Implement set brightness
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    if (!pImpl->capabilities.brightness) {
+        return Result<void>(ErrorCode::InvalidRequest, 
+            "Light does not support brightness control");
+    }
+    
+    if (brightness > 100) {
+        return Result<void>(ErrorCode::InvalidParameter, 
+            "Brightness must be between 0 and 100");
+    }
+    
+    nlohmann::json update;
+    // Hue API uses 0-100 for brightness in V2 API
+    update["dimming"] = {{"brightness", static_cast<double>(brightness)}};
+    
+    if (transition.count() > 0) {
+        int deciseconds = static_cast<int>(transition.count() / 100);
+        update["dynamics"] = {{"duration", deciseconds * 100}};
+    }
+    
+    auto result = pImpl->sendUpdate(update);
+    if (result.isSuccess()) {
+        pImpl->brightness = brightness;
+    }
+    return result;
 }
 
 std::optional<XYColor> Light::getColor() const {
@@ -98,13 +218,41 @@ std::optional<XYColor> Light::getColor() const {
 }
 
 Result<void> Light::setColor(const XYColor& color, TransitionTime transition) {
-    // TODO: Implement set color (XY)
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    if (!pImpl->capabilities.color) {
+        return Result<void>(ErrorCode::InvalidRequest, 
+            "Light does not support color control");
+    }
+    
+    // Validate XY values (should be between 0 and 1)
+    if (color.x < 0.0f || color.x > 1.0f || color.y < 0.0f || color.y > 1.0f) {
+        return Result<void>(ErrorCode::InvalidParameter, 
+            "XY color values must be between 0.0 and 1.0");
+    }
+    
+    nlohmann::json update;
+    update["color"] = {
+        {"xy", {
+            {"x", static_cast<double>(color.x)},
+            {"y", static_cast<double>(color.y)}
+        }}
+    };
+    
+    if (transition.count() > 0) {
+        int deciseconds = static_cast<int>(transition.count() / 100);
+        update["dynamics"] = {{"duration", deciseconds * 100}};
+    }
+    
+    auto result = pImpl->sendUpdate(update);
+    if (result.isSuccess()) {
+        pImpl->color = color;
+    }
+    return result;
 }
 
 Result<void> Light::setColor(const RGBColor& color, TransitionTime transition) {
-    // TODO: Implement RGB to XY conversion and set color
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    // Convert RGB to XY using the color_utils function
+    XYColor xy = color_utils::rgbToXy(color);
+    return setColor(xy, transition);
 }
 
 Result<void> Light::setColor(float r, float g, float b, TransitionTime transition) {
@@ -117,18 +265,119 @@ std::optional<ColorTemperature> Light::getColorTemperature() const {
 
 Result<void> Light::setColorTemperature(const ColorTemperature& temperature,
                                         TransitionTime transition) {
-    // TODO: Implement set color temperature
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    if (!pImpl->capabilities.color_temperature) {
+        return Result<void>(ErrorCode::InvalidRequest, 
+            "Light does not support color temperature control");
+    }
+    
+    // Validate mireds value (typically 153-500 for Hue lights)
+    if (temperature.mireds < 153 || temperature.mireds > 500) {
+        return Result<void>(ErrorCode::InvalidParameter, 
+            "Color temperature must be between 153 and 500 mireds");
+    }
+    
+    nlohmann::json update;
+    update["color_temperature"] = {
+        {"mirek", static_cast<int>(temperature.mireds)}
+    };
+    
+    if (transition.count() > 0) {
+        int deciseconds = static_cast<int>(transition.count() / 100);
+        update["dynamics"] = {{"duration", deciseconds * 100}};
+    }
+    
+    auto result = pImpl->sendUpdate(update);
+    if (result.isSuccess()) {
+        pImpl->color_temp = temperature;
+    }
+    return result;
 }
 
 Result<void> Light::alert(bool long_alert) {
-    // TODO: Implement alert
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    nlohmann::json update;
+    update["alert"] = {
+        {"action", long_alert ? "breathe" : "select"}
+    };
+    
+    return pImpl->sendUpdate(update);
 }
 
 Result<void> Light::refresh() {
-    // TODO: Implement refresh from bridge
-    return Result<void>(ErrorCode::UnknownError, "Not implemented");
+    if (!pImpl->bridge || !pImpl->bridge->isAuthenticated()) {
+        return Result<void>(ErrorCode::AuthenticationRequired, 
+            "Bridge not authenticated");
+    }
+    
+    auto light_opt = pImpl->bridge->getLight(pImpl->id);
+    if (!light_opt.has_value()) {
+        return Result<void>(ErrorCode::ResourceNotFound, 
+            "Failed to refresh light state");
+    }
+    
+    // Copy the refreshed state
+    *pImpl = *light_opt->pImpl;
+    return Result<void>();
+}
+
+void Light::updateFromJson(const nlohmann::json& json) {
+    // Extract basic properties
+    pImpl->id = json_utils::getValueOr<std::string>(json, "id", pImpl->id);
+    
+    // Extract metadata
+    if (json.contains("metadata") && json["metadata"].is_object()) {
+        auto metadata = json["metadata"];
+        pImpl->name = json_utils::getValueOr<std::string>(metadata, "name", "");
+    }
+    
+    // Extract on/off state
+    if (json.contains("on") && json["on"].is_object()) {
+        auto on = json["on"];
+        pImpl->is_on = json_utils::getValueOr<bool>(on, "on", false);
+    }
+    
+    // Extract brightness (dimming)
+    if (json.contains("dimming") && json["dimming"].is_object()) {
+        auto dimming = json["dimming"];
+        auto brightness_val = json_utils::getValue<double>(dimming, "brightness");
+        if (brightness_val.has_value()) {
+            pImpl->brightness = static_cast<uint8_t>(brightness_val.value());
+            pImpl->capabilities.brightness = true;
+        }
+    }
+    
+    // Extract color (XY)
+    if (json.contains("color") && json["color"].is_object()) {
+        auto color = json["color"];
+        if (color.contains("xy") && color["xy"].is_object()) {
+            auto xy = color["xy"];
+            auto x = json_utils::getValue<double>(xy, "x");
+            auto y = json_utils::getValue<double>(xy, "y");
+            if (x.has_value() && y.has_value()) {
+                pImpl->color = XYColor(static_cast<float>(x.value()), 
+                                      static_cast<float>(y.value()));
+                pImpl->capabilities.color = true;
+            }
+        }
+    }
+    
+    // Extract color temperature
+    if (json.contains("color_temperature") && json["color_temperature"].is_object()) {
+        auto color_temp = json["color_temperature"];
+        auto mirek = json_utils::getValue<int>(color_temp, "mirek");
+        if (mirek.has_value()) {
+            pImpl->color_temp = ColorTemperature(static_cast<uint16_t>(mirek.value()));
+            pImpl->capabilities.color_temperature = true;
+        }
+    }
+    
+    // Determine capabilities from what's present in the light data
+    // On/off is always available
+    pImpl->capabilities.on_off = true;
+    
+    // Effects capability (check if effects key exists)
+    if (json.contains("effects")) {
+        pImpl->capabilities.effects = true;
+    }
 }
 
 } // namespace hue4cpp

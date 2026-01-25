@@ -6,6 +6,7 @@ set(HUE4CPP_SOURCES
     http_client.cpp
     json_utils.cpp
     discovery.cpp
+    color_utils.cpp
 )
 
 # Create the library
