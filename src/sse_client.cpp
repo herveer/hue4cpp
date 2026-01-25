@@ -205,7 +205,7 @@ public:
                 std::this_thread::sleep_for(current_retry_delay);
                 
                 // Exponential backoff
-                current_retry_delay = std::min(current_retry_delay * RECONNECT_BACKOFF_MULTIPLIER, reconnect_max_delay);
+                current_retry_delay = (std::min)(current_retry_delay * RECONNECT_BACKOFF_MULTIPLIER, reconnect_max_delay);
             }
         }
     }
