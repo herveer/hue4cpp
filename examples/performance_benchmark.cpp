@@ -130,7 +130,7 @@ void benchmarkStateCache() {
     
     // Benchmark cache lookup
     auto time = measureTime([&]() {
-        auto state = state_manager.getLightState("light-50");
+        auto state = state_manager.getResourceState("light-50");
     }, 100000);
     
     std::cout << "Cache lookup time: " << std::fixed << std::setprecision(3) 

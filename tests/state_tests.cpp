@@ -61,7 +61,7 @@ TEST_CASE("StateManager light state", "[state]") {
     StateManager state_manager;
     
     SECTION("Get non-existent light state") {
-        auto state = state_manager.getLightState("non-existent-id");
+        auto state = state_manager.getResourceState("non-existent-id");
         REQUIRE(state.empty());
     }
     
@@ -83,7 +83,7 @@ TEST_CASE("StateManager light state", "[state]") {
         
         state_manager.updateFromEvent(event_json.dump());
         
-        auto state = state_manager.getLightState("light-123");
+        auto state = state_manager.getResourceState("light-123");
         REQUIRE_FALSE(state.empty());
         
         // Verify the state contains expected data
@@ -171,7 +171,7 @@ TEST_CASE("StateManager event processing", "[state]") {
         state_manager.updateFromEvent(add_event.dump());
         
         // Verify it's in the cache
-        auto state_before = state_manager.getLightState("light-to-remove");
+        auto state_before = state_manager.getResourceState("light-to-remove");
         REQUIRE_FALSE(state_before.empty());
         
         // Register callback to capture remove event
@@ -197,7 +197,7 @@ TEST_CASE("StateManager event processing", "[state]") {
         REQUIRE(received_type == EventType::LightRemoved);
         
         // Verify it's removed from the cache
-        auto state_after = state_manager.getLightState("light-to-remove");
+        auto state_after = state_manager.getResourceState("light-to-remove");
         REQUIRE(state_after.empty());
     }
     
