@@ -18,9 +18,9 @@ namespace hue4cpp {
 		std::atomic<bool> running;
 		std::unique_ptr<SSEClient> sse_client;
 
-		// Thread-safe state management
+		// Thread-safe state management - generic for all resource types
 		std::mutex state_mutex;
-		std::map<std::string, std::string> light_states; // light_id -> JSON state
+		std::map<std::string, std::string> resource_states; // resource_id -> JSON state
 
 		// Thread-safe callback management
 		std::mutex callback_mutex;
@@ -43,6 +43,27 @@ namespace hue4cpp {
 						// Ignore exceptions from user callbacks
 					}
 				}
+			}
+		}
+
+		// Merge JSON delta into existing state
+		void mergeResourceState(const std::string& resource_id, const nlohmann::json& delta) {
+			std::lock_guard<std::mutex> lock(state_mutex);
+			
+			auto it = resource_states.find(resource_id);
+			if (it != resource_states.end()) {
+				// Existing state - merge delta
+				try {
+					auto existing = nlohmann::json::parse(it->second);
+					existing.merge_patch(delta);
+					it->second = existing.dump();
+				} catch (...) {
+					// If parse fails, replace with delta
+					resource_states[resource_id] = delta.dump();
+				}
+			} else {
+				// No existing state - store delta as initial state
+				resource_states[resource_id] = delta.dump();
 			}
 		}
 	};
@@ -153,13 +174,18 @@ namespace hue4cpp {
 		pImpl->callbacks.erase(callback_id);
 	}
 
-	std::string StateManager::getLightState(const std::string& light_id) const {
+	std::string StateManager::getResourceState(const std::string& resource_id) const {
 		std::lock_guard<std::mutex> lock(pImpl->state_mutex);
-		auto it = pImpl->light_states.find(light_id);
-		if (it != pImpl->light_states.end()) {
+		auto it = pImpl->resource_states.find(resource_id);
+		if (it != pImpl->resource_states.end()) {
 			return it->second;
 		}
 		return "";
+	}
+
+	void StateManager::setResourceState(const std::string& resource_id, const std::string& state_json) {
+		std::lock_guard<std::mutex> lock(pImpl->state_mutex);
+		pImpl->resource_states[resource_id] = state_json;
 	}
 
 	void StateManager::updateFromEvent(const std::string& event_json) {
@@ -208,17 +234,15 @@ namespace hue4cpp {
 
 					// Handle light state updates
 					if (resource_type == "light") {
-						// Update internal state cache
-						{
+						// Update internal state cache with delta merge
+						if (event_type == "delete") {
+							// Remove from cache on delete
 							std::lock_guard<std::mutex> lock(pImpl->state_mutex);
-							if (event_type == "delete") {
-								// Remove from cache on delete
-								pImpl->light_states.erase(resource_id);
-							}
-							else {
-								// Add or update cache for add/update events
-								pImpl->light_states[resource_id] = resource.dump();
-							}
+							pImpl->resource_states.erase(resource_id);
+						}
+						else {
+							// Merge delta into existing state for add/update events
+							pImpl->mergeResourceState(resource_id, resource);
 						}
 
 						// Determine event type
@@ -230,8 +254,9 @@ namespace hue4cpp {
 							evt_type = EventType::LightRemoved;
 						}
 
-						// Notify callbacks
-						Event event(evt_type, resource_id, resource.dump());
+						// Notify callbacks with current state
+						std::string current_state = getResourceState(resource_id);
+						Event event(evt_type, resource_id, current_state);
 						pImpl->notifyCallbacks(event);
 					}
 					// TODO: Add more resource types here (buttons, rooms, zones, scenes, etc.)
