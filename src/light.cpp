@@ -6,6 +6,12 @@
 #include <cmath>
 
 namespace hue4cpp {
+
+namespace {
+    // Color temperature limits for Hue lights (in mireds)
+    constexpr uint16_t MIN_MIREDS = 153;  // ~6500K (cool white)
+    constexpr uint16_t MAX_MIREDS = 500;  // ~2000K (warm white)
+}
 class Light::Impl {
 public:
     std::string id;
@@ -92,6 +98,14 @@ public:
                 std::string("Error: ") + e.what());
         }
     }
+    
+    // Helper to add transition time to update JSON
+    void addTransitionTime(nlohmann::json& update, TransitionTime transition) {
+        if (transition.count() > 0) {
+            // Hue API V2 uses milliseconds for duration
+            update["dynamics"] = {{"duration", static_cast<int>(transition.count())}};
+        }
+    }
 };
 
 // Light implementation
@@ -138,12 +152,7 @@ Result<void> Light::turnOn(TransitionTime transition) {
     
     nlohmann::json update;
     update["on"] = {{"on", true}};
-    
-    // Add transition time in deciseconds (API uses 1/10 second units)
-    if (transition.count() > 0) {
-        int deciseconds = static_cast<int>(transition.count() / 100);
-        update["dynamics"] = {{"duration", deciseconds * 100}};  // Convert back to milliseconds
-    }
+    pImpl->addTransitionTime(update, transition);
     
     auto result = pImpl->sendUpdate(update);
     if (result.isSuccess()) {
@@ -160,12 +169,7 @@ Result<void> Light::turnOff(TransitionTime transition) {
     
     nlohmann::json update;
     update["on"] = {{"on", false}};
-    
-    // Add transition time in deciseconds (API uses 1/10 second units)
-    if (transition.count() > 0) {
-        int deciseconds = static_cast<int>(transition.count() / 100);
-        update["dynamics"] = {{"duration", deciseconds * 100}};
-    }
+    pImpl->addTransitionTime(update, transition);
     
     auto result = pImpl->sendUpdate(update);
     if (result.isSuccess()) {
@@ -198,13 +202,8 @@ Result<void> Light::setBrightness(uint8_t brightness, TransitionTime transition)
     }
     
     nlohmann::json update;
-    // Hue API uses 0-100 for brightness in V2 API
     update["dimming"] = {{"brightness", static_cast<double>(brightness)}};
-    
-    if (transition.count() > 0) {
-        int deciseconds = static_cast<int>(transition.count() / 100);
-        update["dynamics"] = {{"duration", deciseconds * 100}};
-    }
+    pImpl->addTransitionTime(update, transition);
     
     auto result = pImpl->sendUpdate(update);
     if (result.isSuccess()) {
@@ -236,11 +235,7 @@ Result<void> Light::setColor(const XYColor& color, TransitionTime transition) {
             {"y", static_cast<double>(color.y)}
         }}
     };
-    
-    if (transition.count() > 0) {
-        int deciseconds = static_cast<int>(transition.count() / 100);
-        update["dynamics"] = {{"duration", deciseconds * 100}};
-    }
+    pImpl->addTransitionTime(update, transition);
     
     auto result = pImpl->sendUpdate(update);
     if (result.isSuccess()) {
@@ -270,21 +265,18 @@ Result<void> Light::setColorTemperature(const ColorTemperature& temperature,
             "Light does not support color temperature control");
     }
     
-    // Validate mireds value (typically 153-500 for Hue lights)
-    if (temperature.mireds < 153 || temperature.mireds > 500) {
+    // Validate mireds value using constants
+    if (temperature.mireds < MIN_MIREDS || temperature.mireds > MAX_MIREDS) {
         return Result<void>(ErrorCode::InvalidParameter, 
-            "Color temperature must be between 153 and 500 mireds");
+            "Color temperature must be between " + std::to_string(MIN_MIREDS) + 
+            " and " + std::to_string(MAX_MIREDS) + " mireds");
     }
     
     nlohmann::json update;
     update["color_temperature"] = {
         {"mirek", static_cast<int>(temperature.mireds)}
     };
-    
-    if (transition.count() > 0) {
-        int deciseconds = static_cast<int>(transition.count() / 100);
-        update["dynamics"] = {{"duration", deciseconds * 100}};
-    }
+    pImpl->addTransitionTime(update, transition);
     
     auto result = pImpl->sendUpdate(update);
     if (result.isSuccess()) {

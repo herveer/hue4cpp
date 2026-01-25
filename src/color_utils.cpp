@@ -155,13 +155,9 @@ void rgbToHsv(const RGBColor& rgb, float& h, float& s, float& v) {
 
 namespace colors {
 
-std::optional<RGBColor> getColorByName(const std::string& name) {
-    // Convert to lowercase for case-insensitive comparison
-    std::string lower_name = name;
-    std::transform(lower_name.begin(), lower_name.end(), lower_name.begin(),
-                   [](unsigned char c){ return std::tolower(c); });
-    
-    static const std::map<std::string, RGBColor> color_map = {
+// Static color map for name lookup
+static const std::map<std::string, RGBColor> createColorMap() {
+    return {
         // Primary colors
         {"red", Red},
         {"green", Green},
@@ -191,6 +187,16 @@ std::optional<RGBColor> getColorByName(const std::string& name) {
         {"coolwhite", CoolWhite},
         {"daylight", Daylight}
     };
+}
+
+std::optional<RGBColor> getColorByName(const std::string& name) {
+    // Convert to lowercase for case-insensitive comparison
+    std::string lower_name = name;
+    std::transform(lower_name.begin(), lower_name.end(), lower_name.begin(),
+                   [](unsigned char c){ return std::tolower(c); });
+    
+    // Use function-local static to avoid repeated construction
+    static const auto color_map = createColorMap();
     
     auto it = color_map.find(lower_name);
     if (it != color_map.end()) {

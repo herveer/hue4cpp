@@ -80,13 +80,15 @@ namespace colors {
     const RGBColor LightBlue{173.0f, 216.0f, 230.0f};
     const RGBColor LightGreen{144.0f, 238.0f, 144.0f};
     
-    // Warm colors
-    const RGBColor WarmWhite{255.0f, 244.0f, 229.0f};  // ~2700K
-    const RGBColor Candlelight{255.0f, 147.0f, 41.0f};  // ~2000K
+    // Approximate white color temperatures
+    // Note: RGB approximations of color temperatures vary based on color space and assumptions
+    // These values are approximations for visualization purposes
+    const RGBColor WarmWhite{255.0f, 244.0f, 229.0f};  // Approximates 2700K incandescent
+    const RGBColor Candlelight{255.0f, 147.0f, 41.0f};  // Approximates 2000K candlelight
     
-    // Cool colors
-    const RGBColor CoolWhite{201.0f, 226.0f, 255.0f};  // ~6500K
-    const RGBColor Daylight{255.0f, 251.0f, 245.0f};   // ~5500K
+    // Cool white approximations
+    const RGBColor CoolWhite{201.0f, 226.0f, 255.0f};  // Approximates 6500K daylight
+    const RGBColor Daylight{255.0f, 251.0f, 245.0f};   // Approximates 5500K noon daylight
     
     /**
      * @brief Get a color by name
