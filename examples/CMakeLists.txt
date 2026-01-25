@@ -47,3 +47,11 @@ set_target_properties(state_monitoring PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
+
+# Performance benchmark
+add_executable(performance_benchmark performance_benchmark.cpp)
+target_link_libraries(performance_benchmark PRIVATE hue4cpp)
+set_target_properties(performance_benchmark PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
