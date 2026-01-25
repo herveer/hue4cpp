@@ -42,7 +42,8 @@ struct DiscoveredBridge {
 
 // User data structure for mDNS callback
 struct MDNSUserData {
-    std::map<std::string, DiscoveredBridge> bridges;  // Map by bridge ID to avoid duplicates
+    std::map<std::string, DiscoveredBridge> bridges;  // Map by IP address to accumulate data
+    std::string current_service_instance;  // Track current service instance being processed
     char name_buffer[256];
     char txt_buffer[256];
 };
@@ -106,10 +107,10 @@ int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
             char ip_str[INET6_ADDRSTRLEN];
             inet_ntop(AF_INET6, &addr.sin6_addr, ip_str, INET6_ADDRSTRLEN);
             
-            // For now, we prefer IPv4 for Hue bridges
-            // But store IPv6 as fallback
+            // Store IPv6 addresses without brackets in the map
+            // Brackets will be added later if needed for URL construction
             DiscoveredBridge bridge;
-            bridge.ip_address = std::string("[") + ip_str + "]";  // IPv6 format for URLs
+            bridge.ip_address = ip_str;
             mdns_data->bridges[ip_str] = bridge;
         }
     }
@@ -131,17 +132,13 @@ int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
             }
         }
         
-        // Update existing bridge entries with the bridge ID
-        if (!bridge_id.empty() && !mdns_data->bridges.empty()) {
-            // Get the most recent bridge entry and update its ID
-            auto it = mdns_data->bridges.rbegin();
-            if (it != mdns_data->bridges.rend() && it->second.id.empty()) {
-                it->second.id = bridge_id;
-                // Re-key the map entry by bridge ID instead of IP
-                DiscoveredBridge bridge = it->second;
-                std::string old_key = it->first;
-                mdns_data->bridges.erase(old_key);
-                mdns_data->bridges[bridge_id] = bridge;
+        // Update all bridge entries that don't have an ID yet with this bridge ID
+        // This is a best-effort approach since mDNS responses can arrive in any order
+        if (!bridge_id.empty()) {
+            for (auto& entry : mdns_data->bridges) {
+                if (entry.second.id.empty()) {
+                    entry.second.id = bridge_id;
+                }
             }
         }
     }
@@ -221,14 +218,19 @@ std::vector<Bridge> Bridge::discoverMDNS() {
     
     // Set up select for timeout
     fd_set readfs;
+    struct timeval timeout;
+    
     FD_ZERO(&readfs);
     FD_SET(sock, &readfs);
-    
-    struct timeval timeout;
     timeout.tv_sec = 2;  // 2 second timeout
     timeout.tv_usec = 0;
     
-    int nfds = sock + 1;
+#ifdef _WIN32
+    int nfds = 0;  // Ignored on Windows
+#else
+    int nfds = sock + 1;  // POSIX requires highest fd + 1
+#endif
+    
     int select_result = select(nfds, &readfs, nullptr, nullptr, &timeout);
     
     if (select_result > 0) {
@@ -236,6 +238,9 @@ std::vector<Bridge> Bridge::discoverMDNS() {
         mdns_query_recv(sock, buffer, sizeof(buffer), mdns_callback, &user_data, 0);
         
         // Give it a bit more time to receive all responses
+        // Need to reset fd_set as select() may modify it on some systems
+        FD_ZERO(&readfs);
+        FD_SET(sock, &readfs);
         timeout.tv_sec = 0;
         timeout.tv_usec = 500000;  // 500ms
         select_result = select(nfds, &readfs, nullptr, nullptr, &timeout);
