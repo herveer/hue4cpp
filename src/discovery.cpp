@@ -50,6 +50,19 @@ struct MDNSUserData {
 };
 
 // mDNS callback function to process discovered services
+//
+// NOTE: This implementation uses a simplified heuristic for correlating mDNS records
+// (PTR -> SRV -> A/AAAA -> TXT). It works correctly for single-bridge networks and
+// most common scenarios, but may have issues in complex multi-bridge environments
+// where multiple bridges respond simultaneously with interleaved records.
+//
+// A fully robust implementation would require:
+// - Parsing and matching the full DNS query names from each record
+// - More sophisticated correlation logic to handle out-of-order responses
+// - Better handling of multiple responses for the same service
+//
+// Future improvement: Parse DNS names from records for precise correlation.
+//
 int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
                   mdns_entry_type_t entry, uint16_t query_id, uint16_t rtype,
                   uint16_t rclass, uint32_t ttl, const void* data, size_t size,
@@ -269,7 +282,7 @@ std::vector<Bridge> Bridge::discoverMDNS() {
         mdns_query_recv(sock, buffer, sizeof(buffer), mdns_callback, &user_data, 0);
         
         // Give it a bit more time to receive all responses
-        // Need to reset fd_set as select() may modify it on some systems
+        // Reset fd_set as select() modifies it on most UNIX systems (required for portable code)
         FD_ZERO(&readfs);
         FD_SET(sock, &readfs);
         timeout.tv_sec = 0;
