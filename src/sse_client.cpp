@@ -9,6 +9,11 @@
 
 namespace hue4cpp {
 
+// Constants for SSE client
+namespace {
+    constexpr int RECONNECT_BACKOFF_MULTIPLIER = 2;
+}
+
 // SSEClient::Impl definition
 class SSEClient::Impl {
 public:
@@ -200,7 +205,7 @@ public:
                 std::this_thread::sleep_for(current_retry_delay);
                 
                 // Exponential backoff
-                current_retry_delay = std::min(current_retry_delay * 2, reconnect_max_delay);
+                current_retry_delay = std::min(current_retry_delay * RECONNECT_BACKOFF_MULTIPLIER, reconnect_max_delay);
             }
         }
     }

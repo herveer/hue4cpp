@@ -277,4 +277,3 @@ TEST_CASE("Color types", "[types]") {
         REQUIRE(ct.toKelvin() <= 2702);
     }
 }
-
