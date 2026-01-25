@@ -22,7 +22,8 @@ A modern, lightweight C++ library providing a developer-friendly interface to th
   - HSV ↔ RGB color conversion
   - 17+ preset colors (Red, Blue, WarmWhite, etc.)
   - Custom color temperature presets
-- 🔄 **Real-time State Updates**: Keep internal state synchronized via Server-Sent Events (SSE) *(planned)*
+- 🔄 **Real-time State Updates**: Server-Sent Events (SSE) for instant state synchronization
+- 📡 **Event Callbacks**: Observer pattern for light and bridge state changes
 - 🔧 **Capability-aware**: Automatically detects and adapts to device capabilities
 - 🚀 **Lightweight**: Minimal dependencies, fast and efficient
 - 🔧 **Cross-platform**: Works on Windows, Linux, and macOS
@@ -136,11 +137,65 @@ int main() {
 }
 ```
 
+### Real-time State Monitoring
+
+Monitor light state changes in real-time using Server-Sent Events:
+
+```cpp
+#include <hue4cpp/hue4cpp.h>
+#include <iostream>
+
+int main() {
+    using namespace hue4cpp;
+    
+    // Set up bridge and authenticate...
+    auto bridges = Bridge::discover();
+    auto& bridge = bridges[0];
+    bridge.authenticate("your-app-name");
+    
+    // Get the state manager
+    auto& state_manager = bridge.getStateManager();
+    
+    // Register callback for state changes
+    state_manager.registerCallback([](const Event& event) {
+        switch (event.type) {
+            case EventType::LightStateChanged:
+                std::cout << "Light state changed: " << event.resource_id << std::endl;
+                break;
+            case EventType::BridgeConnected:
+                std::cout << "Bridge connected!" << std::endl;
+                break;
+            case EventType::BridgeDisconnected:
+                std::cout << "Bridge disconnected!" << std::endl;
+                break;
+            default:
+                break;
+        }
+    });
+    
+    // Start real-time monitoring
+    auto result = state_manager.start();
+    if (result.isSuccess()) {
+        std::cout << "Real-time monitoring started!" << std::endl;
+        
+        // Your application logic here...
+        // Events will be delivered via callbacks
+        
+        // Stop monitoring when done
+        state_manager.stop();
+    }
+    
+    return 0;
+}
+```
+
 For more examples, see the `examples/` directory:
 - `basic_control.cpp` - Basic light control operations
 - `color_control.cpp` - Advanced color control and effects
 - `discovery.cpp` - Bridge discovery
 - `authentication.cpp` - Authentication flow
+- `state_monitoring.cpp` - Real-time state monitoring with SSE
+- `performance_benchmark.cpp` - Performance benchmarks
 
 ## Building
 
@@ -198,6 +253,7 @@ hue4cpp/
 │       ├── light.h         # Light control
 │       ├── color_utils.h   # Color conversion utilities
 │       ├── state.h         # State management
+│       ├── sse_client.h    # Server-Sent Events client
 │       ├── types.h         # Common types
 │       ├── http_client.h   # HTTP client wrapper
 │       ├── json_utils.h    # JSON utilities
@@ -208,6 +264,7 @@ hue4cpp/
 │   ├── light.cpp
 │   ├── color_utils.cpp
 │   ├── state.cpp
+│   ├── sse_client.cpp
 │   ├── http_client.cpp
 │   ├── json_utils.cpp
 │   └── discovery.cpp
@@ -217,12 +274,15 @@ hue4cpp/
 │   ├── light_tests.cpp
 │   ├── color_utils_tests.cpp
 │   ├── state_tests.cpp
+│   ├── sse_client_tests.cpp
 │   ├── http_client_tests.cpp
 │   └── json_utils_tests.cpp
 ├── examples/               # Example applications
 │   ├── CMakeLists.txt
 │   ├── basic_control.cpp
 │   ├── color_control.cpp
+│   ├── state_monitoring.cpp
+│   ├── performance_benchmark.cpp
 │   ├── discovery.cpp
 │   └── authentication.cpp
 └── doc/                    # Documentation
