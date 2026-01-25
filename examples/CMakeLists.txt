@@ -39,3 +39,11 @@ set_target_properties(http_request_example PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
+
+# State monitoring example
+add_executable(state_monitoring state_monitoring.cpp)
+target_link_libraries(state_monitoring PRIVATE hue4cpp)
+set_target_properties(state_monitoring PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)

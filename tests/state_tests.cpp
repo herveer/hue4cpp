@@ -1,6 +1,9 @@
 #include <catch2/catch_test_macros.hpp>
 #include <hue4cpp/state.h>
 #include <hue4cpp/bridge.h>
+#include <nlohmann/json.hpp>
+#include <thread>
+#include <chrono>
 
 using namespace hue4cpp;
 
@@ -32,6 +35,26 @@ TEST_CASE("StateManager callbacks", "[state]") {
         state_manager.unregisterCallback(id);
         REQUIRE_FALSE(callback_called); // Not called since no events
     }
+    
+    SECTION("Multiple callback registration") {
+        int callback1_count = 0;
+        int callback2_count = 0;
+        
+        auto id1 = state_manager.registerCallback([&callback1_count](const Event& event) {
+            callback1_count++;
+        });
+        
+        auto id2 = state_manager.registerCallback([&callback2_count](const Event& event) {
+            callback2_count++;
+        });
+        
+        REQUIRE(id1 != id2);
+        REQUIRE(id1 > 0);
+        REQUIRE(id2 > 0);
+        
+        state_manager.unregisterCallback(id1);
+        state_manager.unregisterCallback(id2);
+    }
 }
 
 TEST_CASE("StateManager light state", "[state]") {
@@ -40,6 +63,155 @@ TEST_CASE("StateManager light state", "[state]") {
     SECTION("Get non-existent light state") {
         auto state = state_manager.getLightState("non-existent-id");
         REQUIRE(state.empty());
+    }
+    
+    SECTION("Update and retrieve light state") {
+        // Simulate SSE event
+        nlohmann::json event_json = nlohmann::json::array();
+        nlohmann::json event_item = {
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {
+                    {"id", "light-123"},
+                    {"type", "light"},
+                    {"on", {{"on", true}}},
+                    {"dimming", {{"brightness", 75.0}}}
+                }
+            })}
+        };
+        event_json.push_back(event_item);
+        
+        state_manager.updateFromEvent(event_json.dump());
+        
+        auto state = state_manager.getLightState("light-123");
+        REQUIRE_FALSE(state.empty());
+        
+        // Verify the state contains expected data
+        auto state_json = nlohmann::json::parse(state);
+        REQUIRE(state_json["id"] == "light-123");
+        REQUIRE(state_json["type"] == "light");
+    }
+}
+
+TEST_CASE("StateManager event processing", "[state]") {
+    StateManager state_manager;
+    
+    SECTION("Process light state change event") {
+        bool callback_called = false;
+        EventType received_type = EventType::Unknown;
+        std::string received_id;
+        
+        state_manager.registerCallback([&](const Event& event) {
+            callback_called = true;
+            received_type = event.type;
+            received_id = event.resource_id;
+        });
+        
+        // Create SSE event
+        nlohmann::json event_json = nlohmann::json::array();
+        nlohmann::json event_item = {
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {
+                    {"id", "light-456"},
+                    {"type", "light"},
+                    {"on", {{"on", false}}}
+                }
+            })}
+        };
+        event_json.push_back(event_item);
+        
+        state_manager.updateFromEvent(event_json.dump());
+        
+        REQUIRE(callback_called);
+        REQUIRE(received_type == EventType::LightStateChanged);
+        REQUIRE(received_id == "light-456");
+    }
+    
+    SECTION("Process light added event") {
+        EventType received_type = EventType::Unknown;
+        
+        state_manager.registerCallback([&](const Event& event) {
+            received_type = event.type;
+        });
+        
+        nlohmann::json event_json = nlohmann::json::array();
+        nlohmann::json event_item = {
+            {"type", "add"},
+            {"data", nlohmann::json::array({
+                {
+                    {"id", "light-new"},
+                    {"type", "light"}
+                }
+            })}
+        };
+        event_json.push_back(event_item);
+        
+        state_manager.updateFromEvent(event_json.dump());
+        
+        REQUIRE(received_type == EventType::LightAdded);
+    }
+    
+    SECTION("Process light removed event") {
+        EventType received_type = EventType::Unknown;
+        
+        state_manager.registerCallback([&](const Event& event) {
+            received_type = event.type;
+        });
+        
+        nlohmann::json event_json = nlohmann::json::array();
+        nlohmann::json event_item = {
+            {"type", "delete"},
+            {"data", nlohmann::json::array({
+                {
+                    {"id", "light-removed"},
+                    {"type", "light"}
+                }
+            })}
+        };
+        event_json.push_back(event_item);
+        
+        state_manager.updateFromEvent(event_json.dump());
+        
+        REQUIRE(received_type == EventType::LightRemoved);
+    }
+    
+    SECTION("Handle invalid JSON gracefully") {
+        bool callback_called = false;
+        state_manager.registerCallback([&](const Event& event) {
+            callback_called = true;
+        });
+        
+        // Invalid JSON should not crash
+        state_manager.updateFromEvent("not valid json");
+        state_manager.updateFromEvent("");
+        state_manager.updateFromEvent("{}");
+        
+        REQUIRE_FALSE(callback_called);
+    }
+    
+    SECTION("Ignore non-light resource types") {
+        bool callback_called = false;
+        state_manager.registerCallback([&](const Event& event) {
+            callback_called = true;
+        });
+        
+        nlohmann::json event_json = nlohmann::json::array();
+        nlohmann::json event_item = {
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {
+                    {"id", "room-123"},
+                    {"type", "room"}
+                }
+            })}
+        };
+        event_json.push_back(event_item);
+        
+        state_manager.updateFromEvent(event_json.dump());
+        
+        // Should not trigger callback for non-light resources
+        REQUIRE_FALSE(callback_called);
     }
 }
 
@@ -80,3 +252,4 @@ TEST_CASE("Color types", "[types]") {
         REQUIRE(ct.toKelvin() <= 2702);
     }
 }
+
