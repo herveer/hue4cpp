@@ -34,18 +34,19 @@ namespace {
 
 // Structure to hold discovered bridge information during mDNS scan
 struct DiscoveredBridge {
-    std::string ip_address;
-    std::string id;
-    std::string hostname;
-    uint16_t port = 443;  // Default HTTPS port
+    std::string service_name;     // From PTR record
+    std::string hostname;          // From SRV record
+    std::string ip_address;        // From A/AAAA record
+    std::string id;                // From TXT record (bridgeid)
+    uint16_t port = 443;          // From SRV record, default HTTPS port
+    bool is_ipv6 = false;         // Track if this is an IPv6 address
 };
 
 // User data structure for mDNS callback
 struct MDNSUserData {
-    std::map<std::string, DiscoveredBridge> bridges;  // Map by IP address to accumulate data
-    std::string current_service_instance;  // Track current service instance being processed
+    std::map<std::string, DiscoveredBridge> services;  // Map by service name
+    std::map<std::string, std::string> hostname_to_ip;  // Map hostname to IP
     char name_buffer[256];
-    char txt_buffer[256];
 };
 
 // mDNS callback function to process discovered services
@@ -55,9 +56,13 @@ int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
                   size_t name_offset, size_t name_length, size_t record_offset,
                   size_t record_length, void* user_data) {
     (void)sock;
+    (void)from;
+    (void)addrlen;
     (void)query_id;
     (void)rclass;
     (void)ttl;
+    (void)name_offset;
+    (void)name_length;
     
     if (!user_data) {
         return 0;
@@ -72,18 +77,31 @@ int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
     
     // Handle different record types
     if (rtype == MDNS_RECORDTYPE_PTR) {
-        // PTR record points to a service instance
+        // PTR record points to a service instance name
         mdns_string_t name = mdns_record_parse_ptr(data, size, record_offset, record_length,
                                                      mdns_data->name_buffer, sizeof(mdns_data->name_buffer));
-        // Store for later processing - we'll get more info from SRV and A records
-        (void)name; // Name will be used in subsequent SRV queries
+        if (name.length > 0) {
+            std::string service_name(name.str, name.length);
+            // Create a new bridge entry for this service
+            mdns_data->services[service_name] = DiscoveredBridge();
+            mdns_data->services[service_name].service_name = service_name;
+        }
     }
     else if (rtype == MDNS_RECORDTYPE_SRV) {
         // SRV record contains hostname and port
         mdns_record_srv_t srv = mdns_record_parse_srv(data, size, record_offset, record_length,
                                                         mdns_data->name_buffer, sizeof(mdns_data->name_buffer));
-        // We need to extract bridge info from hostname or wait for TXT records
-        (void)srv; // Will be used with A records
+        if (srv.name.length > 0) {
+            std::string hostname(srv.name.str, srv.name.length);
+            // Find the service entry to update (look for one without a hostname)
+            for (auto& entry : mdns_data->services) {
+                if (entry.second.hostname.empty()) {
+                    entry.second.hostname = hostname;
+                    entry.second.port = srv.port;
+                    break;
+                }
+            }
+        }
     }
     else if (rtype == MDNS_RECORDTYPE_A) {
         // A record contains IPv4 address
@@ -92,12 +110,19 @@ int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
             char ip_str[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, &addr.sin_addr, ip_str, INET_ADDRSTRLEN);
             
-            // Create a temporary bridge entry (will be updated with TXT record data)
-            DiscoveredBridge bridge;
-            bridge.ip_address = ip_str;
-            // We'll set the ID from TXT records if available
-            // For now, use IP as a temporary key
-            mdns_data->bridges[ip_str] = bridge;
+            // Store hostname to IP mapping
+            // This will be used to match with services later
+            std::string ip(ip_str);
+            
+            // Try to match with a service by hostname
+            for (auto& entry : mdns_data->services) {
+                if (entry.second.ip_address.empty() && !entry.second.hostname.empty()) {
+                    // Simple heuristic: assume this IP belongs to the service we just saw
+                    entry.second.ip_address = ip;
+                    entry.second.is_ipv6 = false;
+                    break;
+                }
+            }
         }
     }
     else if (rtype == MDNS_RECORDTYPE_AAAA) {
@@ -107,11 +132,17 @@ int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
             char ip_str[INET6_ADDRSTRLEN];
             inet_ntop(AF_INET6, &addr.sin6_addr, ip_str, INET6_ADDRSTRLEN);
             
-            // Store IPv6 addresses without brackets in the map
-            // Brackets will be added later if needed for URL construction
-            DiscoveredBridge bridge;
-            bridge.ip_address = ip_str;
-            mdns_data->bridges[ip_str] = bridge;
+            std::string ip(ip_str);
+            
+            // Try to match with a service by hostname
+            // Only use IPv6 if IPv4 is not available
+            for (auto& entry : mdns_data->services) {
+                if (entry.second.ip_address.empty() && !entry.second.hostname.empty()) {
+                    entry.second.ip_address = ip;
+                    entry.second.is_ipv6 = true;
+                    break;
+                }
+            }
         }
     }
     else if (rtype == MDNS_RECORDTYPE_TXT) {
@@ -132,12 +163,12 @@ int mdns_callback(int sock, const struct sockaddr* from, size_t addrlen,
             }
         }
         
-        // Update all bridge entries that don't have an ID yet with this bridge ID
-        // This is a best-effort approach since mDNS responses can arrive in any order
+        // Assign to the most recently added service without an ID
         if (!bridge_id.empty()) {
-            for (auto& entry : mdns_data->bridges) {
-                if (entry.second.id.empty()) {
-                    entry.second.id = bridge_id;
+            for (auto it = mdns_data->services.rbegin(); it != mdns_data->services.rend(); ++it) {
+                if (it->second.id.empty()) {
+                    it->second.id = bridge_id;
+                    break;
                 }
             }
         }
@@ -252,8 +283,8 @@ std::vector<Bridge> Bridge::discoverMDNS() {
     // Close the socket
     mdns_socket_close(sock);
     
-    // Convert discovered bridges to Bridge objects
-    for (const auto& entry : user_data.bridges) {
+    // Convert discovered services to Bridge objects
+    for (const auto& entry : user_data.services) {
         const DiscoveredBridge& discovered = entry.second;
         
         // Skip if we don't have an IP address
@@ -262,7 +293,12 @@ std::vector<Bridge> Bridge::discoverMDNS() {
         }
         
         BridgeInfo info;
-        info.ip_address = discovered.ip_address;
+        // Handle IPv6 addresses - add brackets for URL formatting
+        if (discovered.is_ipv6) {
+            info.ip_address = "[" + discovered.ip_address + "]";
+        } else {
+            info.ip_address = discovered.ip_address;
+        }
         info.id = discovered.id;
         
         // Verify the bridge and get additional information
