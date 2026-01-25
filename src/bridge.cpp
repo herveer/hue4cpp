@@ -350,6 +350,67 @@ namespace hue4cpp {
 		return *pImpl->state_manager;
 	}
 
+	std::string Bridge::getLightState(const std::string& light_id) {
+		// First, check StateManager cache
+		std::string cached_state = pImpl->state_manager->getResourceState(light_id);
+		if (!cached_state.empty()) {
+			return cached_state;
+		}
+
+		// Cache miss - fetch from bridge API
+		if (!isAuthenticated() || pImpl->info.ip_address.empty() || light_id.empty()) {
+			return "";
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + pImpl->info.ip_address +
+				"/clip/v2/resource/light/" + light_id;
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = pImpl->auth_key;
+
+			auto response = client.get(url, headers);
+
+			if (!response.isSuccess()) {
+				return "";
+			}
+
+			auto json_response = json_utils::parse(response.body);
+
+			// Check if response contains errors
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					return "";
+				}
+			}
+
+			// Extract light from the data array
+			if (!json_response.contains("data") || !json_response["data"].is_array()) {
+				return "";
+			}
+
+			auto data = json_response["data"];
+			if (data.empty()) {
+				return "";
+			}
+
+			// Update cache with complete state from API
+			std::string full_state = data[0].dump();
+			pImpl->state_manager->setResourceState(light_id, full_state);
+
+			return full_state;
+
+		}
+		catch (const std::exception&) {
+			return "";
+		}
+	}
+
 	// isReachable is implemented in discovery.cpp
 
 } // namespace hue4cpp

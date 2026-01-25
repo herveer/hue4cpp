@@ -123,6 +123,13 @@ public:
     StateManager& getStateManager();
     
     /**
+     * @brief Get light state (cache-first, API-fallback)
+     * @param light_id The unique identifier of the light
+     * @return JSON string with light state, or empty if not found
+     */
+    std::string getLightState(const std::string& light_id);
+    
+    /**
      * @brief Check if the bridge is reachable
      * @return true if reachable, false otherwise
      */

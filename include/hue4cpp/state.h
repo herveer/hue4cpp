@@ -109,11 +109,18 @@ namespace hue4cpp {
 		void unregisterCallback(uint64_t callback_id);
 
 		/**
-		 * @brief Get the current state of a light
-		 * @param light_id Light unique identifier
-		 * @return JSON string representing light state, or empty if not found
+		 * @brief Get the current state of any resource (generic)
+		 * @param resource_id Resource unique identifier
+		 * @return JSON string representing resource state, or empty if not found
 		 */
-		std::string getLightState(const std::string& light_id) const;
+		std::string getResourceState(const std::string& resource_id) const;
+
+		/**
+		 * @brief Update resource state (replaces entire state, used for API calls)
+		 * @param resource_id Resource unique identifier
+		 * @param state_json JSON string representing complete resource state
+		 */
+		void setResourceState(const std::string& resource_id, const std::string& state_json);
 
 		/**
 		 * @brief Update internal state from JSON event

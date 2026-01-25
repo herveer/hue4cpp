@@ -1,6 +1,5 @@
 #include "hue4cpp/light.h"
 #include "hue4cpp/bridge.h"
-#include "hue4cpp/state.h"
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/color_utils.h"
@@ -142,22 +141,21 @@ LightCapabilities Light::getCapabilities() const {
 }
 
 bool Light::isOn() const {
-    // Try to get state from StateManager cache first
+    // Ask bridge for light state (cache-first, API-fallback)
     if (pImpl->bridge) {
-        auto& state_manager = pImpl->bridge->getStateManager();
-        auto cached_state = state_manager.getLightState(pImpl->id);
+        std::string state_json = pImpl->bridge->getLightState(pImpl->id);
         
-        if (!cached_state.empty()) {
+        if (!state_json.empty()) {
             try {
-                auto state_json = json_utils::parse(cached_state);
-                if (state_json.contains("on") && state_json["on"].is_object()) {
-                    auto on_obj = state_json["on"];
+                auto state = json_utils::parse(state_json);
+                if (state.contains("on") && state["on"].is_object()) {
+                    auto on_obj = state["on"];
                     if (on_obj.contains("on") && on_obj["on"].is_boolean()) {
                         return on_obj["on"].template get<bool>();
                     }
                 }
             } catch (...) {
-                // Fall through to return cached value
+                // Fall through to return local cached value
             }
         }
     }
@@ -209,23 +207,22 @@ Result<void> Light::toggle(TransitionTime transition) {
 }
 
 std::optional<uint8_t> Light::getBrightness() const {
-    // Try to get state from StateManager cache first
+    // Ask bridge for light state (cache-first, API-fallback)
     if (pImpl->bridge) {
-        auto& state_manager = pImpl->bridge->getStateManager();
-        auto cached_state = state_manager.getLightState(pImpl->id);
+        std::string state_json = pImpl->bridge->getLightState(pImpl->id);
         
-        if (!cached_state.empty()) {
+        if (!state_json.empty()) {
             try {
-                auto state_json = json_utils::parse(cached_state);
-                if (state_json.contains("dimming") && state_json["dimming"].is_object()) {
-                    auto dimming = state_json["dimming"];
+                auto state = json_utils::parse(state_json);
+                if (state.contains("dimming") && state["dimming"].is_object()) {
+                    auto dimming = state["dimming"];
                     if (dimming.contains("brightness") && dimming["brightness"].is_number()) {
                         double brightness_val = dimming["brightness"].template get<double>();
                         return static_cast<uint8_t>(std::round(brightness_val));
                     }
                 }
             } catch (...) {
-                // Fall through to return cached value
+                // Fall through to return local cached value
             }
         }
     }
@@ -257,16 +254,15 @@ Result<void> Light::setBrightness(uint8_t brightness, TransitionTime transition)
 }
 
 std::optional<XYColor> Light::getColor() const {
-    // Try to get state from StateManager cache first
+    // Ask bridge for light state (cache-first, API-fallback)
     if (pImpl->bridge) {
-        auto& state_manager = pImpl->bridge->getStateManager();
-        auto cached_state = state_manager.getLightState(pImpl->id);
+        std::string state_json = pImpl->bridge->getLightState(pImpl->id);
         
-        if (!cached_state.empty()) {
+        if (!state_json.empty()) {
             try {
-                auto state_json = json_utils::parse(cached_state);
-                if (state_json.contains("color") && state_json["color"].is_object()) {
-                    auto color_obj = state_json["color"];
+                auto state = json_utils::parse(state_json);
+                if (state.contains("color") && state["color"].is_object()) {
+                    auto color_obj = state["color"];
                     if (color_obj.contains("xy") && color_obj["xy"].is_object()) {
                         auto xy = color_obj["xy"];
                         if (xy.contains("x") && xy.contains("y") && 
@@ -279,7 +275,7 @@ std::optional<XYColor> Light::getColor() const {
                     }
                 }
             } catch (...) {
-                // Fall through to return cached value
+                // Fall through to return local cached value
             }
         }
     }
@@ -327,24 +323,23 @@ Result<void> Light::setColor(float r, float g, float b, TransitionTime transitio
 }
 
 std::optional<ColorTemperature> Light::getColorTemperature() const {
-    // Try to get state from StateManager cache first
+    // Ask bridge for light state (cache-first, API-fallback)
     if (pImpl->bridge) {
-        auto& state_manager = pImpl->bridge->getStateManager();
-        auto cached_state = state_manager.getLightState(pImpl->id);
+        std::string state_json = pImpl->bridge->getLightState(pImpl->id);
         
-        if (!cached_state.empty()) {
+        if (!state_json.empty()) {
             try {
-                auto state_json = json_utils::parse(cached_state);
-                if (state_json.contains("color_temperature") && 
-                    state_json["color_temperature"].is_object()) {
-                    auto ct_obj = state_json["color_temperature"];
+                auto state = json_utils::parse(state_json);
+                if (state.contains("color_temperature") && 
+                    state["color_temperature"].is_object()) {
+                    auto ct_obj = state["color_temperature"];
                     if (ct_obj.contains("mirek") && ct_obj["mirek"].is_number()) {
                         uint16_t mirek = static_cast<uint16_t>(ct_obj["mirek"].template get<int>());
                         return ColorTemperature(mirek);
                     }
                 }
             } catch (...) {
-                // Fall through to return cached value
+                // Fall through to return local cached value
             }
         }
     }
