@@ -167,7 +167,7 @@ int main() {
         return 1;
     }
     
-    std::string auth_key = *auth_result.value;
+    std::string auth_key = auth_result.value.value();  // First .value is the optional member, second .value() unwraps it
     std::cout << "Step 5: Saving authentication key" << std::endl;
     std::cout << "  Key: " << auth_key << std::endl;
     
