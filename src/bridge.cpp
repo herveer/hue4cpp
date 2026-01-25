@@ -47,8 +47,21 @@ namespace hue4cpp {
 		}
 	}
 
-	Bridge::Bridge(Bridge&&) noexcept = default;
-	Bridge& Bridge::operator=(Bridge&&) noexcept = default;
+
+	Bridge::Bridge(Bridge&& other) noexcept
+		: pImpl(std::move(other.pImpl))
+	{
+		if (pImpl && pImpl->state_manager) {
+			pImpl->state_manager->setBridge(this);
+		}
+	}
+	Bridge& Bridge::operator=(Bridge&& other) noexcept {
+		pImpl = std::move(other.pImpl);
+		if (pImpl && pImpl->state_manager) {
+			pImpl->state_manager->setBridge(this);
+		}
+		return *this;
+	}
 
 	// Discovery methods are implemented in discovery.cpp
 

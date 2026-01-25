@@ -206,7 +206,7 @@ int main() {
 		// Step 4: Set up state manager and register callbacks
 		std::cout << "Setting up real-time state monitoring...\n";
 		auto& state_manager = bridge.getStateManager();
-		state_manager.setBridge(&bridge);
+
 		// Register event callback
 		auto callback_id = state_manager.registerCallback(printEventInfo);
 
