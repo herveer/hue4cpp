@@ -495,6 +495,68 @@ namespace hue4cpp {
 		}
 	}
 
+	std::string Bridge::getSensorState(const std::string& sensor_id, const std::string& sensor_type, bool refreshCache) {
+		// First, check StateManager cache
+		if (!refreshCache) {
+			std::string cached_state = pImpl->state_manager->getResourceState(sensor_id);
+			if (!cached_state.empty()) {
+				return cached_state;
+			}
+		}
+
+		// Cache miss - fetch from bridge API
+		if (!isAuthenticated() || pImpl->info.ip_address.empty() || sensor_id.empty() || sensor_type.empty()) {
+			return "";
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + pImpl->info.ip_address +
+				"/clip/v2/resource/" + sensor_type + "/" + sensor_id;
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = pImpl->auth_key;
+
+			auto response = client.get(url, headers);
+
+			if (!response.isSuccess()) {
+				return "";
+			}
+
+			auto json_response = json_utils::parse(response.body);
+
+			// Check if response contains errors
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					return "";
+				}
+			}
+
+			// Extract sensor from the data array
+			if (!json_response.contains("data") || !json_response["data"].is_array()) {
+				return "";
+			}
+
+			auto data = json_response["data"];
+			if (data.empty()) {
+				return "";
+			}
+
+			// Update cache with complete state from API
+			std::string full_state = data[0].dump();
+			pImpl->state_manager->setResourceState(sensor_id, full_state);
+			return full_state;
+
+		}
+		catch (const std::exception&) {
+			return "";
+		}
+	}
+
 	std::vector<Sensor> Bridge::getSensors() {
 		std::vector<Sensor> all_sensors;
 

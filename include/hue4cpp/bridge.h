@@ -175,6 +175,15 @@ namespace hue4cpp {
 		std::string getLightState(const std::string& light_id, bool refreshCache);
 
 		/**
+		 * @brief Get sensor state (cache-first, API-fallback)
+		 * @param sensor_id The unique identifier of the sensor
+		 * @param sensor_type The type of sensor (motion, temperature, light_level, button)
+		 * @param refreshCache If true, forces fetching the complete state from the bridge API
+		 * @return JSON string with sensor state, or empty if not found
+		 */
+		std::string getSensorState(const std::string& sensor_id, const std::string& sensor_type, bool refreshCache);
+
+		/**
 		 * @brief Check if the bridge is reachable
 		 * @return true if reachable, false otherwise
 		 */
