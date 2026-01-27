@@ -295,8 +295,7 @@ namespace hue4cpp {
 							evt_type = EventType::SensorRemoved;
 						}
 
-						// Notify callbacks with current state
-						std::string current_state = getResourceState(resource_id);
+						// Notify callbacks with event data
 						Event event(evt_type, resource_id, resource.dump());
 						pImpl->notifyCallbacks(event);
 					}
