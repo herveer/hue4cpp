@@ -57,7 +57,6 @@ REFERENCES_RELATION    = YES
 
 GENERATE_HTML          = YES
 HTML_OUTPUT            = html
-HTML_TIMESTAMP         = YES
 GENERATE_TREEVIEW      = YES
 
 #---------------------------------------------------------------------------
@@ -78,5 +77,4 @@ EXPAND_ONLY_PREDEF     = NO
 # Configuration options related to the dot tool
 #---------------------------------------------------------------------------
 
-CLASS_DIAGRAMS         = YES
 HAVE_DOT               = NO
