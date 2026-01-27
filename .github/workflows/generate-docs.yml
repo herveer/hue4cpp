@@ -1,0 +1,67 @@
+name: Generate Doxygen Documentation
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_branch:
+        description: 'Source branch to generate documentation from'
+        required: true
+        default: 'main'
+        type: string
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_branch }}
+          fetch-depth: 0  # Fetch all history for proper git operations
+      
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen
+      
+      - name: Generate documentation
+        run: |
+          doxygen Doxyfile
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Create autodoc branch
+        run: |
+          AUTODOC_BRANCH="${{ inputs.source_branch }}-autodoc"
+          git checkout -b "$AUTODOC_BRANCH"
+          git add doc/generated/
+          git commit -m "Auto-generated Doxygen documentation from ${{ inputs.source_branch }}"
+          git push origin "$AUTODOC_BRANCH"
+      
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          AUTODOC_BRANCH="${{ inputs.source_branch }}-autodoc"
+          gh pr create \
+            --base "${{ inputs.source_branch }}" \
+            --head "$AUTODOC_BRANCH" \
+            --title "Auto-generated documentation for ${{ inputs.source_branch }}" \
+            --body "This PR contains auto-generated Doxygen documentation for the \`${{ inputs.source_branch }}\` branch.
+
+          ## Documentation Generation Summary
+          
+          - **Source Branch:** \`${{ inputs.source_branch }}\`
+          - **Documentation Branch:** \`$AUTODOC_BRANCH\`
+          - **Generated:** $(date -u)
+          
+          The documentation has been automatically generated using Doxygen and includes:
+          - API documentation for all public headers
+          - Source code browsing
+          - Class diagrams and relationships
+          
+          Please review the generated documentation before merging."
