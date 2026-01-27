@@ -39,9 +39,9 @@ jobs:
           AUTODOC_BRANCH="${{ inputs.source_branch }}-autodoc"
           git checkout -b "$AUTODOC_BRANCH"
           
-          # Verify documentation was generated
-          if [ ! -d "doc/generated" ] || [ -z "$(ls -A doc/generated 2>/dev/null)" ]; then
-            echo "Error: Documentation generation failed or produced no output"
+          # Verify documentation was generated with expected structure
+          if [ ! -d "doc/generated/html" ] || [ ! -f "doc/generated/html/index.html" ]; then
+            echo "Error: Documentation generation failed or produced no HTML output"
             exit 1
           fi
           
@@ -54,6 +54,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           AUTODOC_BRANCH="${{ inputs.source_branch }}-autodoc"
+          TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
           gh pr create \
             --base "${{ inputs.source_branch }}" \
             --head "$AUTODOC_BRANCH" \
@@ -64,7 +65,8 @@ jobs:
           
           - **Source Branch:** \`${{ inputs.source_branch }}\`
           - **Documentation Branch:** \`$AUTODOC_BRANCH\`
-          - **Generated:** $(date -u)
+          - **Generated:** $TIMESTAMP
+          - **Workflow Run:** [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
           
           The documentation has been automatically generated using Doxygen and includes:
           - API documentation for all public headers
