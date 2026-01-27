@@ -57,12 +57,13 @@ jobs:
           # Copy new docs
           cp -r doc/generated/html/* docs/
 
-          # Skip if nothing changed
-          if git diff --quiet; then
+          git add docs
+
+          # Skip if nothing changed (including new files)
+          if git diff --cached --quiet; then
             echo "No documentation changes detected. Skipping publish."
             exit 0
           fi
 
-          git add docs
           git commit -m "Update Doxygen documentation"
           git push origin gh-pages
