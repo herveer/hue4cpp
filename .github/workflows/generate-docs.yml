@@ -2,6 +2,14 @@ name: Generate Doxygen Documentation
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'release/*'
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Doxyfile'
 
 permissions:
   contents: write
