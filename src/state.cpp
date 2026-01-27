@@ -49,7 +49,7 @@ namespace hue4cpp {
 		// Merge JSON delta into existing state
 		void mergeResourceState(const std::string& resource_id, const nlohmann::json& delta) {
 			std::lock_guard<std::mutex> lock(state_mutex);
-			
+
 			auto it = resource_states.find(resource_id);
 			if (it != resource_states.end()) {
 				// Existing state - merge delta
@@ -57,11 +57,13 @@ namespace hue4cpp {
 					auto existing = nlohmann::json::parse(it->second);
 					existing.merge_patch(delta);
 					it->second = existing.dump();
-				} catch (...) {
+				}
+				catch (...) {
 					// If parse fails, replace with delta
 					resource_states[resource_id] = delta.dump();
 				}
-			} else {
+			}
+			else {
 				// No existing state - store delta as initial state
 				resource_states[resource_id] = delta.dump();
 			}
@@ -96,13 +98,13 @@ namespace hue4cpp {
 			return Result<void>(ErrorCode::InvalidRequest, "Bridge IP address not set");
 		}
 
-		std::string auth_key = pImpl->bridge->getAuthenticationKey();
+		const std::string auth_key = pImpl->bridge->getAuthenticationKey();
 		if (auth_key.empty()) {
 			return Result<void>(ErrorCode::AuthenticationRequired, "Bridge not authenticated");
 		}
 
 		// Create SSE endpoint URL
-		std::string sse_url = "https://" + bridge_info.ip_address + "/eventstream/clip/v2";
+		const std::string sse_url = "https://" + bridge_info.ip_address + "/eventstream/clip/v2";
 
 		// Create and configure SSE client
 		pImpl->sse_client = std::make_unique<SSEClient>(sse_url);
@@ -118,15 +120,13 @@ namespace hue4cpp {
 
 		// Set up connection state callback
 		pImpl->sse_client->onConnectionChange([this](bool connected) {
+			// Clear cache on disconnect/reconnect
+			clearCache();
 			if (connected) {
-				// Clear cache on reconnection to get fresh state
-				clearCache();
 				Event event(EventType::BridgeConnected, "", "");
 				pImpl->notifyCallbacks(event);
 			}
 			else {
-				// Clear cache on disconnection
-				clearCache();
 				Event event(EventType::BridgeDisconnected, "", "");
 				pImpl->notifyCallbacks(event);
 			}
@@ -180,6 +180,11 @@ namespace hue4cpp {
 
 	std::string StateManager::getResourceState(const std::string& resource_id) const {
 		std::lock_guard<std::mutex> lock(pImpl->state_mutex);
+		if(!pImpl->sse_client->isConnected()) {
+			// If sse is not connected the state is not reliable
+			return "";
+		}
+
 		auto it = pImpl->resource_states.find(resource_id);
 		if (it != pImpl->resource_states.end()) {
 			return it->second;
@@ -189,6 +194,10 @@ namespace hue4cpp {
 
 	void StateManager::setResourceState(const std::string& resource_id, const std::string& state_json) {
 		std::lock_guard<std::mutex> lock(pImpl->state_mutex);
+		if (!isRunning()) {
+			// try to start the SSE client if not running
+			start();
+		}
 		pImpl->resource_states[resource_id] = state_json;
 	}
 

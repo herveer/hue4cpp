@@ -111,6 +111,12 @@ namespace hue4cpp {
 		std::optional<Light> getLight(const std::string& light_id);
 
 		/**
+		 * @brief Set the bridge information
+		 * @param info BridgeInfo structure
+		 */
+		void setInfo(const BridgeInfo& info);
+
+		/**
 		 * @brief Get bridge information
 		 * @return BridgeInfo structure
 		 */

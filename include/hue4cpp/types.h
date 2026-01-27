@@ -115,6 +115,8 @@ namespace hue4cpp {
 			model_id(std::move(other.model_id)),
 			sw_version(std::move(other.sw_version)) {
 		}
+
+		BridgeInfo& operator=(const BridgeInfo& other) = default;
 	};
 
 	/**

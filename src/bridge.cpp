@@ -174,7 +174,7 @@ namespace hue4cpp {
 
 	void Bridge::setAuthenticationKey(const std::string& key) {
 		pImpl->auth_key = key;
-		// Note: SSE connection must be manually started via getStateManager().start()
+		pImpl->state_manager->stop(); // Stop any existing SSE connection if auth key changes
 	}
 
 	std::string Bridge::getAuthenticationKey() const {
@@ -362,6 +362,11 @@ namespace hue4cpp {
 		}
 	}
 
+	void Bridge::setInfo(const BridgeInfo& info) {
+		pImpl->info = info;
+		pImpl->state_manager->stop(); // Stop SSE connection if bridge info changes
+	}
+
 	const BridgeInfo& Bridge::getInfo() const {
 		return pImpl->info;
 	}
@@ -424,7 +429,6 @@ namespace hue4cpp {
 			// Update cache with complete state from API
 			std::string full_state = data[0].dump();
 			pImpl->state_manager->setResourceState(light_id, full_state);
-
 			return full_state;
 
 		}
