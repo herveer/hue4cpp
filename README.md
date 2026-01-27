@@ -17,13 +17,18 @@ A modern, lightweight C++ library providing a developer-friendly interface to th
   - Color Temperature: Kelvin/mireds support (2000K-6500K)
   - Preset Colors: Built-in color palette
   - Effects: Alert/notification patterns
+- 📊 **Sensor Support**: Read and monitor all sensor types
+  - Motion Sensors: Detect motion events
+  - Temperature Sensors: Monitor ambient temperature (°C)
+  - Light Level Sensors: Track illuminance levels
+  - Button Sensors: Capture button press events (dimmer switches, tap dials)
 - 🎨 **Advanced Color Support**: 
   - RGB ↔ XY color space conversion
   - HSV ↔ RGB color conversion
   - 17+ preset colors (Red, Blue, WarmWhite, etc.)
   - Custom color temperature presets
 - 🔄 **Real-time State Updates**: Server-Sent Events (SSE) for instant state synchronization
-- 📡 **Event Callbacks**: Observer pattern for light and bridge state changes
+- 📡 **Event Callbacks**: Observer pattern for light, sensor, and bridge state changes
 - 🔧 **Capability-aware**: Automatically detects and adapts to device capabilities
 - 🚀 **Lightweight**: Minimal dependencies, fast and efficient
 - 🔧 **Cross-platform**: Works on Windows, Linux, and macOS
@@ -189,12 +194,81 @@ int main() {
 }
 ```
 
+### Sensor Monitoring
+
+Access and monitor sensors (motion, temperature, light level, buttons):
+
+```cpp
+#include <hue4cpp/hue4cpp.h>
+#include <iostream>
+
+int main() {
+    using namespace hue4cpp;
+    
+    // Set up bridge and authenticate...
+    auto bridges = Bridge::discover();
+    auto& bridge = bridges[0];
+    bridge.authenticate("your-app-name");
+    
+    // Get all sensors
+    auto sensors = bridge.getSensors();
+    
+    for (const auto& sensor : sensors) {
+        std::cout << "Sensor: " << sensor.getId() << std::endl;
+        
+        // Check sensor type and read state
+        if (sensor.getType() == SensorType::Motion) {
+            auto state = sensor.getMotionState();
+            if (state.has_value()) {
+                std::cout << "  Motion: " << (state->motion ? "Detected" : "None") << std::endl;
+            }
+        }
+        else if (sensor.getType() == SensorType::Temperature) {
+            auto state = sensor.getTemperatureState();
+            if (state.has_value()) {
+                std::cout << "  Temperature: " << state->temperature << " °C" << std::endl;
+            }
+        }
+        else if (sensor.getType() == SensorType::LightLevel) {
+            auto state = sensor.getLightLevelState();
+            if (state.has_value()) {
+                std::cout << "  Light Level: " << state->light_level << std::endl;
+            }
+        }
+        else if (sensor.getType() == SensorType::Button) {
+            auto state = sensor.getButtonState();
+            if (state.has_value()) {
+                std::cout << "  Last Button Event: " << static_cast<int>(state->last_event) << std::endl;
+            }
+        }
+    }
+    
+    // Get sensors by type
+    auto motion_sensors = bridge.getMotionSensors();
+    auto temp_sensors = bridge.getTemperatureSensors();
+    auto light_sensors = bridge.getLightLevelSensors();
+    auto button_sensors = bridge.getButtonSensors();
+    
+    // Monitor sensor events in real-time
+    auto& state_manager = bridge.getStateManager();
+    state_manager.registerCallback([](const Event& event) {
+        if (event.type == EventType::SensorStateChanged) {
+            std::cout << "Sensor state changed: " << event.resource_id << std::endl;
+        }
+    });
+    state_manager.start();
+    
+    return 0;
+}
+```
+
 For more examples, see the `examples/` directory:
 - `basic_control.cpp` - Basic light control operations
 - `color_control.cpp` - Advanced color control and effects
 - `discovery.cpp` - Bridge discovery
 - `authentication.cpp` - Authentication flow
 - `state_monitoring.cpp` - Real-time state monitoring with SSE
+- `sensor_monitoring.cpp` - Sensor discovery and real-time monitoring
 - `performance_benchmark.cpp` - Performance benchmarks
 
 ## Building
