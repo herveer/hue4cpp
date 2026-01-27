@@ -33,18 +33,27 @@ namespace hue4cpp {
 		std::string id;
 		Bridge* bridge;
 		SensorType type;
-		bool enabled;
 
-		// Sensor-specific state
-		std::optional<MotionState> motion_state;
-		std::optional<TemperatureState> temperature_state;
-		std::optional<LightLevelState> light_level_state;
-		std::optional<ButtonState> button_state;
-
-		Impl() : bridge(nullptr), type(SensorType::Unknown), enabled(false) {}
+		Impl() : bridge(nullptr), type(SensorType::Unknown) {}
 
 		Impl(const std::string& sensor_id, Bridge* parent_bridge)
-			: id(sensor_id), bridge(parent_bridge), type(SensorType::Unknown), enabled(false) {
+			: id(sensor_id), bridge(parent_bridge), type(SensorType::Unknown) {
+		}
+
+		// Helper to get the resource type string from SensorType enum
+		std::string getResourceTypeString() const {
+			switch (type) {
+			case SensorType::Motion:
+				return "motion";
+			case SensorType::Temperature:
+				return "temperature";
+			case SensorType::LightLevel:
+				return "light_level";
+			case SensorType::Button:
+				return "button";
+			default:
+				return "";
+			}
 		}
 	};
 
@@ -79,112 +88,208 @@ namespace hue4cpp {
 	}
 
 	bool Sensor::isEnabled() const {
-		return pImpl->enabled;
+		// Extract enabled state from cached JSON
+		std::function extractEnabled = [](const std::string& state_json) -> std::optional<bool> {
+			if (!state_json.empty()) {
+				try {
+					auto state = json_utils::parse(state_json);
+					if (state.contains("enabled") && state["enabled"].is_boolean()) {
+						return state["enabled"].template get<bool>();
+					}
+				}
+				catch (...) {
+					// Fall through to refresh cache or return default
+				}
+			}
+			return std::nullopt;
+		};
+
+		if (!pImpl->bridge) {
+			// No bridge - cannot get state, return false
+			return false;
+		}
+
+		// Ask bridge for sensor state (cache-first, API-fallback)
+		std::string state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), false);
+		auto enabled_opt = extractEnabled(state_json);
+		if (enabled_opt.has_value()) {
+			return enabled_opt.value();
+		}
+
+		// Try refreshing cache
+		state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		enabled_opt = extractEnabled(state_json);
+		return enabled_opt.value_or(false);
 	}
 
 	std::optional<MotionState> Sensor::getMotionState() const {
-		return pImpl->motion_state;
+		// Extract motion state from cached JSON
+		std::function extractMotion = [](const std::string& state_json) -> std::optional<MotionState> {
+			if (!state_json.empty()) {
+				try {
+					auto state = json_utils::parse(state_json);
+					if (state.contains("motion") && state["motion"].is_object()) {
+						auto motion_obj = state["motion"];
+						MotionState motion_state;
+						motion_state.motion = json_utils::getValueOr<bool>(motion_obj, "motion", false);
+						motion_state.motion_valid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", false);
+						return motion_state;
+					}
+				}
+				catch (...) {
+					// Fall through to refresh cache or return nullopt
+				}
+			}
+			return std::nullopt;
+		};
+
+		if (!pImpl->bridge || pImpl->type != SensorType::Motion) {
+			return std::nullopt;
+		}
+
+		// Ask bridge for sensor state (cache-first, API-fallback)
+		std::string state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), false);
+		auto motion_opt = extractMotion(state_json);
+		if (motion_opt.has_value()) {
+			return motion_opt;
+		}
+
+		// Try refreshing cache
+		state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		return extractMotion(state_json);
 	}
 
 	std::optional<TemperatureState> Sensor::getTemperatureState() const {
-		return pImpl->temperature_state;
+		// Extract temperature state from cached JSON
+		std::function extractTemperature = [](const std::string& state_json) -> std::optional<TemperatureState> {
+			if (!state_json.empty()) {
+				try {
+					auto state = json_utils::parse(state_json);
+					if (state.contains("temperature") && state["temperature"].is_object()) {
+						auto temp_obj = state["temperature"];
+						TemperatureState temp_state;
+						// Temperature is in deci-degrees Celsius (divide by 100)
+						int temp_raw = json_utils::getValueOr<int>(temp_obj, "temperature", 0);
+						temp_state.temperature = temp_raw / 100.0f;
+						temp_state.temperature_valid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", true);
+						return temp_state;
+					}
+				}
+				catch (...) {
+					// Fall through to refresh cache or return nullopt
+				}
+			}
+			return std::nullopt;
+		};
+
+		if (!pImpl->bridge || pImpl->type != SensorType::Temperature) {
+			return std::nullopt;
+		}
+
+		// Ask bridge for sensor state (cache-first, API-fallback)
+		std::string state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), false);
+		auto temp_opt = extractTemperature(state_json);
+		if (temp_opt.has_value()) {
+			return temp_opt;
+		}
+
+		// Try refreshing cache
+		state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		return extractTemperature(state_json);
 	}
 
 	std::optional<LightLevelState> Sensor::getLightLevelState() const {
-		return pImpl->light_level_state;
+		// Extract light level state from cached JSON
+		std::function extractLightLevel = [](const std::string& state_json) -> std::optional<LightLevelState> {
+			if (!state_json.empty()) {
+				try {
+					auto state = json_utils::parse(state_json);
+					if (state.contains("light") && state["light"].is_object()) {
+						auto light_obj = state["light"];
+						LightLevelState light_state;
+						light_state.light_level = json_utils::getValueOr<uint32_t>(light_obj, "light_level", 0);
+						light_state.light_level_valid = json_utils::getValueOr<bool>(light_obj, "light_level_valid", false);
+						return light_state;
+					}
+				}
+				catch (...) {
+					// Fall through to refresh cache or return nullopt
+				}
+			}
+			return std::nullopt;
+		};
+
+		if (!pImpl->bridge || pImpl->type != SensorType::LightLevel) {
+			return std::nullopt;
+		}
+
+		// Ask bridge for sensor state (cache-first, API-fallback)
+		std::string state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), false);
+		auto light_opt = extractLightLevel(state_json);
+		if (light_opt.has_value()) {
+			return light_opt;
+		}
+
+		// Try refreshing cache
+		state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		return extractLightLevel(state_json);
 	}
 
 	std::optional<ButtonState> Sensor::getButtonState() const {
-		return pImpl->button_state;
+		// Extract button state from cached JSON
+		std::function extractButton = [](const std::string& state_json) -> std::optional<ButtonState> {
+			if (!state_json.empty()) {
+				try {
+					auto state = json_utils::parse(state_json);
+					if (state.contains("button") && state["button"].is_object()) {
+						auto button_obj = state["button"];
+						ButtonState button_state;
+						std::string event_str = json_utils::getValueOr<std::string>(button_obj, "last_event", "");
+						button_state.last_event = parseButtonEvent(event_str);
+						button_state.event_sequence = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", 0);
+						// Get button control_id if available (for multi-button devices)
+						if (state.contains("metadata") && state["metadata"].contains("control_id")) {
+							button_state.button_id = json_utils::getValueOr<uint32_t>(state["metadata"], "control_id", 0);
+						}
+						return button_state;
+					}
+				}
+				catch (...) {
+					// Fall through to refresh cache or return nullopt
+				}
+			}
+			return std::nullopt;
+		};
+
+		if (!pImpl->bridge || pImpl->type != SensorType::Button) {
+			return std::nullopt;
+		}
+
+		// Ask bridge for sensor state (cache-first, API-fallback)
+		std::string state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), false);
+		auto button_opt = extractButton(state_json);
+		if (button_opt.has_value()) {
+			return button_opt;
+		}
+
+		// Try refreshing cache
+		state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		return extractButton(state_json);
 	}
 
 	Result<void> Sensor::refresh() {
-		if (!pImpl->bridge || !pImpl->bridge->isAuthenticated()) {
-			return Result<void>(ErrorCode::AuthenticationRequired,
-				"Bridge not authenticated");
+		if (!pImpl->bridge) {
+			return Result<void>(ErrorCode::InvalidParameter, "No bridge associated with sensor");
 		}
 
-		const auto& bridge_info = pImpl->bridge->getInfo();
-		if (bridge_info.ip_address.empty() || pImpl->id.empty()) {
-			return Result<void>(ErrorCode::InvalidParameter,
-				"Bridge IP or sensor ID not set");
+		// Force a cache refresh by calling getSensorState with refreshCache=true
+		std::string state = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		
+		if (state.empty()) {
+			return Result<void>(ErrorCode::NetworkError, "Failed to refresh sensor state");
 		}
 
-		try {
-			HttpClient client;
-			client.setVerifySsl(false);
-			client.setTimeout(std::chrono::milliseconds(5000));
-
-			// Determine the resource type endpoint based on sensor type
-			std::string resource_type;
-			switch (pImpl->type) {
-			case SensorType::Motion:
-				resource_type = "motion";
-				break;
-			case SensorType::Temperature:
-				resource_type = "temperature";
-				break;
-			case SensorType::LightLevel:
-				resource_type = "light_level";
-				break;
-			case SensorType::Button:
-				resource_type = "button";
-				break;
-			default:
-				return Result<void>(ErrorCode::InvalidParameter,
-					"Unknown sensor type");
-			}
-
-			std::string url = "https://" + bridge_info.ip_address +
-				"/clip/v2/resource/" + resource_type + "/" + pImpl->id;
-
-			std::map<std::string, std::string> headers;
-			headers["hue-application-key"] = pImpl->bridge->getAuthenticationKey();
-
-			auto response = client.get(url, headers);
-
-			if (!response.isSuccess()) {
-				if (response.status_code == 401 || response.status_code == 403) {
-					return Result<void>(ErrorCode::AuthenticationFailed,
-						"Authentication failed");
-				}
-				if (response.status_code == 404) {
-					return Result<void>(ErrorCode::ResourceNotFound,
-						"Sensor not found");
-				}
-				return Result<void>(ErrorCode::NetworkError,
-					"HTTP request failed: " + response.error_message);
-			}
-
-			// Parse response
-			auto json_response = json_utils::parse(response.body);
-
-			if (json_response.contains("errors") && json_response["errors"].is_array()) {
-				auto errors = json_response["errors"];
-				if (!errors.empty()) {
-					std::string error_desc = json_utils::getValueOr<std::string>(
-						errors[0], "description", "Unknown error");
-					return Result<void>(ErrorCode::InvalidRequest, error_desc);
-				}
-			}
-
-			// Update from response data
-			if (json_response.contains("data") && json_response["data"].is_array() &&
-				!json_response["data"].empty()) {
-				updateFromJson(json_response["data"][0]);
-			}
-
-			return Result<void>();
-
-		}
-		catch (const JsonParseException& e) {
-			return Result<void>(ErrorCode::InvalidRequest,
-				std::string("JSON error: ") + e.what());
-		}
-		catch (const std::exception& e) {
-			return Result<void>(ErrorCode::UnknownError,
-				std::string("Error: ") + e.what());
-		}
+		return Result<void>();
 	}
 
 	void Sensor::updateFromJson(const nlohmann::json& json) {
@@ -200,46 +305,7 @@ namespace hue4cpp {
 				pImpl->type = parseSensorType(type_str);
 			}
 
-			// Update enabled state
-			pImpl->enabled = json_utils::getValueOr<bool>(json, "enabled", true);
-
-			// Parse sensor-specific data based on type
-			if (pImpl->type == SensorType::Motion && json.contains("motion")) {
-				MotionState state;
-				auto motion_obj = json["motion"];
-				state.motion = json_utils::getValueOr<bool>(motion_obj, "motion", false);
-				state.motion_valid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", false);
-				pImpl->motion_state = state;
-			}
-			else if (pImpl->type == SensorType::Temperature && json.contains("temperature")) {
-				TemperatureState state;
-				auto temp_obj = json["temperature"];
-				// Temperature is in deci-degrees Celsius (divide by 100)
-				int temp_raw = json_utils::getValueOr<int>(temp_obj, "temperature", 0);
-				state.temperature = temp_raw / 100.0f;
-				state.temperature_valid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", true);
-				pImpl->temperature_state = state;
-			}
-			else if (pImpl->type == SensorType::LightLevel && json.contains("light")) {
-				LightLevelState state;
-				auto light_obj = json["light"];
-				state.light_level = json_utils::getValueOr<uint32_t>(light_obj, "light_level", 0);
-				state.light_level_valid = json_utils::getValueOr<bool>(light_obj, "light_level_valid", false);
-				pImpl->light_level_state = state;
-			}
-			else if (pImpl->type == SensorType::Button && json.contains("button")) {
-				ButtonState state;
-				auto button_obj = json["button"];
-				std::string event_str = json_utils::getValueOr<std::string>(button_obj, "last_event", "");
-				state.last_event = parseButtonEvent(event_str);
-				state.event_sequence = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", 0);
-				// Get button control_id if available (for multi-button devices)
-				if (json.contains("metadata") && json["metadata"].contains("control_id")) {
-					state.button_id = json_utils::getValueOr<uint32_t>(json["metadata"], "control_id", 0);
-				}
-				pImpl->button_state = state;
-			}
-
+			// Note: We no longer store state internally - it's retrieved from cache on demand
 		}
 		catch (const std::exception& e) {
 			std::cerr << "Error parsing sensor JSON: " << e.what() << std::endl;
