@@ -48,6 +48,14 @@ set_target_properties(state_monitoring PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+# Sensor monitoring example
+add_executable(sensor_monitoring sensor_monitoring.cpp)
+target_link_libraries(sensor_monitoring PRIVATE hue4cpp)
+set_target_properties(sensor_monitoring PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
 # Performance benchmark
 add_executable(performance_benchmark performance_benchmark.cpp)
 target_link_libraries(performance_benchmark PRIVATE hue4cpp)

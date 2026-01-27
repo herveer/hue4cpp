@@ -6,9 +6,20 @@ This document outlines the development plan for the hue4cpp library. It serves a
 
 Create a lightweight, cross-platform C++ library that provides an intuitive interface to the Philips Hue V2 API, enabling developers to easily integrate smart lighting control into their applications.
 
-## Current Status: Phase 3 - State Management & SSE ✅ COMPLETE
+## Current Status: Phase 4 - Advanced Features 🚧 IN PROGRESS
 
-**Recently Completed (Phase 3):**
+**Recently Completed (Phase 4 - Sensor Support):**
+- [x] Motion sensor support with state reading
+- [x] Temperature sensor support (°C)
+- [x] Light level sensor support
+- [x] Button sensor support (dimmer switches, tap dials)
+- [x] Real-time sensor state monitoring via SSE
+- [x] Type-specific sensor getter methods (getMotionSensors, etc.)
+- [x] Comprehensive sensor unit tests (61 assertions in 9 test cases)
+- [x] Example application (sensor_monitoring)
+- [x] Updated documentation
+
+**Completed Previously (Phase 3):**
 - [x] Server-Sent Events (SSE) client implementation
 - [x] Real-time state synchronization via SSE
 - [x] Event notification system with callbacks
@@ -18,6 +29,7 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 - [x] Bridge connection/disconnection callbacks
 - [x] 65 test cases all passing
 - [x] Example application (state_monitoring)
+
 **Completed Previously (Phase 2):**
 - [x] Comprehensive light control API
 - [x] Light discovery and enumeration
@@ -158,36 +170,44 @@ Create a lightweight, cross-platform C++ library that provides an intuitive inte
 
 ---
 
-### Phase 4: Advanced Features 🎯
+### Phase 4: Advanced Features 🚧 IN PROGRESS
 
 **Goal**: Add advanced functionality and polish
 
 **Tasks:**
-1. **Room and Zone Support**
+1. **Sensor Support** ✅ **COMPLETE**
+   - ✅ Motion sensors
+   - ✅ Temperature sensors
+   - ✅ Light level sensors
+   - ✅ Button sensors (dimmer switches, tap dials)
+   - ✅ Real-time sensor state monitoring via SSE
+   - ✅ Type-specific sensor getter methods
+   - ✅ Comprehensive unit tests
+   - ✅ Example application (sensor_monitoring)
+
+2. **Room and Zone Support** ⏳ **NEXT**
    - Implement room/zone discovery
    - Group light control
    - Scene management
 
-2. **Scenes**
+3. **Scenes**
    - Scene discovery and enumeration
    - Scene activation
    - Scene creation and modification
 
-3. **Advanced Effects**
+4. **Advanced Effects**
    - Dynamic lighting effects
    - Color loops
    - Alert/notification patterns
 
-4. **Sensor Support** (if time permits)
-   - Motion sensors
-   - Light sensors
-   - Temperature sensors
-
 **Deliverables:**
-- Room/zone management
-- Scene control
-- Advanced lighting effects
+- ✅ Sensor support (motion, temperature, light level, buttons)
+- ⏳ Room/zone management
+- ⏳ Scene control
+- ⏳ Advanced lighting effects
 - Extended documentation
+
+**Status**: Sensor Support completed 2026-01-27
 
 **Estimated Completion**: 3-4 weeks
 
@@ -375,6 +395,6 @@ This roadmap is a living document. If you have suggestions for features, improve
 
 ---
 
-**Last Updated**: 2026-01-25  
-**Current Phase**: Phase 3 - State Management & SSE ✅ COMPLETE  
-**Next Step**: Phase 4 - Advanced Features (Rooms, Zones, Scenes)
+**Last Updated**: 2026-01-27  
+**Current Phase**: Phase 4 - Advanced Features 🚧 IN PROGRESS (Sensor Support ✅ Complete)  
+**Next Step**: Phase 4 - Room/Zone Support, Scenes, Advanced Effects
