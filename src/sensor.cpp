@@ -305,7 +305,11 @@ namespace hue4cpp {
 				pImpl->type = parseSensorType(type_str);
 			}
 
-			// Note: We no longer store state internally - it's retrieved from cache on demand
+			// Cache the full JSON state in StateManager if we have a bridge
+			// This allows the getters to retrieve the state from cache
+			if (pImpl->bridge && !pImpl->id.empty()) {
+				pImpl->bridge->getStateManager().setResourceState(pImpl->id, json.dump());
+			}
 		}
 		catch (const std::exception& e) {
 			std::cerr << "Error parsing sensor JSON: " << e.what() << std::endl;
