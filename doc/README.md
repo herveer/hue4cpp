@@ -49,7 +49,3 @@ doc/
 │   └── html/          # HTML documentation
 └── hueApiV2/          # Philips Hue API reference materials
 ```
-
-## Note
-
-The `doc/generated/` directory is excluded from version control via `.gitignore`. The automated workflow commits generated documentation to dedicated `-autodoc` branches.
