@@ -154,24 +154,58 @@ void printEventInfo(const Event& event) {
 }
 
 // Helper functions to load/save configuration
-bool loadConfig(std::string& bridge_ip, std::string& auth_key) {
-	std::ifstream config_file("hue_config.txt");
-	if (!config_file.is_open()) {
+const std::string KEY_FILE = "hue_auth_key.txt";
+
+/**
+ * @brief Save authentication key to a file
+ */
+bool saveAuthKey(const std::string& bridge_id, const std::string& key) {
+	try {
+		std::ofstream file(KEY_FILE);
+		if (!file.is_open()) {
+			return false;
+		}
+		file << bridge_id << std::endl;
+		file << key << std::endl;
+		file.close();
+		return true;
+	}
+	catch (...) {
 		return false;
 	}
-
-	std::getline(config_file, bridge_ip);
-	std::getline(config_file, auth_key);
-	config_file.close();
-
-	return !bridge_ip.empty() && !auth_key.empty();
 }
 
-void saveConfig(const std::string& bridge_ip, const std::string& auth_key) {
-	std::ofstream config_file("hue_config.txt");
-	config_file << bridge_ip << std::endl;
-	config_file << auth_key << std::endl;
-	config_file.close();
+/**
+ * @brief Load authentication key from a file
+ */
+std::string loadAuthKey(const std::string& bridge_id) {
+	try {
+		std::ifstream file(KEY_FILE);
+		if (!file.is_open()) {
+			return "";
+		}
+
+		std::string saved_bridge_id;
+		std::string key;
+
+		std::getline(file, saved_bridge_id);
+		std::getline(file, key);
+		file.close();
+
+		// Check if the key is for the same bridge
+		std::string lower_case_bridge_id = bridge_id;
+		std::transform(lower_case_bridge_id.begin(), lower_case_bridge_id.end(),
+			lower_case_bridge_id.begin(), ::tolower);
+
+		if (saved_bridge_id == lower_case_bridge_id) {
+			return key;
+		}
+
+		return "";
+	}
+	catch (...) {
+		return "";
+	}
 }
 
 int main() {
@@ -181,52 +215,58 @@ int main() {
 	signal(SIGINT, signalHandler);
 
 	try {
-		// Step 1: Get bridge connection
-		std::string bridge_ip, auth_key;
-		if (!loadConfig(bridge_ip, auth_key)) {
-			std::cout << "No saved configuration found. Discovering bridges..." << std::endl;
 
-			auto bridges = Bridge::discover();
-			if (bridges.empty()) {
-				std::cout << "No bridges found!" << std::endl;
-				return 1;
-			}
+		// Step 1: Discover bridges
+		std::cout << "Discovering bridges...\n";
+		auto bridges = Bridge::discover();
 
-			// Use the first discovered bridge
-			auto& bridge_info = bridges[0].getInfo();
-			bridge_ip = bridge_info.ip_address;
-
-			std::cout << "Found bridge: " << bridge_info.name
-				<< " (" << bridge_ip << ")" << std::endl;
-			std::cout << "\nPress the link button on your bridge and then press Enter...";
-			std::cin.get();
-
-			// Authenticate
-			auto result = bridges[0].authenticate("hue4cpp", "sensor_monitoring");
-			if (!result || !result.hasValue()) {
-				std::cout << "Authentication failed: " << result.error_message << std::endl;
-				return 1;
-			}
-
-			auth_key = result.value.value();
-			saveConfig(bridge_ip, auth_key);
-			std::cout << "Authentication successful! Configuration saved." << std::endl;
-		}
-		else {
-			std::cout << "Using saved configuration:" << std::endl;
-			std::cout << "  Bridge IP: " << bridge_ip << std::endl;
-		}
-
-		// Step 2: Create bridge connection
-		BridgeInfo info(bridge_ip, "");
-		Bridge bridge(info);
-		bridge.setAuthenticationKey(auth_key);
-
-		// Validate authentication
-		auto validation = bridge.validateAuthentication();
-		if (!validation.isSuccess()) {
-			std::cout << "Authentication failed. Please delete hue_config.txt and try again." << std::endl;
+		if (bridges.empty()) {
+			std::cout << "❌ No bridges found. Please ensure your bridge is on the network.\n";
 			return 1;
+		}
+
+		std::cout << "Found " << bridges.size() << " bridge(s)\n";
+		auto& bridge = bridges[0];
+		const auto& info = bridge.getInfo();
+		std::cout << "   Bridge: " << info.name << " (" << info.ip_address << ")\n\n";
+
+		// Authenticate if needed
+		if (!bridge.isAuthenticated()) {
+
+			// Try to load saved authentication key
+			std::cout << "\nChecking for saved authentication key..." << std::endl;
+			std::string saved_key = loadAuthKey(info.id);
+			if (!saved_key.empty()) {
+				std::cout << "Found saved authentication key!" << std::endl;
+				bridge.setAuthenticationKey(saved_key);
+				std::cout << "Validating key with bridge..." << std::endl;
+				auto validation_result = bridge.validateAuthentication();
+				if (validation_result.isSuccess()) {
+					std::cout << "Saved key is valid!" << std::endl;
+				}
+			}
+			// If still not authenticated, perform authentication
+			if (!bridge.isAuthenticated()) {
+				std::cout << "\nPlease press the button on your Hue bridge..." << std::endl;
+				std::cout << "Press Enter when ready...";
+				std::cin.get();
+
+				auto auth_result = bridge.authenticate("hue4cpp-color-example", "computer");
+				if (!auth_result.isSuccess()) {
+					std::cerr << "Authentication failed: " << auth_result.error_message << std::endl;
+					return 1;
+				}
+
+				std::cout << "Authentication successful!" << std::endl;
+				// Save the new key
+				if (auth_result.hasValue()) {
+					std::string auth_key = auth_result.value.value();
+					if (saveAuthKey(info.id, auth_key)) {
+						std::cout << "Authentication key saved." << std::endl;
+					}
+				}
+			}
+
 		}
 
 		std::cout << "\n=== Connected to Bridge ===" << std::endl;
