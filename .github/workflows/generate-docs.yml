@@ -38,6 +38,13 @@ jobs:
         run: |
           AUTODOC_BRANCH="${{ inputs.source_branch }}-autodoc"
           git checkout -b "$AUTODOC_BRANCH"
+          
+          # Verify documentation was generated
+          if [ ! -d "doc/generated" ] || [ -z "$(ls -A doc/generated 2>/dev/null)" ]; then
+            echo "Error: Documentation generation failed or produced no output"
+            exit 1
+          fi
+          
           git add doc/generated/
           git commit -m "Auto-generated Doxygen documentation from ${{ inputs.source_branch }}"
           git push origin "$AUTODOC_BRANCH"
