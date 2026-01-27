@@ -180,7 +180,7 @@ namespace hue4cpp {
 
 	std::string StateManager::getResourceState(const std::string& resource_id) const {
 		std::lock_guard<std::mutex> lock(pImpl->state_mutex);
-		if(!pImpl->sse_client->isConnected()) {
+		if (!pImpl->sse_client->isConnected()) {
 			// If sse is not connected the state is not reliable
 			return "";
 		}
@@ -245,19 +245,19 @@ namespace hue4cpp {
 					std::string resource_id = resource["id"];
 					std::string resource_type = resource["type"];
 
+					// Update internal state cache with delta merge
+					if (event_type == "delete") {
+						// Remove from cache on delete
+						std::lock_guard<std::mutex> lock(pImpl->state_mutex);
+						pImpl->resource_states.erase(resource_id);
+					}
+					else {
+						// Merge delta into existing state for add/update events
+						pImpl->mergeResourceState(resource_id, resource);
+					}
+
 					// Handle light state updates
 					if (resource_type == "light") {
-						// Update internal state cache with delta merge
-						if (event_type == "delete") {
-							// Remove from cache on delete
-							std::lock_guard<std::mutex> lock(pImpl->state_mutex);
-							pImpl->resource_states.erase(resource_id);
-						}
-						else {
-							// Merge delta into existing state for add/update events
-							pImpl->mergeResourceState(resource_id, resource);
-						}
-
 						// Determine event type
 						EventType evt_type = EventType::LightStateChanged;
 						if (event_type == "add") {
@@ -275,17 +275,6 @@ namespace hue4cpp {
 					// Handle sensor state updates (motion, temperature, light_level, button)
 					else if (resource_type == "motion" || resource_type == "temperature" ||
 						resource_type == "light_level" || resource_type == "button") {
-						// Update internal state cache with delta merge
-						if (event_type == "delete") {
-							// Remove from cache on delete
-							std::lock_guard<std::mutex> lock(pImpl->state_mutex);
-							pImpl->resource_states.erase(resource_id);
-						}
-						else {
-							// Merge delta into existing state for add/update events
-							pImpl->mergeResourceState(resource_id, resource);
-						}
-
 						// Determine event type
 						EventType evt_type = EventType::SensorStateChanged;
 						if (event_type == "add") {
