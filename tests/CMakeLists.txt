@@ -6,6 +6,7 @@ set(TEST_SOURCES
     main.cpp
     bridge_tests.cpp
     light_tests.cpp
+    sensor_tests.cpp
     state_tests.cpp
     http_client_tests.cpp
     json_utils_tests.cpp

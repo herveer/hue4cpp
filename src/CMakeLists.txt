@@ -2,6 +2,7 @@
 set(HUE4CPP_SOURCES
     bridge.cpp
     light.cpp
+    sensor.cpp
     state.cpp
     http_client.cpp
     json_utils.cpp

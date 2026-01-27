@@ -1,5 +1,6 @@
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/light.h"
+#include "hue4cpp/sensor.h"
 #include "hue4cpp/state.h"
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
@@ -434,6 +435,306 @@ namespace hue4cpp {
 		}
 		catch (const std::exception&) {
 			return "";
+		}
+	}
+
+	std::vector<Sensor> Bridge::getSensors() {
+		std::vector<Sensor> all_sensors;
+
+		// Collect all sensor types
+		auto motion = getMotionSensors();
+		auto temperature = getTemperatureSensors();
+		auto light_level = getLightLevelSensors();
+		auto buttons = getButtonSensors();
+
+		all_sensors.insert(all_sensors.end(), motion.begin(), motion.end());
+		all_sensors.insert(all_sensors.end(), temperature.begin(), temperature.end());
+		all_sensors.insert(all_sensors.end(), light_level.begin(), light_level.end());
+		all_sensors.insert(all_sensors.end(), buttons.begin(), buttons.end());
+
+		return all_sensors;
+	}
+
+	std::optional<Sensor> Bridge::getSensor(const std::string& sensor_id) {
+		// Try each sensor type endpoint to find the sensor
+		std::vector<std::string> resource_types = { "motion", "temperature", "light_level", "button" };
+
+		for (const auto& resource_type : resource_types) {
+			if (!isAuthenticated() || pImpl->info.ip_address.empty() || sensor_id.empty()) {
+				continue;
+			}
+
+			try {
+				HttpClient client;
+				client.setVerifySsl(false);
+				client.setTimeout(std::chrono::milliseconds(5000));
+
+				std::string url = "https://" + pImpl->info.ip_address +
+					"/clip/v2/resource/" + resource_type + "/" + sensor_id;
+
+				std::map<std::string, std::string> headers;
+				headers["hue-application-key"] = pImpl->auth_key;
+
+				auto response = client.get(url, headers);
+
+				if (!response.isSuccess()) {
+					continue; // Try next resource type
+				}
+
+				auto json_response = json_utils::parse(response.body);
+
+				// Check if response contains errors
+				if (json_response.contains("errors") && json_response["errors"].is_array()) {
+					auto errors = json_response["errors"];
+					if (!errors.empty()) {
+						continue;
+					}
+				}
+
+				// Extract sensor from the data array
+				if (!json_response.contains("data") || !json_response["data"].is_array()) {
+					continue;
+				}
+
+				auto data = json_response["data"];
+				if (data.empty()) {
+					continue;
+				}
+
+				Sensor sensor(sensor_id, this);
+				sensor.updateFromJson(data[0]);
+				return sensor;
+
+			}
+			catch (const std::exception&) {
+				continue;
+			}
+		}
+
+		return std::nullopt;
+	}
+
+	std::vector<Sensor> Bridge::getMotionSensors() {
+		if (!isAuthenticated() || pImpl->info.ip_address.empty()) {
+			return {};
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + pImpl->info.ip_address + "/clip/v2/resource/motion";
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = pImpl->auth_key;
+
+			auto response = client.get(url, headers);
+
+			if (!response.isSuccess()) {
+				return {};
+			}
+
+			auto json_response = json_utils::parse(response.body);
+
+			// Check if response contains errors
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					return {};
+				}
+			}
+
+			// Extract sensors from the data array
+			if (!json_response.contains("data") || !json_response["data"].is_array()) {
+				return {};
+			}
+
+			std::vector<Sensor> sensors;
+			auto data = json_response["data"];
+
+			for (const auto& sensor_data : data) {
+				std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
+				if (!id.empty()) {
+					Sensor sensor(id, this);
+					sensor.updateFromJson(sensor_data);
+					sensors.push_back(std::move(sensor));
+				}
+			}
+
+			return sensors;
+
+		}
+		catch (const std::exception&) {
+			return {};
+		}
+	}
+
+	std::vector<Sensor> Bridge::getTemperatureSensors() {
+		if (!isAuthenticated() || pImpl->info.ip_address.empty()) {
+			return {};
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + pImpl->info.ip_address + "/clip/v2/resource/temperature";
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = pImpl->auth_key;
+
+			auto response = client.get(url, headers);
+
+			if (!response.isSuccess()) {
+				return {};
+			}
+
+			auto json_response = json_utils::parse(response.body);
+
+			// Check if response contains errors
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					return {};
+				}
+			}
+
+			// Extract sensors from the data array
+			if (!json_response.contains("data") || !json_response["data"].is_array()) {
+				return {};
+			}
+
+			std::vector<Sensor> sensors;
+			auto data = json_response["data"];
+
+			for (const auto& sensor_data : data) {
+				std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
+				if (!id.empty()) {
+					Sensor sensor(id, this);
+					sensor.updateFromJson(sensor_data);
+					sensors.push_back(std::move(sensor));
+				}
+			}
+
+			return sensors;
+
+		}
+		catch (const std::exception&) {
+			return {};
+		}
+	}
+
+	std::vector<Sensor> Bridge::getLightLevelSensors() {
+		if (!isAuthenticated() || pImpl->info.ip_address.empty()) {
+			return {};
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + pImpl->info.ip_address + "/clip/v2/resource/light_level";
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = pImpl->auth_key;
+
+			auto response = client.get(url, headers);
+
+			if (!response.isSuccess()) {
+				return {};
+			}
+
+			auto json_response = json_utils::parse(response.body);
+
+			// Check if response contains errors
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					return {};
+				}
+			}
+
+			// Extract sensors from the data array
+			if (!json_response.contains("data") || !json_response["data"].is_array()) {
+				return {};
+			}
+
+			std::vector<Sensor> sensors;
+			auto data = json_response["data"];
+
+			for (const auto& sensor_data : data) {
+				std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
+				if (!id.empty()) {
+					Sensor sensor(id, this);
+					sensor.updateFromJson(sensor_data);
+					sensors.push_back(std::move(sensor));
+				}
+			}
+
+			return sensors;
+
+		}
+		catch (const std::exception&) {
+			return {};
+		}
+	}
+
+	std::vector<Sensor> Bridge::getButtonSensors() {
+		if (!isAuthenticated() || pImpl->info.ip_address.empty()) {
+			return {};
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + pImpl->info.ip_address + "/clip/v2/resource/button";
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = pImpl->auth_key;
+
+			auto response = client.get(url, headers);
+
+			if (!response.isSuccess()) {
+				return {};
+			}
+
+			auto json_response = json_utils::parse(response.body);
+
+			// Check if response contains errors
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					return {};
+				}
+			}
+
+			// Extract sensors from the data array
+			if (!json_response.contains("data") || !json_response["data"].is_array()) {
+				return {};
+			}
+
+			std::vector<Sensor> sensors;
+			auto data = json_response["data"];
+
+			for (const auto& sensor_data : data) {
+				std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
+				if (!id.empty()) {
+					Sensor sensor(id, this);
+					sensor.updateFromJson(sensor_data);
+					sensors.push_back(std::move(sensor));
+				}
+			}
+
+			return sensors;
+
+		}
+		catch (const std::exception&) {
+			return {};
 		}
 	}
 

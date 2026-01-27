@@ -14,6 +14,7 @@ namespace hue4cpp {
 
 	// Forward declarations
 	class Light;
+	class Sensor;
 	class StateManager;
 
 	/**
@@ -109,6 +110,43 @@ namespace hue4cpp {
 		 * @return Optional Light object
 		 */
 		std::optional<Light> getLight(const std::string& light_id);
+
+		/**
+		 * @brief Get all sensors connected to this bridge
+		 * @return Vector of Sensor objects
+		 */
+		std::vector<Sensor> getSensors();
+
+		/**
+		 * @brief Get a specific sensor by ID
+		 * @param sensor_id The unique identifier of the sensor
+		 * @return Optional Sensor object
+		 */
+		std::optional<Sensor> getSensor(const std::string& sensor_id);
+
+		/**
+		 * @brief Get all motion sensors
+		 * @return Vector of motion Sensor objects
+		 */
+		std::vector<Sensor> getMotionSensors();
+
+		/**
+		 * @brief Get all temperature sensors
+		 * @return Vector of temperature Sensor objects
+		 */
+		std::vector<Sensor> getTemperatureSensors();
+
+		/**
+		 * @brief Get all light level sensors
+		 * @return Vector of light level Sensor objects
+		 */
+		std::vector<Sensor> getLightLevelSensors();
+
+		/**
+		 * @brief Get all button sensors
+		 * @return Vector of button Sensor objects
+		 */
+		std::vector<Sensor> getButtonSensors();
 
 		/**
 		 * @brief Set the bridge information
