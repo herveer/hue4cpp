@@ -1,0 +1,26 @@
+var classhue4cpp_1_1Bridge =
+[
+    [ "Impl", "classhue4cpp_1_1Bridge_1_1Impl.html", "classhue4cpp_1_1Bridge_1_1Impl" ],
+    [ "Bridge", "classhue4cpp_1_1Bridge.html#a15e047cbf0e8b46c3f00967d7a1027b3", null ],
+    [ "Bridge", "classhue4cpp_1_1Bridge.html#a458cdd444e9db660118dbb6b1b7e2855", null ],
+    [ "~Bridge", "classhue4cpp_1_1Bridge.html#a8eef72b65e5dbac553bb7a849b1c4b9a", null ],
+    [ "Bridge", "classhue4cpp_1_1Bridge.html#a9ddc483cf73e01643650aab7ea1bc058", null ],
+    [ "Bridge", "classhue4cpp_1_1Bridge.html#a63b9052e422b394a04a14ee3cbf371b0", null ],
+    [ "authenticate", "classhue4cpp_1_1Bridge.html#ac8a20fba54418c9bc976afcdddb9b9ba", null ],
+    [ "discover", "classhue4cpp_1_1Bridge.html#a6d45bac89be65619d6b4380ec5cb2ad1", null ],
+    [ "discoverMDNS", "classhue4cpp_1_1Bridge.html#aea0d73f0d8bda166f3acc823398e70ec", null ],
+    [ "discoverNUPnP", "classhue4cpp_1_1Bridge.html#ab5a975900a3f598416e5a904265d811f", null ],
+    [ "getAuthenticationKey", "classhue4cpp_1_1Bridge.html#ac9736a3993d2564c024c96a5ec085193", null ],
+    [ "getInfo", "classhue4cpp_1_1Bridge.html#ad39c8a3c5fa480ca85a6317b79294d63", null ],
+    [ "getLight", "classhue4cpp_1_1Bridge.html#a9a7d28c5e27b37da5f781843026f96e6", null ],
+    [ "getLights", "classhue4cpp_1_1Bridge.html#ac38bd5409d94dd9f664198b2b7b6c6c7", null ],
+    [ "getLightState", "classhue4cpp_1_1Bridge.html#a46071debe4e7dcd5fe4d6d69a7b87bcc", null ],
+    [ "getStateManager", "classhue4cpp_1_1Bridge.html#a4702f9d5f8a5b214d5aaed2441fe91f7", null ],
+    [ "isAuthenticated", "classhue4cpp_1_1Bridge.html#a02ed5c5960b2a883ffb33924d5744223", null ],
+    [ "isReachable", "classhue4cpp_1_1Bridge.html#a043c570f28a7ffc55db99498a4c805f0", null ],
+    [ "operator=", "classhue4cpp_1_1Bridge.html#af78e3da2302b5dbbdf1f01168f539b1c", null ],
+    [ "operator=", "classhue4cpp_1_1Bridge.html#aec2eee95b5a8a736a9d7678717165d45", null ],
+    [ "setAuthenticationKey", "classhue4cpp_1_1Bridge.html#a67904a7c29943792c531ee69d1919379", null ],
+    [ "setInfo", "classhue4cpp_1_1Bridge.html#a832fdb78edf20fda11e9f1ce4f32de40", null ],
+    [ "validateAuthentication", "classhue4cpp_1_1Bridge.html#add608d3440ed714bf494453d10754152", null ]
+];

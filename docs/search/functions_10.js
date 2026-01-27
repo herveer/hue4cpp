@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['sendupdate_0',['sendUpdate',['../classhue4cpp_1_1Light_1_1Impl.html#a1655e82032126eabb7afdf27777ed89f',1,'hue4cpp::Light::Impl']]],
+  ['setauthenticationkey_1',['setAuthenticationKey',['../classhue4cpp_1_1Bridge.html#a67904a7c29943792c531ee69d1919379',1,'hue4cpp::Bridge']]],
+  ['setauthheader_2',['setAuthHeader',['../classhue4cpp_1_1SSEClient.html#ad61a3b151b0949885df54233696b5ea2',1,'hue4cpp::SSEClient']]],
+  ['setbridge_3',['setBridge',['../classhue4cpp_1_1StateManager.html#ae2262b17f2c2ff6c88a47c8bc4ecd412',1,'hue4cpp::StateManager']]],
+  ['setbrightness_4',['setBrightness',['../classhue4cpp_1_1Light.html#a6ad1dbe4aa8918fc7df593c737a5e8d2',1,'hue4cpp::Light']]],
+  ['setcolor_5',['setcolor',['../classhue4cpp_1_1Light.html#a09853abfdf7f534cb7dd547a8565860a',1,'hue4cpp::Light::setColor(const XYColor &amp;color, TransitionTime transition=std::chrono::milliseconds(400))'],['../classhue4cpp_1_1Light.html#acd25b20e0d3b6a198582e8baf06dc75e',1,'hue4cpp::Light::setColor(const RGBColor &amp;color, TransitionTime transition=std::chrono::milliseconds(400))'],['../classhue4cpp_1_1Light.html#a6a584a5783b688640b173d9a08f8ffa4',1,'hue4cpp::Light::setColor(float r, float g, float b, TransitionTime transition=std::chrono::milliseconds(400))']]],
+  ['setcolortemperature_6',['setColorTemperature',['../classhue4cpp_1_1Light.html#a294c8566e22e2acda9e4b1b069dd322c',1,'hue4cpp::Light']]],
+  ['setinfo_7',['setInfo',['../classhue4cpp_1_1Bridge.html#a832fdb78edf20fda11e9f1ce4f32de40',1,'hue4cpp::Bridge']]],
+  ['setreconnection_8',['setReconnection',['../classhue4cpp_1_1SSEClient.html#a05920a5c253c2918e42cdf83cdef59c3',1,'hue4cpp::SSEClient']]],
+  ['setresourcestate_9',['setResourceState',['../classhue4cpp_1_1StateManager.html#a5df17f3fc7f7bd469aaa141d885bf3e0',1,'hue4cpp::StateManager']]],
+  ['settimeout_10',['settimeout',['../classhue4cpp_1_1HttpClient.html#a7ff8845b3e4f8011460fa84ec36ff539',1,'hue4cpp::HttpClient::setTimeout()'],['../classhue4cpp_1_1SSEClient.html#ac2c9dbf9f683f82520d63a41378fc8e5',1,'hue4cpp::SSEClient::setTimeout()']]],
+  ['setverifyssl_11',['setverifyssl',['../classhue4cpp_1_1HttpClient.html#a6cf62bd8edf519730ab90e6267a53010',1,'hue4cpp::HttpClient::setVerifySsl()'],['../classhue4cpp_1_1SSEClient.html#aea0d58827c57f4e69c1f3270672042c3',1,'hue4cpp::SSEClient::setVerifySsl(bool verify)']]],
+  ['sseclient_12',['sseclient',['../classhue4cpp_1_1SSEClient.html#aa1564fd933b8e027957df5253acddb84',1,'hue4cpp::SSEClient::SSEClient(const std::string &amp;url)'],['../classhue4cpp_1_1SSEClient.html#a2529aa20be957e82cc3a27365d275140',1,'hue4cpp::SSEClient::SSEClient(const SSEClient &amp;)=delete'],['../classhue4cpp_1_1SSEClient.html#a62f99701ac2818a57bc110a5b87473ef',1,'hue4cpp::SSEClient::SSEClient(SSEClient &amp;&amp;) noexcept']]],
+  ['sseevent_13',['sseevent',['../structhue4cpp_1_1SSEEvent.html#a56db28b778a5fcfdd898acbb1de0337e',1,'hue4cpp::SSEEvent::SSEEvent()=default'],['../structhue4cpp_1_1SSEEvent.html#a1b95a3abaf820ec7fc12eb69f5ba4a59',1,'hue4cpp::SSEEvent::SSEEvent(const std::string &amp;type, const std::string &amp;payload, const std::string &amp;event_id=&quot;&quot;)']]],
+  ['start_14',['start',['../classhue4cpp_1_1StateManager.html#ac65570d0f17ba81e25e105b3eccc3d0e',1,'hue4cpp::StateManager']]],
+  ['statemanager_15',['statemanager',['../classhue4cpp_1_1StateManager.html#ab5ff79c0ad00f821a606f6fd8c1a27f7',1,'hue4cpp::StateManager::StateManager()'],['../classhue4cpp_1_1StateManager.html#a4c1b58eb9ed7276975ef8a26bcaae116',1,'hue4cpp::StateManager::StateManager(Bridge *bridge)'],['../classhue4cpp_1_1StateManager.html#a08f24999b096896ffae42906d1414a43',1,'hue4cpp::StateManager::StateManager(const StateManager &amp;)=delete'],['../classhue4cpp_1_1StateManager.html#a4f2d656812024c27ec58213951511aee',1,'hue4cpp::StateManager::StateManager(StateManager &amp;&amp;) noexcept']]],
+  ['stop_16',['stop',['../classhue4cpp_1_1StateManager.html#aa08e59f232ffdda5a1ef3ce0a5b797e5',1,'hue4cpp::StateManager']]],
+  ['stopconnection_17',['stopConnection',['../classhue4cpp_1_1SSEClient_1_1Impl.html#aebe83e8804d5f1dbf76d59c938398838',1,'hue4cpp::SSEClient::Impl']]]
+];

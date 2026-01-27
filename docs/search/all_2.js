@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['callback_5fmutex_0',['callback_mutex',['../classhue4cpp_1_1SSEClient_1_1Impl.html#a0b6a0d5b7bd8a101872a22f090016db1',1,'hue4cpp::SSEClient::Impl::callback_mutex'],['../classhue4cpp_1_1StateManager_1_1Impl.html#a3548a336b113e7f0c16f77a5a2ae427f',1,'hue4cpp::StateManager::Impl::callback_mutex']]],
+  ['callbacks_1',['callbacks',['../classhue4cpp_1_1StateManager_1_1Impl.html#a288067c6f9b0a9dd7eff8ec111a5d831',1,'hue4cpp::StateManager::Impl']]],
+  ['candlelight_2',['Candlelight',['../namespacehue4cpp_1_1colors.html#afc6d3f00908b9583e2fbed1862cc9273',1,'hue4cpp::colors']]],
+  ['capabilities_3',['capabilities',['../classhue4cpp_1_1Light_1_1Impl.html#acb5780590e141f1a74360b891624d74b',1,'hue4cpp::Light::Impl']]],
+  ['clearcache_4',['clearCache',['../classhue4cpp_1_1StateManager.html#ae182f089b1c31c3dead424e56ff49c8d',1,'hue4cpp::StateManager']]],
+  ['color_5',['color',['../structhue4cpp_1_1LightCapabilities.html#a6d7ce14c29d7810abeab95f2e0722a6e',1,'hue4cpp::LightCapabilities']]],
+  ['color_5ftemperature_6',['color_temperature',['../structhue4cpp_1_1LightCapabilities.html#ad9b1ee1e43ef19e51aa59ec1174a99dc',1,'hue4cpp::LightCapabilities']]],
+  ['color_5futils_2ecpp_7',['color_utils.cpp',['../color__utils_8cpp.html',1,'']]],
+  ['color_5futils_2eh_8',['color_utils.h',['../color__utils_8h.html',1,'']]],
+  ['colortemperature_9',['colortemperature',['../structhue4cpp_1_1ColorTemperature.html#af33d05a21599561b75d7a3aa0b80ce79',1,'hue4cpp::ColorTemperature::ColorTemperature()'],['../structhue4cpp_1_1ColorTemperature.html',1,'hue4cpp::ColorTemperature']]],
+  ['configuresession_10',['configureSession',['../classhue4cpp_1_1HttpClient_1_1Impl.html#ac9d198939f7f4e163d46e3c333509da0',1,'hue4cpp::HttpClient::Impl']]],
+  ['connect_11',['connect',['../classhue4cpp_1_1SSEClient.html#abc83d44fec538e82d41c1cf5810b88d7',1,'hue4cpp::SSEClient']]],
+  ['connected_12',['connected',['../classhue4cpp_1_1SSEClient_1_1Impl.html#a1c6ad4c219d98fd6a0b59112cd989b86',1,'hue4cpp::SSEClient::Impl']]],
+  ['connection_5fcallback_13',['connection_callback',['../classhue4cpp_1_1SSEClient_1_1Impl.html#a7705cc84987b51da442a9c84320d8da9',1,'hue4cpp::SSEClient::Impl']]],
+  ['connection_5fthread_14',['connection_thread',['../classhue4cpp_1_1SSEClient_1_1Impl.html#aa66bdd4d14f04d279bdff82d0301b37b',1,'hue4cpp::SSEClient::Impl']]],
+  ['connectionloop_15',['connectionLoop',['../classhue4cpp_1_1SSEClient_1_1Impl.html#a9798b3c654390c4875a3da06161b9385',1,'hue4cpp::SSEClient::Impl']]],
+  ['contributing_16',['Contributing',['../index.html#autotoc_md16',1,'']]],
+  ['convertresponse_17',['convertResponse',['../classhue4cpp_1_1HttpClient_1_1Impl.html#ad199c932da81a7734eb516ff48be1355',1,'hue4cpp::HttpClient::Impl']]],
+  ['coolwhite_18',['CoolWhite',['../namespacehue4cpp_1_1colors.html#aba6da866948962b7dc1723b68ec800b0',1,'hue4cpp::colors']]],
+  ['createcolormap_19',['createColorMap',['../namespacehue4cpp_1_1colors.html#aa07bbcd750fd53cd6625fb3c5e313921',1,'hue4cpp::colors']]],
+  ['createobject_20',['createObject',['../namespacehue4cpp_1_1json__utils.html#a67bcc54b133f01adbfa4bf9422860085',1,'hue4cpp::json_utils']]],
+  ['cyan_21',['Cyan',['../namespacehue4cpp_1_1colors.html#acacccfcd3e2acac0cf8e82322624b7cf',1,'hue4cpp::colors']]]
+];

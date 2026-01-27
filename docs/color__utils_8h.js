@@ -1,0 +1,26 @@
+var color__utils_8h =
+[
+    [ "getColorByName", "color__utils_8h.html#a38fbbd16196467af9e51695bbe5b8700", null ],
+    [ "getColorNames", "color__utils_8h.html#a1afadb304f08aa4b232192772176e2d2", null ],
+    [ "hsvToRgb", "color__utils_8h.html#a41cd241a05d3b481abf4c48dee225288", null ],
+    [ "rgbToHsv", "color__utils_8h.html#ab35759b8521b8a2401e6d33e3182e002", null ],
+    [ "rgbToXy", "color__utils_8h.html#a01da5d0ccb1db6fa51d433f2a2bf5d78", null ],
+    [ "xyToRgb", "color__utils_8h.html#a8568753c91f81ad67a0152780cdae6bd", null ],
+    [ "Black", "color__utils_8h.html#acbcf241845121bc7ec9f94d2ba06e07d", null ],
+    [ "Blue", "color__utils_8h.html#a440d52ecdd8a3a2918ca1911c6164c42", null ],
+    [ "Candlelight", "color__utils_8h.html#afc6d3f00908b9583e2fbed1862cc9273", null ],
+    [ "CoolWhite", "color__utils_8h.html#aba6da866948962b7dc1723b68ec800b0", null ],
+    [ "Cyan", "color__utils_8h.html#acacccfcd3e2acac0cf8e82322624b7cf", null ],
+    [ "Daylight", "color__utils_8h.html#a2f282395747e6f7b61ec40f02524be46", null ],
+    [ "Green", "color__utils_8h.html#a3bc86de0eda3244ea23fa476c4f2f0a8", null ],
+    [ "LightBlue", "color__utils_8h.html#ad04529328dc3632b9df700faa8af3748", null ],
+    [ "LightGreen", "color__utils_8h.html#a3945749ba1764060fea45327f969a9b2", null ],
+    [ "Magenta", "color__utils_8h.html#ae767ad852995652ac675fd33240b655a", null ],
+    [ "Orange", "color__utils_8h.html#aab300fdbe9b7b2507f6a220afaf71668", null ],
+    [ "Pink", "color__utils_8h.html#a35bc2ce143ba78439c42daf24e868b39", null ],
+    [ "Purple", "color__utils_8h.html#a2528265136c5126a56689976f471a55a", null ],
+    [ "Red", "color__utils_8h.html#ab4cb9989bf75f53d7982b2e5204e9e02", null ],
+    [ "WarmWhite", "color__utils_8h.html#a0c520e909fcde80609931d838cd2f7f4", null ],
+    [ "White", "color__utils_8h.html#a9a98c93de90ffe3b460de4b94a2299e7", null ],
+    [ "Yellow", "color__utils_8h.html#a2cd9427cc8eab9f1d0cfd45ff74731e6", null ]
+];
