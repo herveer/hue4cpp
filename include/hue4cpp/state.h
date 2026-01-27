@@ -14,6 +14,7 @@ namespace hue4cpp {
 
 	// Forward declarations
 	class Light;
+	class Sensor;
 	class Bridge;
 
 	/**
@@ -23,6 +24,9 @@ namespace hue4cpp {
 		LightStateChanged,
 		LightAdded,
 		LightRemoved,
+		SensorStateChanged,
+		SensorAdded,
+		SensorRemoved,
 		BridgeConnected,
 		BridgeDisconnected,
 		Unknown

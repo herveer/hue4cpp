@@ -94,6 +94,71 @@ namespace hue4cpp {
 	using TransitionTime = std::chrono::milliseconds;
 
 	/**
+	 * @brief Sensor types supported by the Hue API
+	 */
+	enum class SensorType {
+		Unknown,
+		Motion,
+		Temperature,
+		LightLevel,
+		Button
+	};
+
+	/**
+	 * @brief Motion sensor state
+	 */
+	struct MotionState {
+		bool motion;       ///< Motion detected
+		bool motion_valid; ///< Motion data is valid
+
+		MotionState() : motion(false), motion_valid(false) {}
+	};
+
+	/**
+	 * @brief Temperature sensor reading
+	 */
+	struct TemperatureState {
+		float temperature; ///< Temperature in degrees Celsius
+		bool temperature_valid; ///< Temperature data is valid
+
+		TemperatureState() : temperature(0.0f), temperature_valid(false) {}
+	};
+
+	/**
+	 * @brief Light level sensor reading
+	 */
+	struct LightLevelState {
+		uint32_t light_level; ///< Illuminance in raw units (logarithmic scale)
+		bool light_level_valid; ///< Light level data is valid
+
+		LightLevelState() : light_level(0), light_level_valid(false) {}
+	};
+
+	/**
+	 * @brief Button event types
+	 */
+	enum class ButtonEvent {
+		Unknown,
+		InitialPress,
+		ShortRelease,
+		LongRelease,
+		LongPress,
+		DoubleShortRelease,
+		Repeat
+	};
+
+	/**
+	 * @brief Button sensor state
+	 */
+	struct ButtonState {
+		ButtonEvent last_event; ///< Last button event
+		uint32_t button_id;     ///< Button ID (for multi-button devices)
+		uint32_t event_sequence; ///< Event sequence number
+
+		ButtonState() : last_event(ButtonEvent::Unknown), button_id(0), event_sequence(0) {}
+	};
+
+	/**
 	 * @brief Bridge connection information
 	 */
 	struct BridgeInfo {

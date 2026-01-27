@@ -272,7 +272,35 @@ namespace hue4cpp {
 						Event event(evt_type, resource_id, resource.dump());
 						pImpl->notifyCallbacks(event);
 					}
-					// TODO: Add more resource types here (buttons, rooms, zones, scenes, etc.)
+					// Handle sensor state updates (motion, temperature, light_level, button)
+					else if (resource_type == "motion" || resource_type == "temperature" ||
+						resource_type == "light_level" || resource_type == "button") {
+						// Update internal state cache with delta merge
+						if (event_type == "delete") {
+							// Remove from cache on delete
+							std::lock_guard<std::mutex> lock(pImpl->state_mutex);
+							pImpl->resource_states.erase(resource_id);
+						}
+						else {
+							// Merge delta into existing state for add/update events
+							pImpl->mergeResourceState(resource_id, resource);
+						}
+
+						// Determine event type
+						EventType evt_type = EventType::SensorStateChanged;
+						if (event_type == "add") {
+							evt_type = EventType::SensorAdded;
+						}
+						else if (event_type == "delete") {
+							evt_type = EventType::SensorRemoved;
+						}
+
+						// Notify callbacks with current state
+						std::string current_state = getResourceState(resource_id);
+						Event event(evt_type, resource_id, resource.dump());
+						pImpl->notifyCallbacks(event);
+					}
+					// TODO: Add more resource types here (rooms, zones, scenes, etc.)
 				}
 			}
 		}
