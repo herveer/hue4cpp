@@ -34,20 +34,20 @@ namespace hue4cpp {
 			return result;
 		};
 
-		if (!pImpl->bridge) {
+		if (!getBridge()) {
 			// No bridge - cannot get state, return default
 			return TemperatureState();
 		}
 
 		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = pImpl->bridge->getSensorState(getId(), getResourceTypeString(), false);
+		std::string state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), false);
 		auto temp_state = extractTemperature(state_json);
 		if (temp_state.temperature_valid) {
 			return temp_state;
 		}
 
 		// Try refreshing cache
-		state_json = pImpl->bridge->getSensorState(getId(), getResourceTypeString(), true);
+		state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), true);
 		return extractTemperature(state_json);
 	}
 

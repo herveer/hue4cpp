@@ -82,6 +82,12 @@ protected:
      */
     std::string getResourceTypeString() const;
     
+    /**
+     * @brief Get the bridge pointer (for derived classes)
+     * @return Pointer to parent bridge (may be nullptr)
+     */
+    Bridge* getBridge() const;
+    
     class Impl;
     std::unique_ptr<Impl> pImpl;
     

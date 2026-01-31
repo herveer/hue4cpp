@@ -32,20 +32,20 @@ namespace hue4cpp {
 			return result;
 		};
 
-		if (!pImpl->bridge) {
+		if (!getBridge()) {
 			// No bridge - cannot get state, return default
 			return MotionState();
 		}
 
 		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = pImpl->bridge->getSensorState(getId(), getResourceTypeString(), false);
+		std::string state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), false);
 		auto motion_state = extractMotion(state_json);
 		if (motion_state.motion_valid) {
 			return motion_state;
 		}
 
 		// Try refreshing cache
-		state_json = pImpl->bridge->getSensorState(getId(), getResourceTypeString(), true);
+		state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), true);
 		return extractMotion(state_json);
 	}
 
