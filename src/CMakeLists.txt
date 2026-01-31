@@ -2,13 +2,17 @@
 set(HUE4CPP_SOURCES
     bridge.cpp
     light.cpp
-    sensor.cpp
     state.cpp
     http_client.cpp
     json_utils.cpp
     discovery.cpp
     color_utils.cpp
     sse_client.cpp
+    sensors/sensor_base.cpp
+    sensors/motion_sensor.cpp
+    sensors/temperature_sensor.cpp
+    sensors/light_level_sensor.cpp
+    sensors/button_sensor.cpp
 )
 
 # Create the library
