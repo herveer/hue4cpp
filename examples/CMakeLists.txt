@@ -63,3 +63,11 @@ set_target_properties(performance_benchmark PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
+
+# Interactive demo
+add_executable(interactive_demo interactive_demo.cpp)
+target_link_libraries(interactive_demo PRIVATE hue4cpp)
+set_target_properties(interactive_demo PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)

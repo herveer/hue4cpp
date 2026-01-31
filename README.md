@@ -263,6 +263,13 @@ int main() {
 ```
 
 For more examples, see the `examples/` directory:
+- **`interactive_demo.cpp`** - **Comprehensive interactive console application** (recommended for learning)
+  - Complete menu-driven interface
+  - Bridge discovery and authentication
+  - Credential save/load functionality
+  - Full light control with capability detection
+  - Sensor monitoring
+  - Real-time event viewer
 - `basic_control.cpp` - Basic light control operations
 - `color_control.cpp` - Advanced color control and effects
 - `discovery.cpp` - Bridge discovery
