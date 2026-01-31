@@ -15,6 +15,10 @@ namespace hue4cpp {
 	// Forward declarations
 	class Light;
 	class Sensor;
+	class MotionSensor;
+	class TemperatureSensor;
+	class LightLevelSensor;
+	class ButtonSensor;
 	class StateManager;
 
 	/**
@@ -113,40 +117,40 @@ namespace hue4cpp {
 
 		/**
 		 * @brief Get all sensors connected to this bridge
-		 * @return Vector of Sensor objects
+		 * @return Vector of unique pointers to Sensor objects
 		 */
-		std::vector<Sensor> getSensors();
+		std::vector<std::unique_ptr<Sensor>> getSensors();
 
 		/**
 		 * @brief Get a specific sensor by ID
 		 * @param sensor_id The unique identifier of the sensor
-		 * @return Optional Sensor object
+		 * @return Unique pointer to Sensor object (nullptr if not found)
 		 */
-		std::optional<Sensor> getSensor(const std::string& sensor_id);
+		std::unique_ptr<Sensor> getSensor(const std::string& sensor_id);
 
 		/**
 		 * @brief Get all motion sensors
-		 * @return Vector of motion Sensor objects
+		 * @return Vector of unique pointers to MotionSensor objects
 		 */
-		std::vector<Sensor> getMotionSensors();
+		std::vector<std::unique_ptr<MotionSensor>> getMotionSensors();
 
 		/**
 		 * @brief Get all temperature sensors
-		 * @return Vector of temperature Sensor objects
+		 * @return Vector of unique pointers to TemperatureSensor objects
 		 */
-		std::vector<Sensor> getTemperatureSensors();
+		std::vector<std::unique_ptr<TemperatureSensor>> getTemperatureSensors();
 
 		/**
 		 * @brief Get all light level sensors
-		 * @return Vector of light level Sensor objects
+		 * @return Vector of unique pointers to LightLevelSensor objects
 		 */
-		std::vector<Sensor> getLightLevelSensors();
+		std::vector<std::unique_ptr<LightLevelSensor>> getLightLevelSensors();
 
 		/**
 		 * @brief Get all button sensors
-		 * @return Vector of button Sensor objects
+		 * @return Vector of unique pointers to ButtonSensor objects
 		 */
-		std::vector<Sensor> getButtonSensors();
+		std::vector<std::unique_ptr<ButtonSensor>> getButtonSensors();
 
 		/**
 		 * @brief Set the bridge information
