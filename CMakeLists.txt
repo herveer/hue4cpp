@@ -11,6 +11,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Fix MSVC runtime library linkage for Catch2 compatibility
+# This ensures consistent runtime library usage across all targets
+if(MSVC)
+    # Use dynamic runtime library (/MD for Release, /MDd for Debug)
+    # This matches vcpkg's default Catch2 build configuration
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+endif()
+
 # Options
 option(BUILD_TESTS "Build unit tests" ON)
 option(BUILD_EXAMPLES "Build example applications" ON)
