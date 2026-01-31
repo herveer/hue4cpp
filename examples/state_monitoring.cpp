@@ -210,14 +210,6 @@ int main() {
 		// Register event callback
 		auto callback_id = state_manager.registerCallback(printEventInfo);
 
-		// Step 5: Start monitoring
-		std::cout << "Starting SSE connection...\n";
-		auto start_result = state_manager.start();
-		if (!start_result) {
-			std::cout << "Failed to start state manager: " << start_result.error_message << std::endl;
-			return 1;
-		}
-
 		std::cout << "State monitoring active!\n\n";
 		std::cout << "===========================================\n";
 		std::cout << "  Monitoring light events... (Ctrl+C to stop)\n";
