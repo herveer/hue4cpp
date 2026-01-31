@@ -67,6 +67,10 @@ namespace hue4cpp {
 		return pImpl->getResourceTypeString();
 	}
 
+	Bridge* Sensor::getBridge() const {
+		return pImpl->bridge;
+	}
+
 	bool Sensor::isEnabled() const {
 		// Extract enabled state from cached JSON
 		std::function extractEnabled = [](const std::string& state_json) -> std::optional<bool> {

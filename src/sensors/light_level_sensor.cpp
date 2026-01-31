@@ -32,20 +32,20 @@ namespace hue4cpp {
 			return result;
 		};
 
-		if (!pImpl->bridge) {
+		if (!getBridge()) {
 			// No bridge - cannot get state, return default
 			return LightLevelState();
 		}
 
 		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = pImpl->bridge->getSensorState(getId(), getResourceTypeString(), false);
+		std::string state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), false);
 		auto light_state = extractLightLevel(state_json);
 		if (light_state.light_level_valid) {
 			return light_state;
 		}
 
 		// Try refreshing cache
-		state_json = pImpl->bridge->getSensorState(getId(), getResourceTypeString(), true);
+		state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), true);
 		return extractLightLevel(state_json);
 	}
 
