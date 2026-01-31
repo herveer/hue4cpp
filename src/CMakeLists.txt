@@ -13,6 +13,11 @@ set(HUE4CPP_SOURCES
     sensors/temperature_sensor.cpp
     sensors/light_level_sensor.cpp
     sensors/button_sensor.cpp
+    sensors/camera_motion_sensor.cpp
+    sensors/bell_button_sensor.cpp
+    sensors/relative_rotary_sensor.cpp
+    sensors/geolocation_sensor.cpp
+    sensors/tamper_sensor.cpp
 )
 
 # Create the library
