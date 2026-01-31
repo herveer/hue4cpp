@@ -566,6 +566,11 @@ namespace hue4cpp {
 		auto temperature = getTemperatureSensors();
 		auto light_level = getLightLevelSensors();
 		auto buttons = getButtonSensors();
+		auto camera_motion = getCameraMotionSensors();
+		auto bell_buttons = getBellButtonSensors();
+		auto relative_rotary = getRelativeRotarySensors();
+		auto geolocation = getGeolocationSensors();
+		auto tamper = getTamperSensors();
 
 		// Move them into the base class vector
 		for (auto& sensor : motion) {
@@ -580,13 +585,31 @@ namespace hue4cpp {
 		for (auto& sensor : buttons) {
 			all_sensors.push_back(std::move(sensor));
 		}
+		for (auto& sensor : camera_motion) {
+			all_sensors.push_back(std::move(sensor));
+		}
+		for (auto& sensor : bell_buttons) {
+			all_sensors.push_back(std::move(sensor));
+		}
+		for (auto& sensor : relative_rotary) {
+			all_sensors.push_back(std::move(sensor));
+		}
+		for (auto& sensor : geolocation) {
+			all_sensors.push_back(std::move(sensor));
+		}
+		for (auto& sensor : tamper) {
+			all_sensors.push_back(std::move(sensor));
+		}
 
 		return all_sensors;
 	}
 
 	std::unique_ptr<Sensor> Bridge::getSensor(const std::string& sensor_id) {
 		// Try each sensor type endpoint to find the sensor
-		std::vector<std::string> resource_types = { "motion", "temperature", "light_level", "button" };
+		std::vector<std::string> resource_types = { 
+			"motion", "temperature", "light_level", "button",
+			"camera_motion", "bell_button", "relative_rotary", "geolocation", "tamper"
+		};
 
 		for (const auto& resource_type : resource_types) {
 			if (!isAuthenticated() || pImpl->info.ip_address.empty() || sensor_id.empty()) {
@@ -669,6 +692,41 @@ namespace hue4cpp {
 			return {};
 		}
 		return pImpl->fetchSensorsByType<ButtonSensor>("button", this);
+	}
+
+	std::vector<std::unique_ptr<CameraMotionSensor>> Bridge::getCameraMotionSensors() {
+		if (!isAuthenticated()) {
+			return {};
+		}
+		return pImpl->fetchSensorsByType<CameraMotionSensor>("camera_motion", this);
+	}
+
+	std::vector<std::unique_ptr<BellButtonSensor>> Bridge::getBellButtonSensors() {
+		if (!isAuthenticated()) {
+			return {};
+		}
+		return pImpl->fetchSensorsByType<BellButtonSensor>("bell_button", this);
+	}
+
+	std::vector<std::unique_ptr<RelativeRotarySensor>> Bridge::getRelativeRotarySensors() {
+		if (!isAuthenticated()) {
+			return {};
+		}
+		return pImpl->fetchSensorsByType<RelativeRotarySensor>("relative_rotary", this);
+	}
+
+	std::vector<std::unique_ptr<GeolocationSensor>> Bridge::getGeolocationSensors() {
+		if (!isAuthenticated()) {
+			return {};
+		}
+		return pImpl->fetchSensorsByType<GeolocationSensor>("geolocation", this);
+	}
+
+	std::vector<std::unique_ptr<TamperSensor>> Bridge::getTamperSensors() {
+		if (!isAuthenticated()) {
+			return {};
+		}
+		return pImpl->fetchSensorsByType<TamperSensor>("tamper", this);
 	}
 
 	// isReachable is implemented in discovery.cpp

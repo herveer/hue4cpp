@@ -19,6 +19,11 @@ namespace hue4cpp {
 	class TemperatureSensor;
 	class LightLevelSensor;
 	class ButtonSensor;
+	class CameraMotionSensor;
+	class BellButtonSensor;
+	class RelativeRotarySensor;
+	class GeolocationSensor;
+	class TamperSensor;
 	class StateManager;
 
 	/**
@@ -151,6 +156,36 @@ namespace hue4cpp {
 		 * @return Vector of unique pointers to ButtonSensor objects
 		 */
 		std::vector<std::unique_ptr<ButtonSensor>> getButtonSensors();
+
+		/**
+		 * @brief Get all camera motion sensors
+		 * @return Vector of unique pointers to CameraMotionSensor objects
+		 */
+		std::vector<std::unique_ptr<CameraMotionSensor>> getCameraMotionSensors();
+
+		/**
+		 * @brief Get all bell button sensors (doorbells)
+		 * @return Vector of unique pointers to BellButtonSensor objects
+		 */
+		std::vector<std::unique_ptr<BellButtonSensor>> getBellButtonSensors();
+
+		/**
+		 * @brief Get all relative rotary sensors (dials/knobs)
+		 * @return Vector of unique pointers to RelativeRotarySensor objects
+		 */
+		std::vector<std::unique_ptr<RelativeRotarySensor>> getRelativeRotarySensors();
+
+		/**
+		 * @brief Get all geolocation sensors
+		 * @return Vector of unique pointers to GeolocationSensor objects
+		 */
+		std::vector<std::unique_ptr<GeolocationSensor>> getGeolocationSensors();
+
+		/**
+		 * @brief Get all tamper detection sensors
+		 * @return Vector of unique pointers to TamperSensor objects
+		 */
+		std::vector<std::unique_ptr<TamperSensor>> getTamperSensors();
 
 		/**
 		 * @brief Set the bridge information

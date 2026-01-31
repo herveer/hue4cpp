@@ -3,6 +3,11 @@
 #include "hue4cpp/sensors/temperature_sensor.h"
 #include "hue4cpp/sensors/light_level_sensor.h"
 #include "hue4cpp/sensors/button_sensor.h"
+#include "hue4cpp/sensors/camera_motion_sensor.h"
+#include "hue4cpp/sensors/bell_button_sensor.h"
+#include "hue4cpp/sensors/relative_rotary_sensor.h"
+#include "hue4cpp/sensors/geolocation_sensor.h"
+#include "hue4cpp/sensors/tamper_sensor.h"
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/json_utils.h"
 #include <iostream>
@@ -16,6 +21,11 @@ namespace hue4cpp {
 			if (type_str == "temperature") return SensorType::Temperature;
 			if (type_str == "light_level") return SensorType::LightLevel;
 			if (type_str == "button") return SensorType::Button;
+			if (type_str == "camera_motion") return SensorType::CameraMotion;
+			if (type_str == "bell_button") return SensorType::BellButton;
+			if (type_str == "relative_rotary") return SensorType::RelativeRotary;
+			if (type_str == "geolocation") return SensorType::Geolocation;
+			if (type_str == "tamper") return SensorType::Tamper;
 			return SensorType::Unknown;
 		}
 	}
@@ -42,6 +52,16 @@ namespace hue4cpp {
 				return "light_level";
 			case SensorType::Button:
 				return "button";
+			case SensorType::CameraMotion:
+				return "camera_motion";
+			case SensorType::BellButton:
+				return "bell_button";
+			case SensorType::RelativeRotary:
+				return "relative_rotary";
+			case SensorType::Geolocation:
+				return "geolocation";
+			case SensorType::Tamper:
+				return "tamper";
 			default:
 				return "";
 			}
@@ -164,6 +184,21 @@ namespace hue4cpp {
 			break;
 		case SensorType::Button:
 			sensor = std::make_unique<ButtonSensor>(id, bridge);
+			break;
+		case SensorType::CameraMotion:
+			sensor = std::make_unique<CameraMotionSensor>(id, bridge);
+			break;
+		case SensorType::BellButton:
+			sensor = std::make_unique<BellButtonSensor>(id, bridge);
+			break;
+		case SensorType::RelativeRotary:
+			sensor = std::make_unique<RelativeRotarySensor>(id, bridge);
+			break;
+		case SensorType::Geolocation:
+			sensor = std::make_unique<GeolocationSensor>(id, bridge);
+			break;
+		case SensorType::Tamper:
+			sensor = std::make_unique<TamperSensor>(id, bridge);
 			break;
 		default:
 			return nullptr;
