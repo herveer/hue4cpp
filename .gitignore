@@ -95,4 +95,5 @@ _codeql_detected_source_root
 # Authentication keys and secrets
 ################################################################################
 hue_auth_key.txt
+hue4cpp_demo_config.txt
 *.key
