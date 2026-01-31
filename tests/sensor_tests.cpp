@@ -327,3 +327,279 @@ TEST_CASE("Polymorphic sensor usage", "[sensor][polymorphism]") {
         }
     }
 }
+
+TEST_CASE("CameraMotionSensor construction and state", "[sensor][cameramotion]") {
+    Bridge bridge;
+    
+    SECTION("Construct and get type") {
+        CameraMotionSensor sensor("camera-motion-123", &bridge);
+        REQUIRE(sensor.getId() == "camera-motion-123");
+        REQUIRE(sensor.getType() == SensorType::CameraMotion);
+    }
+    
+    SECTION("Parse camera motion sensor data") {
+        nlohmann::json sensor_json = {
+            {"id", "camera-motion-123"},
+            {"type", "camera_motion"},
+            {"enabled", true},
+            {"motion", {
+                {"motion", true},
+                {"motion_valid", true}
+            }}
+        };
+        
+        CameraMotionSensor sensor("camera-motion-123", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        REQUIRE(sensor.getId() == "camera-motion-123");
+        REQUIRE(sensor.getType() == SensorType::CameraMotion);
+        REQUIRE(sensor.isEnabled());
+        
+        auto camera_motion_state = sensor.getCameraMotionState();
+        REQUIRE(camera_motion_state.motion == true);
+        REQUIRE(camera_motion_state.motion_valid == true);
+    }
+}
+
+TEST_CASE("BellButtonSensor construction and state", "[sensor][bellbutton]") {
+    Bridge bridge;
+    
+    SECTION("Construct and get type") {
+        BellButtonSensor sensor("bell-123", &bridge);
+        REQUIRE(sensor.getId() == "bell-123");
+        REQUIRE(sensor.getType() == SensorType::BellButton);
+    }
+    
+    SECTION("Parse bell button sensor data") {
+        nlohmann::json sensor_json = {
+            {"id", "bell-button-123"},
+            {"type", "bell_button"},
+            {"enabled", true},
+            {"button", {
+                {"last_event", "initial_press"},
+                {"event_sequence", 5}
+            }}
+        };
+        
+        BellButtonSensor sensor("bell-button-123", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        auto bell_state = sensor.getBellButtonState();
+        REQUIRE(bell_state.last_event == ButtonEvent::InitialPress);
+        REQUIRE(bell_state.event_sequence == 5);
+    }
+}
+
+TEST_CASE("RelativeRotarySensor construction and state", "[sensor][rotary]") {
+    Bridge bridge;
+    
+    SECTION("Construct and get type") {
+        RelativeRotarySensor sensor("rotary-123", &bridge);
+        REQUIRE(sensor.getId() == "rotary-123");
+        REQUIRE(sensor.getType() == SensorType::RelativeRotary);
+    }
+    
+    SECTION("Parse relative rotary sensor data - clockwise") {
+        nlohmann::json sensor_json = {
+            {"id", "rotary-123"},
+            {"type", "relative_rotary"},
+            {"enabled", true},
+            {"relative_rotary", {
+                {"last_event", {
+                    {"rotation", 5},
+                    {"direction", "clock_wise"},
+                    {"action", "short_release"}
+                }},
+                {"event_sequence", 10}
+            }}
+        };
+        
+        RelativeRotarySensor sensor("rotary-123", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        auto rotary_state = sensor.getRelativeRotaryState();
+        REQUIRE(rotary_state.steps == 5);
+        REQUIRE(rotary_state.direction == RotationDirection::ClockWise);
+        REQUIRE(rotary_state.action == ButtonEvent::ShortRelease);
+        REQUIRE(rotary_state.event_sequence == 10);
+    }
+    
+    SECTION("Parse relative rotary sensor data - counter-clockwise") {
+        nlohmann::json sensor_json = {
+            {"id", "rotary-456"},
+            {"type", "relative_rotary"},
+            {"enabled", true},
+            {"relative_rotary", {
+                {"last_event", {
+                    {"rotation", -3},
+                    {"direction", "counter_clock_wise"},
+                    {"action", "initial_press"}
+                }},
+                {"event_sequence", 11}
+            }}
+        };
+        
+        RelativeRotarySensor sensor("rotary-456", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        auto rotary_state = sensor.getRelativeRotaryState();
+        REQUIRE(rotary_state.steps == -3);
+        REQUIRE(rotary_state.direction == RotationDirection::CounterClockWise);
+        REQUIRE(rotary_state.action == ButtonEvent::InitialPress);
+    }
+}
+
+TEST_CASE("GeolocationSensor construction and state", "[sensor][geolocation]") {
+    Bridge bridge;
+    
+    SECTION("Construct and get type") {
+        GeolocationSensor sensor("geo-123", &bridge);
+        REQUIRE(sensor.getId() == "geo-123");
+        REQUIRE(sensor.getType() == SensorType::Geolocation);
+    }
+    
+    SECTION("Parse geolocation sensor data") {
+        nlohmann::json sensor_json = {
+            {"id", "geo-123"},
+            {"type", "geolocation"},
+            {"enabled", true},
+            {"is_configured", true}
+        };
+        
+        GeolocationSensor sensor("geo-123", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        auto geo_state = sensor.getGeolocationState();
+        REQUIRE(geo_state.is_configured == true);
+    }
+    
+    SECTION("Parse unconfigured geolocation sensor") {
+        nlohmann::json sensor_json = {
+            {"id", "geo-456"},
+            {"type", "geolocation"},
+            {"enabled", true},
+            {"is_configured", false}
+        };
+        
+        GeolocationSensor sensor("geo-456", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        auto geo_state = sensor.getGeolocationState();
+        REQUIRE(geo_state.is_configured == false);
+    }
+}
+
+TEST_CASE("TamperSensor construction and state", "[sensor][tamper]") {
+    Bridge bridge;
+    
+    SECTION("Construct and get type") {
+        TamperSensor sensor("tamper-123", &bridge);
+        REQUIRE(sensor.getId() == "tamper-123");
+        REQUIRE(sensor.getType() == SensorType::Tamper);
+    }
+    
+    SECTION("Parse tamper sensor data - tampered") {
+        nlohmann::json sensor_json = {
+            {"id", "tamper-123"},
+            {"type", "tamper"},
+            {"enabled", true},
+            {"tamper", {
+                {"tampered", true},
+                {"tamper_valid", true}
+            }}
+        };
+        
+        TamperSensor sensor("tamper-123", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        auto tamper_state = sensor.getTamperState();
+        REQUIRE(tamper_state.tampered == true);
+        REQUIRE(tamper_state.tamper_valid == true);
+    }
+    
+    SECTION("Parse tamper sensor data - not tampered") {
+        nlohmann::json sensor_json = {
+            {"id", "tamper-456"},
+            {"type", "tamper"},
+            {"enabled", true},
+            {"tamper", {
+                {"tampered", false},
+                {"tamper_valid", true}
+            }}
+        };
+        
+        TamperSensor sensor("tamper-456", &bridge);
+        sensor.updateFromJson(sensor_json);
+        
+        auto tamper_state = sensor.getTamperState();
+        REQUIRE(tamper_state.tampered == false);
+        REQUIRE(tamper_state.tamper_valid == true);
+    }
+}
+
+TEST_CASE("New sensor types in factory", "[sensor][factory]") {
+    Bridge bridge;
+    
+    SECTION("Create CameraMotionSensor from JSON") {
+        nlohmann::json sensor_json = {
+            {"id", "camera-abc"},
+            {"type", "camera_motion"},
+            {"enabled", true}
+        };
+        
+        auto sensor = createSensorFromJson(sensor_json, &bridge);
+        REQUIRE(sensor != nullptr);
+        REQUIRE(sensor->getType() == SensorType::CameraMotion);
+        
+        auto* camera_sensor = dynamic_cast<CameraMotionSensor*>(sensor.get());
+        REQUIRE(camera_sensor != nullptr);
+    }
+    
+    SECTION("Create BellButtonSensor from JSON") {
+        nlohmann::json sensor_json = {
+            {"id", "bell-def"},
+            {"type", "bell_button"},
+            {"enabled", true}
+        };
+        
+        auto sensor = createSensorFromJson(sensor_json, &bridge);
+        REQUIRE(sensor != nullptr);
+        REQUIRE(sensor->getType() == SensorType::BellButton);
+    }
+    
+    SECTION("Create RelativeRotarySensor from JSON") {
+        nlohmann::json sensor_json = {
+            {"id", "rotary-ghi"},
+            {"type", "relative_rotary"},
+            {"enabled", true}
+        };
+        
+        auto sensor = createSensorFromJson(sensor_json, &bridge);
+        REQUIRE(sensor != nullptr);
+        REQUIRE(sensor->getType() == SensorType::RelativeRotary);
+    }
+    
+    SECTION("Create GeolocationSensor from JSON") {
+        nlohmann::json sensor_json = {
+            {"id", "geo-jkl"},
+            {"type", "geolocation"},
+            {"enabled", true}
+        };
+        
+        auto sensor = createSensorFromJson(sensor_json, &bridge);
+        REQUIRE(sensor != nullptr);
+        REQUIRE(sensor->getType() == SensorType::Geolocation);
+    }
+    
+    SECTION("Create TamperSensor from JSON") {
+        nlohmann::json sensor_json = {
+            {"id", "tamper-mno"},
+            {"type", "tamper"},
+            {"enabled", true}
+        };
+        
+        auto sensor = createSensorFromJson(sensor_json, &bridge);
+        REQUIRE(sensor != nullptr);
+        REQUIRE(sensor->getType() == SensorType::Tamper);
+    }
+}
