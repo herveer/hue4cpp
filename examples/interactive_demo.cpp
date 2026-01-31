@@ -92,7 +92,14 @@ std::string getCurrentTime() {
         now.time_since_epoch()) % 1000;
 
     std::stringstream ss;
-    ss << std::put_time(std::localtime(&time_t), "%H:%M:%S");
+    // Use thread-safe version of localtime
+    std::tm tm_buf;
+#ifdef _WIN32
+    localtime_s(&tm_buf, &time_t);
+#else
+    localtime_r(&time_t, &tm_buf);
+#endif
+    ss << std::put_time(&tm_buf, "%H:%M:%S");
     ss << '.' << std::setfill('0') << std::setw(3) << ms.count();
     return ss.str();
 }
@@ -701,9 +708,8 @@ void showSensorsPage(AppState& state) {
             for (size_t i = 0; i < sensors.size(); i++) {
                 const auto& sensor = sensors[i];
                 
-                std::cout << (i + 1) << ". Sensor" << std::endl;
+                std::cout << (i + 1) << ". " << sensorTypeToString(sensor->getType()) << std::endl;
                 std::cout << "   ID: " << sensor->getId() << std::endl;
-                std::cout << "   Type: " << sensorTypeToString(sensor->getType()) << std::endl;
                 std::cout << "   Enabled: " << (sensor->isEnabled() ? "Yes" : "No") << std::endl;
                 std::cout << std::endl;
             }
