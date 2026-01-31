@@ -1,6 +1,6 @@
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/light.h"
-#include "hue4cpp/sensor.h"
+#include "hue4cpp/sensors.h"
 #include "hue4cpp/state.h"
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
@@ -36,7 +36,8 @@ namespace hue4cpp {
 		}
 
 		// Helper method to fetch sensors by resource type
-		std::vector<Sensor> fetchSensorsByType(const std::string& resource_type, Bridge* bridge) {
+		template<typename SensorType>
+		std::vector<std::unique_ptr<SensorType>> fetchSensorsByType(const std::string& resource_type, Bridge* bridge) {
 			if (auth_key.empty() || info.ip_address.empty()) {
 				return {};
 			}
@@ -72,14 +73,14 @@ namespace hue4cpp {
 					return {};
 				}
 
-				std::vector<Sensor> sensors;
+				std::vector<std::unique_ptr<SensorType>> sensors;
 				auto data = json_response["data"];
 
 				for (const auto& sensor_data : data) {
 					std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
 					if (!id.empty()) {
-						Sensor sensor(id, bridge);
-						sensor.updateFromJson(sensor_data);
+						auto sensor = std::make_unique<SensorType>(id, bridge);
+						sensor->updateFromJson(sensor_data);
 						sensors.push_back(std::move(sensor));
 					}
 				}
@@ -557,8 +558,8 @@ namespace hue4cpp {
 		}
 	}
 
-	std::vector<Sensor> Bridge::getSensors() {
-		std::vector<Sensor> all_sensors;
+	std::vector<std::unique_ptr<Sensor>> Bridge::getSensors() {
+		std::vector<std::unique_ptr<Sensor>> all_sensors;
 
 		// Collect all sensor types
 		auto motion = getMotionSensors();
@@ -566,15 +567,24 @@ namespace hue4cpp {
 		auto light_level = getLightLevelSensors();
 		auto buttons = getButtonSensors();
 
-		all_sensors.insert(all_sensors.end(), motion.begin(), motion.end());
-		all_sensors.insert(all_sensors.end(), temperature.begin(), temperature.end());
-		all_sensors.insert(all_sensors.end(), light_level.begin(), light_level.end());
-		all_sensors.insert(all_sensors.end(), buttons.begin(), buttons.end());
+		// Move them into the base class vector
+		for (auto& sensor : motion) {
+			all_sensors.push_back(std::move(sensor));
+		}
+		for (auto& sensor : temperature) {
+			all_sensors.push_back(std::move(sensor));
+		}
+		for (auto& sensor : light_level) {
+			all_sensors.push_back(std::move(sensor));
+		}
+		for (auto& sensor : buttons) {
+			all_sensors.push_back(std::move(sensor));
+		}
 
 		return all_sensors;
 	}
 
-	std::optional<Sensor> Bridge::getSensor(const std::string& sensor_id) {
+	std::unique_ptr<Sensor> Bridge::getSensor(const std::string& sensor_id) {
 		// Try each sensor type endpoint to find the sensor
 		std::vector<std::string> resource_types = { "motion", "temperature", "light_level", "button" };
 
@@ -620,8 +630,8 @@ namespace hue4cpp {
 					continue;
 				}
 
-				Sensor sensor(sensor_id, this);
-				sensor.updateFromJson(data[0]);
+				// Use factory to create the right sensor type
+				auto sensor = createSensorFromJson(data[0], this);
 				return sensor;
 
 			}
@@ -630,35 +640,35 @@ namespace hue4cpp {
 			}
 		}
 
-		return std::nullopt;
+		return nullptr;
 	}
 
-	std::vector<Sensor> Bridge::getMotionSensors() {
+	std::vector<std::unique_ptr<MotionSensor>> Bridge::getMotionSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType("motion", this);
+		return pImpl->fetchSensorsByType<MotionSensor>("motion", this);
 	}
 
-	std::vector<Sensor> Bridge::getTemperatureSensors() {
+	std::vector<std::unique_ptr<TemperatureSensor>> Bridge::getTemperatureSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType("temperature", this);
+		return pImpl->fetchSensorsByType<TemperatureSensor>("temperature", this);
 	}
 
-	std::vector<Sensor> Bridge::getLightLevelSensors() {
+	std::vector<std::unique_ptr<LightLevelSensor>> Bridge::getLightLevelSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType("light_level", this);
+		return pImpl->fetchSensorsByType<LightLevelSensor>("light_level", this);
 	}
 
-	std::vector<Sensor> Bridge::getButtonSensors() {
+	std::vector<std::unique_ptr<ButtonSensor>> Bridge::getButtonSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType("button", this);
+		return pImpl->fetchSensorsByType<ButtonSensor>("button", this);
 	}
 
 	// isReachable is implemented in discovery.cpp
