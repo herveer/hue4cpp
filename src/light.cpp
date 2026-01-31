@@ -3,6 +3,7 @@
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/color_utils.h"
+#include "hue4cpp/state.h"
 #include <cmath>
 #include <iostream>
 
@@ -487,6 +488,12 @@ namespace hue4cpp {
 		// Effects capability (check if effects key exists)
 		if (json.contains("effects")) {
 			pImpl->capabilities.effects = true;
+		}
+
+		// Cache the full JSON state in StateManager if we have a bridge
+			// This allows the getters to retrieve the state from cache
+		if (pImpl->bridge && !pImpl->id.empty()) {
+			pImpl->bridge->getStateManager().setResourceState(pImpl->id, json.dump());
 		}
 	}
 

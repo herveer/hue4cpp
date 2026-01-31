@@ -313,14 +313,6 @@ int main() {
 			printEventInfo(event);
 			});
 
-		// Start SSE connection
-		auto start_result = state_manager.start();
-		if (!start_result.isSuccess()) {
-			std::cout << "Failed to start state monitoring: " << start_result.error_message << std::endl;
-			return 1;
-		}
-
-		std::cout << "State monitoring started successfully!" << std::endl;
 		std::cout << "Waiting for sensor events..." << std::endl << std::endl;
 
 		// Keep monitoring until interrupted

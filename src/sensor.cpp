@@ -1,5 +1,6 @@
 #include "hue4cpp/sensor.h"
 #include "hue4cpp/bridge.h"
+#include "hue4cpp/state.h"
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
 #include <iostream>
