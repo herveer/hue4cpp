@@ -170,6 +170,12 @@ namespace hue4cpp {
 		}
 
 		pImpl->callbacks[id] = callback;
+
+		if (!isRunning()) {
+			// try to start the SSE client if not running
+			start();
+		}
+
 		return id;
 	}
 
