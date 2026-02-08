@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['impl_0',['impl',['../classhue4cpp_1_1Bridge_1_1Impl.html',1,'hue4cpp::Bridge::Impl'],['../classhue4cpp_1_1HttpClient_1_1Impl.html',1,'hue4cpp::HttpClient::Impl'],['../classhue4cpp_1_1Light_1_1Impl.html',1,'hue4cpp::Light::Impl'],['../classhue4cpp_1_1SSEClient_1_1Impl.html',1,'hue4cpp::SSEClient::Impl'],['../classhue4cpp_1_1StateManager_1_1Impl.html',1,'hue4cpp::StateManager::Impl']]],
-  ['invalidparameterexception_1',['InvalidParameterException',['../classhue4cpp_1_1InvalidParameterException.html',1,'hue4cpp']]]
+  ['httpclient_0',['HttpClient',['../classhue4cpp_1_1HttpClient.html',1,'hue4cpp']]],
+  ['httpresponse_1',['HttpResponse',['../structhue4cpp_1_1HttpResponse.html',1,'hue4cpp']]],
+  ['hueexception_2',['HueException',['../classhue4cpp_1_1HueException.html',1,'hue4cpp']]]
 ];

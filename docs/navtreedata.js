@@ -33,21 +33,22 @@ var NAVTREE =
     [ "Quick Start", "index.html#autotoc_md6", [
       [ "Installation", "index.html#autotoc_md7", null ],
       [ "Usage Example", "index.html#autotoc_md8", null ],
-      [ "Real-time State Monitoring", "index.html#autotoc_md9", null ]
+      [ "Real-time State Monitoring", "index.html#autotoc_md9", null ],
+      [ "Sensor Monitoring", "index.html#autotoc_md10", null ]
     ] ],
-    [ "Building", "index.html#autotoc_md10", [
-      [ "Standard Build", "index.html#autotoc_md11", null ],
-      [ "Build Options", "index.html#autotoc_md12", null ]
+    [ "Building", "index.html#autotoc_md11", [
+      [ "Standard Build", "index.html#autotoc_md12", null ],
+      [ "Build Options", "index.html#autotoc_md13", null ]
     ] ],
-    [ "Testing", "index.html#autotoc_md13", null ],
-    [ "Documentation", "index.html#autotoc_md14", null ],
-    [ "Project Structure", "index.html#autotoc_md15", null ],
-    [ "Contributing", "index.html#autotoc_md16", [
-      [ "Development Guidelines", "index.html#autotoc_md17", null ]
+    [ "Testing", "index.html#autotoc_md14", null ],
+    [ "Documentation", "index.html#autotoc_md15", null ],
+    [ "Project Structure", "index.html#autotoc_md16", null ],
+    [ "Contributing", "index.html#autotoc_md17", [
+      [ "Development Guidelines", "index.html#autotoc_md18", null ]
     ] ],
-    [ "License", "index.html#autotoc_md18", null ],
-    [ "Acknowledgments", "index.html#autotoc_md19", null ],
-    [ "Support", "index.html#autotoc_md20", null ],
+    [ "License", "index.html#autotoc_md19", null ],
+    [ "Acknowledgments", "index.html#autotoc_md20", null ],
+    [ "Support", "index.html#autotoc_md21", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -64,7 +65,7 @@ var NAVTREE =
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
@@ -82,8 +83,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classhue4cpp_1_1SSEClient_1_1Impl.html#a2dea44b531cabbc44c5ef92afefd5f1c",
-"namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a98839233e5c2d2801943bb85cec9c07b"
+"classhue4cpp_1_1Light.html#ad47066c42faf7c0e7372f15bce39f732",
+"classhue4cpp_1_1TemperatureSensor.html#ae9e8002430c3a76bf357254b758fd3e7",
+"namespacehue4cpp_1_1json__utils.html#a52dc7e3f7ec34170ebdfc06b50022218",
+"structhue4cpp_1_1Version.html#a0fdce1ce59ce1d34df2bcf1c8672567a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

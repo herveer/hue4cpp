@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['timeouterror_0',['TimeoutError',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a2ce01afd7e833fc13c63448689ea762a',1,'hue4cpp']]]
+  ['motion_0',['Motion',['../namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a8226588f03da49b857e5ddf8c508dd2d',1,'hue4cpp']]]
 ];

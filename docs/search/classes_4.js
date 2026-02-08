@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['httpclient_0',['HttpClient',['../classhue4cpp_1_1HttpClient.html',1,'hue4cpp']]],
-  ['httpresponse_1',['HttpResponse',['../structhue4cpp_1_1HttpResponse.html',1,'hue4cpp']]],
-  ['hueexception_2',['HueException',['../classhue4cpp_1_1HueException.html',1,'hue4cpp']]]
+  ['geolocationsensor_0',['GeolocationSensor',['../classhue4cpp_1_1GeolocationSensor.html',1,'hue4cpp']]],
+  ['geolocationstate_1',['GeolocationState',['../structhue4cpp_1_1GeolocationState.html',1,'hue4cpp']]]
 ];

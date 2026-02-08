@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['networkerror_0',['NetworkError',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a47423b8444592efbe331550c5620e821',1,'hue4cpp']]]
+  ['geolocation_0',['Geolocation',['../namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a323d4eb70b252acb4a04eaf9e0882597',1,'hue4cpp']]]
 ];

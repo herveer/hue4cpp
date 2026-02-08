@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['invalidparameter_0',['InvalidParameter',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a627251310d3384b591e4138be21145d5',1,'hue4cpp']]],
-  ['invalidrequest_1',['InvalidRequest',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680ad544eb3da2f68d24cf92a8519ed53a31',1,'hue4cpp']]]
+  ['cameramotion_0',['CameraMotion',['../namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a95432e27727c4639d8e6bf6867c26ac1',1,'hue4cpp']]],
+  ['clockwise_1',['ClockWise',['../namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333ad5a4d3410a83d1bcdf2ae918a53aabd6',1,'hue4cpp']]],
+  ['counterclockwise_2',['CounterClockWise',['../namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333a5a8821d3fbf32174429e2b28bc3b031b',1,'hue4cpp']]]
 ];

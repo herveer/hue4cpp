@@ -111,6 +111,13 @@ Features</h1>
 <li>Effects: Alert/notification patterns</li>
 </ul>
 </li>
+<li>📊 <b>Sensor Support</b>: Read and monitor all sensor types<ul>
+<li>Motion Sensors: Detect motion events</li>
+<li>Temperature Sensors: Monitor ambient temperature (°C)</li>
+<li>Light Level Sensors: Track illuminance levels</li>
+<li>Button Sensors: Capture button press events (dimmer switches, tap dials)</li>
+</ul>
+</li>
 <li>🎨 <b>Advanced Color Support</b>:<ul>
 <li>RGB ↔ XY color space conversion</li>
 <li>HSV ↔ RGB color conversion</li>
@@ -119,7 +126,7 @@ Features</h1>
 </ul>
 </li>
 <li>🔄 <b>Real-time State Updates</b>: Server-Sent Events (SSE) for instant state synchronization</li>
-<li>📡 <b>Event Callbacks</b>: Observer pattern for light and bridge state changes</li>
+<li>📡 <b>Event Callbacks</b>: Observer pattern for light, sensor, and bridge state changes</li>
 <li>🔧 <b>Capability-aware</b>: Automatically detects and adapts to device capabilities</li>
 <li>🚀 <b>Lightweight</b>: Minimal dependencies, fast and efficient</li>
 <li>🔧 <b>Cross-platform</b>: Works on Windows, Linux, and macOS</li>
@@ -272,24 +279,89 @@ Real-time State Monitoring</h2>
 <div class="line">    </div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-<div class="ttc" id="astructhue4cpp_1_1Event_html"><div class="ttname"><a href="structhue4cpp_1_1Event.html">hue4cpp::Event</a></div><div class="ttdoc">Event data structure.</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00034">state.h:34</a></div></div>
-<div class="ttc" id="astructhue4cpp_1_1Event_html_a5408acfcb45e34194618c1e7ac711d75"><div class="ttname"><a href="structhue4cpp_1_1Event.html#a5408acfcb45e34194618c1e7ac711d75">hue4cpp::Event::type</a></div><div class="ttdeci">EventType type</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00035">state.h:35</a></div></div>
+<div class="ttc" id="astructhue4cpp_1_1Event_html"><div class="ttname"><a href="structhue4cpp_1_1Event.html">hue4cpp::Event</a></div><div class="ttdoc">Event data structure.</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00038">state.h:38</a></div></div>
+<div class="ttc" id="astructhue4cpp_1_1Event_html_a5408acfcb45e34194618c1e7ac711d75"><div class="ttname"><a href="structhue4cpp_1_1Event.html#a5408acfcb45e34194618c1e7ac711d75">hue4cpp::Event::type</a></div><div class="ttdeci">EventType type</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00039">state.h:39</a></div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
+Sensor Monitoring</h2>
+<p>Access and monitor sensors (motion, temperature, light level, buttons):</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="hue4cpp_8h.html">hue4cpp/hue4cpp.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    <span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacehue4cpp.html">hue4cpp</a>;</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// Set up bridge and authenticate...</span></div>
+<div class="line">    <span class="keyword">auto</span> bridges = Bridge::discover();</div>
+<div class="line">    <span class="keyword">auto</span>&amp; bridge = bridges[0];</div>
+<div class="line">    bridge.authenticate(<span class="stringliteral">&quot;your-app-name&quot;</span>);</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// Get all sensors</span></div>
+<div class="line">    <span class="keyword">auto</span> sensors = bridge.getSensors();</div>
+<div class="line">    </div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; sensor : sensors) {</div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;Sensor: &quot;</span> &lt;&lt; sensor.getId() &lt;&lt; std::endl;</div>
+<div class="line">        </div>
+<div class="line">        <span class="comment">// Check sensor type and read state</span></div>
+<div class="line">        <span class="keywordflow">if</span> (sensor.getType() == SensorType::Motion) {</div>
+<div class="line">            <span class="keyword">auto</span> state = sensor.getMotionState();</div>
+<div class="line">            <span class="keywordflow">if</span> (state.has_value()) {</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;  Motion: &quot;</span> &lt;&lt; (state-&gt;motion ? <span class="stringliteral">&quot;Detected&quot;</span> : <span class="stringliteral">&quot;None&quot;</span>) &lt;&lt; std::endl;</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sensor.getType() == SensorType::Temperature) {</div>
+<div class="line">            <span class="keyword">auto</span> state = sensor.getTemperatureState();</div>
+<div class="line">            <span class="keywordflow">if</span> (state.has_value()) {</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;  Temperature: &quot;</span> &lt;&lt; state-&gt;temperature &lt;&lt; <span class="stringliteral">&quot; °C&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sensor.getType() == SensorType::LightLevel) {</div>
+<div class="line">            <span class="keyword">auto</span> state = sensor.getLightLevelState();</div>
+<div class="line">            <span class="keywordflow">if</span> (state.has_value()) {</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;  Light Level: &quot;</span> &lt;&lt; state-&gt;light_level &lt;&lt; std::endl;</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+<div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sensor.getType() == SensorType::Button) {</div>
+<div class="line">            <span class="keyword">auto</span> state = sensor.getButtonState();</div>
+<div class="line">            <span class="keywordflow">if</span> (state.has_value()) {</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;  Last Button Event: &quot;</span> &lt;&lt; <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(state-&gt;last_event) &lt;&lt; std::endl;</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// Get sensors by type</span></div>
+<div class="line">    <span class="keyword">auto</span> motion_sensors = bridge.getMotionSensors();</div>
+<div class="line">    <span class="keyword">auto</span> temp_sensors = bridge.getTemperatureSensors();</div>
+<div class="line">    <span class="keyword">auto</span> light_sensors = bridge.getLightLevelSensors();</div>
+<div class="line">    <span class="keyword">auto</span> button_sensors = bridge.getButtonSensors();</div>
+<div class="line">    </div>
+<div class="line">    <span class="comment">// Monitor sensor events in real-time</span></div>
+<div class="line">    <span class="keyword">auto</span>&amp; state_manager = bridge.getStateManager();</div>
+<div class="line">    state_manager.registerCallback([](<span class="keyword">const</span> <a class="code hl_struct" href="structhue4cpp_1_1Event.html">Event</a>&amp; event) {</div>
+<div class="line">        <span class="keywordflow">if</span> (event.<a class="code hl_variable" href="structhue4cpp_1_1Event.html#a5408acfcb45e34194618c1e7ac711d75">type</a> == EventType::SensorStateChanged) {</div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;Sensor state changed: &quot;</span> &lt;&lt; <span class="keyword">event</span>.resource_id &lt;&lt; std::endl;</div>
+<div class="line">        }</div>
+<div class="line">    });</div>
+<div class="line">    state_manager.start();</div>
+<div class="line">    </div>
+<div class="line">    <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
 </div><!-- fragment --><p>For more examples, see the <code>examples/</code> directory:</p><ul>
 <li><code>basic_control.cpp</code> - Basic light control operations</li>
 <li><code>color_control.cpp</code> - Advanced color control and effects</li>
 <li><code><a class="el" href="discovery_8cpp.html" title="Implementation of bridge discovery methods.">discovery.cpp</a></code> - Bridge discovery</li>
 <li><code>authentication.cpp</code> - Authentication flow</li>
 <li><code>state_monitoring.cpp</code> - Real-time state monitoring with SSE</li>
+<li><code>sensor_monitoring.cpp</code> - Sensor discovery and real-time monitoring</li>
 <li><code>performance_benchmark.cpp</code> - Performance benchmarks</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Building</h1>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 Standard Build</h2>
 <div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 <div class="line">cmake .. -DCMAKE_TOOLCHAIN_FILE=[path-to-vcpkg]/scripts/buildsystems/vcpkg.cmake</div>
 <div class="line">cmake --build .</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md13"></a>
 Build Options</h2>
 <ul>
 <li><code>BUILD_TESTS</code>: Build unit tests (default: ON)</li>
@@ -297,19 +369,19 @@ Build Options</h2>
 <li><code>BUILD_SHARED_LIBS</code>: Build as shared library (default: OFF)</li>
 </ul>
 <p>Example: </p><div class="fragment"><div class="line">cmake .. -DCMAKE_TOOLCHAIN_FILE=[vcpkg-path] -DBUILD_TESTS=ON -DBUILD_EXAMPLES=ON</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
 Testing</h1>
 <p>The project uses Catch2 for unit testing:</p>
 <div class="fragment"><div class="line">cd build</div>
 <div class="line">ctest --output-on-failure</div>
 </div><!-- fragment --><p>Or run the test executable directly: </p><div class="fragment"><div class="line">./tests/hue4cpp_tests</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md15"></a>
 Documentation</h1>
 <ul>
 <li><a href="doc/hueApiV2/">Philips Hue API V2 Documentation</a> - Complete API reference</li>
 <li>ROADMAP.md - Development roadmap and upcoming features</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Project Structure</h1>
 <div class="fragment"><div class="line">hue4cpp/</div>
 <div class="line">├── CMakeLists.txt          # Root CMake configuration</div>
@@ -358,10 +430,10 @@ Project Structure</h1>
 <div class="line">│   └── authentication.cpp</div>
 <div class="line">└── doc/                    # Documentation</div>
 <div class="line">    └── hueApiV2/           # API V2 documentation</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
 Contributing</h1>
 <p>Contributions are welcome! Please feel free to submit issues and pull requests.</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Development Guidelines</h2>
 <ol type="1">
 <li><b>Code Style</b>: Follow the existing code style (readable, well-commented)</li>
@@ -369,16 +441,16 @@ Development Guidelines</h2>
 <li><b>Documentation</b>: Update README and inline documentation</li>
 <li><b>Commits</b>: Use clear, descriptive commit messages</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 License</h1>
 <p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Acknowledgments</h1>
 <ul>
 <li>Philips Hue for their comprehensive API documentation</li>
 <li>The C++ community for excellent tools and libraries</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 Support</h1>
 <p>For issues, questions, or contributions, please use the <a href="https://github.com/herve-er/hue4cpp/issues">GitHub issue tracker</a>.</p>
 <hr  />
