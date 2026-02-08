@@ -124,7 +124,7 @@ namespace hue4cpp {
 		// Try refreshing cache
 		state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
 		enabled_opt = extractEnabled(state_json);
-		return enabled_opt.value_or(false);
+		return enabled_opt.value_or(true);
 	}
 
 	Result<void> Sensor::refresh() {

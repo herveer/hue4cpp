@@ -23,7 +23,7 @@ namespace hue4cpp {
 						auto temp_obj = state["temperature"];
 						// Temperature is in deci-degrees Celsius (divide by 100)
 						int temp_raw = json_utils::getValueOr<int>(temp_obj, "temperature", 0);
-						result.temperature = temp_raw / 100.0f;
+						result.temperature = temp_raw;
 						result.temperature_valid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", true);
 					}
 				}
