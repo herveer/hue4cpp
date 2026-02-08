@@ -9,6 +9,7 @@
 #include "hue4cpp/sensors/geolocation_sensor.h"
 #include "hue4cpp/sensors/tamper_sensor.h"
 #include "hue4cpp/bridge.h"
+#include "hue4cpp/state.h"
 #include "hue4cpp/json_utils.h"
 #include <iostream>
 
