@@ -186,7 +186,7 @@ namespace hue4cpp {
 
 	std::string StateManager::getResourceState(const std::string& resource_id) const {
 		std::lock_guard<std::mutex> lock(state_mutex_);
-		if (!sse_client_->isConnected()) {
+		if (!sse_client_ || !sse_client_->isConnected()) {
 			// If sse is not connected the state is not reliable
 			return "";
 		}

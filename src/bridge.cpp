@@ -54,7 +54,8 @@ namespace hue4cpp {
 		return *this;
 	}
 
-	// Template method implementation - must be in source file to access sensor types
+	// Template method implementation - must be in source file to access sensor type headers
+	// This avoids exposing sensor type dependencies in the public header
 	template<typename SensorType>
 	std::vector<std::unique_ptr<SensorType>> Bridge::fetchSensorsByType(const std::string& resource_type) {
 		if (auth_key_.empty() || info_.ip_address.empty()) {
