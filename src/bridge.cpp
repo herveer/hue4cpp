@@ -112,13 +112,6 @@ namespace hue4cpp {
 		}
 	}
 
-	Bridge::~Bridge() {
-		// Stop SSE connection when bridge is destroyed
-		if (pImpl && state_manager_ && state_manager_->isRunning()) {
-			state_manager_->stop();
-		}
-	}
-
 
 	// Discovery methods are implemented in discovery.cpp
 

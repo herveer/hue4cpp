@@ -279,5 +279,3 @@ bool SSEClient::isConnected() const {
 }
 
 } // namespace hue4cpp
-
-} // namespace hue4cpp
