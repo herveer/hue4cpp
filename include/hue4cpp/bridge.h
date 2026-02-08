@@ -229,8 +229,12 @@ namespace hue4cpp {
 		bool isReachable() const;
 
 	private:
-		class Impl;
-		std::unique_ptr<Impl> pImpl;
+		BridgeInfo info_;
+		std::string auth_key_;
+		std::unique_ptr<StateManager> state_manager_;
+
+		template<typename SensorType>
+		std::vector<std::unique_ptr<SensorType>> fetchSensorsByType(const std::string& resource_type);
 	};
 
 } // namespace hue4cpp

@@ -3,7 +3,6 @@
 #include "../types.h"
 #include <nlohmann/json.hpp>
 #include <string>
-#include <memory>
 
 /**
  * @file sensor_base.h
@@ -26,15 +25,15 @@ public:
     /**
      * @brief Virtual destructor
      */
-    virtual ~Sensor();
+    virtual ~Sensor() = default;
     
     // Prevent copying (use smart pointers for polymorphic storage)
     Sensor(const Sensor&) = delete;
     Sensor& operator=(const Sensor&) = delete;
     
     // Allow moving
-    Sensor(Sensor&&) noexcept;
-    Sensor& operator=(Sensor&&) noexcept;
+    Sensor(Sensor&&) noexcept = default;
+    Sensor& operator=(Sensor&&) noexcept = default;
     
     /**
      * @brief Get the sensor's unique identifier
@@ -88,8 +87,9 @@ protected:
      */
     Bridge* getBridge() const;
     
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
+    std::string id_;
+    Bridge* bridge_;
+    SensorType type_;
     
     friend class Bridge;
 };
