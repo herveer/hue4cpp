@@ -1,9 +1,13 @@
 #pragma once
 
 #include "types.h"
+#include <nlohmann/json.hpp>
 #include <functional>
 #include <string>
 #include <memory>
+#include <map>
+#include <atomic>
+#include <mutex>
 
 /**
  * @file state.h
@@ -16,6 +20,7 @@ namespace hue4cpp {
 	class Light;
 	class Sensor;
 	class Bridge;
+	class SSEClient;
 
 	/**
 	 * @brief Event types for state changes
@@ -144,8 +149,21 @@ namespace hue4cpp {
 		void clearCache();
 
 	private:
-		class Impl;
-		std::unique_ptr<Impl> pImpl;
+		Bridge* bridge_;
+		std::atomic<bool> running_;
+		std::unique_ptr<SSEClient> sse_client_;
+
+		// Thread-safe state management - generic for all resource types
+		mutable std::mutex state_mutex_;
+		std::map<std::string, std::string> resource_states_; // resource_id -> JSON state
+
+		// Thread-safe callback management
+		std::mutex callback_mutex_;
+		std::map<uint64_t, EventCallback> callbacks_;
+		uint64_t next_callback_id_;
+
+		void notifyCallbacks(const Event& event);
+		void mergeResourceState(const std::string& resource_id, const nlohmann::json& delta);
 	};
 
 } // namespace hue4cpp

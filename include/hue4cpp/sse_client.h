@@ -5,6 +5,9 @@
 #include <string>
 #include <memory>
 #include <chrono>
+#include <atomic>
+#include <thread>
+#include <mutex>
 
 /**
  * @file sse_client.h
@@ -120,8 +123,32 @@ public:
     bool isConnected() const;
     
 private:
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
+    std::string url_;
+    std::string auth_header_name_;
+    std::string auth_header_value_;
+    std::chrono::seconds timeout_;
+    bool verify_ssl_;
+    
+    // Reconnection settings
+    bool reconnection_enabled_;
+    std::chrono::seconds reconnect_initial_delay_;
+    std::chrono::seconds reconnect_max_delay_;
+    
+    // Connection state
+    std::atomic<bool> connected_;
+    std::atomic<bool> should_run_;
+    std::unique_ptr<std::thread> connection_thread_;
+    
+    // Callbacks
+    SSEEventCallback event_callback_;
+    SSEConnectionCallback connection_callback_;
+    std::mutex callback_mutex_;
+    
+    void stopConnection();
+    void notifyConnectionChange(bool is_connected);
+    void notifyEvent(const SSEEvent& event);
+    bool parseSSELine(const std::string& line, SSEEvent& current_event);
+    void connectionLoop();
 };
 
 } // namespace hue4cpp

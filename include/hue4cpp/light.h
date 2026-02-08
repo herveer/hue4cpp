@@ -4,7 +4,6 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include <optional>
-#include <memory>
 
 /**
  * @file light.h
@@ -39,13 +38,13 @@ public:
     /**
      * @brief Destructor
      */
-    ~Light();
+    ~Light() = default;
     
     // Allow copying and moving
-    Light(const Light&);
-    Light& operator=(const Light&);
-    Light(Light&&) noexcept;
-    Light& operator=(Light&&) noexcept;
+    Light(const Light&) = default;
+    Light& operator=(const Light&) = default;
+    Light(Light&&) noexcept = default;
+    Light& operator=(Light&&) noexcept = default;
     
     /**
      * @brief Get the light's unique identifier
@@ -178,8 +177,13 @@ public:
     void updateFromJson(const nlohmann::json& json);
     
 private:
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
+    std::string id_;
+    std::string name_;
+    Bridge* bridge_;
+    LightCapabilities capabilities_;
+    
+    Result<void> sendUpdate(const nlohmann::json& state_update);
+    void addTransitionTime(nlohmann::json& update, TransitionTime transition);
     
     friend class Bridge;
 };

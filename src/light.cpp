@@ -14,131 +14,105 @@ namespace hue4cpp {
 		constexpr uint16_t MIN_MIREDS = 153;  // ~6500K (cool white)
 		constexpr uint16_t MAX_MIREDS = 500;  // ~2000K (warm white)
 	}
-	class Light::Impl {
-	public:
-		std::string id;
-		std::string name;
-		Bridge* bridge;
-		LightCapabilities capabilities;
-
-		Impl() : bridge(nullptr) {
-			capabilities.on_off = true;
-			capabilities.brightness = false;
-			capabilities.color = false;
-			capabilities.color_temperature = false;
-			capabilities.effects = false;
-		}
-
-		Impl(const std::string& light_id, Bridge* parent_bridge)
-			: id(light_id), bridge(parent_bridge) {
-			capabilities.on_off = true;
-			capabilities.brightness = false;
-			capabilities.color = false;
-			capabilities.color_temperature = false;
-			capabilities.effects = false;
-		}
-
-		// Helper to send a PUT request to update light state
-		Result<void> sendUpdate(const nlohmann::json& state_update) {
-			if (!bridge || !bridge->isAuthenticated()) {
-				return Result<void>(ErrorCode::AuthenticationRequired,
-					"Bridge not authenticated");
-			}
-
-			const auto& bridge_info = bridge->getInfo();
-			if (bridge_info.ip_address.empty() || id.empty()) {
-				return Result<void>(ErrorCode::InvalidParameter,
-					"Bridge IP or light ID not set");
-			}
-
-			try {
-				HttpClient client;
-				client.setVerifySsl(false);
-				client.setTimeout(std::chrono::milliseconds(5000));
-
-				std::string url = "https://" + bridge_info.ip_address +
-					"/clip/v2/resource/light/" + id;
-
-				std::map<std::string, std::string> headers;
-				headers["hue-application-key"] = bridge->getAuthenticationKey();
-
-				std::string body = json_utils::toString(state_update);
-				auto response = client.put(url, body, headers);
-
-				if (!response.isSuccess()) {
-					if (response.status_code == 401 || response.status_code == 403) {
-						return Result<void>(ErrorCode::AuthenticationFailed,
-							"Authentication failed");
-					}
-					return Result<void>(ErrorCode::NetworkError,
-						"HTTP request failed: " + response.error_message);
-				}
-
-				// Parse response to check for errors
-				auto json_response = json_utils::parse(response.body);
-
-				if (json_response.contains("errors") && json_response["errors"].is_array()) {
-					auto errors = json_response["errors"];
-					if (!errors.empty()) {
-						std::string error_desc = json_utils::getValueOr<std::string>(
-							errors[0], "description", "Unknown error");
-						return Result<void>(ErrorCode::InvalidRequest, error_desc);
-					}
-				}
-
-				return Result<void>();
-
-			}
-			catch (const JsonParseException& e) {
-				return Result<void>(ErrorCode::InvalidRequest,
-					std::string("JSON error: ") + e.what());
-			}
-			catch (const std::exception& e) {
-				return Result<void>(ErrorCode::UnknownError,
-					std::string("Error: ") + e.what());
-			}
-		}
-
-		// Helper to add transition time to update JSON
-		void addTransitionTime(nlohmann::json& update, TransitionTime transition) {
-			if (transition.count() > 0) {
-				// Hue API V2 uses milliseconds for duration
-				update["dynamics"] = { {"duration", static_cast<int>(transition.count())} };
-			}
-		}
-	};
 
 	// Light implementation
-	Light::Light() : pImpl(std::make_unique<Impl>()) {}
+	Light::Light()
+		: bridge_(nullptr)
+	{
+		capabilities_.on_off = true;
+		capabilities_.brightness = false;
+		capabilities_.color = false;
+		capabilities_.color_temperature = false;
+		capabilities_.effects = false;
+	}
 
 	Light::Light(const std::string& id, Bridge* bridge)
-		: pImpl(std::make_unique<Impl>(id, bridge)) {
+		: id_(id), bridge_(bridge)
+	{
+		capabilities_.on_off = true;
+		capabilities_.brightness = false;
+		capabilities_.color = false;
+		capabilities_.color_temperature = false;
+		capabilities_.effects = false;
 	}
 
-	Light::~Light() = default;
-
-	Light::Light(const Light& other) : pImpl(std::make_unique<Impl>(*other.pImpl)) {}
-
-	Light& Light::operator=(const Light& other) {
-		if (this != &other) {
-			pImpl = std::make_unique<Impl>(*other.pImpl);
+	Result<void> Light::sendUpdate(const nlohmann::json& state_update) {
+		if (!bridge_ || !bridge_->isAuthenticated()) {
+			return Result<void>(ErrorCode::AuthenticationRequired,
+				"Bridge not authenticated");
 		}
-		return *this;
+
+		const auto& bridge_info = bridge_->getInfo();
+		if (bridge_info.ip_address.empty() || id_.empty()) {
+			return Result<void>(ErrorCode::InvalidParameter,
+				"Bridge IP or light ID not set");
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + bridge_info.ip_address +
+				"/clip/v2/resource/light/" + id_;
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = bridge_->getAuthenticationKey();
+
+			std::string body = json_utils::toString(state_update);
+			auto response = client.put(url, body, headers);
+
+			if (!response.isSuccess()) {
+				if (response.status_code == 401 || response.status_code == 403) {
+					return Result<void>(ErrorCode::AuthenticationFailed,
+						"Authentication failed");
+				}
+				return Result<void>(ErrorCode::NetworkError,
+					"HTTP request failed: " + response.error_message);
+			}
+
+			// Parse response to check for errors
+			auto json_response = json_utils::parse(response.body);
+
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					std::string error_desc = json_utils::getValueOr<std::string>(
+						errors[0], "description", "Unknown error");
+					return Result<void>(ErrorCode::InvalidRequest, error_desc);
+				}
+			}
+
+			return Result<void>();
+
+		}
+		catch (const JsonParseException& e) {
+			return Result<void>(ErrorCode::InvalidRequest,
+				std::string("JSON error: ") + e.what());
+		}
+		catch (const std::exception& e) {
+			return Result<void>(ErrorCode::UnknownError,
+				std::string("Error: ") + e.what());
+		}
 	}
 
-	Light::Light(Light&&) noexcept = default;
-	Light& Light::operator=(Light&&) noexcept = default;
+	void Light::addTransitionTime(nlohmann::json& update, TransitionTime transition) {
+		if (transition.count() > 0) {
+			// Hue API V2 uses milliseconds for duration
+			update["dynamics"] = { {"duration", static_cast<int>(transition.count())} };
+		}
+	}
 
 	std::string Light::getId() const {
-		return pImpl->id;
+		return id_;
 	}
 
 	std::string Light::getName() const {
-		return pImpl->name;
+		return name_;
 	}
 
 	LightCapabilities Light::getCapabilities() const {
-		return pImpl->capabilities;
+		return capabilities_;
 	}
 
 	bool Light::isOn() const {
@@ -161,49 +135,49 @@ namespace hue4cpp {
 			};
 
 
-		if (!pImpl->bridge) {
+		if (!bridge_) {
 			// No bridge - cannot get state, return false
 			return false;
 		}
 
 		// Ask bridge for light state (cache-first, API-fallback)
-		std::string state_json = pImpl->bridge->getLightState(pImpl->id, false);
+		std::string state_json = bridge_->getLightState(id_, false);
 		auto is_on_opt = extractIsOn(state_json);
 		if (is_on_opt.has_value()) {
 			return is_on_opt.value();
 		}
 
 		// Try refreshing cache
-		state_json = pImpl->bridge->getLightState(pImpl->id, true);
+		state_json = bridge_->getLightState(id_, true);
 		is_on_opt = extractIsOn(state_json);
 		return is_on_opt.value_or(false);
 	}
 
 	Result<void> Light::turnOn(TransitionTime transition) {
-		if (!pImpl->capabilities.on_off) {
+		if (!capabilities_.on_off) {
 			return Result<void>(ErrorCode::InvalidRequest,
 				"Light does not support on/off control");
 		}
 
 		nlohmann::json update;
 		update["on"] = { {"on", true} };
-		pImpl->addTransitionTime(update, transition);
+		addTransitionTime(update, transition);
 
-		auto result = pImpl->sendUpdate(update);
+		auto result = sendUpdate(update);
 		return result;
 	}
 
 	Result<void> Light::turnOff(TransitionTime transition) {
-		if (!pImpl->capabilities.on_off) {
+		if (!capabilities_.on_off) {
 			return Result<void>(ErrorCode::InvalidRequest,
 				"Light does not support on/off control");
 		}
 
 		nlohmann::json update;
 		update["on"] = { {"on", false} };
-		pImpl->addTransitionTime(update, transition);
+		addTransitionTime(update, transition);
 
-		auto result = pImpl->sendUpdate(update);
+		auto result = sendUpdate(update);
 		return result;
 	}
 
@@ -236,26 +210,26 @@ namespace hue4cpp {
 			return std::nullopt;
 			};
 
-		if (!pImpl->bridge) {
+		if (!bridge_) {
 			// No bridge - cannot get state
 			return std::nullopt;
 		}
 
 		// Ask bridge for light state (cache-first, API-fallback)
-		std::string state_json = pImpl->bridge->getLightState(pImpl->id, false);
+		std::string state_json = bridge_->getLightState(id_, false);
 		auto brightness_opt = extractBrightness(state_json);
 		if (brightness_opt.has_value()) {
 			return brightness_opt;
 		}
 
 		// Try refreshing cache
-		state_json = pImpl->bridge->getLightState(pImpl->id, true);
+		state_json = bridge_->getLightState(id_, true);
 		brightness_opt = extractBrightness(state_json);
 		return brightness_opt;
 	}
 
 	Result<void> Light::setBrightness(uint8_t brightness, TransitionTime transition) {
-		if (!pImpl->capabilities.brightness) {
+		if (!capabilities_.brightness) {
 			return Result<void>(ErrorCode::InvalidRequest,
 				"Light does not support brightness control");
 		}
@@ -267,9 +241,9 @@ namespace hue4cpp {
 
 		nlohmann::json update;
 		update["dimming"] = { {"brightness", static_cast<double>(brightness)} };
-		pImpl->addTransitionTime(update, transition);
+		addTransitionTime(update, transition);
 
-		auto result = pImpl->sendUpdate(update);
+		auto result = sendUpdate(update);
 		return result;
 	}
 
@@ -300,25 +274,25 @@ namespace hue4cpp {
 			};
 
 		// Ask bridge for light state (cache-first, API-fallback)
-		if (!pImpl->bridge) {
+		if (!bridge_) {
 			// No bridge - cannot get state
 			return std::nullopt;
 		}
 
-		std::string state_json = pImpl->bridge->getLightState(pImpl->id, false);
+		std::string state_json = bridge_->getLightState(id_, false);
 		auto color_opt = extractColor(state_json);
 		if (color_opt.has_value()) {
 			return color_opt;
 		}
 
 		// Try refreshing cache
-		state_json = pImpl->bridge->getLightState(pImpl->id, true);
+		state_json = bridge_->getLightState(id_, true);
 		color_opt = extractColor(state_json);
 		return color_opt;
 	}
 
 	Result<void> Light::setColor(const XYColor& color, TransitionTime transition) {
-		if (!pImpl->capabilities.color) {
+		if (!capabilities_.color) {
 			return Result<void>(ErrorCode::InvalidRequest,
 				"Light does not support color control");
 		}
@@ -336,9 +310,9 @@ namespace hue4cpp {
 				{"y", static_cast<double>(color.y)}
 			}}
 		};
-		pImpl->addTransitionTime(update, transition);
+		addTransitionTime(update, transition);
 
-		auto result = pImpl->sendUpdate(update);
+		auto result = sendUpdate(update);
 		return result;
 	}
 
@@ -373,26 +347,26 @@ namespace hue4cpp {
 			return std::nullopt;
 			};
 
-		if(!pImpl->bridge) {
+		if(!bridge_) {
 			// No bridge - cannot get state
 			return std::nullopt;
 		}
 
-		std::string state_json = pImpl->bridge->getLightState(pImpl->id, false);
+		std::string state_json = bridge_->getLightState(id_, false);
 		auto colorTemperature_opt = extractColorTemperature(state_json);
 		if (colorTemperature_opt.has_value()) {
 			return colorTemperature_opt;
 		}
 
 		// Try refreshing cache
-		state_json = pImpl->bridge->getLightState(pImpl->id, true);
+		state_json = bridge_->getLightState(id_, true);
 		colorTemperature_opt = extractColorTemperature(state_json);
 		return colorTemperature_opt;
 	}
 
 	Result<void> Light::setColorTemperature(const ColorTemperature& temperature,
 		TransitionTime transition) {
-		if (!pImpl->capabilities.color_temperature) {
+		if (!capabilities_.color_temperature) {
 			return Result<void>(ErrorCode::InvalidRequest,
 				"Light does not support color temperature control");
 		}
@@ -408,9 +382,9 @@ namespace hue4cpp {
 		update["color_temperature"] = {
 			{"mirek", static_cast<int>(temperature.mireds)}
 		};
-		pImpl->addTransitionTime(update, transition);
+		addTransitionTime(update, transition);
 
-		auto result = pImpl->sendUpdate(update);
+		auto result = sendUpdate(update);
 		return result;
 	}
 
@@ -420,34 +394,36 @@ namespace hue4cpp {
 			{"action", "breathe"}
 		};
 
-		return pImpl->sendUpdate(update);
+		return sendUpdate(update);
 	}
 
 	Result<void> Light::refresh() {
-		if (!pImpl->bridge || !pImpl->bridge->isAuthenticated()) {
+		if (!bridge_ || !bridge_->isAuthenticated()) {
 			return Result<void>(ErrorCode::AuthenticationRequired,
 				"Bridge not authenticated");
 		}
 
-		auto light_opt = pImpl->bridge->getLight(pImpl->id);
+		auto light_opt = bridge_->getLight(id_);
 		if (!light_opt.has_value()) {
 			return Result<void>(ErrorCode::ResourceNotFound,
 				"Failed to refresh light state");
 		}
 
 		// Copy the refreshed state
-		*pImpl = *light_opt->pImpl;
+		id_ = light_opt->id_;
+		name_ = light_opt->name_;
+		capabilities_ = light_opt->capabilities_;
 		return Result<void>();
 	}
 
 	void Light::updateFromJson(const nlohmann::json& json) {
 		// Extract basic properties
-		pImpl->id = json_utils::getValueOr<std::string>(json, "id", pImpl->id);
+		id_ = json_utils::getValueOr<std::string>(json, "id", id_);
 
 		// Extract metadata
 		if (json.contains("metadata") && json["metadata"].is_object()) {
 			auto metadata = json["metadata"];
-			pImpl->name = json_utils::getValueOr<std::string>(metadata, "name", "");
+			name_ = json_utils::getValueOr<std::string>(metadata, "name", "");
 		}
 
 		// Extract brightness (dimming)
@@ -455,7 +431,7 @@ namespace hue4cpp {
 			auto dimming = json["dimming"];
 			auto brightness_val = json_utils::getValue<double>(dimming, "brightness");
 			if (brightness_val.has_value()) {
-				pImpl->capabilities.brightness = true;
+				capabilities_.brightness = true;
 			}
 		}
 
@@ -467,7 +443,7 @@ namespace hue4cpp {
 				auto x = json_utils::getValue<double>(xy, "x");
 				auto y = json_utils::getValue<double>(xy, "y");
 				if (x.has_value() && y.has_value()) {
-					pImpl->capabilities.color = true;
+					capabilities_.color = true;
 				}
 			}
 		}
@@ -477,23 +453,23 @@ namespace hue4cpp {
 			auto color_temp = json["color_temperature"];
 			auto mirek = json_utils::getValue<int>(color_temp, "mirek");
 			if (mirek.has_value()) {
-				pImpl->capabilities.color_temperature = true;
+				capabilities_.color_temperature = true;
 			}
 		}
 
 		// Determine capabilities from what's present in the light data
 		// On/off is always available
-		pImpl->capabilities.on_off = true;
+		capabilities_.on_off = true;
 
 		// Effects capability (check if effects key exists)
 		if (json.contains("effects")) {
-			pImpl->capabilities.effects = true;
+			capabilities_.effects = true;
 		}
 
 		// Cache the full JSON state in StateManager if we have a bridge
 			// This allows the getters to retrieve the state from cache
-		if (pImpl->bridge && !pImpl->id.empty()) {
-			pImpl->bridge->getStateManager().setResourceState(pImpl->id, json.dump());
+		if (bridge_ && !id_.empty()) {
+			bridge_->getStateManager().setResourceState(id_, json.dump());
 		}
 	}
 

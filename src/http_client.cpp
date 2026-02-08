@@ -3,35 +3,7 @@
 
 namespace hue4cpp {
 
-// HttpClient::Impl definition
-// Uses the pImpl (Pointer to Implementation) idiom to:
-// - Hide cpr library details from the public API
-// - Reduce compilation dependencies for library users
-// - Allow changing implementation without breaking ABI
-class HttpClient::Impl {
-public:
-    std::chrono::milliseconds timeout;
-    bool verify_ssl;
-    
-    Impl() : timeout(10000), verify_ssl(true) {}
-    
-    void configureSession(cpr::Session& session) {
-        session.SetTimeout(timeout);
-        if (!verify_ssl) {
-            session.SetVerifySsl(cpr::VerifySsl{false});
-        }
-    }
-    
-    // Helper to check if Content-Type header is already set (case-insensitive)
-    bool hasContentType(const std::map<std::string, std::string>& headers) const {
-        for (const auto& [key, value] : headers) {
-            if (key == "Content-Type" || key == "content-type") {
-                return true;
-            }
-        }
-        return false;
-    }
-    
+namespace {
     HttpResponse convertResponse(const cpr::Response& response) {
         HttpResponse result;
         result.status_code = static_cast<int>(response.status_code);
@@ -49,28 +21,39 @@ public:
         
         return result;
     }
-};
+    
+    void configureSession(cpr::Session& session, std::chrono::milliseconds timeout, bool verify_ssl) {
+        session.SetTimeout(timeout);
+        if (!verify_ssl) {
+            session.SetVerifySsl(cpr::VerifySsl{false});
+        }
+    }
+}
 
 // HttpClient implementation
-HttpClient::HttpClient() : pImpl(std::make_unique<Impl>()) {}
-
-HttpClient::~HttpClient() = default;
-
-HttpClient::HttpClient(HttpClient&&) noexcept = default;
-HttpClient& HttpClient::operator=(HttpClient&&) noexcept = default;
+HttpClient::HttpClient() : timeout_(10000), verify_ssl_(true) {}
 
 void HttpClient::setTimeout(std::chrono::milliseconds timeout) {
-    pImpl->timeout = timeout;
+    timeout_ = timeout;
 }
 
 void HttpClient::setVerifySsl(bool verify) {
-    pImpl->verify_ssl = verify;
+    verify_ssl_ = verify;
+}
+
+bool HttpClient::hasContentType(const std::map<std::string, std::string>& headers) const {
+    for (const auto& [key, value] : headers) {
+        if (key == "Content-Type" || key == "content-type") {
+            return true;
+        }
+    }
+    return false;
 }
 
 HttpResponse HttpClient::get(const std::string& url,
                               const std::map<std::string, std::string>& headers) {
     cpr::Session session;
-    pImpl->configureSession(session);
+    configureSession(session, timeout_, verify_ssl_);
     session.SetUrl(cpr::Url{url});
     
     // Set headers
@@ -83,14 +66,14 @@ HttpResponse HttpClient::get(const std::string& url,
     }
     
     cpr::Response response = session.Get();
-    return pImpl->convertResponse(response);
+    return convertResponse(response);
 }
 
 HttpResponse HttpClient::post(const std::string& url,
                                const std::string& body,
                                const std::map<std::string, std::string>& headers) {
     cpr::Session session;
-    pImpl->configureSession(session);
+    configureSession(session, timeout_, verify_ssl_);
     session.SetUrl(cpr::Url{url});
     session.SetBody(cpr::Body{body});
     
@@ -99,20 +82,20 @@ HttpResponse HttpClient::post(const std::string& url,
     for (const auto& [key, value] : headers) {
         cpr_headers[key] = value;
     }
-    if (!pImpl->hasContentType(headers)) {
+    if (!hasContentType(headers)) {
         cpr_headers["Content-Type"] = "application/json";
     }
     session.SetHeader(cpr_headers);
     
     cpr::Response response = session.Post();
-    return pImpl->convertResponse(response);
+    return convertResponse(response);
 }
 
 HttpResponse HttpClient::put(const std::string& url,
                               const std::string& body,
                               const std::map<std::string, std::string>& headers) {
     cpr::Session session;
-    pImpl->configureSession(session);
+    configureSession(session, timeout_, verify_ssl_);
     session.SetUrl(cpr::Url{url});
     session.SetBody(cpr::Body{body});
     
@@ -121,19 +104,19 @@ HttpResponse HttpClient::put(const std::string& url,
     for (const auto& [key, value] : headers) {
         cpr_headers[key] = value;
     }
-    if (!pImpl->hasContentType(headers)) {
+    if (!hasContentType(headers)) {
         cpr_headers["Content-Type"] = "application/json";
     }
     session.SetHeader(cpr_headers);
     
     cpr::Response response = session.Put();
-    return pImpl->convertResponse(response);
+    return convertResponse(response);
 }
 
 HttpResponse HttpClient::del(const std::string& url,
                               const std::map<std::string, std::string>& headers) {
     cpr::Session session;
-    pImpl->configureSession(session);
+    configureSession(session, timeout_, verify_ssl_);
     session.SetUrl(cpr::Url{url});
     
     // Set headers
@@ -146,7 +129,7 @@ HttpResponse HttpClient::del(const std::string& url,
     }
     
     cpr::Response response = session.Delete();
-    return pImpl->convertResponse(response);
+    return convertResponse(response);
 }
 
 } // namespace hue4cpp

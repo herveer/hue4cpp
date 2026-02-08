@@ -4,7 +4,6 @@
 #include <string>
 #include <map>
 #include <chrono>
-#include <memory>
 
 /**
  * @file http_client.h
@@ -47,15 +46,15 @@ public:
     /**
      * @brief Destructor
      */
-    ~HttpClient();
+    ~HttpClient() = default;
     
     // Prevent copying
     HttpClient(const HttpClient&) = delete;
     HttpClient& operator=(const HttpClient&) = delete;
     
     // Allow moving
-    HttpClient(HttpClient&&) noexcept;
-    HttpClient& operator=(HttpClient&&) noexcept;
+    HttpClient(HttpClient&&) noexcept = default;
+    HttpClient& operator=(HttpClient&&) noexcept = default;
     
     /**
      * @brief Set request timeout
@@ -111,8 +110,10 @@ public:
                      const std::map<std::string, std::string>& headers = {});
     
 private:
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
+    std::chrono::milliseconds timeout_;
+    bool verify_ssl_;
+    
+    bool hasContentType(const std::map<std::string, std::string>& headers) const;
 };
 
 } // namespace hue4cpp
