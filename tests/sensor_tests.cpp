@@ -398,10 +398,6 @@ TEST_CASE("RelativeRotarySensor construction and state", "[sensor][rotary]") {
         REQUIRE(sensor.getId() == "rotary-123");
         REQUIRE(sensor.getType() == SensorType::RelativeRotary);
     }
-}
-
-TEST_CASE("Sensor factory from JSON", "[sensor][factory]") {
-    Bridge bridge;
     
     SECTION("Parse relative rotary sensor data - clockwise") {
         nlohmann::json sensor_json = {
@@ -417,7 +413,6 @@ TEST_CASE("Sensor factory from JSON", "[sensor][factory]") {
                 {"event_sequence", 10}
             }}
         };
-        sensor->updateFromJson(sensor_json);
         
         RelativeRotarySensor sensor("rotary-123", &bridge);
         sensor.updateFromJson(sensor_json);
