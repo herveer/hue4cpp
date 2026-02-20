@@ -22,6 +22,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Find required packages
 find_package(cpr CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+find_package(ReactiveLitepp CONFIG REQUIRED)
 
 # mdns is header-only
 find_path(MDNS_INCLUDE_DIRS "mdns.h")

@@ -106,7 +106,7 @@ void printSensorInfo(const Sensor* sensor) {
 	}
 }
 
-void printEventInfo(const Event& event) {
+void printEventInfo(const hue4cpp::Event& event) {
 	std::cout << "[" << getCurrentTime() << "] ";
 
 	switch (event.type) {
@@ -301,7 +301,7 @@ int main() {
 		auto& state_manager = bridge.getStateManager();
 
 		// Register callback for all events
-		auto callback_id = state_manager.registerCallback([](const Event& event) {
+		auto callback_id = state_manager.registerCallback([](const hue4cpp::Event& event) {
 			printEventInfo(event);
 			});
 

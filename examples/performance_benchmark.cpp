@@ -73,7 +73,7 @@ void benchmarkCallbackInvocation() {
     int callback_count = 0;
     
     for (int i = 0; i < 10; ++i) {
-        auto id = state_manager.registerCallback([&callback_count](const Event& event) {
+        auto id = state_manager.registerCallback([&callback_count](const hue4cpp::Event& event) {
             callback_count++;
         });
         callback_ids.push_back(id);

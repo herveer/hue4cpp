@@ -42,7 +42,7 @@ std::string getCurrentTime() {
 	return ss.str();
 }
 
-void printEventInfo(const Event& event) {
+void printEventInfo(const hue4cpp::Event& event) {
 	std::cout << "[" << getCurrentTime() << "] ";
 
 	switch (event.type) {

@@ -47,6 +47,7 @@ target_link_libraries(hue4cpp
     PUBLIC
         cpr::cpr
         nlohmann_json::nlohmann_json
+        ReactiveLitepp::ReactiveLitepp
 )
 
 if (WIN32)
