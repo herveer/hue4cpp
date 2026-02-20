@@ -80,7 +80,7 @@ namespace hue4cpp {
 					std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
 					if (!id.empty()) {
 						auto sensor = std::make_unique<SensorType>(id, bridge);
-						sensor->updateFromJson(sensor_data);
+						sensor->initFromJson(sensor_data);
 						sensors.push_back(std::move(sensor));
 					}
 				}
@@ -356,7 +356,7 @@ namespace hue4cpp {
 				if (!id.empty()) {
 					Light light(id, this);
 					// Parse and set light properties from JSON
-					light.updateFromJson(light_data);
+					light.initFromJson(light_data);
 					lights.push_back(std::move(light));
 				}
 			}
@@ -412,7 +412,7 @@ namespace hue4cpp {
 			}
 
 			Light light(light_id, this);
-			light.updateFromJson(data[0]);
+			light.initFromJson(data[0]);
 			return light;
 
 		}

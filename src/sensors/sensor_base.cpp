@@ -142,7 +142,7 @@ namespace hue4cpp {
 		return Result<void>();
 	}
 
-	void Sensor::updateFromJson(const nlohmann::json& json) {
+	void Sensor::initFromJson(const nlohmann::json& json) {
 		try {
 			// Update ID if present
 			if (json.contains("id")) {
@@ -206,7 +206,7 @@ namespace hue4cpp {
 		}
 		
 		if (sensor) {
-			sensor->updateFromJson(json);
+			sensor->initFromJson(json);
 		}
 		
 		return sensor;

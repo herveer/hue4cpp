@@ -4,7 +4,6 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include <optional>
-#include <memory>
 
 /**
  * @file light.h
@@ -39,13 +38,13 @@ public:
     /**
      * @brief Destructor
      */
-    ~Light();
+    ~Light() = default;
     
     // Allow copying and moving
-    Light(const Light&);
-    Light& operator=(const Light&);
-    Light(Light&&) noexcept;
-    Light& operator=(Light&&) noexcept;
+    Light(const Light&) = default;
+    Light& operator=(const Light&) = default;
+    Light(Light&&) noexcept = default;
+    Light& operator=(Light&&) noexcept = default;
     
     /**
      * @brief Get the light's unique identifier
@@ -175,12 +174,17 @@ public:
      * @param json JSON object containing light data from API
      * @note This is an internal method used by Bridge to populate light data
      */
-    void updateFromJson(const nlohmann::json& json);
+    void initFromJson(const nlohmann::json& json);
     
 private:
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
+    Result<void> sendUpdate(const nlohmann::json& state_update);
+    void addTransitionTime(nlohmann::json& update, TransitionTime transition);
     
+    std::string id;
+    std::string name;
+    Bridge* bridge;
+    LightCapabilities capabilities;
+
     friend class Bridge;
 };
 

@@ -62,7 +62,7 @@ TEST_CASE("Light copy and move", "[light]") {
     }
 }
 
-TEST_CASE("Light updateFromJson - basic metadata", "[light][json]") {
+TEST_CASE("Light initFromJson - basic metadata", "[light][json]") {
     Light light;
     
     SECTION("Parse light ID and name") {
@@ -73,13 +73,13 @@ TEST_CASE("Light updateFromJson - basic metadata", "[light][json]") {
             }}
         };
         
-        light.updateFromJson(light_json);
+        light.initFromJson(light_json);
         REQUIRE(light.getId() == "12345678-1234-1234-1234-123456789abc");
         REQUIRE(light.getName() == "Living Room Light");
     }
 }
 
-TEST_CASE("Light updateFromJson - on/off state", "[light][json]") {
+TEST_CASE("Light initFromJson - on/off state", "[light][json]") {
     Light light;
     
     SECTION("Light is on") {
@@ -88,22 +88,12 @@ TEST_CASE("Light updateFromJson - on/off state", "[light][json]") {
             {"on", {{"on", true}}}
         };
         
-        light.updateFromJson(light_json);
-        REQUIRE(light.isOn());
-    }
-    
-    SECTION("Light is off") {
-        nlohmann::json light_json = {
-            {"id", "test-id"},
-            {"on", {{"on", false}}}
-        };
-        
-        light.updateFromJson(light_json);
-        REQUIRE_FALSE(light.isOn());
+        light.initFromJson(light_json);
+        REQUIRE(light.getCapabilities().on_off);
     }
 }
 
-TEST_CASE("Light updateFromJson - brightness", "[light][json]") {
+TEST_CASE("Light initFromJson - brightness", "[light][json]") {
     Light light;
     
     nlohmann::json light_json = {
@@ -111,14 +101,11 @@ TEST_CASE("Light updateFromJson - brightness", "[light][json]") {
         {"dimming", {{"brightness", 75.5}}}
     };
     
-    light.updateFromJson(light_json);
-    
-    REQUIRE(light.getBrightness().has_value());
-    REQUIRE(light.getBrightness().value() == 75);
+    light.initFromJson(light_json);
     REQUIRE(light.getCapabilities().brightness);
 }
 
-TEST_CASE("Light updateFromJson - color XY", "[light][json]") {
+TEST_CASE("Light initFromJson - color XY", "[light][json]") {
     Light light;
     
     nlohmann::json light_json = {
@@ -131,15 +118,11 @@ TEST_CASE("Light updateFromJson - color XY", "[light][json]") {
         }}
     };
     
-    light.updateFromJson(light_json);
-    
-    REQUIRE(light.getColor().has_value());
-    REQUIRE(light.getColor()->x == Catch::Approx(0.3127f).epsilon(0.0001));
-    REQUIRE(light.getColor()->y == Catch::Approx(0.3290f).epsilon(0.0001));
+    light.initFromJson(light_json);
     REQUIRE(light.getCapabilities().color);
 }
 
-TEST_CASE("Light updateFromJson - color temperature", "[light][json]") {
+TEST_CASE("Light initFromJson - color temperature", "[light][json]") {
     Light light;
     
     nlohmann::json light_json = {
@@ -149,14 +132,11 @@ TEST_CASE("Light updateFromJson - color temperature", "[light][json]") {
         }}
     };
     
-    light.updateFromJson(light_json);
-    
-    REQUIRE(light.getColorTemperature().has_value());
-    REQUIRE(light.getColorTemperature()->mireds == 366);
+    light.initFromJson(light_json);
     REQUIRE(light.getCapabilities().color_temperature);
 }
 
-TEST_CASE("Light updateFromJson - complete light data", "[light][json]") {
+TEST_CASE("Light initFromJson - complete light data", "[light][json]") {
     Light light;
     
     nlohmann::json light_json = {
@@ -171,15 +151,7 @@ TEST_CASE("Light updateFromJson - complete light data", "[light][json]") {
         {"effects", {}}
     };
     
-    light.updateFromJson(light_json);
-    
-    REQUIRE(light.getId() == "abcd-1234-efgh-5678");
-    REQUIRE(light.getName() == "Desk Lamp");
-    REQUIRE(light.isOn());
-    REQUIRE(light.getBrightness() == 50);
-    REQUIRE(light.getColor().has_value());
-    REQUIRE(light.getColorTemperature().has_value());
-    
+    light.initFromJson(light_json);    
     auto caps = light.getCapabilities();
     REQUIRE(caps.on_off);
     REQUIRE(caps.brightness);
@@ -250,7 +222,7 @@ TEST_CASE("Light control parameter validation", "[light][control]") {
         {"color", {{"xy", {{"x", 0.5}, {"y", 0.5}}}}},
         {"color_temperature", {{"mirek", 250}}}
     };
-    light.updateFromJson(light_json);
+    light.initFromJson(light_json);
     
     SECTION("Brightness out of range") {
         auto result = light.setBrightness(150);
@@ -289,7 +261,7 @@ TEST_CASE("Light control with missing capabilities", "[light][capabilities]") {
         {"id", "test-id"},
         {"on", {{"on", false}}}
     };
-    light.updateFromJson(light_json);
+    light.initFromJson(light_json);
     
     SECTION("Brightness control on non-dimmable light") {
         auto result = light.setBrightness(50);

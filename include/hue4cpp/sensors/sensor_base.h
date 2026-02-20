@@ -65,7 +65,7 @@ public:
      * @param json JSON object containing sensor data from API
      * @note This is an internal method used by Bridge to populate sensor data
      */
-    void updateFromJson(const nlohmann::json& json);
+    void initFromJson(const nlohmann::json& json);
     
 protected:
     /**

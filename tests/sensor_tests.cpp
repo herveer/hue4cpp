@@ -27,7 +27,7 @@ TEST_CASE("MotionSensor construction and state", "[sensor][motion]") {
         };
         
         MotionSensor sensor("motion-sensor-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         REQUIRE(sensor.getId() == "motion-sensor-123");
         REQUIRE(sensor.getType() == SensorType::Motion);
@@ -50,7 +50,7 @@ TEST_CASE("MotionSensor construction and state", "[sensor][motion]") {
         };
         
         MotionSensor sensor("motion-sensor-456", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto motion_state = sensor.getMotionState();
         REQUIRE(motion_state.motion == false);
@@ -79,7 +79,7 @@ TEST_CASE("TemperatureSensor construction and state", "[sensor][temperature]") {
         };
         
         TemperatureSensor sensor("temp-sensor-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto temp_state = sensor.getTemperatureState();
         REQUIRE(temp_state.temperature == Catch::Approx(21.5f).epsilon(0.01));
@@ -98,7 +98,7 @@ TEST_CASE("TemperatureSensor construction and state", "[sensor][temperature]") {
         };
         
         TemperatureSensor sensor("temp-sensor-789", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto temp_state = sensor.getTemperatureState();
         REQUIRE(temp_state.temperature == Catch::Approx(0.0f).epsilon(0.01));
@@ -126,7 +126,7 @@ TEST_CASE("LightLevelSensor construction and state", "[sensor][lightlevel]") {
         };
         
         LightLevelSensor sensor("light-sensor-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto light_state = sensor.getLightLevelState();
         REQUIRE(light_state.light_level == 12345);
@@ -158,7 +158,7 @@ TEST_CASE("ButtonSensor construction and state", "[sensor][button]") {
         };
         
         ButtonSensor sensor("button-sensor-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto button_state = sensor.getButtonState();
         REQUIRE(button_state.last_event == ButtonEvent::InitialPress);
@@ -178,7 +178,7 @@ TEST_CASE("ButtonSensor construction and state", "[sensor][button]") {
         };
         
         ButtonSensor sensor("button-sensor-456", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto button_state = sensor.getButtonState();
         REQUIRE(button_state.last_event == ButtonEvent::ShortRelease);
@@ -197,7 +197,7 @@ TEST_CASE("ButtonSensor construction and state", "[sensor][button]") {
         };
         
         ButtonSensor sensor("button-sensor-789", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto button_state = sensor.getButtonState();
         REQUIRE(button_state.last_event == ButtonEvent::LongPress);
@@ -316,7 +316,7 @@ TEST_CASE("Polymorphic sensor usage", "[sensor][polymorphism]") {
                 {"motion_valid", true}
             }}
         };
-        sensor->updateFromJson(sensor_json);
+        sensor->initFromJson(sensor_json);
         
         // Cast to specific type
         if (auto* motion_sensor = dynamic_cast<MotionSensor*>(sensor.get())) {
@@ -349,7 +349,7 @@ TEST_CASE("CameraMotionSensor construction and state", "[sensor][cameramotion]")
         };
         
         CameraMotionSensor sensor("camera-motion-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         REQUIRE(sensor.getId() == "camera-motion-123");
         REQUIRE(sensor.getType() == SensorType::CameraMotion);
@@ -382,7 +382,7 @@ TEST_CASE("BellButtonSensor construction and state", "[sensor][bellbutton]") {
         };
         
         BellButtonSensor sensor("bell-button-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto bell_state = sensor.getBellButtonState();
         REQUIRE(bell_state.last_event == ButtonEvent::InitialPress);
@@ -415,7 +415,7 @@ TEST_CASE("RelativeRotarySensor construction and state", "[sensor][rotary]") {
         };
         
         RelativeRotarySensor sensor("rotary-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto rotary_state = sensor.getRelativeRotaryState();
         REQUIRE(rotary_state.steps == 5);
@@ -440,7 +440,7 @@ TEST_CASE("RelativeRotarySensor construction and state", "[sensor][rotary]") {
         };
         
         RelativeRotarySensor sensor("rotary-456", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto rotary_state = sensor.getRelativeRotaryState();
         REQUIRE(rotary_state.steps == -3);
@@ -467,7 +467,7 @@ TEST_CASE("GeolocationSensor construction and state", "[sensor][geolocation]") {
         };
         
         GeolocationSensor sensor("geo-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto geo_state = sensor.getGeolocationState();
         REQUIRE(geo_state.is_configured == true);
@@ -482,7 +482,7 @@ TEST_CASE("GeolocationSensor construction and state", "[sensor][geolocation]") {
         };
         
         GeolocationSensor sensor("geo-456", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto geo_state = sensor.getGeolocationState();
         REQUIRE(geo_state.is_configured == false);
@@ -510,7 +510,7 @@ TEST_CASE("TamperSensor construction and state", "[sensor][tamper]") {
         };
         
         TamperSensor sensor("tamper-123", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto tamper_state = sensor.getTamperState();
         REQUIRE(tamper_state.tampered == true);
@@ -529,7 +529,7 @@ TEST_CASE("TamperSensor construction and state", "[sensor][tamper]") {
         };
         
         TamperSensor sensor("tamper-456", &bridge);
-        sensor.updateFromJson(sensor_json);
+        sensor.initFromJson(sensor_json);
         
         auto tamper_state = sensor.getTamperState();
         REQUIRE(tamper_state.tampered == false);
