@@ -153,9 +153,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac83e1d9af010538c33065aebf1795e49" id="r_ac83e1d9af010538c33065aebf1795e49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhue4cpp_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#ac83e1d9af010538c33065aebf1795e49">refresh</a> ()</td></tr>
 <tr class="memdesc:ac83e1d9af010538c33065aebf1795e49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh sensor state from bridge.  <br /></td></tr>
 <tr class="separator:ac83e1d9af010538c33065aebf1795e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fbb4c44fb7a24c6904c9c0a5ad5540d" id="r_a1fbb4c44fb7a24c6904c9c0a5ad5540d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a1fbb4c44fb7a24c6904c9c0a5ad5540d">updateFromJson</a> (const nlohmann::json &amp;json)</td></tr>
-<tr class="memdesc:a1fbb4c44fb7a24c6904c9c0a5ad5540d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update sensor state from JSON data.  <br /></td></tr>
-<tr class="separator:a1fbb4c44fb7a24c6904c9c0a5ad5540d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbd29a81ad15b16f595410bd94ecd5ef" id="r_afbd29a81ad15b16f595410bd94ecd5ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#afbd29a81ad15b16f595410bd94ecd5ef">initFromJson</a> (const nlohmann::json &amp;json)</td></tr>
+<tr class="memdesc:afbd29a81ad15b16f595410bd94ecd5ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update sensor state from JSON data.  <br /></td></tr>
+<tr class="separator:afbd29a81ad15b16f595410bd94ecd5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -441,6 +441,37 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="afbd29a81ad15b16f595410bd94ecd5ef" name="afbd29a81ad15b16f595410bd94ecd5ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbd29a81ad15b16f595410bd94ecd5ef">&#9670;&#160;</a></span>initFromJson()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void hue4cpp::Sensor::initFromJson </td>
+          <td>(</td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Update sensor state from JSON data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">json</td><td>JSON object containing sensor data from API </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This is an internal method used by <a class="el" href="classhue4cpp_1_1Bridge.html" title="Represents a Philips Hue Bridge.">Bridge</a> to populate sensor data </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00145">145</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="json__utils_8h_source.html#l00045">hue4cpp::json_utils::getValue()</a>, and <a class="el" href="sensor__base_8h_source.html#l00092">pImpl</a>.</p>
+
+</div>
+</div>
 <a id="a64ffb45ec05cd770fb28f2380f505acc" name="a64ffb45ec05cd770fb28f2380f505acc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64ffb45ec05cd770fb28f2380f505acc">&#9670;&#160;</a></span>isEnabled()</h2>
 
@@ -541,37 +572,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a1fbb4c44fb7a24c6904c9c0a5ad5540d" name="a1fbb4c44fb7a24c6904c9c0a5ad5540d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fbb4c44fb7a24c6904c9c0a5ad5540d">&#9670;&#160;</a></span>updateFromJson()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void hue4cpp::Sensor::updateFromJson </td>
-          <td>(</td>
-          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
-          <td class="paramname"><em>json</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Update sensor state from JSON data. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">json</td><td>JSON object containing sensor data from API </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This is an internal method used by <a class="el" href="classhue4cpp_1_1Bridge.html" title="Represents a Philips Hue Bridge.">Bridge</a> to populate sensor data </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00145">145</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="json__utils_8h_source.html#l00045">hue4cpp::json_utils::getValue()</a>, and <a class="el" href="sensor__base_8h_source.html#l00092">pImpl</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Friends And Related Symbol Documentation</h2>
 <a id="a644eecdcd6c05c66b1505bc66985f9da" name="a644eecdcd6c05c66b1505bc66985f9da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a644eecdcd6c05c66b1505bc66985f9da">&#9670;&#160;</a></span>Bridge</h2>
@@ -620,7 +620,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00092">92</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00091">getBridge()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00087">getResourceTypeString()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00095">isEnabled()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00130">refresh()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00145">updateFromJson()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00091">getBridge()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00087">getResourceTypeString()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00145">initFromJson()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00095">isEnabled()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00130">refresh()</a>.</p>
 
 </div>
 </div>

@@ -84,9 +84,9 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classhue4cpp_1_1Light.html#ad47066c42faf7c0e7372f15bce39f732",
-"classhue4cpp_1_1TemperatureSensor.html#ae9e8002430c3a76bf357254b758fd3e7",
-"namespacehue4cpp_1_1json__utils.html#a52dc7e3f7ec34170ebdfc06b50022218",
-"structhue4cpp_1_1Version.html#a0fdce1ce59ce1d34df2bcf1c8672567a"
+"color__utils_8h.html#a1afadb304f08aa4b232192772176e2d2",
+"sensor__base_8cpp.html",
+"temperature__sensor_8cpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

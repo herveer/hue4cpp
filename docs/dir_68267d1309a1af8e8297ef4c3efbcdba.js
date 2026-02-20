@@ -6,7 +6,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "discovery.cpp", "discovery_8cpp.html", "discovery_8cpp" ],
     [ "http_client.cpp", "http__client_8cpp.html", "http__client_8cpp" ],
     [ "json_utils.cpp", "json__utils_8cpp.html", "json__utils_8cpp" ],
-    [ "light.cpp", "light_8cpp.html", "light_8cpp" ],
+    [ "light.cpp", "light_8cpp.html", null ],
     [ "sse_client.cpp", "sse__client_8cpp.html", "sse__client_8cpp" ],
     [ "state.cpp", "state_8cpp.html", "state_8cpp" ]
 ];

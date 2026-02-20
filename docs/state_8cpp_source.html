@@ -301,7 +301,7 @@ $(document).ready(function(){initNavTree('state_8cpp_source.html',''); initResiz
 <div class="foldopen" id="foldopen00181" data-start="{" data-end="}">
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1StateManager.html#a0fcf02f205606e9f3d0b8fea53e66f25">  181</a></span>    std::string <a class="code hl_function" href="classhue4cpp_1_1StateManager.html#a0fcf02f205606e9f3d0b8fea53e66f25">StateManager::getResourceState</a>(<span class="keyword">const</span> std::string&amp; resource_id)<span class="keyword"> const </span>{</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        std::lock_guard&lt;std::mutex&gt; lock(pImpl-&gt;state_mutex);</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">if</span> (!pImpl-&gt;sse_client-&gt;isConnected()) {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">if</span> (!pImpl-&gt;sse_client || !pImpl-&gt;sse_client-&gt;isConnected()) {</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>            <span class="comment">// If sse is not connected the state is not reliable</span></div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        }</div>

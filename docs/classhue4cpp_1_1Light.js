@@ -1,11 +1,10 @@
 var classhue4cpp_1_1Light =
 [
-    [ "Impl", "classhue4cpp_1_1Light_1_1Impl.html", "classhue4cpp_1_1Light_1_1Impl" ],
     [ "Light", "classhue4cpp_1_1Light.html#a214c4bba9faf5a7786ab2fea2dbf7813", null ],
     [ "Light", "classhue4cpp_1_1Light.html#af35eebedbc20324381f29c3e122fc485", null ],
-    [ "~Light", "classhue4cpp_1_1Light.html#a2408c705de2461e6ed838797b3e223ef", null ],
-    [ "Light", "classhue4cpp_1_1Light.html#a9cb9df924122a2803f2a57e26690658d", null ],
-    [ "Light", "classhue4cpp_1_1Light.html#a2d29af0fe79d56a00406b812d6f6f3f0", null ],
+    [ "~Light", "classhue4cpp_1_1Light.html#a2f32252fb3e4aa9495ea2d0a44ad926e", null ],
+    [ "Light", "classhue4cpp_1_1Light.html#a62ad750de97e7e76924fc564382c91c2", null ],
+    [ "Light", "classhue4cpp_1_1Light.html#a4d5e7e2bf6bec655d8d8644c5d759081", null ],
     [ "alert", "classhue4cpp_1_1Light.html#a8e4916e3b62584a1b45495935e904e44", null ],
     [ "getBrightness", "classhue4cpp_1_1Light.html#ad47066c42faf7c0e7372f15bce39f732", null ],
     [ "getCapabilities", "classhue4cpp_1_1Light.html#a4a31ea4538a4bb456ced408bf89536de", null ],
@@ -13,9 +12,10 @@ var classhue4cpp_1_1Light =
     [ "getColorTemperature", "classhue4cpp_1_1Light.html#a3210f8d5c8dc58f38868961a1e7c6b5f", null ],
     [ "getId", "classhue4cpp_1_1Light.html#a3fcd20e09c3aa926813441be94d64540", null ],
     [ "getName", "classhue4cpp_1_1Light.html#a6abe14f8c4bf32a4b5b94ed6ce5da9b0", null ],
+    [ "initFromJson", "classhue4cpp_1_1Light.html#a65ec1789b396dd845b79933c5bea90c5", null ],
     [ "isOn", "classhue4cpp_1_1Light.html#a928101273696bd330129d9564e14d591", null ],
-    [ "operator=", "classhue4cpp_1_1Light.html#a396e8c2df85f2238b5db23f1dc0ffdcb", null ],
-    [ "operator=", "classhue4cpp_1_1Light.html#a0756de23bf1020cfd4b641c4fee8f948", null ],
+    [ "operator=", "classhue4cpp_1_1Light.html#acee656929056262755284f9cd7985b88", null ],
+    [ "operator=", "classhue4cpp_1_1Light.html#a098cf37896c64f076a5dd472c0e4f16a", null ],
     [ "refresh", "classhue4cpp_1_1Light.html#a8929a6c6d68098872d5b215d0408a8b0", null ],
     [ "setBrightness", "classhue4cpp_1_1Light.html#a6ad1dbe4aa8918fc7df593c737a5e8d2", null ],
     [ "setColor", "classhue4cpp_1_1Light.html#acd25b20e0d3b6a198582e8baf06dc75e", null ],
@@ -25,6 +25,5 @@ var classhue4cpp_1_1Light =
     [ "toggle", "classhue4cpp_1_1Light.html#ad06efd743dc287975e23dcd3aed91f14", null ],
     [ "turnOff", "classhue4cpp_1_1Light.html#a5dda9591aff188458d445e3d779f9001", null ],
     [ "turnOn", "classhue4cpp_1_1Light.html#acf4912080891c78757a637305c4343c3", null ],
-    [ "updateFromJson", "classhue4cpp_1_1Light.html#a79d207ef201b08a558d42675ac594620", null ],
     [ "Bridge", "classhue4cpp_1_1Light.html#a644eecdcd6c05c66b1505bc66985f9da", null ]
 ];
