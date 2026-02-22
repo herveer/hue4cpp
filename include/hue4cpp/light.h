@@ -23,7 +23,7 @@ namespace hue4cpp {
 	 * The Light class provides control of individual lights through observable properties
 	 * including power state, brightness, color, and effects. All control operations are
 	 * performed through the public properties, which handle exceptions appropriately.
-	 * 
+	 *
 	 * @throws ResourceNotFoundException if light data is not available
 	 * @throws InvalidParameterException if invalid parameters are provided
 	 * @throws BridgeNotReachableException if bridge cannot be accessed
@@ -57,13 +57,21 @@ namespace hue4cpp {
 		 * @brief Get the light's unique identifier
 		 * @return Light ID
 		 */
-		std::string getId() const;
+		ReadonlyProperty<std::string> Id{
+			[this]() {
+					return _id;
+			}
+		};
 
 		/**
 		 * @brief Get the light's name
 		 * @return Light name
 		 */
-		std::string getName() const;
+		ReadonlyProperty<std::string> Name{
+			[this]() {
+					return _name;
+			}
+		};
 
 		/**
 		 * @brief Get the light's capabilities
@@ -107,22 +115,24 @@ namespace hue4cpp {
 		 * @throws ResourceNotFoundException if state is not available
 		 */
 		Property<bool> IsOn{
-			[this]() { 
+			[this]() {
 				try {
-					return isOn(); 
-				} catch (const HueException&) {
-					throw;
+					return isOn();
 				}
-			},
-			[this](bool& value) {
-				try {
-					NotifyPropertyChanging<&Light::IsOn>();
-					value ? turnOn() : turnOff();
-					NotifyPropertyChanged<&Light::IsOn>();
-				} catch (const HueException&) {
-					throw;
-				}
-			}
+ catch (const HueException&) {
+  throw;
+}
+},
+[this](bool& value) {
+	try {
+		NotifyPropertyChanging<&Light::IsOn>();
+		value ? turnOn() : turnOff();
+		NotifyPropertyChanged<&Light::IsOn>();
+	}
+catch (const HueException&) {
+ throw;
+}
+}
 		};
 
 		/**
@@ -133,22 +143,24 @@ namespace hue4cpp {
 		 * @throws AuthenticationException if not authenticated
 		 */
 		Property<uint8_t> Brightness{
-			[this]() { 
+			[this]() {
 				try {
-					return getBrightness(); 
-				} catch (const HueException&) {
-					throw;
+					return getBrightness();
 				}
-			},
-			[this](uint8_t& value) {
-				try {
-					NotifyPropertyChanging<&Light::Brightness>();
-					setBrightness(value);
-					NotifyPropertyChanged<&Light::Brightness>();
-				} catch (const HueException&) {
-					throw;
-				}
-			}
+ catch (const HueException&) {
+  throw;
+}
+},
+[this](uint8_t& value) {
+	try {
+		NotifyPropertyChanging<&Light::Brightness>();
+		setBrightness(value);
+		NotifyPropertyChanged<&Light::Brightness>();
+	}
+catch (const HueException&) {
+ throw;
+}
+}
 		};
 
 		/**
@@ -159,22 +171,24 @@ namespace hue4cpp {
 		 * @throws AuthenticationException if not authenticated
 		 */
 		Property<XYColor> XYColor_{
-			[this]() { 
+			[this]() {
 				try {
-					return getColor(); 
-				} catch (const HueException&) {
-					throw;
+					return getColor();
 				}
-			},
-			[this](XYColor& value) {
-				try {
-					NotifyPropertyChanging<&Light::XYColor_>();
-					setColor(value);
-					NotifyPropertyChanged<&Light::XYColor_>();
-				} catch (const HueException&) {
-					throw;
-				}
-			}
+ catch (const HueException&) {
+  throw;
+}
+},
+[this](XYColor& value) {
+	try {
+		NotifyPropertyChanging<&Light::XYColor_>();
+		setColor(value);
+		NotifyPropertyChanged<&Light::XYColor_>();
+	}
+catch (const HueException&) {
+ throw;
+}
+}
 		};
 
 		/**
@@ -185,22 +199,24 @@ namespace hue4cpp {
 		 * @throws AuthenticationException if not authenticated
 		 */
 		Property<RGBColor> RGBColor_{
-			[this]() { 
+			[this]() {
 				try {
-					return color_utils::xyToRgb(getColor()); 
-				} catch (const HueException&) {
-					throw;
+					return color_utils::xyToRgb(getColor());
 				}
-			},
-			[this](RGBColor& value) {
-				try {
-					NotifyPropertyChanging<&Light::RGBColor_>();
-					setColor(value);
-					NotifyPropertyChanged<&Light::RGBColor_>();
-				} catch (const HueException&) {
-					throw;
-				}
-			}
+ catch (const HueException&) {
+  throw;
+}
+},
+[this](RGBColor& value) {
+	try {
+		NotifyPropertyChanging<&Light::RGBColor_>();
+		setColor(value);
+		NotifyPropertyChanged<&Light::RGBColor_>();
+	}
+catch (const HueException&) {
+ throw;
+}
+}
 		};
 
 		/**
@@ -211,22 +227,24 @@ namespace hue4cpp {
 		 * @throws AuthenticationException if not authenticated
 		 */
 		Property<ColorTemperature> ColorTemperature_{
-			[this]() { 
+			[this]() {
 				try {
-					return getColorTemperature(); 
-				} catch (const HueException&) {
-					throw;
+					return getColorTemperature();
 				}
-			},
-			[this](ColorTemperature& value) {
-				try {
-					NotifyPropertyChanging<&Light::ColorTemperature_>();
-					setColorTemperature(value);
-					NotifyPropertyChanged<&Light::ColorTemperature_>();
-				} catch (const HueException&) {
-					throw;
-				}
-			}
+ catch (const HueException&) {
+  throw;
+}
+},
+[this](ColorTemperature& value) {
+	try {
+		NotifyPropertyChanging<&Light::ColorTemperature_>();
+		setColorTemperature(value);
+		NotifyPropertyChanged<&Light::ColorTemperature_>();
+	}
+catch (const HueException&) {
+ throw;
+}
+}
 		};
 
 	private:
@@ -260,10 +278,10 @@ namespace hue4cpp {
 		void addTransitionTime(nlohmann::json& update, TransitionTime transition);
 		TransitionTime _transitionTime = std::chrono::milliseconds(400);
 
-		std::string id;
-		std::string name;
-		Bridge* bridge;
-		LightCapabilities capabilities;
+		std::string _id;
+		std::string _name;
+		Bridge* _bridge;
+		LightCapabilities _capabilities;
 
 		friend class Bridge;
 	};

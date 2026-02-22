@@ -17,37 +17,29 @@ namespace {
 }
 
 // Light implementation
-Light::Light() : bridge(nullptr) {
-    capabilities.on_off = true;
-    capabilities.brightness = false;
-    capabilities.color = false;
-    capabilities.color_temperature = false;
-    capabilities.effects = false;
+Light::Light() : _bridge(nullptr) {
+    _capabilities.on_off = true;
+    _capabilities.brightness = false;
+    _capabilities.color = false;
+    _capabilities.color_temperature = false;
+    _capabilities.effects = false;
 }
 
 Light::Light(const std::string& light_id, Bridge* parent_bridge)
-    : id(light_id), bridge(parent_bridge) {
-    capabilities.on_off = true;
-    capabilities.brightness = false;
-    capabilities.color = false;
-    capabilities.color_temperature = false;
-    capabilities.effects = false;
-}
-
-std::string Light::getId() const {
-    return id;
-}
-
-std::string Light::getName() const {
-    return name;
+    : _id(light_id), _bridge(parent_bridge) {
+    _capabilities.on_off = true;
+    _capabilities.brightness = false;
+    _capabilities.color = false;
+    _capabilities.color_temperature = false;
+    _capabilities.effects = false;
 }
 
 LightCapabilities Light::getCapabilities() const {
-    return capabilities;
+    return _capabilities;
 }
 
 bool Light::isOn() const {
-    if (!bridge) {
+    if (!_bridge) {
         throw BridgeNotReachableException("Bridge not available");
     }
 
@@ -71,14 +63,14 @@ bool Light::isOn() const {
 
     try {
         // Ask bridge for light state (cache-first, API-fallback)
-        std::string state_json = bridge->getLightState(id, false);
+        std::string state_json = _bridge->getLightState(_id, false);
         auto is_on_opt = extractIsOn(state_json);
         if (is_on_opt.has_value()) {
             return is_on_opt.value();
         }
 
         // Try refreshing cache
-        state_json = bridge->getLightState(id, true);
+        state_json = _bridge->getLightState(_id, true);
         is_on_opt = extractIsOn(state_json);
         if (is_on_opt.has_value()) {
             return is_on_opt.value();
@@ -95,7 +87,7 @@ bool Light::isOn() const {
 }
 
 void Light::turnOn(TransitionTime transition) {
-    if (!capabilities.on_off) {
+    if (!_capabilities.on_off) {
         throw InvalidParameterException(
             "Light does not support on/off control");
     }
@@ -108,7 +100,7 @@ void Light::turnOn(TransitionTime transition) {
 }
 
 void Light::turnOff(TransitionTime transition) {
-    if (!capabilities.on_off) {
+    if (!_capabilities.on_off) {
         throw InvalidParameterException(
             "Light does not support on/off control");
     }
@@ -149,20 +141,20 @@ uint8_t Light::getBrightness() const {
         return std::nullopt;
     };
 
-    if (!bridge) {
+    if (!_bridge) {
         throw BridgeNotReachableException("Bridge not available");
     }
 
     try {
         // Ask bridge for light state (cache-first, API-fallback)
-        std::string state_json = bridge->getLightState(id, false);
+        std::string state_json = _bridge->getLightState(_id, false);
         auto brightness_opt = extractBrightness(state_json);
         if (brightness_opt.has_value()) {
             return brightness_opt.value();
         }
 
         // Try refreshing cache
-        state_json = bridge->getLightState(id, true);
+        state_json = _bridge->getLightState(_id, true);
         brightness_opt = extractBrightness(state_json);
         if (brightness_opt.has_value()) {
             return brightness_opt.value();
@@ -179,7 +171,7 @@ uint8_t Light::getBrightness() const {
 }
 
 void Light::setBrightness(uint8_t brightness, TransitionTime transition) {
-    if (!capabilities.brightness) {
+    if (!_capabilities.brightness) {
         throw InvalidParameterException(
             "Light does not support brightness control");
     }
@@ -223,19 +215,19 @@ XYColor Light::getColor() const {
     };
 
     // Ask bridge for light state (cache-first, API-fallback)
-    if (!bridge) {
+    if (!_bridge) {
         throw BridgeNotReachableException("Bridge not available");
     }
 
     try {
-        std::string state_json = bridge->getLightState(id, false);
+        std::string state_json = _bridge->getLightState(_id, false);
         auto color_opt = extractColor(state_json);
         if (color_opt.has_value()) {
             return color_opt.value();
         }
 
         // Try refreshing cache
-        state_json = bridge->getLightState(id, true);
+        state_json = _bridge->getLightState(_id, true);
         color_opt = extractColor(state_json);
         if (color_opt.has_value()) {
             return color_opt.value();
@@ -252,7 +244,7 @@ XYColor Light::getColor() const {
 }
 
 void Light::setColor(const XYColor& color, TransitionTime transition) {
-    if (!capabilities.color) {
+    if (!_capabilities.color) {
         throw InvalidParameterException(
             "Light does not support color control");
     }
@@ -306,19 +298,19 @@ ColorTemperature Light::getColorTemperature() const {
         return std::nullopt;
     };
 
-    if(!bridge) {
+    if(!_bridge) {
         throw BridgeNotReachableException("Bridge not available");
     }
 
     try {
-        std::string state_json = bridge->getLightState(id, false);
+        std::string state_json = _bridge->getLightState(_id, false);
         auto colorTemperature_opt = extractColorTemperature(state_json);
         if (colorTemperature_opt.has_value()) {
             return colorTemperature_opt.value();
         }
 
         // Try refreshing cache
-        state_json = bridge->getLightState(id, true);
+        state_json = _bridge->getLightState(_id, true);
         colorTemperature_opt = extractColorTemperature(state_json);
         if (colorTemperature_opt.has_value()) {
             return colorTemperature_opt.value();
@@ -336,7 +328,7 @@ ColorTemperature Light::getColorTemperature() const {
 
 void Light::setColorTemperature(const ColorTemperature& temperature,
     TransitionTime transition) {
-    if (!capabilities.color_temperature) {
+    if (!_capabilities.color_temperature) {
         throw InvalidParameterException(
             "Light does not support color temperature control");
     }
@@ -367,38 +359,40 @@ void Light::alert() {
 }
 
 void Light::refresh() {
-    if (!bridge || !bridge->isAuthenticated()) {
+    if (!_bridge || !_bridge->isAuthenticated()) {
         throw BridgeNotReachableException(
             "Bridge not authenticated");
     }
 
-    auto refreshed = bridge->getLight(id);
+    auto refreshed = _bridge->getLight(_id);
     if (!refreshed) {
         throw ResourceNotFoundException(
             "Failed to refresh light state");
     }
 
     // Copy the refreshed state (but keep our bridge pointer)
-    name = refreshed->getName();
-    capabilities = refreshed->getCapabilities();
+    SetPropertyValueAndNotify<&Light::Name>(_name, refreshed->Name);
+    _capabilities = refreshed->getCapabilities();
     // Note: id and bridge remain unchanged
 }
 
 void Light::initFromJson(const nlohmann::json& json) {
     // Extract basic properties
-    id = json_utils::getValueOr<std::string>(json, "id", id);
+	auto idVal = json_utils::getValueOr<std::string>(json, "id", _id);
+    SetPropertyValueAndNotify<&Light::Id>(_id, idVal);
 
     // Extract metadata
     if (json.contains("metadata") && json["metadata"].is_object()) {
         auto metadata = json["metadata"];
-        name = json_utils::getValueOr<std::string>(metadata, "name", "");
+        auto nameVal = json_utils::getValueOr<std::string>(metadata, "name", "");
+        SetPropertyValueAndNotify<&Light::Name>(_name, nameVal);
     }
 
     // Extract and cache on/off state
     if (json.contains("on") && json["on"].is_object()) {
         auto on_obj = json["on"];
         if (on_obj.contains("on") && on_obj["on"].is_boolean()) {
-            capabilities.on_off = true;
+            _capabilities.on_off = true;
         }
     }
 
@@ -407,7 +401,7 @@ void Light::initFromJson(const nlohmann::json& json) {
         auto dimming = json["dimming"];
         auto brightness_val = json_utils::getValue<double>(dimming, "brightness");
         if (brightness_val.has_value()) {
-            capabilities.brightness = true;
+            _capabilities.brightness = true;
         }
     }
 
@@ -419,7 +413,7 @@ void Light::initFromJson(const nlohmann::json& json) {
             auto x = json_utils::getValue<double>(xy, "x");
             auto y = json_utils::getValue<double>(xy, "y");
             if (x.has_value() && y.has_value()) {
-                capabilities.color = true;
+                _capabilities.color = true;
             }
         }
     }
@@ -429,35 +423,35 @@ void Light::initFromJson(const nlohmann::json& json) {
         auto color_temp = json["color_temperature"];
         auto mirek = json_utils::getValue<int>(color_temp, "mirek");
         if (mirek.has_value()) {
-            capabilities.color_temperature = true;
+            _capabilities.color_temperature = true;
         }
     }
 
-    // Determine capabilities from what's present in the light data
+    // Determine _capabilities from what's present in the light data
     // On/off is always available
-    capabilities.on_off = true;
+    _capabilities.on_off = true;
 
     // Effects capability (check if effects key exists)
     if (json.contains("effects")) {
-        capabilities.effects = true;
+        _capabilities.effects = true;
     }
 
     // Cache the full JSON state in StateManager if we have a bridge
     // This allows the getters to retrieve the state from cache
-    if (bridge && !id.empty()) {
-        bridge->getStateManager().setResourceState(id, json.dump());
+    if (_bridge && !_id.empty()) {
+        _bridge->getStateManager().setResourceState(_id, json.dump());
     }
 }
 
 // Helper to send a PUT request to update light state
 void Light::sendUpdate(const nlohmann::json& state_update) {
-    if (!bridge || !bridge->isAuthenticated()) {
+    if (!_bridge || !_bridge->isAuthenticated()) {
         throw BridgeNotReachableException(
             "Bridge not authenticated");
     }
 
-    const auto& bridge_info = bridge->getInfo();
-    if (bridge_info.ip_address.empty() || id.empty()) {
+    const auto& bridge_info = _bridge->getInfo();
+    if (bridge_info.ip_address.empty() || _id.empty()) {
         throw InvalidParameterException(
             "Bridge IP or light ID not set");
     }
@@ -468,10 +462,10 @@ void Light::sendUpdate(const nlohmann::json& state_update) {
         client.setTimeout(std::chrono::milliseconds(5000));
 
         std::string url = "https://" + bridge_info.ip_address +
-            "/clip/v2/resource/light/" + id;
+            "/clip/v2/resource/light/" + _id;
 
         std::map<std::string, std::string> headers;
-        headers["hue-application-key"] = bridge->getAuthenticationKey();
+        headers["hue-application-key"] = _bridge->getAuthenticationKey();
 
         std::string body = json_utils::toString(state_update);
         auto response = client.put(url, body, headers);

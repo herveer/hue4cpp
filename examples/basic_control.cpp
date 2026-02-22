@@ -51,8 +51,8 @@ hue4cpp::Light* selectLightInteractive(const std::vector<std::unique_ptr<hue4cpp
             }
 
             std::cout << "[" << std::setw(2) << (i + 1) << "] "
-                << std::left << std::setw(30) << light->getName()
-                << " (ID: " << light->getId() << ")";
+                << std::left << std::setw(30) << light->Name
+                << " (ID: " << light->Id << ")";
 
             if (static_cast<int>(i) == selected) {
                 std::cout << " <-";
@@ -88,7 +88,7 @@ hue4cpp::Light* selectLightInteractive(const std::vector<std::unique_ptr<hue4cpp
         }
     }
 
-    std::cout << "\nSelected: " << lights[selected]->getName() << "\n\n";
+    std::cout << "\nSelected: " << lights[selected]->Name << "\n\n";
     return lights[selected].get();
 }
 
@@ -238,7 +238,7 @@ int main() {
         return 0;
     }
     
-    std::cout << "Controlling light: " << light->getName() << " (ID: " << light->getId() << ")" << std::endl;
+    std::cout << "Controlling light: " << light->Name << " (ID: " << light->Id << ")" << std::endl;
     
     // Turn on the light
     std::cout << "Turning on..." << std::endl;

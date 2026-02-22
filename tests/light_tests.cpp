@@ -76,7 +76,7 @@ TEST_CASE("Light initFromJson - basic metadata", "[light][json]") {
         
         light.initFromJson(light_json);
         REQUIRE(light.getId() == "12345678-1234-1234-1234-123456789abc");
-        REQUIRE(light.getName() == "Living Room Light");
+        REQUIRE(light.Name == "Living Room Light");
     }
 }
 
