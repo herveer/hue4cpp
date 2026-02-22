@@ -22,6 +22,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Find required packages
 find_package(cpr CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+
+# Workaround: cmake config mode on case-sensitive filesystems only searches for
+# <PackageName>Config.cmake or <lowercasepackagename>-config.cmake, but the
+# installed file is ReactiveLitepp-config.cmake (mixed-case with hyphen).
+set(_rlpp_dir "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/share/ReactiveLitepp")
+if(EXISTS "${_rlpp_dir}/ReactiveLitepp-config.cmake"
+   AND NOT EXISTS "${_rlpp_dir}/reactivelitepp-config.cmake")
+    file(CREATE_LINK "${_rlpp_dir}/ReactiveLitepp-config.cmake"
+         "${_rlpp_dir}/reactivelitepp-config.cmake" SYMBOLIC COPY_ON_ERROR)
+endif()
+unset(_rlpp_dir)
+
 find_package(ReactiveLitepp CONFIG REQUIRED)
 
 # mdns is header-only
