@@ -8,7 +8,7 @@ using namespace hue4cpp;
 TEST_CASE("SSEClient construction", "[sse_client]") {
     SECTION("Constructor with URL") {
         SSEClient client("https://example.com/events");
-        REQUIRE_FALSE(client.isConnected());
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
 }
 
@@ -17,41 +17,41 @@ TEST_CASE("SSEClient configuration", "[sse_client]") {
     
     SECTION("Set auth header") {
         client.setAuthHeader("Authorization", "Bearer token123");
-        REQUIRE_FALSE(client.isConnected());
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
     
     SECTION("Set timeout") {
         client.setTimeout(std::chrono::seconds(10));
-        REQUIRE_FALSE(client.isConnected());
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
     
     SECTION("Set SSL verification") {
         client.setVerifySsl(false);
-        REQUIRE_FALSE(client.isConnected());
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
     
     SECTION("Set reconnection") {
         client.setReconnection(true, std::chrono::seconds(1), std::chrono::seconds(30));
-        REQUIRE_FALSE(client.isConnected());
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
 }
 
-TEST_CASE("SSEClient callbacks", "[sse_client]") {
+TEST_CASE("SSEClient events", "[sse_client]") {
     SSEClient client("https://example.com/events");
     
-    SECTION("Register event callback") {
+    SECTION("Subscribe to OnEvent") {
         bool callback_called = false;
-        client.onEvent([&callback_called](const SSEEvent& event) {
+        client.OnEvent += [&callback_called](const SSEEventArgs&) {
             callback_called = true;
-        });
+        };
         REQUIRE_FALSE(callback_called);
     }
     
-    SECTION("Register connection callback") {
+    SECTION("Subscribe to ConnectionChanged") {
         bool callback_called = false;
-        client.onConnectionChange([&callback_called](bool connected) {
+        client.ConnectionChanged += [&callback_called](bool) {
             callback_called = true;
-        });
+        };
         REQUIRE_FALSE(callback_called);
     }
 }
@@ -61,37 +61,35 @@ TEST_CASE("SSEClient disconnect without connect", "[sse_client]") {
     
     SECTION("Can disconnect without connecting") {
         client.disconnect();
-        REQUIRE_FALSE(client.isConnected());
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
 }
 
 TEST_CASE("SSEEvent structure", "[sse_client]") {
     SECTION("Default construction") {
-        SSEEvent event;
+        SSEEventArgs event;
         REQUIRE(event.event_type.empty());
         REQUIRE(event.data.empty());
         REQUIRE(event.id.empty());
     }
     
     SECTION("Construction with parameters") {
-        SSEEvent event("update", "{\"key\":\"value\"}", "event-123");
+        SSEEventArgs event("update", "{\"key\":\"value\"}", "event-123");
         REQUIRE(event.event_type == "update");
         REQUIRE(event.data == "{\"key\":\"value\"}");
         REQUIRE(event.id == "event-123");
     }
 }
 
-TEST_CASE("SSEClient move semantics", "[sse_client]") {
-    SECTION("Move constructor") {
-        SSEClient client1("https://example.com/events");
-        SSEClient client2(std::move(client1));
-        REQUIRE_FALSE(client2.isConnected());
+TEST_CASE("SSEClient IsConnected property", "[sse_client]") {
+    SECTION("IsConnected is false by default") {
+        SSEClient client("https://example.com/events");
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
-    
-    SECTION("Move assignment") {
-        SSEClient client1("https://example.com/events");
-        SSEClient client2("https://other.com/events");
-        client2 = std::move(client1);
-        REQUIRE_FALSE(client2.isConnected());
+
+    SECTION("IsConnected is false after disconnect") {
+        SSEClient client("https://example.com/events");
+        client.disconnect();
+        REQUIRE_FALSE((bool)client.IsConnected);
     }
 }

@@ -1,10 +1,14 @@
 #pragma once
 
 #include "types.h"
-#include <functional>
+#include <ReactiveLitepp/ObservableObject.h>
+#include <ReactiveLitepp/Event.h>
+#include <ReactiveLitepp/Property.h>
 #include <string>
-#include <memory>
 #include <chrono>
+#include <atomic>
+#include <thread>
+#include <memory>
 
 /**
  * @file sse_client.h
@@ -16,33 +20,27 @@ namespace hue4cpp {
 /**
  * @brief SSE event data structure
  */
-struct SSEEvent {
+struct SSEEventArgs {
     std::string event_type; ///< Event type (e.g., "message", "update")
     std::string data;       ///< Event data payload
     std::string id;         ///< Event ID (optional)
     
-    SSEEvent() = default;
-    SSEEvent(const std::string& type, const std::string& payload, const std::string& event_id = "")
+    SSEEventArgs() = default;
+    SSEEventArgs(const std::string& type, const std::string& payload, const std::string& event_id = "")
         : event_type(type), data(payload), id(event_id) {}
 };
-
-/**
- * @brief Callback function for SSE events
- */
-using SSEEventCallback = std::function<void(const SSEEvent&)>;
-
-/**
- * @brief Callback function for connection state changes
- */
-using SSEConnectionCallback = std::function<void(bool connected)>;
 
 /**
  * @brief SSE client for listening to Server-Sent Events
  * 
  * This class handles connection to an SSE endpoint, parsing events,
  * automatic reconnection, and event routing.
+ *
+ * @note The IsConnected property holds a reference to this object (via lambda
+ *       capture). Callers must not use IsConnected after the SSEClient has been
+ *       destroyed.
  */
-class SSEClient {
+class SSEClient : public ReactiveLitepp::ObservableObject {
 public:
     /**
      * @brief Constructor
@@ -55,11 +53,11 @@ public:
      */
     ~SSEClient();
     
-    // Prevent copying, allow moving
+    // Non-copyable, non-movable (properties capture this)
     SSEClient(const SSEClient&) = delete;
     SSEClient& operator=(const SSEClient&) = delete;
-    SSEClient(SSEClient&&) noexcept;
-    SSEClient& operator=(SSEClient&&) noexcept;
+    SSEClient(SSEClient&&) = delete;
+    SSEClient& operator=(SSEClient&&) = delete;
     
     /**
      * @brief Set authentication header
@@ -86,22 +84,15 @@ public:
      * @param initial_delay Initial delay before reconnect attempt
      * @param max_delay Maximum delay between reconnect attempts
      */
-    void setReconnection(bool enabled, 
-                        std::chrono::seconds initial_delay = std::chrono::seconds(0),
-                        std::chrono::seconds max_delay = std::chrono::seconds(60));
+    void setReconnection(bool enabled,
+                         std::chrono::seconds initial_delay = std::chrono::seconds(0),
+                         std::chrono::seconds max_delay = std::chrono::seconds(60));
     
     /**
-     * @brief Register callback for SSE events
-     * @param callback Function to call when events are received
+     * @brief Event fired when an SSE event is received
      */
-    void onEvent(SSEEventCallback callback);
-    
-    /**
-     * @brief Register callback for connection state changes
-     * @param callback Function to call when connection state changes
-     */
-    void onConnectionChange(SSEConnectionCallback callback);
-    
+    ReactiveLitepp::Event<const SSEEventArgs&> OnEvent;
+
     /**
      * @brief Start listening for SSE events
      * @return Result indicating success or failure
@@ -112,16 +103,33 @@ public:
      * @brief Stop listening for SSE events
      */
     void disconnect();
-    
+
     /**
-     * @brief Check if currently connected
-     * @return true if connected, false otherwise
+     * @brief Read-only property indicating whether the client is currently connected
      */
-    bool isConnected() const;
-    
+    ReactiveLitepp::ReadonlyProperty<bool> IsConnected{
+        [this]() { return _isConnected.load(); }
+    };
+
 private:
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
+    std::string _url;
+    std::string _auth_header_name;
+    std::string _auth_header_value;
+    std::chrono::seconds _timeout;
+    bool _verify_ssl;
+
+    // Reconnection settings
+    bool _reconnection_enabled;
+    std::chrono::seconds _reconnect_initial_delay;
+    std::chrono::seconds _reconnect_max_delay;
+
+    // Connection state
+    std::atomic<bool> _isConnected;
+    std::atomic<bool> _should_run;
+    std::unique_ptr<std::thread> _connection_thread;
+
+    bool parseSSELine(const std::string& line, SSEEventArgs& current_event);
+    void connectionLoop();
 };
 
 } // namespace hue4cpp

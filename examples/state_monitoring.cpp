@@ -199,7 +199,7 @@ int main() {
 		auto lights = bridge.getLights();
 		std::cout << "Found " << lights.size() << " light(s)\n";
 		for (const auto& light : lights) {
-			std::cout << "   - " << light->getName() << " (" << light->getId() << ")\n";
+			std::cout << "   - " << light->Name << " (" << light->Id << ")\n";
 		}
 		std::cout << std::endl;
 
@@ -265,10 +265,10 @@ int main() {
 				}
 			}
 			else if (input == "n" && light) {
-				std::cout << "Light name: " << light->getName() << std::endl;
+				std::cout << "Light name: " << light->Name << std::endl;
 			}
 			else if (input == "s" && light) {
-				std::cout << "Light state: " << nlohmann::json::parse(bridge.getLightState(light->getId(), false)).dump(4) << std::endl;
+				std::cout << "Light state: " << nlohmann::json::parse(bridge.getLightState(light->Id, false)).dump(4) << std::endl;
 			}
 			else {
 				std::cout << "Unknown command or light not found. Available commands: c, b, o, t, n\n";

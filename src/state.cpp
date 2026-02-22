@@ -113,16 +113,20 @@ namespace hue4cpp {
 		pImpl->sse_client->setReconnection(true);
 
 		// Set up event callback
-		pImpl->sse_client->onEvent([this](const SSEEvent& sse_event) {
+		pImpl->sse_client->OnEvent += [this](const SSEEventArgs& sse_event) {
 			// Process SSE event and update state
 			updateFromEvent(sse_event.data);
-			});
+			};
 
 		// Set up connection state callback
-		pImpl->sse_client->onConnectionChange([this](bool connected) {
+		pImpl->sse_client->PropertyChanged += [this]([[maybe_unused]] ReactiveLitepp::ObservableObject& obj, ReactiveLitepp::PropertyChangedArgs args) {
+			if(args.PropertyName() != nameof::nameof_member<&SSEClient::IsConnected>()) {
+				return;
+			}
+
 			// Clear cache on disconnect/reconnect
 			clearCache();
-			if (connected) {
+			if (pImpl->sse_client->IsConnected) {
 				Event event(EventType::BridgeConnected, "", "");
 				pImpl->notifyCallbacks(event);
 			}
@@ -130,7 +134,7 @@ namespace hue4cpp {
 				Event event(EventType::BridgeDisconnected, "", "");
 				pImpl->notifyCallbacks(event);
 			}
-			});
+			};
 
 		// Connect to SSE stream
 		auto result = pImpl->sse_client->connect();
@@ -180,7 +184,7 @@ namespace hue4cpp {
 
 	std::string StateManager::getResourceState(const std::string& resource_id) const {
 		std::lock_guard<std::mutex> lock(pImpl->state_mutex);
-		if (!pImpl->sse_client || !pImpl->sse_client->isConnected()) {
+		if (!pImpl->sse_client || !(bool)pImpl->sse_client->IsConnected) {
 			// If sse is not connected the state is not reliable
 			return "";
 		}
