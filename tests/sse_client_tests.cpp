@@ -41,7 +41,7 @@ TEST_CASE("SSEClient events", "[sse_client]") {
     
     SECTION("Subscribe to OnEvent") {
         bool callback_called = false;
-        client.OnEvent += [&callback_called](const SSEEvent&) {
+        client.OnEvent += [&callback_called](const SSEEventArgs&) {
             callback_called = true;
         };
         REQUIRE_FALSE(callback_called);
@@ -67,14 +67,14 @@ TEST_CASE("SSEClient disconnect without connect", "[sse_client]") {
 
 TEST_CASE("SSEEvent structure", "[sse_client]") {
     SECTION("Default construction") {
-        SSEEvent event;
+        SSEEventArgs event;
         REQUIRE(event.event_type.empty());
         REQUIRE(event.data.empty());
         REQUIRE(event.id.empty());
     }
     
     SECTION("Construction with parameters") {
-        SSEEvent event("update", "{\"key\":\"value\"}", "event-123");
+        SSEEventArgs event("update", "{\"key\":\"value\"}", "event-123");
         REQUIRE(event.event_type == "update");
         REQUIRE(event.data == "{\"key\":\"value\"}");
         REQUIRE(event.id == "event-123");

@@ -75,7 +75,7 @@ void SSEClient::disconnect() {
  * @param current_event Current event being built
  * @return true if event is complete, false otherwise
  */
-bool SSEClient::parseSSELine(const std::string& line, SSEEvent& current_event) {
+bool SSEClient::parseSSELine(const std::string& line, SSEEventArgs& current_event) {
     if (line.empty()) {
         // Empty line signals end of event
         return !current_event.data.empty();
@@ -137,7 +137,7 @@ void SSEClient::connectionLoop() {
 
             // Create a custom write callback to process SSE stream
             std::string buffer;
-            SSEEvent current_event;
+            SSEEventArgs current_event;
 
             std::function<bool(std::string_view, intptr_t)> write_callback =
                 [&](std::string_view data, intptr_t) -> bool {
@@ -158,7 +158,7 @@ void SSEClient::connectionLoop() {
                     if (parseSSELine(line, current_event)) {
                         // Event complete, notify subscribers
                         OnEvent.Notify(current_event);
-                        current_event = SSEEvent();
+                        current_event = SSEEventArgs();
                     }
                 }
 

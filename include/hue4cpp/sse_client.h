@@ -20,13 +20,13 @@ namespace hue4cpp {
 /**
  * @brief SSE event data structure
  */
-struct SSEEvent {
+struct SSEEventArgs {
     std::string event_type; ///< Event type (e.g., "message", "update")
     std::string data;       ///< Event data payload
     std::string id;         ///< Event ID (optional)
     
-    SSEEvent() = default;
-    SSEEvent(const std::string& type, const std::string& payload, const std::string& event_id = "")
+    SSEEventArgs() = default;
+    SSEEventArgs(const std::string& type, const std::string& payload, const std::string& event_id = "")
         : event_type(type), data(payload), id(event_id) {}
 };
 
@@ -40,7 +40,7 @@ struct SSEEvent {
  *       capture). Callers must not use IsConnected after the SSEClient has been
  *       destroyed.
  */
-class SSEClient : ReactiveLitepp::ObservableObject {
+class SSEClient : public ReactiveLitepp::ObservableObject {
 public:
     /**
      * @brief Constructor
@@ -91,7 +91,7 @@ public:
     /**
      * @brief Event fired when an SSE event is received
      */
-    ReactiveLitepp::Event<const SSEEvent&> OnEvent;
+    ReactiveLitepp::Event<const SSEEventArgs&> OnEvent;
 
     /**
      * @brief Start listening for SSE events
@@ -128,7 +128,7 @@ private:
     std::atomic<bool> _should_run;
     std::unique_ptr<std::thread> _connection_thread;
 
-    bool parseSSELine(const std::string& line, SSEEvent& current_event);
+    bool parseSSELine(const std::string& line, SSEEventArgs& current_event);
     void connectionLoop();
 };
 

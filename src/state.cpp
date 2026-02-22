@@ -113,16 +113,20 @@ namespace hue4cpp {
 		pImpl->sse_client->setReconnection(true);
 
 		// Set up event callback
-		pImpl->sse_client->OnEvent += [this](const SSEEvent& sse_event) {
+		pImpl->sse_client->OnEvent += [this](const SSEEventArgs& sse_event) {
 			// Process SSE event and update state
 			updateFromEvent(sse_event.data);
 			};
 
 		// Set up connection state callback
-		pImpl->sse_client->ConnectionChanged += [this](bool connected) {
+		pImpl->sse_client->PropertyChanged += [this]([[maybe_unused]] ReactiveLitepp::ObservableObject& obj, ReactiveLitepp::PropertyChangedArgs args) {
+			if(args.PropertyName() != nameof::nameof_member<&SSEClient::IsConnected>()) {
+				return;
+			}
+
 			// Clear cache on disconnect/reconnect
 			clearCache();
-			if (connected) {
+			if (pImpl->sse_client->IsConnected) {
 				Event event(EventType::BridgeConnected, "", "");
 				pImpl->notifyCallbacks(event);
 			}
