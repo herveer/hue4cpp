@@ -19,7 +19,7 @@ SSEClient::SSEClient(const std::string& url)
     , _reconnection_enabled(true)
     , _reconnect_initial_delay(0)
     , _reconnect_max_delay(60)
-    , _connected(false)
+    , _isConnected(false)
     , _should_run(false)
 {}
 
@@ -64,7 +64,9 @@ void SSEClient::disconnect() {
     if (_connection_thread && _connection_thread->joinable()) {
         _connection_thread->join();
     }
-    _connected = false;
+    NotifyPropertyChanging<&SSEClient::IsConnected>();
+    _isConnected = false;
+	NotifyPropertyChanged<&SSEClient::IsConnected>();
 }
 
 /**
@@ -166,16 +168,18 @@ void SSEClient::connectionLoop() {
             session.SetWriteCallback(cpr::WriteCallback{write_callback});
 
             // Notify connected
-            _connected = true;
+            NotifyPropertyChanging<&SSEClient::IsConnected>();
+            _isConnected = true;
+            NotifyPropertyChanged<&SSEClient::IsConnected>();
             current_retry_delay = _reconnect_initial_delay; // Reset retry delay on successful connection
-            ConnectionChanged.Notify(true);
 
             // Perform the request (this blocks until connection ends)
             auto response = session.Get();
 
             // Connection ended
-            _connected = false;
-            ConnectionChanged.Notify(false);
+            NotifyPropertyChanging<&SSEClient::IsConnected>();
+            _isConnected = false;
+            NotifyPropertyChanged<&SSEClient::IsConnected>();
 
             // Check if we should reconnect
             if (!_should_run) {
@@ -187,8 +191,9 @@ void SSEClient::connectionLoop() {
             }
 
         } catch (const std::exception&) {
-            _connected = false;
-            ConnectionChanged.Notify(false);
+            NotifyPropertyChanging<&SSEClient::IsConnected>();
+            _isConnected = false;
+            NotifyPropertyChanged<&SSEClient::IsConnected>();
 
             if (!_should_run || !_reconnection_enabled) {
                 break;

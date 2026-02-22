@@ -1,6 +1,7 @@
 #pragma once
 
 #include "types.h"
+#include <ReactiveLitepp/ObservableObject.h>
 #include <ReactiveLitepp/Event.h>
 #include <ReactiveLitepp/Property.h>
 #include <string>
@@ -39,7 +40,7 @@ struct SSEEvent {
  *       capture). Callers must not use IsConnected after the SSEClient has been
  *       destroyed.
  */
-class SSEClient {
+class SSEClient : ReactiveLitepp::ObservableObject {
 public:
     /**
      * @brief Constructor
@@ -93,12 +94,6 @@ public:
     ReactiveLitepp::Event<const SSEEvent&> OnEvent;
 
     /**
-     * @brief Event fired when the connection state changes
-     *        Argument is true when connected, false when disconnected
-     */
-    ReactiveLitepp::Event<bool> ConnectionChanged;
-
-    /**
      * @brief Start listening for SSE events
      * @return Result indicating success or failure
      */
@@ -113,7 +108,7 @@ public:
      * @brief Read-only property indicating whether the client is currently connected
      */
     ReactiveLitepp::ReadonlyProperty<bool> IsConnected{
-        [this]() { return _connected.load(); }
+        [this]() { return _isConnected.load(); }
     };
 
 private:
@@ -129,7 +124,7 @@ private:
     std::chrono::seconds _reconnect_max_delay;
 
     // Connection state
-    std::atomic<bool> _connected;
+    std::atomic<bool> _isConnected;
     std::atomic<bool> _should_run;
     std::unique_ptr<std::thread> _connection_thread;
 
