@@ -34,6 +34,10 @@ struct SSEEvent {
  * 
  * This class handles connection to an SSE endpoint, parsing events,
  * automatic reconnection, and event routing.
+ *
+ * @note The IsConnected property holds a reference to this object (via lambda
+ *       capture). Callers must not use IsConnected after the SSEClient has been
+ *       destroyed.
  */
 class SSEClient {
 public:
