@@ -10,14 +10,14 @@ using namespace hue4cpp;
 TEST_CASE("Light construction", "[light]") {
     SECTION("Default constructor") {
         Light light;
-        REQUIRE(light.getId().empty());
+        REQUIRE(light.Id.Get().empty());
         REQUIRE_THROWS_AS((void)light.IsOn, BridgeNotReachableException);
     }
     
     SECTION("Constructor with ID and bridge") {
         Bridge bridge;
         Light light("light-id-123", &bridge);
-        REQUIRE(light.getId() == "light-id-123");
+        REQUIRE(light.Id == "light-id-123");
         REQUIRE_THROWS_AS((void)light.IsOn, BridgeNotReachableException);
     }
 }
@@ -75,7 +75,7 @@ TEST_CASE("Light initFromJson - basic metadata", "[light][json]") {
         };
         
         light.initFromJson(light_json);
-        REQUIRE(light.getId() == "12345678-1234-1234-1234-123456789abc");
+        REQUIRE(light.Id == "12345678-1234-1234-1234-123456789abc");
         REQUIRE(light.Name == "Living Room Light");
     }
 }
