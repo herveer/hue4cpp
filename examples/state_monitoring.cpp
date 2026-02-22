@@ -199,7 +199,7 @@ int main() {
 		auto lights = bridge.getLights();
 		std::cout << "Found " << lights.size() << " light(s)\n";
 		for (const auto& light : lights) {
-			std::cout << "   - " << light.getName() << " (" << light.getId() << ")\n";
+			std::cout << "   - " << light->getName() << " (" << light->getId() << ")\n";
 		}
 		std::cout << std::endl;
 
@@ -227,39 +227,47 @@ int main() {
 			// n -> name()
 			std::string input;
 			std::cin >> input;
-			if (input == "c" && light.has_value()) {
-				auto color = light->getColor();
-				if (color.has_value()) {
-					std::cout << "Current color (XY): x=" << color->x << ", y=" << color->y << std::endl;
-				}
-				else {
-					std::cout << "Color information not available for this light.\n";
-				}
-			}
-			else if (input == "b" && light.has_value()) {
-				auto brightness = light->getBrightness();
-				if (brightness.has_value()) {
-					std::cout << "Current brightness: " << static_cast<int>(brightness.value()) << std::endl;
-				}
-				else {
-					std::cout << "Brightness information not available for this light.\n";
+			if (input == "c" && light) {
+				try {
+					auto color = (hue4cpp::XYColor)light->XYColor_;
+					std::cout << "Current color (XY): x=" << color.x << ", y=" << color.y << std::endl;
+				} catch (const hue4cpp::ResourceNotFoundException& e) {
+					std::cout << "Color information not available for this light: " << e.what() << "\n";
+				} catch (const hue4cpp::HueException& e) {
+					std::cout << "Error getting color: " << e.what() << "\n";
 				}
 			}
-			else if (input == "o" && light.has_value()) {
-				bool is_on = light->isOn();
-				std::cout << "Light is currently " << (is_on ? "ON" : "OFF") << std::endl;
+			else if (input == "b" && light) {
+				try {
+					auto brightness = (uint8_t)light->Brightness;
+					std::cout << "Current brightness: " << static_cast<int>(brightness) << std::endl;
+				} catch (const hue4cpp::ResourceNotFoundException& e) {
+					std::cout << "Brightness information not available for this light: " << e.what() << "\n";
+				} catch (const hue4cpp::HueException& e) {
+					std::cout << "Error getting brightness: " << e.what() << "\n";
+				}
 			}
-			else if (input == "t" && light.has_value()) {
+			else if (input == "o" && light) {
+				try {
+					bool is_on = light->IsOn;
+					std::cout << "Light is currently " << (is_on ? "ON" : "OFF") << std::endl;
+				} catch (const hue4cpp::HueException& e) {
+					std::cout << "Error getting on/off state: " << e.what() << "\n";
+				}
+			}
+			else if (input == "t" && light) {
 				std::cout << "Toggling light...\n";
-				auto toggle_result = light->toggle();
-				if (!toggle_result) {
-					std::cout << "Failed to toggle light: " << toggle_result.error_message << std::endl;
+				try {
+					light->IsOn = !(bool)light->IsOn;
+					std::cout << "Light toggled successfully!" << std::endl;
+				} catch (const hue4cpp::HueException& e) {
+					std::cout << "Failed to toggle light: " << e.what() << std::endl;
 				}
 			}
-			else if (input == "n" && light.has_value()) {
+			else if (input == "n" && light) {
 				std::cout << "Light name: " << light->getName() << std::endl;
 			}
-			else if (input == "s" && light.has_value()) {
+			else if (input == "s" && light) {
 				std::cout << "Light state: " << nlohmann::json::parse(bridge.getLightState(light->getId(), false)).dump(4) << std::endl;
 			}
 			else {

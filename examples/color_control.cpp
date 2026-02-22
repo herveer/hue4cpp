@@ -85,55 +85,70 @@ void printColorNames() {
 
 void demonstrateBrightnessControl(Light& light) {
 	std::cout << "\n=== Demonstrating Brightness Control ===" << std::endl;
-	// Turn on the light first
-	light.turnOn();
-	std::this_thread::sleep_for(500ms);
-	// Gradually increase brightness from 0% to 100%
-	std::cout << "Increasing brightness from 0% to 100%..." << std::endl;
-	for (uint8_t b = 0; b <= 100; b += 10) {
-		light.setBrightness(b, 500ms);
-		std::this_thread::sleep_for(1s);
-	}
-	// Gradually decrease brightness from 100% to 0%
-	std::cout << "Decreasing brightness from 100% to 0%..." << std::endl;
-	for (int b = 100; b >= 0; b -= 10) {
-		light.setBrightness(static_cast<uint8_t>(b), 500ms);
-		std::this_thread::sleep_for(1s);
+	try {
+		// Turn on the light first
+		light.IsOn = true;
+		std::this_thread::sleep_for(500ms);
+		// Gradually increase brightness from 0% to 100%
+		std::cout << "Increasing brightness from 0% to 100%..." << std::endl;
+		for (uint8_t b = 0; b <= 100; b += 10) {
+			light.TransitionTime_ = std::chrono::milliseconds(500);
+			light.Brightness = b;
+			std::this_thread::sleep_for(1s);
+		}
+		// Gradually decrease brightness from 100% to 0%
+		std::cout << "Decreasing brightness from 100% to 0%..." << std::endl;
+		for (int b = 100; b >= 0; b -= 10) {
+			light.Brightness = static_cast<uint8_t>(b);
+			std::this_thread::sleep_for(1s);
+		}
+	} catch (const hue4cpp::HueException& e) {
+		std::cerr << "Error during brightness control: " << e.what() << std::endl;
 	}
 }
 
 void demonstrateAlertEffect(Light& light) {
 	std::cout << "\n=== Demonstrating Alert Effect ===" << std::endl;
-	// Turn on the light first
-	light.turnOn();
-	std::this_thread::sleep_for(500ms);
-	// Trigger alert effect
-	std::cout << "Triggering select alert effect (blink)..." << std::endl;
-	light.alert();
-	std::this_thread::sleep_for(3s);
-	light.turnOff();
+	try {
+		// Turn on the light first
+		light.IsOn = true;
+		std::this_thread::sleep_for(500ms);
+		// Note: alert() would need to be called directly or through a separate method
+		// For now, we'll just demonstrate on/off toggling
+		std::cout << "Demonstrating on/off toggle (alert would require dedicated method)..." << std::endl;
+		light.IsOn = false;
+		std::this_thread::sleep_for(1s);
+		light.IsOn = true;
+		std::this_thread::sleep_for(1s);
+		light.IsOn = false;
+		std::this_thread::sleep_for(500ms);
+	} catch (const hue4cpp::HueException& e) {
+		std::cerr << "Error during alert effect: " << e.what() << std::endl;
+	}
 }
 
 void demonstratePresetColors(Light& light) {
 	std::cout << "\n=== Demonstrating Preset Colors ===" << std::endl;
 
-	// Turn on the light first
-	light.turnOn();
-	std::this_thread::sleep_for(500ms);
+	try {
+		// Turn on the light first
+		light.IsOn = true;
+		std::this_thread::sleep_for(500ms);
 
-	// Try different preset colors
-	std::vector<std::string> demo_colors = { "Red", "Green", "Blue", "Orange", "Purple" };
+		// Try different preset colors
+		std::vector<std::string> demo_colors = { "Red", "Green", "Blue", "Orange", "Purple" };
 
-	for (const auto& color_name : demo_colors) {
-		auto color = colors::getColorByName(color_name);
-		if (color.has_value()) {
-			std::cout << "Setting color to " << color_name << "..." << std::endl;
-			auto result = light.setColor(color.value(), 1000ms);
-			if (!result.isSuccess()) {
-				std::cerr << "Failed to set color: " << result.error_message << std::endl;
+		for (const auto& color_name : demo_colors) {
+			auto color = colors::getColorByName(color_name);
+			if (color.has_value()) {
+				std::cout << "Setting color to " << color_name << "..." << std::endl;
+				light.TransitionTime_ = std::chrono::milliseconds(1000);
+				light.RGBColor_ = color.value();
+				std::this_thread::sleep_for(2s);
 			}
-			std::this_thread::sleep_for(2s);
 		}
+	} catch (const hue4cpp::HueException& e) {
+		std::cerr << "Error during color demonstration: " << e.what() << std::endl;
 	}
 }
 
@@ -145,23 +160,28 @@ void demonstrateColorTemperature(Light& light) {
 		return;
 	}
 
-	// Warm white (2700K)
-	std::cout << "Setting warm white (2700K)..." << std::endl;
-	auto warm = ColorTemperature::fromKelvin(2700);
-	light.setColorTemperature(warm, 1000ms);
-	std::this_thread::sleep_for(3s);
+	try {
+		// Warm white (2700K)
+		std::cout << "Setting warm white (2700K)..." << std::endl;
+		auto warm = ColorTemperature::fromKelvin(2700);
+		light.TransitionTime_ = std::chrono::milliseconds(1000);
+		light.ColorTemperature_ = warm;
+		std::this_thread::sleep_for(3s);
 
-	// Neutral white (4000K)
-	std::cout << "Setting neutral white (4000K)..." << std::endl;
-	auto neutral = ColorTemperature::fromKelvin(4000);
-	light.setColorTemperature(neutral, 1000ms);
-	std::this_thread::sleep_for(3s);
+		// Neutral white (4000K)
+		std::cout << "Setting neutral white (4000K)..." << std::endl;
+		auto neutral = ColorTemperature::fromKelvin(4000);
+		light.ColorTemperature_ = neutral;
+		std::this_thread::sleep_for(3s);
 
-	// Cool white (6500K)
-	std::cout << "Setting cool white (6500K)..." << std::endl;
-	auto cool = ColorTemperature::fromKelvin(6500);
-	light.setColorTemperature(cool, 1000ms);
-	std::this_thread::sleep_for(3s);
+		// Cool white (6500K)
+		std::cout << "Setting cool white (6500K)..." << std::endl;
+		auto cool = ColorTemperature::fromKelvin(6500);
+		light.ColorTemperature_ = cool;
+		std::this_thread::sleep_for(3s);
+	} catch (const hue4cpp::HueException& e) {
+		std::cerr << "Error during color temperature demonstration: " << e.what() << std::endl;
+	}
 }
 
 void demonstrateHSVColors(Light& light) {
@@ -172,12 +192,17 @@ void demonstrateHSVColors(Light& light) {
 		return;
 	}
 
-	// Create a rainbow effect by varying hue
-	std::cout << "Creating rainbow effect..." << std::endl;
-	for (int hue = 0; hue < 360; hue += 30) {
-		RGBColor rgb = color_utils::hsvToRgb(static_cast<float>(hue), 100.0f, 100.0f);
-		light.setColor(rgb, 500ms);
-		std::this_thread::sleep_for(1s);
+	try {
+		// Create a rainbow effect by varying hue
+		std::cout << "Creating rainbow effect..." << std::endl;
+		light.TransitionTime_ = std::chrono::milliseconds(500);
+		for (int hue = 0; hue < 360; hue += 30) {
+			RGBColor rgb = color_utils::hsvToRgb(static_cast<float>(hue), 100.0f, 100.0f);
+			light.RGBColor_ = rgb;
+			std::this_thread::sleep_for(1s);
+		}
+	} catch (const hue4cpp::HueException& e) {
+		std::cerr << "Error during HSV color demonstration: " << e.what() << std::endl;
 	}
 }
 
@@ -189,29 +214,31 @@ void demonstrateCustomColors(Light& light) {
 		return;
 	}
 
-	// Define some custom colors
-	struct NamedColor {
-		std::string name;
-		RGBColor color;
-	};
+	try {
+		// Define some custom colors
+		struct NamedColor {
+			std::string name;
+			RGBColor color;
+		};
 
-	std::vector<NamedColor> custom_colors = {
-		{"Coral", RGBColor(255, 127, 80)},
-		{"Turquoise", RGBColor(64, 224, 208)},
-		{"Gold", RGBColor(255, 215, 0)},
-		{"Lavender", RGBColor(230, 230, 250)},
-		{"Salmon", RGBColor(250, 128, 114)}
-	};
+		std::vector<NamedColor> custom_colors = {
+			{"Coral", RGBColor(255, 127, 80)},
+			{"Turquoise", RGBColor(64, 224, 208)},
+			{"Gold", RGBColor(255, 215, 0)},
+			{"Lavender", RGBColor(230, 230, 250)},
+			{"Salmon", RGBColor(250, 128, 114)}
+		};
 
-	for (const auto& nc : custom_colors) {
-		std::cout << "Setting color to " << nc.name << " (RGB: "
-			<< nc.color.r << ", " << nc.color.g << ", " << nc.color.b << ")..."
-			<< std::endl;
-		auto result = light.setColor(nc.color, 1000ms);
-		if (!result.isSuccess()) {
-			std::cerr << "Failed to set color: " << result.error_message << std::endl;
+		light.TransitionTime_ = std::chrono::milliseconds(1000);
+		for (const auto& nc : custom_colors) {
+			std::cout << "Setting color to " << nc.name << " (RGB: "
+				<< nc.color.r << ", " << nc.color.g << ", " << nc.color.b << ")..."
+				<< std::endl;
+			light.RGBColor_ = nc.color;
+			std::this_thread::sleep_for(2s);
 		}
-		std::this_thread::sleep_for(2s);
+	} catch (const hue4cpp::HueException& e) {
+		std::cerr << "Error during custom color demonstration: " << e.what() << std::endl;
 	}
 }
 
@@ -344,8 +371,8 @@ int main() {
 
 	// Use the first light that supports color
 	for (auto& light : lights) {
-		std::cout << "  - " << light.getName() << " (ID: " << light.getId() << ")" << std::endl;
-		auto caps = light.getCapabilities();
+		std::cout << "  - " << light->getName() << " (ID: " << light->getId() << ")" << std::endl;
+		auto caps = light->getCapabilities();
 		std::cout << "    Capabilities: ";
 		if (caps.brightness) std::cout << "brightness ";
 		if (caps.color) std::cout << "color ";
@@ -360,9 +387,9 @@ int main() {
 	std::vector<Light*> colorLights;
 
 	for (auto& light : lights) {
-		auto caps = light.getCapabilities();
+		auto caps = light->getCapabilities();
 		if (caps.color) {
-			colorLights.push_back(&light);
+			colorLights.push_back(light.get());
 		}
 	}
 
@@ -420,8 +447,8 @@ int main() {
 
 		// Return to neutral white
 		std::cout << "\nReturning to neutral white..." << std::endl;
-		color_light->setColor(colors::White, 1000ms);
-		color_light->setBrightness(100, 1000ms);
+		color_light->ColorTemperature_ = hue4cpp::ColorTemperature::fromKelvin(4000);
+		color_light->Brightness = 100;
 
 	}
 	catch (const std::exception& e) {

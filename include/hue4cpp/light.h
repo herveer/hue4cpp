@@ -5,6 +5,7 @@
 #include <string>
 #include <optional>
 #include "hue4cpp/color_utils.h"
+#include "hue4cpp/exceptions.h"
 #include <ReactiveLitepp/ObservableObject.h>
 /**
  * @file light.h
@@ -19,8 +20,13 @@ namespace hue4cpp {
 	/**
 	 * @brief Represents a single Hue light
 	 *
-	 * The Light class provides methods to control individual lights including
-	 * power state, brightness, color, and effects.
+	 * The Light class provides control of individual lights through observable properties
+	 * including power state, brightness, color, and effects. All control operations are
+	 * performed through the public properties, which handle exceptions appropriately.
+	 * 
+	 * @throws ResourceNotFoundException if light data is not available
+	 * @throws InvalidParameterException if invalid parameters are provided
+	 * @throws BridgeNotReachableException if bridge cannot be accessed
 	 */
 	class Light : ObservableObject {
 	public:
@@ -41,11 +47,11 @@ namespace hue4cpp {
 		 */
 		~Light() = default;
 
-		// Allow copying and moving
-		Light(const Light&) = default;
-		Light& operator=(const Light&) = default;
-		Light(Light&&) noexcept = default;
-		Light& operator=(Light&&) noexcept = default;
+		// Prevent copying and moving
+		Light(const Light&) = delete;
+		Light& operator=(const Light&) = delete;
+		Light(Light&&) = delete;
+		Light& operator=(Light&&) = delete;
 
 		/**
 		 * @brief Get the light's unique identifier
@@ -66,17 +72,19 @@ namespace hue4cpp {
 		LightCapabilities getCapabilities() const;
 
 		/**
-		 * @brief Check if light is currently on
-		 * @return true if on, false if off
+		 * @brief Refresh light state from bridge
+		 * @throws BridgeNotReachableException if bridge is not available
+		 * @throws ResourceNotFoundException if light cannot be found
+		 * @throws AuthenticationException if not authenticated
 		 */
-		Property<bool> IsOn{
-			[this]() { return isOn(); },
-			[this](bool& value) {
-				NotifyPropertyChanging<&Light::IsOn>();
-				value ? turnOn() : turnOff();
-				NotifyPropertyChanged<&Light::IsOn>();
-			}
-		};
+		void refresh();
+
+		/**
+		 * @brief Initialize light state from JSON data
+		 * @param json JSON object containing light data from API
+		 * @note This is an internal method used by Bridge to populate light data
+		 */
+		void initFromJson(const nlohmann::json& json);
 
 		/**
 		* @brief Get or set the transition time for light changes
@@ -92,112 +100,165 @@ namespace hue4cpp {
 		};
 
 		/**
-		 * @brief Toggle the light on/off
-		 * @param transition Transition time (default: 400ms)
-		 * @return Result indicating success or failure
+		 * @brief Get or set the on/off state
+		 * @throws BridgeNotReachableException if bridge is not available
+		 * @throws InvalidParameterException if light does not support on/off
+		 * @throws AuthenticationException if not authenticated
+		 * @throws ResourceNotFoundException if state is not available
 		 */
-		Result<void> toggle() { return toggle(_transitionTime); }
-		Result<void> toggle(TransitionTime transition);
-
-		/**
-		 * @brief Get current brightness level
-		 * @return Brightness (0-100), or nullopt if not available
-		 */
-		Property<std::optional<uint8_t>> Brightness{
-			[this]() { return getBrightness(); },
-			[this](std::optional<uint8_t>& value) {
-				NotifyPropertyChanging<&Light::Brightness>();
-				if (value) {
-					setBrightness(*value);
+		Property<bool> IsOn{
+			[this]() { 
+				try {
+					return isOn(); 
+				} catch (const HueException&) {
+					throw;
 				}
-				NotifyPropertyChanged<&Light::Brightness>();
+			},
+			[this](bool& value) {
+				try {
+					NotifyPropertyChanging<&Light::IsOn>();
+					value ? turnOn() : turnOff();
+					NotifyPropertyChanged<&Light::IsOn>();
+				} catch (const HueException&) {
+					throw;
+				}
 			}
 		};
 
 		/**
-		 * @brief Get current color in XY color space
-		 * @return XYColor, or nullopt if not available
+		 * @brief Get or set the brightness level
+		 * @throws ResourceNotFoundException if brightness is not available
+		 * @throws InvalidParameterException if brightness is out of range or not supported
+		 * @throws BridgeNotReachableException if bridge is not available
+		 * @throws AuthenticationException if not authenticated
 		 */
-		Property<std::optional<XYColor>> XYColor_{
-			[this]() { return getColor(); },
-			[this](std::optional<XYColor>& value) {
-				NotifyPropertyChanging<&Light::XYColor_>();
-				if (value) {
-					setColor(*value);
+		Property<uint8_t> Brightness{
+			[this]() { 
+				try {
+					return getBrightness(); 
+				} catch (const HueException&) {
+					throw;
 				}
-				NotifyPropertyChanged<&Light::XYColor_>();
-			}
-		};
-
-		Property<std::optional<RGBColor>> RGBColor_{
-			[this]() { return color_utils::xyToRgb(getColor().value()); },
-			[this](std::optional<RGBColor>& value) {
-				NotifyPropertyChanging<&Light::RGBColor_>();
-				if (value) {
-					setColor(*value);
+			},
+			[this](uint8_t& value) {
+				try {
+					NotifyPropertyChanging<&Light::Brightness>();
+					setBrightness(value);
+					NotifyPropertyChanged<&Light::Brightness>();
+				} catch (const HueException&) {
+					throw;
 				}
-				NotifyPropertyChanged<&Light::RGBColor_>();
-			}
-		};
-
-		/**
-		 * @brief Get current color temperature
-		 * @return ColorTemperature, or nullopt if not available
-		 */
-		Property<std::optional<ColorTemperature>> ColorTemperature_{
-			[this]() { return getColorTemperature(); },
-			[this](std::optional<ColorTemperature>& value) {
-				NotifyPropertyChanging<&Light::ColorTemperature_>();
-				if (value) {
-					setColorTemperature(*value);
-				}
-				NotifyPropertyChanged<&Light::ColorTemperature_>();
 			}
 		};
 
 		/**
-		 * @brief Trigger alert effect (light blinks)
-		 * @return Result indicating success or failure
+		 * @brief Get or set the color in XY color space
+		 * @throws ResourceNotFoundException if color is not available
+		 * @throws InvalidParameterException if color is invalid or not supported
+		 * @throws BridgeNotReachableException if bridge is not available
+		 * @throws AuthenticationException if not authenticated
 		 */
-		Result<void> alert();
+		Property<XYColor> XYColor_{
+			[this]() { 
+				try {
+					return getColor(); 
+				} catch (const HueException&) {
+					throw;
+				}
+			},
+			[this](XYColor& value) {
+				try {
+					NotifyPropertyChanging<&Light::XYColor_>();
+					setColor(value);
+					NotifyPropertyChanged<&Light::XYColor_>();
+				} catch (const HueException&) {
+					throw;
+				}
+			}
+		};
 
 		/**
-		 * @brief Refresh light state from bridge
-		 * @return Result indicating success or failure
+		 * @brief Get or set the color in RGB color space
+		 * @throws ResourceNotFoundException if color is not available
+		 * @throws InvalidParameterException if color is invalid or not supported
+		 * @throws BridgeNotReachableException if bridge is not available
+		 * @throws AuthenticationException if not authenticated
 		 */
-		Result<void> refresh();
+		Property<RGBColor> RGBColor_{
+			[this]() { 
+				try {
+					return color_utils::xyToRgb(getColor()); 
+				} catch (const HueException&) {
+					throw;
+				}
+			},
+			[this](RGBColor& value) {
+				try {
+					NotifyPropertyChanging<&Light::RGBColor_>();
+					setColor(value);
+					NotifyPropertyChanged<&Light::RGBColor_>();
+				} catch (const HueException&) {
+					throw;
+				}
+			}
+		};
 
 		/**
-		 * @brief Update light state from JSON data
-		 * @param json JSON object containing light data from API
-		 * @note This is an internal method used by Bridge to populate light data
+		 * @brief Get or set the color temperature
+		 * @throws ResourceNotFoundException if color temperature is not available
+		 * @throws InvalidParameterException if temperature is invalid or not supported
+		 * @throws BridgeNotReachableException if bridge is not available
+		 * @throws AuthenticationException if not authenticated
 		 */
-		void initFromJson(const nlohmann::json& json);
+		Property<ColorTemperature> ColorTemperature_{
+			[this]() { 
+				try {
+					return getColorTemperature(); 
+				} catch (const HueException&) {
+					throw;
+				}
+			},
+			[this](ColorTemperature& value) {
+				try {
+					NotifyPropertyChanging<&Light::ColorTemperature_>();
+					setColorTemperature(value);
+					NotifyPropertyChanged<&Light::ColorTemperature_>();
+				} catch (const HueException&) {
+					throw;
+				}
+			}
+		};
 
 	private:
-		Result<void> sendUpdate(const nlohmann::json& state_update);
+		// Control methods - called from properties
+		bool isOn() const;
+		void turnOn() { turnOn(_transitionTime); }
+		void turnOn(TransitionTime transition);
+		void turnOff() { turnOff(_transitionTime); }
+		void turnOff(TransitionTime transition);
+		void toggle() { toggle(_transitionTime); }
+		void toggle(TransitionTime transition);
+
+		uint8_t getBrightness() const;
+		void setBrightness(uint8_t brightness) { setBrightness(brightness, _transitionTime); }
+		void setBrightness(uint8_t brightness, TransitionTime transition);
+
+		XYColor getColor() const;
+		void setColor(const XYColor& color) { setColor(color, _transitionTime); }
+		void setColor(const XYColor& color, TransitionTime transition);
+		void setColor(const RGBColor& color) { setColor(color, _transitionTime); }
+		void setColor(const RGBColor& color, TransitionTime transition);
+		void setColor(float r, float g, float b, TransitionTime transition);
+
+		ColorTemperature getColorTemperature() const;
+		void setColorTemperature(const ColorTemperature& temperature) { setColorTemperature(temperature, _transitionTime); }
+		void setColorTemperature(const ColorTemperature& temperature, TransitionTime transition);
+
+		void alert();
+
+		void sendUpdate(const nlohmann::json& state_update);
 		void addTransitionTime(nlohmann::json& update, TransitionTime transition);
 		TransitionTime _transitionTime = std::chrono::milliseconds(400);
-
-		bool isOn() const;
-		Result<void> turnOn() { return turnOn(_transitionTime); }
-		Result<void> turnOn(TransitionTime transition);
-		Result<void> turnOff() { return turnOff(_transitionTime); }
-		Result<void> turnOff(TransitionTime transition);
-
-		std::optional<uint8_t> getBrightness() const;
-		Result<void> setBrightness(uint8_t brightness) { return setBrightness(brightness, _transitionTime); }
-		Result<void> setBrightness(uint8_t brightness, TransitionTime transition);
-
-		std::optional<XYColor> getColor() const;
-		Result<void> setColor(const XYColor& color) { return setColor(color, _transitionTime); }
-		Result<void> setColor(const XYColor& color, TransitionTime transition);
-		Result<void> setColor(const RGBColor& color) { return setColor(color, _transitionTime); }
-		Result<void> setColor(const RGBColor& color, TransitionTime transition);
-
-		std::optional<ColorTemperature> getColorTemperature() const;
-		Result<void> setColorTemperature(const ColorTemperature& temperature) { return setColorTemperature(temperature, _transitionTime); }
-		Result<void> setColorTemperature(const ColorTemperature& temperature, TransitionTime transition);
 
 		std::string id;
 		std::string name;

@@ -320,3 +320,9 @@ TEST_CASE("Feature description", "[tag]") {
 - All development should follow modern C++ best practices
 - Favor readability and maintainability over premature optimization
 - When in doubt, check existing code for patterns and conventions
+
+## Light Class API Changes
+
+- The Light class API has been refactored to expose only observable Properties as the public interface.
+- All control methods (e.g., `turnOn`, `setBrightness`, `getColor`, `setColor`, `toggle`, `alert`, etc.) are now private and only called from within the Properties.
+- This design encourages the use of reactive properties for state management and provides a cleaner, more consistent API.

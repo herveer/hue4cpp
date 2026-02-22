@@ -4,6 +4,7 @@
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/color_utils.h"
 #include "hue4cpp/state.h"
+#include "hue4cpp/exceptions.h"
 #include <cmath>
 #include <iostream>
 
@@ -47,8 +48,7 @@ LightCapabilities Light::getCapabilities() const {
 
 bool Light::isOn() const {
     if (!bridge) {
-        // No bridge and no cached state - return false
-        return false;
+        throw BridgeNotReachableException("Bridge not available");
     }
 
     std::function extractIsOn = [this](std::string state_json) -> std::optional<bool> {
@@ -80,17 +80,23 @@ bool Light::isOn() const {
         // Try refreshing cache
         state_json = bridge->getLightState(id, true);
         is_on_opt = extractIsOn(state_json);
-        return is_on_opt.value_or(false);
+        if (is_on_opt.has_value()) {
+            return is_on_opt.value();
+        }
+
+        throw ResourceNotFoundException("Light on/off state not available");
     }
-    catch (...) {
-        // If bridge access fails, return false
-        return false;
+    catch (const HueException&) {
+        throw;
+    }
+    catch (const std::exception& e) {
+        throw BridgeNotReachableException(std::string("Failed to get light state: ") + e.what());
     }
 }
 
-Result<void> Light::turnOn(TransitionTime transition) {
+void Light::turnOn(TransitionTime transition) {
     if (!capabilities.on_off) {
-        return Result<void>(ErrorCode::InvalidRequest,
+        throw InvalidParameterException(
             "Light does not support on/off control");
     }
 
@@ -98,13 +104,12 @@ Result<void> Light::turnOn(TransitionTime transition) {
     update["on"] = { {"on", true} };
     addTransitionTime(update, transition);
 
-    auto result = sendUpdate(update);
-    return result;
+    sendUpdate(update);
 }
 
-Result<void> Light::turnOff(TransitionTime transition) {
+void Light::turnOff(TransitionTime transition) {
     if (!capabilities.on_off) {
-        return Result<void>(ErrorCode::InvalidRequest,
+        throw InvalidParameterException(
             "Light does not support on/off control");
     }
 
@@ -112,20 +117,19 @@ Result<void> Light::turnOff(TransitionTime transition) {
     update["on"] = { {"on", false} };
     addTransitionTime(update, transition);
 
-    auto result = sendUpdate(update);
-    return result;
+    sendUpdate(update);
 }
 
-Result<void> Light::toggle(TransitionTime transition) {
+void Light::toggle(TransitionTime transition) {
     if (isOn()) {
-        return turnOff(transition);
+        turnOff(transition);
     }
     else {
-        return turnOn(transition);
+        turnOn(transition);
     }
 }
 
-std::optional<uint8_t> Light::getBrightness() const {
+uint8_t Light::getBrightness() const {
     std::function extractBrightness = [this](std::string state_json) -> std::optional<uint8_t> {
         if (!state_json.empty()) {
             try {
@@ -146,31 +150,42 @@ std::optional<uint8_t> Light::getBrightness() const {
     };
 
     if (!bridge) {
-        // No bridge - cannot get state
-        return std::nullopt;
+        throw BridgeNotReachableException("Bridge not available");
     }
 
-    // Ask bridge for light state (cache-first, API-fallback)
-    std::string state_json = bridge->getLightState(id, false);
-    auto brightness_opt = extractBrightness(state_json);
-    if (brightness_opt.has_value()) {
-        return brightness_opt;
-    }
+    try {
+        // Ask bridge for light state (cache-first, API-fallback)
+        std::string state_json = bridge->getLightState(id, false);
+        auto brightness_opt = extractBrightness(state_json);
+        if (brightness_opt.has_value()) {
+            return brightness_opt.value();
+        }
 
-    // Try refreshing cache
-    state_json = bridge->getLightState(id, true);
-    brightness_opt = extractBrightness(state_json);
-    return brightness_opt;
+        // Try refreshing cache
+        state_json = bridge->getLightState(id, true);
+        brightness_opt = extractBrightness(state_json);
+        if (brightness_opt.has_value()) {
+            return brightness_opt.value();
+        }
+
+        throw ResourceNotFoundException("Brightness level not available");
+    }
+    catch (const HueException&) {
+        throw;
+    }
+    catch (const std::exception& e) {
+        throw BridgeNotReachableException(std::string("Failed to get brightness: ") + e.what());
+    }
 }
 
-Result<void> Light::setBrightness(uint8_t brightness, TransitionTime transition) {
+void Light::setBrightness(uint8_t brightness, TransitionTime transition) {
     if (!capabilities.brightness) {
-        return Result<void>(ErrorCode::InvalidRequest,
+        throw InvalidParameterException(
             "Light does not support brightness control");
     }
 
     if (brightness > 100) {
-        return Result<void>(ErrorCode::InvalidParameter,
+        throw InvalidParameterException(
             "Brightness must be between 0 and 100");
     }
 
@@ -178,11 +193,10 @@ Result<void> Light::setBrightness(uint8_t brightness, TransitionTime transition)
     update["dimming"] = { {"brightness", static_cast<double>(brightness)} };
     addTransitionTime(update, transition);
 
-    auto result = sendUpdate(update);
-    return result;
+    sendUpdate(update);
 }
 
-std::optional<XYColor> Light::getColor() const {
+XYColor Light::getColor() const {
     std::function extractColor = [this](std::string state_json) -> std::optional<XYColor> {
         if (!state_json.empty()) {
             try {
@@ -210,31 +224,42 @@ std::optional<XYColor> Light::getColor() const {
 
     // Ask bridge for light state (cache-first, API-fallback)
     if (!bridge) {
-        // No bridge - cannot get state
-        return std::nullopt;
+        throw BridgeNotReachableException("Bridge not available");
     }
 
-    std::string state_json = bridge->getLightState(id, false);
-    auto color_opt = extractColor(state_json);
-    if (color_opt.has_value()) {
-        return color_opt;
-    }
+    try {
+        std::string state_json = bridge->getLightState(id, false);
+        auto color_opt = extractColor(state_json);
+        if (color_opt.has_value()) {
+            return color_opt.value();
+        }
 
-    // Try refreshing cache
-    state_json = bridge->getLightState(id, true);
-    color_opt = extractColor(state_json);
-    return color_opt;
+        // Try refreshing cache
+        state_json = bridge->getLightState(id, true);
+        color_opt = extractColor(state_json);
+        if (color_opt.has_value()) {
+            return color_opt.value();
+        }
+
+        throw ResourceNotFoundException("Color not available");
+    }
+    catch (const HueException&) {
+        throw;
+    }
+    catch (const std::exception& e) {
+        throw BridgeNotReachableException(std::string("Failed to get color: ") + e.what());
+    }
 }
 
-Result<void> Light::setColor(const XYColor& color, TransitionTime transition) {
+void Light::setColor(const XYColor& color, TransitionTime transition) {
     if (!capabilities.color) {
-        return Result<void>(ErrorCode::InvalidRequest,
+        throw InvalidParameterException(
             "Light does not support color control");
     }
 
     // Validate XY values (should be between 0 and 1)
     if (color.x < 0.0f || color.x > 1.0f || color.y < 0.0f || color.y > 1.0f) {
-        return Result<void>(ErrorCode::InvalidParameter,
+        throw InvalidParameterException(
             "XY color values must be between 0.0 and 1.0");
     }
 
@@ -247,21 +272,20 @@ Result<void> Light::setColor(const XYColor& color, TransitionTime transition) {
     };
     addTransitionTime(update, transition);
 
-    auto result = sendUpdate(update);
-    return result;
+    sendUpdate(update);
 }
 
-Result<void> Light::setColor(const RGBColor& color, TransitionTime transition) {
+void Light::setColor(const RGBColor& color, TransitionTime transition) {
     // Convert RGB to XY using the color_utils function
     XYColor xy = color_utils::rgbToXy(color);
-    return setColor(xy, transition);
+    setColor(xy, transition);
 }
 
-Result<void> Light::setColor(float r, float g, float b, TransitionTime transition) {
+void Light::setColor(float r, float g, float b, TransitionTime transition) {
     return setColor(RGBColor(r, g, b), transition);
 }
 
-std::optional<ColorTemperature> Light::getColorTemperature() const {    
+ColorTemperature Light::getColorTemperature() const {    
     std::function extractColorTemperature = [this](std::string state_json) -> std::optional<ColorTemperature> {
         if (!state_json.empty()) {
             try {
@@ -283,32 +307,43 @@ std::optional<ColorTemperature> Light::getColorTemperature() const {
     };
 
     if(!bridge) {
-        // No bridge - cannot get state
-        return std::nullopt;
+        throw BridgeNotReachableException("Bridge not available");
     }
 
-    std::string state_json = bridge->getLightState(id, false);
-    auto colorTemperature_opt = extractColorTemperature(state_json);
-    if (colorTemperature_opt.has_value()) {
-        return colorTemperature_opt;
-    }
+    try {
+        std::string state_json = bridge->getLightState(id, false);
+        auto colorTemperature_opt = extractColorTemperature(state_json);
+        if (colorTemperature_opt.has_value()) {
+            return colorTemperature_opt.value();
+        }
 
-    // Try refreshing cache
-    state_json = bridge->getLightState(id, true);
-    colorTemperature_opt = extractColorTemperature(state_json);
-    return colorTemperature_opt;
+        // Try refreshing cache
+        state_json = bridge->getLightState(id, true);
+        colorTemperature_opt = extractColorTemperature(state_json);
+        if (colorTemperature_opt.has_value()) {
+            return colorTemperature_opt.value();
+        }
+
+        throw ResourceNotFoundException("Color temperature not available");
+    }
+    catch (const HueException&) {
+        throw;
+    }
+    catch (const std::exception& e) {
+        throw BridgeNotReachableException(std::string("Failed to get color temperature: ") + e.what());
+    }
 }
 
-Result<void> Light::setColorTemperature(const ColorTemperature& temperature,
+void Light::setColorTemperature(const ColorTemperature& temperature,
     TransitionTime transition) {
     if (!capabilities.color_temperature) {
-        return Result<void>(ErrorCode::InvalidRequest,
+        throw InvalidParameterException(
             "Light does not support color temperature control");
     }
 
     // Validate mireds value using constants
     if (temperature.mireds < MIN_MIREDS || temperature.mireds > MAX_MIREDS) {
-        return Result<void>(ErrorCode::InvalidParameter,
+        throw InvalidParameterException(
             "Color temperature must be between " + std::to_string(MIN_MIREDS) +
             " and " + std::to_string(MAX_MIREDS) + " mireds");
     }
@@ -319,37 +354,34 @@ Result<void> Light::setColorTemperature(const ColorTemperature& temperature,
     };
     addTransitionTime(update, transition);
 
-    auto result = sendUpdate(update);
-    return result;
+    sendUpdate(update);
 }
 
-Result<void> Light::alert() {
+void Light::alert() {
     nlohmann::json update;
     update["alert"] = {
         {"action", "breathe"}
     };
 
-    return sendUpdate(update);
+    sendUpdate(update);
 }
 
-Result<void> Light::refresh() {
+void Light::refresh() {
     if (!bridge || !bridge->isAuthenticated()) {
-        return Result<void>(ErrorCode::AuthenticationRequired,
+        throw BridgeNotReachableException(
             "Bridge not authenticated");
     }
 
-    auto light_opt = bridge->getLight(id);
-    if (!light_opt.has_value()) {
-        return Result<void>(ErrorCode::ResourceNotFound,
+    auto refreshed = bridge->getLight(id);
+    if (!refreshed) {
+        throw ResourceNotFoundException(
             "Failed to refresh light state");
     }
 
     // Copy the refreshed state (but keep our bridge pointer)
-    const auto& refreshed = light_opt.value();
-    name = refreshed.name;
-    capabilities = refreshed.capabilities;
+    name = refreshed->getName();
+    capabilities = refreshed->getCapabilities();
     // Note: id and bridge remain unchanged
-    return Result<void>();
 }
 
 void Light::initFromJson(const nlohmann::json& json) {
@@ -418,15 +450,15 @@ void Light::initFromJson(const nlohmann::json& json) {
 }
 
 // Helper to send a PUT request to update light state
-Result<void> Light::sendUpdate(const nlohmann::json& state_update) {
+void Light::sendUpdate(const nlohmann::json& state_update) {
     if (!bridge || !bridge->isAuthenticated()) {
-        return Result<void>(ErrorCode::AuthenticationRequired,
+        throw BridgeNotReachableException(
             "Bridge not authenticated");
     }
 
     const auto& bridge_info = bridge->getInfo();
     if (bridge_info.ip_address.empty() || id.empty()) {
-        return Result<void>(ErrorCode::InvalidParameter,
+        throw InvalidParameterException(
             "Bridge IP or light ID not set");
     }
 
@@ -446,10 +478,10 @@ Result<void> Light::sendUpdate(const nlohmann::json& state_update) {
 
         if (!response.isSuccess()) {
             if (response.status_code == 401 || response.status_code == 403) {
-                return Result<void>(ErrorCode::AuthenticationFailed,
+                throw AuthenticationException(
                     "Authentication failed");
             }
-            return Result<void>(ErrorCode::NetworkError,
+            throw NetworkException(
                 "HTTP request failed: " + response.error_message);
         }
 
@@ -461,19 +493,19 @@ Result<void> Light::sendUpdate(const nlohmann::json& state_update) {
             if (!errors.empty()) {
                 std::string error_desc = json_utils::getValueOr<std::string>(
                     errors[0], "description", "Unknown error");
-                return Result<void>(ErrorCode::InvalidRequest, error_desc);
+                throw InvalidParameterException(error_desc);
             }
         }
-
-        return Result<void>();
-
+    }
+    catch (const HueException&) {
+        throw;
     }
     catch (const JsonParseException& e) {
-        return Result<void>(ErrorCode::InvalidRequest,
+        throw InvalidParameterException(
             std::string("JSON error: ") + e.what());
     }
     catch (const std::exception& e) {
-        return Result<void>(ErrorCode::UnknownError,
+        throw BridgeNotReachableException(
             std::string("Error: ") + e.what());
     }
 }

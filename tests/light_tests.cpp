@@ -2,6 +2,7 @@
 #include <catch2/catch_approx.hpp>
 #include <hue4cpp/light.h>
 #include <hue4cpp/bridge.h>
+#include <hue4cpp/exceptions.h>
 #include <nlohmann/json.hpp>
 
 using namespace hue4cpp;
@@ -10,14 +11,14 @@ TEST_CASE("Light construction", "[light]") {
     SECTION("Default constructor") {
         Light light;
         REQUIRE(light.getId().empty());
-        REQUIRE_FALSE(light.isOn());
+        REQUIRE_THROWS_AS((void)light.IsOn, BridgeNotReachableException);
     }
     
     SECTION("Constructor with ID and bridge") {
         Bridge bridge;
         Light light("light-id-123", &bridge);
         REQUIRE(light.getId() == "light-id-123");
-        REQUIRE_FALSE(light.isOn());
+        REQUIRE_THROWS_AS((void)light.IsOn, BridgeNotReachableException);
     }
 }
 
@@ -33,32 +34,32 @@ TEST_CASE("Light capabilities", "[light]") {
 TEST_CASE("Light state queries", "[light]") {
     Light light;
     
-    SECTION("Default brightness is not set") {
-        REQUIRE_FALSE(light.getBrightness().has_value());
+    SECTION("Default brightness throws ResourceNotFoundException") {
+        REQUIRE_THROWS_AS((void)light.Brightness, ResourceNotFoundException);
     }
     
-    SECTION("Default color is not set") {
-        REQUIRE_FALSE(light.getColor().has_value());
+    SECTION("Default color throws ResourceNotFoundException") {
+        REQUIRE_THROWS_AS((void)light.XYColor_, ResourceNotFoundException);
     }
     
-    SECTION("Default color temperature is not set") {
-        REQUIRE_FALSE(light.getColorTemperature().has_value());
+    SECTION("Default color temperature throws ResourceNotFoundException") {
+        REQUIRE_THROWS_AS((void)light.ColorTemperature_, ResourceNotFoundException);
     }
 }
 
 TEST_CASE("Light copy and move", "[light]") {
-    SECTION("Light can be copied") {
+    SECTION("Light cannot be copied") {
         Bridge bridge;
         Light light1("test-light", &bridge);
-        Light light2 = light1;
-        REQUIRE(light2.getId() == "test-light");
+        // Copy is deleted to prevent issues with observable state
+        static_assert(!std::is_copy_constructible_v<Light>, "Light should not be copyable");
     }
     
-    SECTION("Light can be moved") {
+    SECTION("Light cannot be moved") {
         Bridge bridge;
         Light light1("test-light", &bridge);
-        Light light2 = std::move(light1);
-        REQUIRE(light2.getId() == "test-light");
+        // Move is deleted to prevent issues with observable state
+        static_assert(!std::is_move_constructible_v<Light>, "Light should not be movable");
     }
 }
 
@@ -200,14 +201,11 @@ TEST_CASE("Light control without authentication", "[light][control]") {
     Light light("test-id", nullptr);
     
     SECTION("Turn on fails without bridge") {
-        auto result = light.turnOn();
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::AuthenticationRequired);
+        REQUIRE_THROWS_AS(light.IsOn = true, BridgeNotReachableException);
     }
     
     SECTION("Set brightness fails without bridge") {
-        auto result = light.setBrightness(50);
-        REQUIRE_FALSE(result.isSuccess());
+        REQUIRE_THROWS_AS(light.Brightness = 50, BridgeNotReachableException);
     }
 }
 
@@ -225,30 +223,22 @@ TEST_CASE("Light control parameter validation", "[light][control]") {
     light.initFromJson(light_json);
     
     SECTION("Brightness out of range") {
-        auto result = light.setBrightness(150);
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::InvalidParameter);
+        REQUIRE_THROWS_AS(light.Brightness = 150, InvalidParameterException);
     }
     
     SECTION("XY color out of range") {
         XYColor invalid_color(1.5f, 0.5f);
-        auto result = light.setColor(invalid_color);
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::InvalidParameter);
+        REQUIRE_THROWS_AS(light.XYColor_ = invalid_color, InvalidParameterException);
     }
     
     SECTION("Color temperature out of range - too low") {
         ColorTemperature temp(100);
-        auto result = light.setColorTemperature(temp);
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::InvalidParameter);
+        REQUIRE_THROWS_AS(light.ColorTemperature_ = temp, InvalidParameterException);
     }
     
     SECTION("Color temperature out of range - too high") {
         ColorTemperature temp(600);
-        auto result = light.setColorTemperature(temp);
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::InvalidParameter);
+        REQUIRE_THROWS_AS(light.ColorTemperature_ = temp, InvalidParameterException);
     }
 }
 
@@ -264,22 +254,16 @@ TEST_CASE("Light control with missing capabilities", "[light][capabilities]") {
     light.initFromJson(light_json);
     
     SECTION("Brightness control on non-dimmable light") {
-        auto result = light.setBrightness(50);
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::InvalidRequest);
+        REQUIRE_THROWS_AS(light.Brightness = 50, InvalidParameterException);
     }
     
     SECTION("Color control on non-color light") {
         XYColor color(0.5f, 0.5f);
-        auto result = light.setColor(color);
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::InvalidRequest);
+        REQUIRE_THROWS_AS(light.XYColor_ = color, InvalidParameterException);
     }
     
     SECTION("Color temperature control on non-CT light") {
         ColorTemperature temp(250);
-        auto result = light.setColorTemperature(temp);
-        REQUIRE_FALSE(result.isSuccess());
-        REQUIRE(result.error == ErrorCode::InvalidRequest);
+        REQUIRE_THROWS_AS(light.ColorTemperature_ = temp, InvalidParameterException);
     }
 }

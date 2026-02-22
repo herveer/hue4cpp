@@ -308,7 +308,7 @@ namespace hue4cpp {
 		}
 	}
 
-	std::vector<Light> Bridge::getLights() {
+	std::vector<std::unique_ptr<Light>> Bridge::getLights() {
 		if (!isAuthenticated()) {
 			return {};
 		}
@@ -348,15 +348,15 @@ namespace hue4cpp {
 				return {};
 			}
 
-			std::vector<Light> lights;
+			std::vector<std::unique_ptr<Light>> lights;
 			auto data = json_response["data"];
 
 			for (const auto& light_data : data) {
 				std::string id = json_utils::getValueOr<std::string>(light_data, "id", "");
 				if (!id.empty()) {
-					Light light(id, this);
+					std::unique_ptr<Light> light = std::make_unique<Light>(id, this);
 					// Parse and set light properties from JSON
-					light.initFromJson(light_data);
+					light->initFromJson(light_data);
 					lights.push_back(std::move(light));
 				}
 			}
@@ -369,9 +369,9 @@ namespace hue4cpp {
 		}
 	}
 
-	std::optional<Light> Bridge::getLight(const std::string& light_id) {
+	std::unique_ptr<Light>Bridge::getLight(const std::string& light_id) {
 		if (!isAuthenticated() || pImpl->info.ip_address.empty() || light_id.empty()) {
-			return std::nullopt;
+			return nullptr;
 		}
 
 		try {
@@ -388,7 +388,7 @@ namespace hue4cpp {
 			auto response = client.get(url, headers);
 
 			if (!response.isSuccess()) {
-				return std::nullopt;
+				return nullptr;
 			}
 
 			auto json_response = json_utils::parse(response.body);
@@ -397,27 +397,26 @@ namespace hue4cpp {
 			if (json_response.contains("errors") && json_response["errors"].is_array()) {
 				auto errors = json_response["errors"];
 				if (!errors.empty()) {
-					return std::nullopt;
+					return nullptr;
 				}
 			}
 
 			// Extract light from the data array
 			if (!json_response.contains("data") || !json_response["data"].is_array()) {
-				return std::nullopt;
+				return nullptr;
 			}
 
 			auto data = json_response["data"];
 			if (data.empty()) {
-				return std::nullopt;
+				return nullptr;
 			}
-
-			Light light(light_id, this);
-			light.initFromJson(data[0]);
-			return light;
+			std::unique_ptr<Light> light = std::make_unique<Light>(light_id, this);
+			light->initFromJson(data[0]);
+			return std::move(light);
 
 		}
 		catch (const std::exception&) {
-			return std::nullopt;
+			return nullptr;
 		}
 	}
 
@@ -606,7 +605,7 @@ namespace hue4cpp {
 
 	std::unique_ptr<Sensor> Bridge::getSensor(const std::string& sensor_id) {
 		// Try each sensor type endpoint to find the sensor
-		std::vector<std::string> resource_types = { 
+		std::vector<std::string> resource_types = {
 			"motion", "temperature", "light_level", "button",
 			"camera_motion", "bell_button", "relative_rotary", "geolocation", "tamper"
 		};

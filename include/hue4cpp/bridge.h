@@ -111,14 +111,14 @@ namespace hue4cpp {
 		 * @brief Get all lights connected to this bridge
 		 * @return Vector of Light objects
 		 */
-		std::vector<Light> getLights();
+		std::vector<std::unique_ptr<Light>> getLights();
 
 		/**
 		 * @brief Get a specific light by ID
 		 * @param light_id The unique identifier of the light
-		 * @return Optional Light object
+		 * @return Unique pointer to Light object (nullptr if not found)
 		 */
-		std::optional<Light> getLight(const std::string& light_id);
+		std::unique_ptr<Light> getLight(const std::string& light_id);
 
 		/**
 		 * @brief Get all sensors connected to this bridge
