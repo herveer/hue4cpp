@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['refresh_0',['refresh',['../classhue4cpp_1_1Light.html#a8929a6c6d68098872d5b215d0408a8b0',1,'hue4cpp::Light::refresh()'],['../classhue4cpp_1_1Sensor.html#ac83e1d9af010538c33065aebf1795e49',1,'hue4cpp::Sensor::refresh()']]],
+  ['refresh_0',['refresh',['../classhue4cpp_1_1Light.html#a2876fcf5c69d6f4f092a2f8bd519cb6a',1,'hue4cpp::Light::refresh()'],['../classhue4cpp_1_1Sensor.html#ac83e1d9af010538c33065aebf1795e49',1,'hue4cpp::Sensor::refresh()']]],
   ['registercallback_1',['registerCallback',['../classhue4cpp_1_1StateManager.html#abc2e6bfa82926c14483eaf0161dcca3b',1,'hue4cpp::StateManager']]],
   ['relativerotarysensor_2',['RelativeRotarySensor',['../classhue4cpp_1_1RelativeRotarySensor.html#a96d8f482d2ba091012c83a7c8c97a23d',1,'hue4cpp::RelativeRotarySensor']]],
   ['relativerotarystate_3',['RelativeRotaryState',['../structhue4cpp_1_1RelativeRotaryState.html#aa9e7d1eb986ab27327c5649d89e99317',1,'hue4cpp::RelativeRotaryState']]],

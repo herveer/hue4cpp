@@ -15,7 +15,7 @@ var searchData=
   ['isauthenticated_12',['isAuthenticated',['../classhue4cpp_1_1Bridge.html#a02ed5c5960b2a883ffb33924d5744223',1,'hue4cpp::Bridge']]],
   ['isconnected_13',['isConnected',['../classhue4cpp_1_1SSEClient.html#ab3aa1e582768be10a3a7e89a51c2e8dc',1,'hue4cpp::SSEClient']]],
   ['isenabled_14',['isEnabled',['../classhue4cpp_1_1Sensor.html#a64ffb45ec05cd770fb28f2380f505acc',1,'hue4cpp::Sensor']]],
-  ['ison_15',['isOn',['../classhue4cpp_1_1Light.html#a928101273696bd330129d9564e14d591',1,'hue4cpp::Light']]],
+  ['ison_15',['IsOn',['../classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0',1,'hue4cpp::Light']]],
   ['isreachable_16',['isReachable',['../classhue4cpp_1_1Bridge.html#a043c570f28a7ffc55db99498a4c805f0',1,'hue4cpp::Bridge']]],
   ['isrunning_17',['isRunning',['../classhue4cpp_1_1StateManager.html#a941ebb982675b4541fc42139e2cea7a4',1,'hue4cpp::StateManager']]],
   ['issuccess_18',['issuccess',['../structhue4cpp_1_1HttpResponse.html#a2b1e77c0349778f91c69db2da3d27a3a',1,'hue4cpp::HttpResponse::isSuccess()'],['../structhue4cpp_1_1Result.html#aab8d74be6f7b6104497068be0e1af0a3',1,'hue4cpp::Result::isSuccess()'],['../structhue4cpp_1_1Result_3_01void_01_4.html#abb55894922877f10afcd0c9808c09131',1,'hue4cpp::Result&lt; void &gt;::isSuccess()']]]

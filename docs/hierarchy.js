@@ -15,10 +15,12 @@ var hierarchy =
     [ "hue4cpp::Sensor::Impl", "classhue4cpp_1_1Sensor_1_1Impl.html", null ],
     [ "hue4cpp::SSEClient::Impl", "classhue4cpp_1_1SSEClient_1_1Impl.html", null ],
     [ "hue4cpp::StateManager::Impl", "classhue4cpp_1_1StateManager_1_1Impl.html", null ],
-    [ "hue4cpp::Light", "classhue4cpp_1_1Light.html", null ],
     [ "hue4cpp::LightCapabilities", "structhue4cpp_1_1LightCapabilities.html", null ],
     [ "hue4cpp::LightLevelState", "structhue4cpp_1_1LightLevelState.html", null ],
     [ "hue4cpp::MotionState", "structhue4cpp_1_1MotionState.html", null ],
+    [ "ObservableObject", null, [
+      [ "hue4cpp::Light", "classhue4cpp_1_1Light.html", null ]
+    ] ],
     [ "hue4cpp::RelativeRotaryState", "structhue4cpp_1_1RelativeRotaryState.html", null ],
     [ "hue4cpp::Result< T >", "structhue4cpp_1_1Result.html", null ],
     [ "hue4cpp::Result< void >", "structhue4cpp_1_1Result_3_01void_01_4.html", null ],

@@ -7,7 +7,7 @@ var searchData=
   ['reconnect_5fmax_5fdelay_4',['reconnect_max_delay',['../classhue4cpp_1_1SSEClient_1_1Impl.html#a8d6d83476e3a5a0b8dc19da54029f374',1,'hue4cpp::SSEClient::Impl']]],
   ['reconnection_5fenabled_5',['reconnection_enabled',['../classhue4cpp_1_1SSEClient_1_1Impl.html#a1582363e1fa4f7774c9d99e9e5da96bc',1,'hue4cpp::SSEClient::Impl']]],
   ['red_6',['Red',['../namespacehue4cpp_1_1colors.html#ab4cb9989bf75f53d7982b2e5204e9e02',1,'hue4cpp::colors']]],
-  ['refresh_7',['refresh',['../classhue4cpp_1_1Sensor.html#ac83e1d9af010538c33065aebf1795e49',1,'hue4cpp::Sensor::refresh()'],['../classhue4cpp_1_1Light.html#a8929a6c6d68098872d5b215d0408a8b0',1,'hue4cpp::Light::refresh()']]],
+  ['refresh_7',['refresh',['../classhue4cpp_1_1Sensor.html#ac83e1d9af010538c33065aebf1795e49',1,'hue4cpp::Sensor::refresh()'],['../classhue4cpp_1_1Light.html#a2876fcf5c69d6f4f092a2f8bd519cb6a',1,'hue4cpp::Light::refresh()']]],
   ['registercallback_8',['registerCallback',['../classhue4cpp_1_1StateManager.html#abc2e6bfa82926c14483eaf0161dcca3b',1,'hue4cpp::StateManager']]],
   ['relative_5frotary_5fsensor_2ecpp_9',['relative_rotary_sensor.cpp',['../relative__rotary__sensor_8cpp.html',1,'']]],
   ['relative_5frotary_5fsensor_2eh_10',['relative_rotary_sensor.h',['../relative__rotary__sensor_8h.html',1,'']]],
@@ -23,8 +23,9 @@ var searchData=
   ['result_20',['result',['../structhue4cpp_1_1Result.html#a45fc7fc3ebb7d6fb56d3d817df196f60',1,'hue4cpp::Result::Result()'],['../structhue4cpp_1_1Result_3_01void_01_4.html#a5eeb9d27b0f2f23edb9985f1f3625949',1,'hue4cpp::Result&lt; void &gt;::Result()'],['../structhue4cpp_1_1Result_3_01void_01_4.html#a927dc65626634f57b0ef04d93260f966',1,'hue4cpp::Result&lt; void &gt;::Result(ErrorCode err, const std::string &amp;msg=&quot;&quot;)'],['../structhue4cpp_1_1Result.html',1,'hue4cpp::Result&lt; T &gt;'],['../structhue4cpp_1_1Result.html#a6d1b06d130425842fbf3b793ea0aab52',1,'hue4cpp::Result::Result(T val)'],['../structhue4cpp_1_1Result.html#a8fb694d22d25099be9318d1ff6d9c590',1,'hue4cpp::Result::Result()']]],
   ['result_3c_20void_20_3e_21',['Result&lt; void &gt;',['../structhue4cpp_1_1Result_3_01void_01_4.html',1,'hue4cpp']]],
   ['rgbcolor_22',['rgbcolor',['../structhue4cpp_1_1RGBColor.html#a7819efb39f0a16857d7c61514b625f78',1,'hue4cpp::RGBColor::RGBColor()'],['../structhue4cpp_1_1RGBColor.html',1,'hue4cpp::RGBColor']]],
-  ['rgbtohsv_23',['rgbToHsv',['../namespacehue4cpp_1_1color__utils.html#ab35759b8521b8a2401e6d33e3182e002',1,'hue4cpp::color_utils']]],
-  ['rgbtoxy_24',['rgbToXy',['../namespacehue4cpp_1_1color__utils.html#a01da5d0ccb1db6fa51d433f2a2bf5d78',1,'hue4cpp::color_utils']]],
-  ['rotationdirection_25',['RotationDirection',['../namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333',1,'hue4cpp']]],
-  ['running_26',['running',['../classhue4cpp_1_1StateManager_1_1Impl.html#a520cdcdd274406545ee24dfce687fe71',1,'hue4cpp::StateManager::Impl']]]
+  ['rgbcolor_5f_23',['RGBColor_',['../classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6',1,'hue4cpp::Light']]],
+  ['rgbtohsv_24',['rgbToHsv',['../namespacehue4cpp_1_1color__utils.html#ab35759b8521b8a2401e6d33e3182e002',1,'hue4cpp::color_utils']]],
+  ['rgbtoxy_25',['rgbToXy',['../namespacehue4cpp_1_1color__utils.html#a01da5d0ccb1db6fa51d433f2a2bf5d78',1,'hue4cpp::color_utils']]],
+  ['rotationdirection_26',['RotationDirection',['../namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333',1,'hue4cpp']]],
+  ['running_27',['running',['../classhue4cpp_1_1StateManager_1_1Impl.html#a520cdcdd274406545ee24dfce687fe71',1,'hue4cpp::StateManager::Impl']]]
 ];
