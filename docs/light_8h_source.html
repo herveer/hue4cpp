@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('light_8h_source.html',''); initResizab
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">     * The Light class provides control of individual lights through observable properties</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">     * including power state, brightness, color, and effects. All control operations are</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">     * performed through the public properties, which handle exceptions appropriately.</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">     * </span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">     *</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">     * @throws ResourceNotFoundException if light data is not available</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">     * @throws InvalidParameterException if invalid parameters are provided</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">     * @throws BridgeNotReachableException if bridge cannot be accessed</span></div>
@@ -158,254 +158,275 @@ $(document).ready(function(){initNavTree('light_8h_source.html',''); initResizab
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">         * @brief Get the light&#39;s unique identifier</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">         * @return Light ID</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        std::string <a class="code hl_function" href="classhue4cpp_1_1Light.html#a3fcd20e09c3aa926813441be94d64540">getId</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"></span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">         * @brief Get the light&#39;s name</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">         * @return Light name</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        std::string <a class="code hl_function" href="classhue4cpp_1_1Light.html#a6abe14f8c4bf32a4b5b94ed6ce5da9b0">getName</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment"></span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">         * @brief Get the light&#39;s capabilities</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">         * @return LightCapabilities structure</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <a class="code hl_struct" href="structhue4cpp_1_1LightCapabilities.html">LightCapabilities</a> <a class="code hl_function" href="classhue4cpp_1_1Light.html#a4a31ea4538a4bb456ced408bf89536de">getCapabilities</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment"></span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">         * @brief Refresh light state from bridge</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">         * @throws ResourceNotFoundException if light cannot be found</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="};">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e">   60</a></span>        ReadonlyProperty&lt;std::string&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e">Id</a>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            [<span class="keyword">this</span>]() {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                    <span class="keywordflow">return</span> _id;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            }</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        };</div>
+</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment"></span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">         * @brief Get the light&#39;s name</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">         * @return Light name</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">         */</span></div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="};">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#aa1f6971eba3b24d28e4c708406901721">   70</a></span>        ReadonlyProperty&lt;std::string&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#aa1f6971eba3b24d28e4c708406901721">Name</a>{</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            [<span class="keyword">this</span>]() {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                    <span class="keywordflow">return</span> _name;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            }</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        };</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"></span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">         * @brief Get the light&#39;s capabilities</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">         * @return LightCapabilities structure</span></div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classhue4cpp_1_1Light.html#a2876fcf5c69d6f4f092a2f8bd519cb6a">refresh</a>();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <a class="code hl_struct" href="structhue4cpp_1_1LightCapabilities.html">LightCapabilities</a> <a class="code hl_function" href="classhue4cpp_1_1Light.html#a4a31ea4538a4bb456ced408bf89536de">getCapabilities</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment"></span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">         * @brief Initialize light state from JSON data</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">         * @param json JSON object containing light data from API</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">         * @note This is an internal method used by Bridge to populate light data</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">         */</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classhue4cpp_1_1Light.html#a65ec1789b396dd845b79933c5bea90c5">initFromJson</a>(<span class="keyword">const</span> nlohmann::json&amp; json);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment"></span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">        * @brief Get or set the transition time for light changes</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">        * @return Transition time in milliseconds</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">         * @note This property does not affect the current state but will be used for subsequent operations</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">        */</span></div>
-<div class="foldopen" id="foldopen00094" data-start="{" data-end="};">
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228">   94</a></span>        Property&lt;TransitionTime&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228">TransitionTime_</a></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        {</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> _transitionTime; },</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            [<span class="keyword">this</span>](<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a>&amp; value) {</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                SetPropertyValueAndNotify&lt;&amp;Light::TransitionTime_&gt;(_transitionTime, value);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        };</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment">         * @brief Refresh light state from bridge</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">         * @throws ResourceNotFoundException if light cannot be found</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">         */</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classhue4cpp_1_1Light.html#a2876fcf5c69d6f4f092a2f8bd519cb6a">refresh</a>();</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"></span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">         * @brief Initialize light state from JSON data</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">         * @param json JSON object containing light data from API</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">         * @note This is an internal method used by Bridge to populate light data</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">         */</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classhue4cpp_1_1Light.html#a65ec1789b396dd845b79933c5bea90c5">initFromJson</a>(<span class="keyword">const</span> nlohmann::json&amp; json);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment"></span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">        * @brief Get or set the transition time for light changes</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">        * @return Transition time in milliseconds</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">         * @note This property does not affect the current state but will be used for subsequent operations</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">        */</span></div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="};">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228">  102</a></span>        Property&lt;TransitionTime&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228">TransitionTime_</a></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        {</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> _transitionTime; },</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            [<span class="keyword">this</span>](<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a>&amp; value) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                SetPropertyValueAndNotify&lt;&amp;Light::TransitionTime_&gt;(_transitionTime, value);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        };</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment"></span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">         * @brief Get or set the on/off state</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="comment">         * @throws InvalidParameterException if light does not support on/off</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">         * @throws ResourceNotFoundException if state is not available</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">         */</span></div>
-<div class="foldopen" id="foldopen00109" data-start="{" data-end="};">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0">  109</a></span>        Property&lt;bool&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0">IsOn</a>{</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            [<span class="keyword">this</span>]() { </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                    <span class="keywordflow">return</span> isOn(); </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                }</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            },</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            [<span class="keyword">this</span>](<span class="keywordtype">bool</span>&amp; value) {</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                    NotifyPropertyChanging&lt;&amp;Light::IsOn&gt;();</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                    value ? turnOn() : turnOff();</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                    NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                }</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            }</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        };</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment"></span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">         * @brief Get or set the on/off state</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">         * @throws InvalidParameterException if light does not support on/off</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">         * @throws ResourceNotFoundException if state is not available</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">         */</span></div>
+<div class="foldopen" id="foldopen00117" data-start="{" data-end="};">
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0">  117</a></span>        Property&lt;bool&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0">IsOn</a>{</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            [<span class="keyword">this</span>]() {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                    <span class="keywordflow">return</span> isOn();</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                }</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>},</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>[<span class="keyword">this</span>](<span class="keywordtype">bool</span>&amp; value) {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        NotifyPropertyChanging&lt;&amp;Light::IsOn&gt;();</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        value ? turnOn() : turnOff();</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>}</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        };</div>
 </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment"></span> </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">         * @brief Get or set the brightness level</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">         * @throws ResourceNotFoundException if brightness is not available</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">         * @throws InvalidParameterException if brightness is out of range or not supported</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">         */</span></div>
-<div class="foldopen" id="foldopen00135" data-start="{" data-end="};">
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a94788e6df3990e4643cc1203823c4108">  135</a></span>        Property&lt;uint8_t&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#a94788e6df3990e4643cc1203823c4108">Brightness</a>{</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            [<span class="keyword">this</span>]() { </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                    <span class="keywordflow">return</span> getBrightness(); </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                }</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            },</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            [<span class="keyword">this</span>](uint8_t&amp; value) {</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                    NotifyPropertyChanging&lt;&amp;Light::Brightness&gt;();</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                    setBrightness(value);</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                    NotifyPropertyChanged&lt;&amp;Light::Brightness&gt;();</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                }</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            }</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        };</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment"></span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="comment">         * @brief Get or set the brightness level</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="comment">         * @throws ResourceNotFoundException if brightness is not available</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">         * @throws InvalidParameterException if brightness is out of range or not supported</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">         */</span></div>
+<div class="foldopen" id="foldopen00145" data-start="{" data-end="};">
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a94788e6df3990e4643cc1203823c4108">  145</a></span>        Property&lt;uint8_t&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#a94788e6df3990e4643cc1203823c4108">Brightness</a>{</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            [<span class="keyword">this</span>]() {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                    <span class="keywordflow">return</span> getBrightness();</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                }</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>  <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>}</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>},</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>[<span class="keyword">this</span>](uint8_t&amp; value) {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        NotifyPropertyChanging&lt;&amp;Light::Brightness&gt;();</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        setBrightness(value);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        NotifyPropertyChanged&lt;&amp;Light::Brightness&gt;();</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>}</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        };</div>
 </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"></span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">         * @brief Get or set the color in XY color space</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">         * @throws ResourceNotFoundException if color is not available</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">         * @throws InvalidParameterException if color is invalid or not supported</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">         */</span></div>
-<div class="foldopen" id="foldopen00161" data-start="{" data-end="};">
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#aaecf805bc5a2926a61cbb50af4a948e3">  161</a></span>        Property&lt;XYColor&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#aaecf805bc5a2926a61cbb50af4a948e3">XYColor_</a>{</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>            [<span class="keyword">this</span>]() { </div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                    <span class="keywordflow">return</span> getColor(); </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                }</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            },</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>            [<span class="keyword">this</span>](<a class="code hl_struct" href="structhue4cpp_1_1XYColor.html">XYColor</a>&amp; value) {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                    NotifyPropertyChanging&lt;&amp;Light::XYColor_&gt;();</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                    setColor(value);</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    NotifyPropertyChanged&lt;&amp;Light::XYColor_&gt;();</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                }</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>            }</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        };</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment"></span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment">         * @brief Get or set the color in XY color space</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment">         * @throws ResourceNotFoundException if color is not available</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">         * @throws InvalidParameterException if color is invalid or not supported</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment">         */</span></div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="};">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#aaecf805bc5a2926a61cbb50af4a948e3">  173</a></span>        Property&lt;XYColor&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#aaecf805bc5a2926a61cbb50af4a948e3">XYColor_</a>{</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            [<span class="keyword">this</span>]() {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                    <span class="keywordflow">return</span> getColor();</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>  <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>}</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>},</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>[<span class="keyword">this</span>](<a class="code hl_struct" href="structhue4cpp_1_1XYColor.html">XYColor</a>&amp; value) {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        NotifyPropertyChanging&lt;&amp;Light::XYColor_&gt;();</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        setColor(value);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        NotifyPropertyChanged&lt;&amp;Light::XYColor_&gt;();</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>}</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        };</div>
 </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment"></span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment">         * @brief Get or set the color in RGB color space</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><span class="comment">         * @throws ResourceNotFoundException if color is not available</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span><span class="comment">         * @throws InvalidParameterException if color is invalid or not supported</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="comment">         */</span></div>
-<div class="foldopen" id="foldopen00187" data-start="{" data-end="};">
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6">  187</a></span>        Property&lt;RGBColor&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6">RGBColor_</a>{</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            [<span class="keyword">this</span>]() { </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehue4cpp_1_1color__utils.html#a8568753c91f81ad67a0152780cdae6bd">color_utils::xyToRgb</a>(getColor()); </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            },</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            [<span class="keyword">this</span>](<a class="code hl_struct" href="structhue4cpp_1_1RGBColor.html">RGBColor</a>&amp; value) {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                    NotifyPropertyChanging&lt;&amp;Light::RGBColor_&gt;();</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                    setColor(value);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                    NotifyPropertyChanged&lt;&amp;Light::RGBColor_&gt;();</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                }</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>            }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        };</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span><span class="comment"></span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">         * @brief Get or set the color in RGB color space</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">         * @throws ResourceNotFoundException if color is not available</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">         * @throws InvalidParameterException if color is invalid or not supported</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">         */</span></div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="};">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6">  201</a></span>        Property&lt;RGBColor&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6">RGBColor_</a>{</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            [<span class="keyword">this</span>]() {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>                    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacehue4cpp_1_1color__utils.html#a8568753c91f81ad67a0152780cdae6bd">color_utils::xyToRgb</a>(getColor());</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>                }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>  <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>}</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>},</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>[<span class="keyword">this</span>](<a class="code hl_struct" href="structhue4cpp_1_1RGBColor.html">RGBColor</a>&amp; value) {</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        NotifyPropertyChanging&lt;&amp;Light::RGBColor_&gt;();</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        setColor(value);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        NotifyPropertyChanged&lt;&amp;Light::RGBColor_&gt;();</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>}</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>}</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        };</div>
 </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment"></span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">        /**</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">         * @brief Get or set the color temperature</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">         * @throws ResourceNotFoundException if color temperature is not available</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">         * @throws InvalidParameterException if temperature is invalid or not supported</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">         */</span></div>
-<div class="foldopen" id="foldopen00213" data-start="{" data-end="};">
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d">  213</a></span>        Property&lt;ColorTemperature&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d">ColorTemperature_</a>{</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            [<span class="keyword">this</span>]() { </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>                    <span class="keywordflow">return</span> getColorTemperature(); </div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                }</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>            },</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>            [<span class="keyword">this</span>](<a class="code hl_struct" href="structhue4cpp_1_1ColorTemperature.html">ColorTemperature</a>&amp; value) {</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                    NotifyPropertyChanging&lt;&amp;Light::ColorTemperature_&gt;();</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                    setColorTemperature(value);</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>                    NotifyPropertyChanged&lt;&amp;Light::ColorTemperature_&gt;();</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                } <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>                    <span class="keywordflow">throw</span>;</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                }</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>            }</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        };</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment"></span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">        /**</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment">         * @brief Get or set the color temperature</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">         * @throws ResourceNotFoundException if color temperature is not available</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">         * @throws InvalidParameterException if temperature is invalid or not supported</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment">         * @throws BridgeNotReachableException if bridge is not available</span></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">         * @throws AuthenticationException if not authenticated</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">         */</span></div>
+<div class="foldopen" id="foldopen00229" data-start="{" data-end="};">
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d">  229</a></span>        Property&lt;ColorTemperature&gt; <a class="code hl_variable" href="classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d">ColorTemperature_</a>{</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            [<span class="keyword">this</span>]() {</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                    <span class="keywordflow">return</span> getColorTemperature();</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                }</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>  <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>}</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>},</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>[<span class="keyword">this</span>](<a class="code hl_struct" href="structhue4cpp_1_1ColorTemperature.html">ColorTemperature</a>&amp; value) {</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        NotifyPropertyChanging&lt;&amp;Light::ColorTemperature_&gt;();</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        setColorTemperature(value);</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        NotifyPropertyChanged&lt;&amp;Light::ColorTemperature_&gt;();</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    }</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> <span class="keywordflow">throw</span>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>}</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>}</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        };</div>
 </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        <span class="comment">// Control methods - called from properties</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        <span class="keywordtype">bool</span> isOn() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="keywordtype">void</span> turnOn() { turnOn(_transitionTime); }</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <span class="keywordtype">void</span> turnOn(<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="keywordtype">void</span> turnOff() { turnOff(_transitionTime); }</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="keywordtype">void</span> turnOff(<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <span class="keywordtype">void</span> toggle() { toggle(_transitionTime); }</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keywordtype">void</span> toggle(<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span> </div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        uint8_t getBrightness() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        <span class="keywordtype">void</span> setBrightness(uint8_t brightness) { setBrightness(brightness, _transitionTime); }</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>        <span class="keywordtype">void</span> setBrightness(uint8_t brightness, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        XYColor getColor() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> XYColor&amp; color) { setColor(color, _transitionTime); }</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> XYColor&amp; color, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> RGBColor&amp; color) { setColor(color, _transitionTime); }</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> RGBColor&amp; color, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        <span class="keywordtype">void</span> setColor(<span class="keywordtype">float</span> r, <span class="keywordtype">float</span> g, <span class="keywordtype">float</span> b, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        ColorTemperature getColorTemperature() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="keywordtype">void</span> setColorTemperature(<span class="keyword">const</span> ColorTemperature&amp; temperature) { setColorTemperature(temperature, _transitionTime); }</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        <span class="keywordtype">void</span> setColorTemperature(<span class="keyword">const</span> ColorTemperature&amp; temperature, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <span class="keywordtype">void</span> alert();</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="keywordtype">void</span> sendUpdate(<span class="keyword">const</span> nlohmann::json&amp; state_update);</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="keywordtype">void</span> addTransitionTime(nlohmann::json&amp; update, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> _transitionTime = std::chrono::milliseconds(400);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        std::string <a class="code hl_variable" href="discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3">id</a>;</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        std::string name;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        <a class="code hl_friend" href="classhue4cpp_1_1Light.html#a644eecdcd6c05c66b1505bc66985f9da">Bridge</a>* bridge;</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        LightCapabilities capabilities;</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a644eecdcd6c05c66b1505bc66985f9da">  268</a></span>        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>;</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    };</div>
-</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        <span class="comment">// Control methods - called from properties</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        <span class="keywordtype">bool</span> isOn() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        <span class="keywordtype">void</span> turnOn() { turnOn(_transitionTime); }</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="keywordtype">void</span> turnOn(<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        <span class="keywordtype">void</span> turnOff() { turnOff(_transitionTime); }</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        <span class="keywordtype">void</span> turnOff(<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <span class="keywordtype">void</span> toggle() { toggle(_transitionTime); }</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <span class="keywordtype">void</span> toggle(<a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        uint8_t getBrightness() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <span class="keywordtype">void</span> setBrightness(uint8_t brightness) { setBrightness(brightness, _transitionTime); }</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        <span class="keywordtype">void</span> setBrightness(uint8_t brightness, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        XYColor getColor() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> XYColor&amp; color) { setColor(color, _transitionTime); }</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> XYColor&amp; color, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> RGBColor&amp; color) { setColor(color, _transitionTime); }</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keywordtype">void</span> setColor(<span class="keyword">const</span> RGBColor&amp; color, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        <span class="keywordtype">void</span> setColor(<span class="keywordtype">float</span> r, <span class="keywordtype">float</span> g, <span class="keywordtype">float</span> b, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
 <div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>} <span class="comment">// namespace hue4cpp</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        ColorTemperature getColorTemperature() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="keywordtype">void</span> setColorTemperature(<span class="keyword">const</span> ColorTemperature&amp; temperature) { setColorTemperature(temperature, _transitionTime); }</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="keywordtype">void</span> setColorTemperature(<span class="keyword">const</span> ColorTemperature&amp; temperature, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>        <span class="keywordtype">void</span> alert();</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>        <span class="keywordtype">void</span> sendUpdate(<span class="keyword">const</span> nlohmann::json&amp; state_update);</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="keywordtype">void</span> addTransitionTime(nlohmann::json&amp; update, <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> transition);</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        <a class="code hl_typedef" href="namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b">TransitionTime</a> _transitionTime = std::chrono::milliseconds(400);</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        std::string _id;</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        std::string _name;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        <a class="code hl_friend" href="classhue4cpp_1_1Light.html#a644eecdcd6c05c66b1505bc66985f9da">Bridge</a>* _bridge;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        LightCapabilities _capabilities;</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1Light.html#a644eecdcd6c05c66b1505bc66985f9da">  286</a></span>        <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    };</div>
+</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>} <span class="comment">// namespace hue4cpp</span></div>
 <div class="ttc" id="aclasshue4cpp_1_1Bridge_html"><div class="ttname"><a href="classhue4cpp_1_1Bridge.html">hue4cpp::Bridge</a></div><div class="ttdoc">Represents a Philips Hue Bridge.</div><div class="ttdef"><b>Definition</b> <a href="bridge_8h_source.html#l00035">bridge.h:35</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1HueException_html"><div class="ttname"><a href="classhue4cpp_1_1HueException.html">hue4cpp::HueException</a></div><div class="ttdoc">Base exception class for all hue4cpp exceptions.</div><div class="ttdef"><b>Definition</b> <a href="exceptions_8h_source.html#l00017">exceptions.h:17</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Light_html"><div class="ttname"><a href="classhue4cpp_1_1Light.html">hue4cpp::Light</a></div><div class="ttdoc">Represents a single Hue light.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00031">light.h:31</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Light_html_a15fa122aab86ada6d108a32eda4d0109"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a15fa122aab86ada6d108a32eda4d0109">hue4cpp::Light::operator=</a></div><div class="ttdeci">Light &amp; operator=(const Light &amp;)=delete</div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Light_html_a214c4bba9faf5a7786ab2fea2dbf7813"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a214c4bba9faf5a7786ab2fea2dbf7813">hue4cpp::Light::Light</a></div><div class="ttdeci">Light()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00020">light.cpp:20</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a2876fcf5c69d6f4f092a2f8bd519cb6a"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a2876fcf5c69d6f4f092a2f8bd519cb6a">hue4cpp::Light::refresh</a></div><div class="ttdeci">void refresh()</div><div class="ttdoc">Refresh light state from bridge.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00369">light.cpp:369</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_a2876fcf5c69d6f4f092a2f8bd519cb6a"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a2876fcf5c69d6f4f092a2f8bd519cb6a">hue4cpp::Light::refresh</a></div><div class="ttdeci">void refresh()</div><div class="ttdoc">Refresh light state from bridge.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00361">light.cpp:361</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Light_html_a2f32252fb3e4aa9495ea2d0a44ad926e"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a2f32252fb3e4aa9495ea2d0a44ad926e">hue4cpp::Light::~Light</a></div><div class="ttdeci">~Light()=default</div><div class="ttdoc">Destructor.</div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Light_html_a2fddf49973b0bc43fb1a783db0bc6561"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a2fddf49973b0bc43fb1a783db0bc6561">hue4cpp::Light::Light</a></div><div class="ttdeci">Light(Light &amp;&amp;)=delete</div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a3fcd20e09c3aa926813441be94d64540"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a3fcd20e09c3aa926813441be94d64540">hue4cpp::Light::getId</a></div><div class="ttdeci">std::string getId() const</div><div class="ttdoc">Get the light's unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00037">light.cpp:37</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a4a31ea4538a4bb456ced408bf89536de"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a4a31ea4538a4bb456ced408bf89536de">hue4cpp::Light::getCapabilities</a></div><div class="ttdeci">LightCapabilities getCapabilities() const</div><div class="ttdoc">Get the light's capabilities.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00045">light.cpp:45</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a5d91c572f5baba8cd40ea58b48a247d0"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0">hue4cpp::Light::IsOn</a></div><div class="ttdeci">Property&lt; bool &gt; IsOn</div><div class="ttdoc">Get or set the on/off state.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00109">light.h:109</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a644eecdcd6c05c66b1505bc66985f9da"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a644eecdcd6c05c66b1505bc66985f9da">hue4cpp::Light::Bridge</a></div><div class="ttdeci">friend class Bridge</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00268">light.h:268</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a65ec1789b396dd845b79933c5bea90c5"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a65ec1789b396dd845b79933c5bea90c5">hue4cpp::Light::initFromJson</a></div><div class="ttdeci">void initFromJson(const nlohmann::json &amp;json)</div><div class="ttdoc">Initialize light state from JSON data.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00387">light.cpp:387</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a6abe14f8c4bf32a4b5b94ed6ce5da9b0"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a6abe14f8c4bf32a4b5b94ed6ce5da9b0">hue4cpp::Light::getName</a></div><div class="ttdeci">std::string getName() const</div><div class="ttdoc">Get the light's name.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00041">light.cpp:41</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a8d83f3e6178cf3a615ebfe6d87e9e32d"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d">hue4cpp::Light::ColorTemperature_</a></div><div class="ttdeci">Property&lt; ColorTemperature &gt; ColorTemperature_</div><div class="ttdoc">Get or set the color temperature.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00213">light.h:213</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_a94788e6df3990e4643cc1203823c4108"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a94788e6df3990e4643cc1203823c4108">hue4cpp::Light::Brightness</a></div><div class="ttdeci">Property&lt; uint8_t &gt; Brightness</div><div class="ttdoc">Get or set the brightness level.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00135">light.h:135</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_a4a31ea4538a4bb456ced408bf89536de"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a4a31ea4538a4bb456ced408bf89536de">hue4cpp::Light::getCapabilities</a></div><div class="ttdeci">LightCapabilities getCapabilities() const</div><div class="ttdoc">Get the light's capabilities.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00037">light.cpp:37</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_a5d91c572f5baba8cd40ea58b48a247d0"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0">hue4cpp::Light::IsOn</a></div><div class="ttdeci">Property&lt; bool &gt; IsOn</div><div class="ttdoc">Get or set the on/off state.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00117">light.h:117</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_a644eecdcd6c05c66b1505bc66985f9da"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a644eecdcd6c05c66b1505bc66985f9da">hue4cpp::Light::Bridge</a></div><div class="ttdeci">friend class Bridge</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00286">light.h:286</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_a65ec1789b396dd845b79933c5bea90c5"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a65ec1789b396dd845b79933c5bea90c5">hue4cpp::Light::initFromJson</a></div><div class="ttdeci">void initFromJson(const nlohmann::json &amp;json)</div><div class="ttdoc">Initialize light state from JSON data.</div><div class="ttdef"><b>Definition</b> <a href="light_8cpp_source.html#l00379">light.cpp:379</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_a8d83f3e6178cf3a615ebfe6d87e9e32d"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d">hue4cpp::Light::ColorTemperature_</a></div><div class="ttdeci">Property&lt; ColorTemperature &gt; ColorTemperature_</div><div class="ttdoc">Get or set the color temperature.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00229">light.h:229</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_a94788e6df3990e4643cc1203823c4108"><div class="ttname"><a href="classhue4cpp_1_1Light.html#a94788e6df3990e4643cc1203823c4108">hue4cpp::Light::Brightness</a></div><div class="ttdeci">Property&lt; uint8_t &gt; Brightness</div><div class="ttdoc">Get or set the brightness level.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00145">light.h:145</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_aa1f6971eba3b24d28e4c708406901721"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aa1f6971eba3b24d28e4c708406901721">hue4cpp::Light::Name</a></div><div class="ttdeci">ReadonlyProperty&lt; std::string &gt; Name</div><div class="ttdoc">Get the light's name.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00070">light.h:70</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Light_html_aa7ae28615f5a87fb1ef811ae2c4ac021"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aa7ae28615f5a87fb1ef811ae2c4ac021">hue4cpp::Light::operator=</a></div><div class="ttdeci">Light &amp; operator=(Light &amp;&amp;)=delete</div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_aaecf805bc5a2926a61cbb50af4a948e3"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aaecf805bc5a2926a61cbb50af4a948e3">hue4cpp::Light::XYColor_</a></div><div class="ttdeci">Property&lt; XYColor &gt; XYColor_</div><div class="ttdoc">Get or set the color in XY color space.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00161">light.h:161</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_aeb8342899096c7c006d52f210ee226f6"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6">hue4cpp::Light::RGBColor_</a></div><div class="ttdeci">Property&lt; RGBColor &gt; RGBColor_</div><div class="ttdoc">Get or set the color in RGB color space.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00187">light.h:187</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Light_html_aec1d90a71ae8976edc0d29c883f9a228"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228">hue4cpp::Light::TransitionTime_</a></div><div class="ttdeci">Property&lt; TransitionTime &gt; TransitionTime_</div><div class="ttdoc">Get or set the transition time for light changes.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00094">light.h:95</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_aaecf805bc5a2926a61cbb50af4a948e3"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aaecf805bc5a2926a61cbb50af4a948e3">hue4cpp::Light::XYColor_</a></div><div class="ttdeci">Property&lt; XYColor &gt; XYColor_</div><div class="ttdoc">Get or set the color in XY color space.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00173">light.h:173</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_ac274a4d0e1005783601e47897ff0894e"><div class="ttname"><a href="classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e">hue4cpp::Light::Id</a></div><div class="ttdeci">ReadonlyProperty&lt; std::string &gt; Id</div><div class="ttdoc">Get the light's unique identifier.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00060">light.h:60</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_aeb8342899096c7c006d52f210ee226f6"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6">hue4cpp::Light::RGBColor_</a></div><div class="ttdeci">Property&lt; RGBColor &gt; RGBColor_</div><div class="ttdoc">Get or set the color in RGB color space.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00201">light.h:201</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Light_html_aec1d90a71ae8976edc0d29c883f9a228"><div class="ttname"><a href="classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228">hue4cpp::Light::TransitionTime_</a></div><div class="ttdeci">Property&lt; TransitionTime &gt; TransitionTime_</div><div class="ttdoc">Get or set the transition time for light changes.</div><div class="ttdef"><b>Definition</b> <a href="light_8h_source.html#l00102">light.h:103</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Light_html_afe96d76c7ee4322270ab4d263770710b"><div class="ttname"><a href="classhue4cpp_1_1Light.html#afe96d76c7ee4322270ab4d263770710b">hue4cpp::Light::Light</a></div><div class="ttdeci">Light(const Light &amp;)=delete</div></div>
 <div class="ttc" id="acolor__utils_8h_html"><div class="ttname"><a href="color__utils_8h.html">color_utils.h</a></div><div class="ttdoc">Color conversion utilities and preset color palettes.</div></div>
-<div class="ttc" id="adiscovery_8cpp_html_afd0d68c6d31ff249f3ae8662162663c3"><div class="ttname"><a href="discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3">id</a></div><div class="ttdeci">std::string id</div><div class="ttdef"><b>Definition</b> <a href="discovery_8cpp_source.html#l00041">discovery.cpp:41</a></div></div>
 <div class="ttc" id="aexceptions_8h_html"><div class="ttname"><a href="exceptions_8h.html">exceptions.h</a></div><div class="ttdoc">Exception classes for hue4cpp.</div></div>
 <div class="ttc" id="anamespacehue4cpp_1_1color__utils_html_a8568753c91f81ad67a0152780cdae6bd"><div class="ttname"><a href="namespacehue4cpp_1_1color__utils.html#a8568753c91f81ad67a0152780cdae6bd">hue4cpp::color_utils::xyToRgb</a></div><div class="ttdeci">RGBColor xyToRgb(const XYColor &amp;xy, uint8_t brightness=100)</div><div class="ttdoc">Convert XY color to approximate RGB.</div><div class="ttdef"><b>Definition</b> <a href="color__utils_8cpp_source.html#l00049">color_utils.cpp:49</a></div></div>
 <div class="ttc" id="anamespacehue4cpp_html"><div class="ttname"><a href="namespacehue4cpp.html">hue4cpp</a></div><div class="ttdoc">Main namespace for the hue4cpp library.</div><div class="ttdef"><b>Definition</b> <a href="bridge_8h_source.html#l00013">bridge.h:13</a></div></div>
