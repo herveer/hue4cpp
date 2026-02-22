@@ -49,7 +49,7 @@ TEST_CASE("SSEClient events", "[sse_client]") {
     
     SECTION("Subscribe to ConnectionChanged") {
         bool callback_called = false;
-        client.ConnectionChanged += [&callback_called](bool) {
+        client.PropertyChanged += [&callback_called](ReactiveLitepp::ObservableObject& obj, ReactiveLitepp::PropertyChangeArgs args) {
             callback_called = true;
         };
         REQUIRE_FALSE(callback_called);
