@@ -84,9 +84,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classhue4cpp_1_1MotionSensor.html#a29e75a2f18d350943980083c12f9100a",
-"color__utils_8h.html#ab4cb9989bf75f53d7982b2e5204e9e02",
-"structhue4cpp_1_1BellButtonState.html#a56dcfb42ac1317a6a962a790f2529c80",
-"types_8h.html#afd74b442f5952dc07afcac704785d333a5a8821d3fbf32174429e2b28bc3b031b"
+"functions_r.html",
+"structhue4cpp_1_1ColorTemperature.html#af9a27e6c8202fd782451e741825a3449"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

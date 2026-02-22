@@ -35,7 +35,7 @@ var annotated_dup =
       [ "RGBColor", "structhue4cpp_1_1RGBColor.html", "structhue4cpp_1_1RGBColor" ],
       [ "Sensor", "classhue4cpp_1_1Sensor.html", "classhue4cpp_1_1Sensor" ],
       [ "SSEClient", "classhue4cpp_1_1SSEClient.html", "classhue4cpp_1_1SSEClient" ],
-      [ "SSEEvent", "structhue4cpp_1_1SSEEvent.html", "structhue4cpp_1_1SSEEvent" ],
+      [ "SSEEventArgs", "structhue4cpp_1_1SSEEventArgs.html", "structhue4cpp_1_1SSEEventArgs" ],
       [ "StateManager", "classhue4cpp_1_1StateManager.html", "classhue4cpp_1_1StateManager" ],
       [ "TamperSensor", "classhue4cpp_1_1TamperSensor.html", "classhue4cpp_1_1TamperSensor" ],
       [ "TamperState", "structhue4cpp_1_1TamperState.html", "structhue4cpp_1_1TamperState" ],

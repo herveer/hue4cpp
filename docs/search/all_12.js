@@ -15,7 +15,7 @@ var searchData=
   ['temperaturestate_12',['temperaturestate',['../structhue4cpp_1_1TemperatureState.html#a15a1c4e3521f169757f2a9decf0ffb91',1,'hue4cpp::TemperatureState::TemperatureState()'],['../structhue4cpp_1_1TemperatureState.html',1,'hue4cpp::TemperatureState']]],
   ['testing_13',['Testing',['../index.html#autotoc_md14',1,'']]],
   ['time_20state_20monitoring_14',['Real-time State Monitoring',['../index.html#autotoc_md9',1,'']]],
-  ['timeout_15',['timeout',['../classhue4cpp_1_1HttpClient_1_1Impl.html#aed844da384bc3724b1dad62e31cd3923',1,'hue4cpp::HttpClient::Impl::timeout'],['../classhue4cpp_1_1SSEClient_1_1Impl.html#af4f5d9f31b0e4c17aef9adcee9958e28',1,'hue4cpp::SSEClient::Impl::timeout']]],
+  ['timeout_15',['timeout',['../classhue4cpp_1_1HttpClient_1_1Impl.html#aed844da384bc3724b1dad62e31cd3923',1,'hue4cpp::HttpClient::Impl']]],
   ['timeouterror_16',['TimeoutError',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a2ce01afd7e833fc13c63448689ea762a',1,'hue4cpp']]],
   ['timeoutexception_17',['timeoutexception',['../classhue4cpp_1_1TimeoutException.html',1,'hue4cpp::TimeoutException'],['../classhue4cpp_1_1TimeoutException.html#a814e28c9149b2a8440dd45ea53afa423',1,'hue4cpp::TimeoutException::TimeoutException()']]],
   ['tokelvin_18',['toKelvin',['../structhue4cpp_1_1ColorTemperature.html#a2e6dc6c5af46633aeac0394fc68e5170',1,'hue4cpp::ColorTemperature']]],

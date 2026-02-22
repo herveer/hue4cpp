@@ -71,7 +71,7 @@ var namespacehue4cpp =
     [ "RGBColor", "structhue4cpp_1_1RGBColor.html", "structhue4cpp_1_1RGBColor" ],
     [ "Sensor", "classhue4cpp_1_1Sensor.html", "classhue4cpp_1_1Sensor" ],
     [ "SSEClient", "classhue4cpp_1_1SSEClient.html", "classhue4cpp_1_1SSEClient" ],
-    [ "SSEEvent", "structhue4cpp_1_1SSEEvent.html", "structhue4cpp_1_1SSEEvent" ],
+    [ "SSEEventArgs", "structhue4cpp_1_1SSEEventArgs.html", "structhue4cpp_1_1SSEEventArgs" ],
     [ "StateManager", "classhue4cpp_1_1StateManager.html", "classhue4cpp_1_1StateManager" ],
     [ "TamperSensor", "classhue4cpp_1_1TamperSensor.html", "classhue4cpp_1_1TamperSensor" ],
     [ "TamperState", "structhue4cpp_1_1TamperState.html", "structhue4cpp_1_1TamperState" ],
@@ -81,8 +81,6 @@ var namespacehue4cpp =
     [ "Version", "structhue4cpp_1_1Version.html", "structhue4cpp_1_1Version" ],
     [ "XYColor", "structhue4cpp_1_1XYColor.html", "structhue4cpp_1_1XYColor" ],
     [ "EventCallback", "namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484", null ],
-    [ "SSEConnectionCallback", "namespacehue4cpp.html#a1f42e2afec080b9ba7a0e9e986ba74a9", null ],
-    [ "SSEEventCallback", "namespacehue4cpp.html#ac51dc5948e302e61d4940a3aebfffc99", null ],
     [ "TransitionTime", "namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b", null ],
     [ "ButtonEvent", "namespacehue4cpp.html#a0ecc80e2f206fdef7c207b36f31aeffc", [
       [ "Unknown", "namespacehue4cpp.html#a0ecc80e2f206fdef7c207b36f31aeffca88183b946cc5f0e8c96b2e66e1c74a7e", null ],

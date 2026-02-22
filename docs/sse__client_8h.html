@@ -92,8 +92,7 @@ $(document).ready(function(){initNavTree('sse__client_8h.html',''); initResizabl
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">sse_client.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -101,17 +100,21 @@ $(document).ready(function(){initNavTree('sse__client_8h.html',''); initResizabl
 <p>Server-Sent Events (SSE) client for real-time updates.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &lt;functional&gt;</code><br />
+<code>#include &lt;ReactiveLitepp/ObservableObject.h&gt;</code><br />
+<code>#include &lt;ReactiveLitepp/Event.h&gt;</code><br />
+<code>#include &lt;ReactiveLitepp/Property.h&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
-<code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;chrono&gt;</code><br />
+<code>#include &lt;atomic&gt;</code><br />
+<code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 </div>
 <p><a href="sse__client_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhue4cpp_1_1SSEEvent.html">hue4cpp::SSEEvent</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSE event data structure.  <a href="structhue4cpp_1_1SSEEvent.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhue4cpp_1_1SSEEventArgs.html">hue4cpp::SSEEventArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSE event data structure.  <a href="structhue4cpp_1_1SSEEventArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1SSEClient.html">hue4cpp::SSEClient</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSE client for listening to Server-Sent Events.  <a href="classhue4cpp_1_1SSEClient.html#details">More...</a><br /></td></tr>
@@ -122,15 +125,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacehue4cpp" id="r_namespacehue4cpp"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html">hue4cpp</a></td></tr>
 <tr class="memdesc:namespacehue4cpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main namespace for the <a class="el" href="namespacehue4cpp.html" title="Main namespace for the hue4cpp library.">hue4cpp</a> library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ac51dc5948e302e61d4940a3aebfffc99" id="r_ac51dc5948e302e61d4940a3aebfffc99"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html#ac51dc5948e302e61d4940a3aebfffc99">hue4cpp::SSEEventCallback</a> = std::function&lt; void(const <a class="el" href="structhue4cpp_1_1SSEEvent.html">SSEEvent</a> &amp;)&gt;</td></tr>
-<tr class="memdesc:ac51dc5948e302e61d4940a3aebfffc99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function for SSE events.  <br /></td></tr>
-<tr class="separator:ac51dc5948e302e61d4940a3aebfffc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f42e2afec080b9ba7a0e9e986ba74a9" id="r_a1f42e2afec080b9ba7a0e9e986ba74a9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html#a1f42e2afec080b9ba7a0e9e986ba74a9">hue4cpp::SSEConnectionCallback</a> = std::function&lt; void(bool connected)&gt;</td></tr>
-<tr class="memdesc:a1f42e2afec080b9ba7a0e9e986ba74a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function for connection state changes.  <br /></td></tr>
-<tr class="separator:a1f42e2afec080b9ba7a0e9e986ba74a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Server-Sent Events (SSE) client for real-time updates. </p>

@@ -219,8 +219,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1SSEClient.html">SSEClient</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSE client for listening to Server-Sent Events.  <a href="classhue4cpp_1_1SSEClient.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhue4cpp_1_1SSEEvent.html">SSEEvent</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSE event data structure.  <a href="structhue4cpp_1_1SSEEvent.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhue4cpp_1_1SSEEventArgs.html">SSEEventArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SSE event data structure.  <a href="structhue4cpp_1_1SSEEventArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html">StateManager</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages state synchronization via Server-Sent Events.  <a href="classhue4cpp_1_1StateManager.html#details">More...</a><br /></td></tr>
@@ -249,12 +249,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ac51dc5948e302e61d4940a3aebfffc99" id="r_ac51dc5948e302e61d4940a3aebfffc99"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html#ac51dc5948e302e61d4940a3aebfffc99">SSEEventCallback</a> = std::function&lt; void(const <a class="el" href="structhue4cpp_1_1SSEEvent.html">SSEEvent</a> &amp;)&gt;</td></tr>
-<tr class="memdesc:ac51dc5948e302e61d4940a3aebfffc99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function for SSE events.  <br /></td></tr>
-<tr class="separator:ac51dc5948e302e61d4940a3aebfffc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f42e2afec080b9ba7a0e9e986ba74a9" id="r_a1f42e2afec080b9ba7a0e9e986ba74a9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html#a1f42e2afec080b9ba7a0e9e986ba74a9">SSEConnectionCallback</a> = std::function&lt; void(bool connected)&gt;</td></tr>
-<tr class="memdesc:a1f42e2afec080b9ba7a0e9e986ba74a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function for connection state changes.  <br /></td></tr>
-<tr class="separator:a1f42e2afec080b9ba7a0e9e986ba74a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6402e04da3a1e47cf8cea916a1005484" id="r_a6402e04da3a1e47cf8cea916a1005484"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484">EventCallback</a> = std::function&lt; void(const <a class="el" href="structhue4cpp_1_1Event.html">Event</a> &amp;)&gt;</td></tr>
 <tr class="memdesc:a6402e04da3a1e47cf8cea916a1005484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function for state change events.  <br /></td></tr>
 <tr class="separator:a6402e04da3a1e47cf8cea916a1005484"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -361,42 +355,6 @@ Functions</h2></td></tr>
 <p>Callback function for state change events. </p>
 
 <p class="definition">Definition at line <a class="el" href="state_8h_source.html#l00053">53</a> of file <a class="el" href="state_8h_source.html">state.h</a>.</p>
-
-</div>
-</div>
-<a id="a1f42e2afec080b9ba7a0e9e986ba74a9" name="a1f42e2afec080b9ba7a0e9e986ba74a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f42e2afec080b9ba7a0e9e986ba74a9">&#9670;&#160;</a></span>SSEConnectionCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacehue4cpp.html#a1f42e2afec080b9ba7a0e9e986ba74a9">hue4cpp::SSEConnectionCallback</a> = typedef std::function&lt;void(bool connected)&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback function for connection state changes. </p>
-
-<p class="definition">Definition at line <a class="el" href="sse__client_8h_source.html#l00037">37</a> of file <a class="el" href="sse__client_8h_source.html">sse_client.h</a>.</p>
-
-</div>
-</div>
-<a id="ac51dc5948e302e61d4940a3aebfffc99" name="ac51dc5948e302e61d4940a3aebfffc99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac51dc5948e302e61d4940a3aebfffc99">&#9670;&#160;</a></span>SSEEventCallback</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacehue4cpp.html#ac51dc5948e302e61d4940a3aebfffc99">hue4cpp::SSEEventCallback</a> = typedef std::function&lt;void(const <a class="el" href="structhue4cpp_1_1SSEEvent.html">SSEEvent</a>&amp;)&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback function for SSE events. </p>
-
-<p class="definition">Definition at line <a class="el" href="sse__client_8h_source.html#l00032">32</a> of file <a class="el" href="sse__client_8h_source.html">sse_client.h</a>.</p>
 
 </div>
 </div>
