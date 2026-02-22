@@ -1,8 +1,8 @@
 #pragma once
 
 #include "types.h"
+#include "state.h"
 #include <vector>
-#include <memory>
 #include <string>
 
 /**
@@ -24,7 +24,6 @@ namespace hue4cpp {
 	class RelativeRotarySensor;
 	class GeolocationSensor;
 	class TamperSensor;
-	class StateManager;
 
 	/**
 	 * @brief Represents a Philips Hue Bridge
@@ -229,8 +228,12 @@ namespace hue4cpp {
 		bool isReachable() const;
 
 	private:
-		class Impl;
-		std::unique_ptr<Impl> pImpl;
+		BridgeInfo _info;
+		std::string _auth_key;
+		std::unique_ptr<StateManager> _state_manager;
+
+		template<typename SensorT>
+		std::vector<std::unique_ptr<SensorT>> fetchSensorsByType(const std::string& resource_type);
 	};
 
 } // namespace hue4cpp

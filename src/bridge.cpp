@@ -1,7 +1,6 @@
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/light.h"
 #include "hue4cpp/sensors.h"
-#include "hue4cpp/state.h"
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/exceptions.h"
@@ -17,107 +16,34 @@ namespace hue4cpp {
 		constexpr std::chrono::milliseconds AUTH_RETRY_INTERVAL{ 1000 };  // 1 second between retries
 	}
 
-	// Bridge::Impl definition
-	class Bridge::Impl {
-	public:
-		BridgeInfo info;
-		std::string auth_key;
-		std::unique_ptr<StateManager> state_manager;
-
-		Impl(Bridge* bridge) : state_manager(std::make_unique<StateManager>(bridge)) {}
-		explicit Impl(const BridgeInfo& bridge_info, Bridge* bridge)
-			: info(bridge_info), state_manager(std::make_unique<StateManager>(bridge)) {
-		}
-
-		Impl(Impl&& other) noexcept
-			: info(std::move(other.info)),
-			auth_key(std::move(other.auth_key)),
-			state_manager(std::move(other.state_manager)) {
-		}
-
-		// Helper method to fetch sensors by resource type
-		template<typename SensorType>
-		std::vector<std::unique_ptr<SensorType>> fetchSensorsByType(const std::string& resource_type, Bridge* bridge) {
-			if (auth_key.empty() || info.ip_address.empty()) {
-				return {};
-			}
-
-			try {
-				HttpClient client;
-				client.setVerifySsl(false);
-				client.setTimeout(std::chrono::milliseconds(5000));
-
-				std::string url = "https://" + info.ip_address + "/clip/v2/resource/" + resource_type;
-
-				std::map<std::string, std::string> headers;
-				headers["hue-application-key"] = auth_key;
-
-				auto response = client.get(url, headers);
-
-				if (!response.isSuccess()) {
-					return {};
-				}
-
-				auto json_response = json_utils::parse(response.body);
-
-				// Check if response contains errors
-				if (json_response.contains("errors") && json_response["errors"].is_array()) {
-					auto errors = json_response["errors"];
-					if (!errors.empty()) {
-						return {};
-					}
-				}
-
-				// Extract sensors from the data array
-				if (!json_response.contains("data") || !json_response["data"].is_array()) {
-					return {};
-				}
-
-				std::vector<std::unique_ptr<SensorType>> sensors;
-				auto data = json_response["data"];
-
-				for (const auto& sensor_data : data) {
-					std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
-					if (!id.empty()) {
-						auto sensor = std::make_unique<SensorType>(id, bridge);
-						sensor->initFromJson(sensor_data);
-						sensors.push_back(std::move(sensor));
-					}
-				}
-
-				return sensors;
-
-			}
-			catch (const std::exception&) {
-				return {};
-			}
-		}
-	};
-
 	// Bridge implementation
-	Bridge::Bridge() : pImpl(std::make_unique<Impl>(this)) {}
+	Bridge::Bridge() : _state_manager(std::make_unique<StateManager>(this)) {}
 
-	Bridge::Bridge(const BridgeInfo& info) : pImpl(std::make_unique<Impl>(info, this)) {}
+	Bridge::Bridge(const BridgeInfo& info)
+		: _info(info), _state_manager(std::make_unique<StateManager>(this)) {}
 
 	Bridge::~Bridge() {
-		// Stop SSE connection when bridge is destroyed
-		if (pImpl && pImpl->state_manager && pImpl->state_manager->isRunning()) {
-			pImpl->state_manager->stop();
+		if (_state_manager && _state_manager->isRunning()) {
+			_state_manager->stop();
 		}
 	}
-
 
 	Bridge::Bridge(Bridge&& other) noexcept
-		: pImpl(std::move(other.pImpl))
+		: _info(std::move(other._info)),
+		  _auth_key(std::move(other._auth_key)),
+		  _state_manager(std::move(other._state_manager))
 	{
-		if (pImpl && pImpl->state_manager) {
-			pImpl->state_manager->setBridge(this);
+		if (_state_manager) {
+			_state_manager->setBridge(this);
 		}
 	}
+
 	Bridge& Bridge::operator=(Bridge&& other) noexcept {
-		pImpl = std::move(other.pImpl);
-		if (pImpl && pImpl->state_manager) {
-			pImpl->state_manager->setBridge(this);
+		_info = std::move(other._info);
+		_auth_key = std::move(other._auth_key);
+		_state_manager = std::move(other._state_manager);
+		if (_state_manager) {
+			_state_manager->setBridge(this);
 		}
 		return *this;
 	}
@@ -126,7 +52,7 @@ namespace hue4cpp {
 
 	Result<std::string> Bridge::authenticate(const std::string& app_name,
 		const std::string& device_name) {
-		if (pImpl->info.ip_address.empty()) {
+		if (_info.ip_address.empty()) {
 			return Result<std::string>(ErrorCode::InvalidParameter,
 				"Bridge IP address is not set");
 		}
@@ -148,7 +74,7 @@ namespace hue4cpp {
 		client.setTimeout(AUTH_TIMEOUT);
 
 		// Construct the URL for authentication
-		std::string url = "https://" + pImpl->info.ip_address + "/api";
+		std::string url = "https://" + _info.ip_address + "/api";
 
 		// Create JSON request body
 		nlohmann::json request_body;
@@ -181,7 +107,7 @@ namespace hue4cpp {
 					auto success = first_item["success"];
 					if (success.contains("username")) {
 						std::string username = success["username"].get<std::string>();
-						pImpl->auth_key = username;
+						_auth_key = username;
 						// Note: SSE connection must be manually started via getStateManager().start()
 						return Result<std::string>(username);
 					}
@@ -232,25 +158,25 @@ namespace hue4cpp {
 	}
 
 	void Bridge::setAuthenticationKey(const std::string& key) {
-		pImpl->auth_key = key;
-		pImpl->state_manager->stop(); // Stop any existing SSE connection if auth key changes
+		_auth_key = key;
+		_state_manager->stop(); // Stop any existing SSE connection if auth key changes
 	}
 
 	std::string Bridge::getAuthenticationKey() const {
-		return pImpl->auth_key;
+		return _auth_key;
 	}
 
 	bool Bridge::isAuthenticated() const {
-		return !pImpl->auth_key.empty();
+		return !_auth_key.empty();
 	}
 
 	Result<void> Bridge::validateAuthentication() const {
-		if (pImpl->auth_key.empty()) {
+		if (_auth_key.empty()) {
 			return Result<void>(ErrorCode::AuthenticationRequired,
 				"No authentication key set");
 		}
 
-		if (pImpl->info.ip_address.empty()) {
+		if (_info.ip_address.empty()) {
 			return Result<void>(ErrorCode::InvalidParameter,
 				"Bridge IP address is not set");
 		}
@@ -261,11 +187,11 @@ namespace hue4cpp {
 			client.setTimeout(AUTH_TIMEOUT);
 
 			// Try to access the config endpoint with the authentication key
-			std::string url = "https://" + pImpl->info.ip_address +
+			std::string url = "https://" + _info.ip_address +
 				"/clip/v2/resource/bridge";
 
 			std::map<std::string, std::string> headers;
-			headers["hue-application-key"] = pImpl->auth_key;
+			headers["hue-application-key"] = _auth_key;
 
 			auto response = client.get(url, headers);
 
@@ -313,7 +239,7 @@ namespace hue4cpp {
 			return {};
 		}
 
-		if (pImpl->info.ip_address.empty()) {
+		if (_info.ip_address.empty()) {
 			return {};
 		}
 
@@ -322,10 +248,10 @@ namespace hue4cpp {
 			client.setVerifySsl(false);
 			client.setTimeout(std::chrono::milliseconds(5000));
 
-			std::string url = "https://" + pImpl->info.ip_address + "/clip/v2/resource/light";
+			std::string url = "https://" + _info.ip_address + "/clip/v2/resource/light";
 
 			std::map<std::string, std::string> headers;
-			headers["hue-application-key"] = pImpl->auth_key;
+			headers["hue-application-key"] = _auth_key;
 
 			auto response = client.get(url, headers);
 
@@ -370,7 +296,7 @@ namespace hue4cpp {
 	}
 
 	std::unique_ptr<Light>Bridge::getLight(const std::string& light_id) {
-		if (!isAuthenticated() || pImpl->info.ip_address.empty() || light_id.empty()) {
+		if (!isAuthenticated() || _info.ip_address.empty() || light_id.empty()) {
 			return nullptr;
 		}
 
@@ -379,11 +305,11 @@ namespace hue4cpp {
 			client.setVerifySsl(false);
 			client.setTimeout(std::chrono::milliseconds(5000));
 
-			std::string url = "https://" + pImpl->info.ip_address +
+			std::string url = "https://" + _info.ip_address +
 				"/clip/v2/resource/light/" + light_id;
 
 			std::map<std::string, std::string> headers;
-			headers["hue-application-key"] = pImpl->auth_key;
+			headers["hue-application-key"] = _auth_key;
 
 			auto response = client.get(url, headers);
 
@@ -421,29 +347,29 @@ namespace hue4cpp {
 	}
 
 	void Bridge::setInfo(const BridgeInfo& info) {
-		pImpl->info = info;
-		pImpl->state_manager->stop(); // Stop SSE connection if bridge info changes
+		_info = info;
+		_state_manager->stop(); // Stop SSE connection if bridge info changes
 	}
 
 	const BridgeInfo& Bridge::getInfo() const {
-		return pImpl->info;
+		return _info;
 	}
 
 	StateManager& Bridge::getStateManager() {
-		return *pImpl->state_manager;
+		return *_state_manager;
 	}
 
 	std::string Bridge::getLightState(const std::string& light_id, bool refreshCache) {
 		// First, check StateManager cache
 		if (!refreshCache) {
-			std::string cached_state = pImpl->state_manager->getResourceState(light_id);
+			std::string cached_state = _state_manager->getResourceState(light_id);
 			if (!cached_state.empty()) {
 				return cached_state;
 			}
 		}
 
 		// Cache miss - fetch from bridge API
-		if (!isAuthenticated() || pImpl->info.ip_address.empty() || light_id.empty()) {
+		if (!isAuthenticated() || _info.ip_address.empty() || light_id.empty()) {
 			return "";
 		}
 
@@ -452,11 +378,11 @@ namespace hue4cpp {
 			client.setVerifySsl(false);
 			client.setTimeout(std::chrono::milliseconds(5000));
 
-			std::string url = "https://" + pImpl->info.ip_address +
+			std::string url = "https://" + _info.ip_address +
 				"/clip/v2/resource/light/" + light_id;
 
 			std::map<std::string, std::string> headers;
-			headers["hue-application-key"] = pImpl->auth_key;
+			headers["hue-application-key"] = _auth_key;
 
 			auto response = client.get(url, headers);
 
@@ -486,7 +412,7 @@ namespace hue4cpp {
 
 			// Update cache with complete state from API
 			std::string full_state = data[0].dump();
-			pImpl->state_manager->setResourceState(light_id, full_state);
+			_state_manager->setResourceState(light_id, full_state);
 			return full_state;
 
 		}
@@ -498,14 +424,14 @@ namespace hue4cpp {
 	std::string Bridge::getSensorState(const std::string& sensor_id, const std::string& sensor_type, bool refreshCache) {
 		// First, check StateManager cache
 		if (!refreshCache) {
-			std::string cached_state = pImpl->state_manager->getResourceState(sensor_id);
+			std::string cached_state = _state_manager->getResourceState(sensor_id);
 			if (!cached_state.empty()) {
 				return cached_state;
 			}
 		}
 
 		// Cache miss - fetch from bridge API
-		if (!isAuthenticated() || pImpl->info.ip_address.empty() || sensor_id.empty() || sensor_type.empty()) {
+		if (!isAuthenticated() || _info.ip_address.empty() || sensor_id.empty() || sensor_type.empty()) {
 			return "";
 		}
 
@@ -514,11 +440,11 @@ namespace hue4cpp {
 			client.setVerifySsl(false);
 			client.setTimeout(std::chrono::milliseconds(5000));
 
-			std::string url = "https://" + pImpl->info.ip_address +
+			std::string url = "https://" + _info.ip_address +
 				"/clip/v2/resource/" + sensor_type + "/" + sensor_id;
 
 			std::map<std::string, std::string> headers;
-			headers["hue-application-key"] = pImpl->auth_key;
+			headers["hue-application-key"] = _auth_key;
 
 			auto response = client.get(url, headers);
 
@@ -548,7 +474,7 @@ namespace hue4cpp {
 
 			// Update cache with complete state from API
 			std::string full_state = data[0].dump();
-			pImpl->state_manager->setResourceState(sensor_id, full_state);
+			_state_manager->setResourceState(sensor_id, full_state);
 			return full_state;
 
 		}
@@ -611,7 +537,7 @@ namespace hue4cpp {
 		};
 
 		for (const auto& resource_type : resource_types) {
-			if (!isAuthenticated() || pImpl->info.ip_address.empty() || sensor_id.empty()) {
+			if (!isAuthenticated() || _info.ip_address.empty() || sensor_id.empty()) {
 				continue;
 			}
 
@@ -620,11 +546,11 @@ namespace hue4cpp {
 				client.setVerifySsl(false);
 				client.setTimeout(std::chrono::milliseconds(5000));
 
-				std::string url = "https://" + pImpl->info.ip_address +
+				std::string url = "https://" + _info.ip_address +
 					"/clip/v2/resource/" + resource_type + "/" + sensor_id;
 
 				std::map<std::string, std::string> headers;
-				headers["hue-application-key"] = pImpl->auth_key;
+				headers["hue-application-key"] = _auth_key;
 
 				auto response = client.get(url, headers);
 
@@ -665,67 +591,122 @@ namespace hue4cpp {
 		return nullptr;
 	}
 
+	template<typename SensorT>
+	std::vector<std::unique_ptr<SensorT>> Bridge::fetchSensorsByType(const std::string& resource_type) {
+		if (_auth_key.empty() || _info.ip_address.empty()) {
+			return {};
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + _info.ip_address + "/clip/v2/resource/" + resource_type;
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = _auth_key;
+
+			auto response = client.get(url, headers);
+
+			if (!response.isSuccess()) {
+				return {};
+			}
+
+			auto json_response = json_utils::parse(response.body);
+
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				auto errors = json_response["errors"];
+				if (!errors.empty()) {
+					return {};
+				}
+			}
+
+			if (!json_response.contains("data") || !json_response["data"].is_array()) {
+				return {};
+			}
+
+			std::vector<std::unique_ptr<SensorT>> sensors;
+			auto data = json_response["data"];
+
+			for (const auto& sensor_data : data) {
+				std::string id = json_utils::getValueOr<std::string>(sensor_data, "id", "");
+				if (!id.empty()) {
+					auto sensor = std::make_unique<SensorT>(id, this);
+					sensor->initFromJson(sensor_data);
+					sensors.push_back(std::move(sensor));
+				}
+			}
+
+			return sensors;
+
+		}
+		catch (const std::exception&) {
+			return {};
+		}
+	}
+
 	std::vector<std::unique_ptr<MotionSensor>> Bridge::getMotionSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<MotionSensor>("motion", this);
+		return fetchSensorsByType<MotionSensor>("motion");
 	}
 
 	std::vector<std::unique_ptr<TemperatureSensor>> Bridge::getTemperatureSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<TemperatureSensor>("temperature", this);
+		return fetchSensorsByType<TemperatureSensor>("temperature");
 	}
 
 	std::vector<std::unique_ptr<LightLevelSensor>> Bridge::getLightLevelSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<LightLevelSensor>("light_level", this);
+		return fetchSensorsByType<LightLevelSensor>("light_level");
 	}
 
 	std::vector<std::unique_ptr<ButtonSensor>> Bridge::getButtonSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<ButtonSensor>("button", this);
+		return fetchSensorsByType<ButtonSensor>("button");
 	}
 
 	std::vector<std::unique_ptr<CameraMotionSensor>> Bridge::getCameraMotionSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<CameraMotionSensor>("camera_motion", this);
+		return fetchSensorsByType<CameraMotionSensor>("camera_motion");
 	}
 
 	std::vector<std::unique_ptr<BellButtonSensor>> Bridge::getBellButtonSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<BellButtonSensor>("bell_button", this);
+		return fetchSensorsByType<BellButtonSensor>("bell_button");
 	}
 
 	std::vector<std::unique_ptr<RelativeRotarySensor>> Bridge::getRelativeRotarySensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<RelativeRotarySensor>("relative_rotary", this);
+		return fetchSensorsByType<RelativeRotarySensor>("relative_rotary");
 	}
 
 	std::vector<std::unique_ptr<GeolocationSensor>> Bridge::getGeolocationSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<GeolocationSensor>("geolocation", this);
+		return fetchSensorsByType<GeolocationSensor>("geolocation");
 	}
 
 	std::vector<std::unique_ptr<TamperSensor>> Bridge::getTamperSensors() {
 		if (!isAuthenticated()) {
 			return {};
 		}
-		return pImpl->fetchSensorsByType<TamperSensor>("tamper", this);
+		return fetchSensorsByType<TamperSensor>("tamper");
 	}
 
 	// isReachable is implemented in discovery.cpp

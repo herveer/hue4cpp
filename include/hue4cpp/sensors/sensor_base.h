@@ -26,15 +26,15 @@ public:
     /**
      * @brief Virtual destructor
      */
-    virtual ~Sensor();
+    virtual ~Sensor() = default;
     
     // Prevent copying (use smart pointers for polymorphic storage)
     Sensor(const Sensor&) = delete;
     Sensor& operator=(const Sensor&) = delete;
     
     // Allow moving
-    Sensor(Sensor&&) noexcept;
-    Sensor& operator=(Sensor&&) noexcept;
+    Sensor(Sensor&&) noexcept = default;
+    Sensor& operator=(Sensor&&) noexcept = default;
     
     /**
      * @brief Get the sensor's unique identifier
@@ -87,9 +87,10 @@ protected:
      * @return Pointer to parent bridge (may be nullptr)
      */
     Bridge* getBridge() const;
-    
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
+
+    std::string _id;
+    Bridge* _bridge;
+    SensorType _type;
     
     friend class Bridge;
 };
