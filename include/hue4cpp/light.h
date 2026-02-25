@@ -119,20 +119,20 @@ namespace hue4cpp {
 				try {
 					return isOn();
 				}
- catch (const HueException&) {
-  throw;
-}
-},
-[this](bool& value) {
-	try {
-		NotifyPropertyChanging<&Light::IsOn>();
-		value ? turnOn() : turnOff();
-		NotifyPropertyChanged<&Light::IsOn>();
-	}
-catch (const HueException&) {
- throw;
-}
-}
+				catch (const HueException&) {
+				    throw;
+				}
+			},
+			[this](bool& value) {
+				try {
+					NotifyPropertyChanging<&Light::IsOn>();
+					value ? turnOn() : turnOff();
+					NotifyPropertyChanged<&Light::IsOn>();
+				}
+				catch (const HueException&) {
+				    throw;
+				}
+			}
 		};
 
 		/**
