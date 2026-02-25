@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sensor_base.h"
+#include <ReactiveLitepp/ObservableObject.h>
 
 /**
  * @file tamper_sensor.h
@@ -11,30 +12,30 @@ namespace hue4cpp {
 
 /**
  * @brief Represents a tamper detection sensor
- * 
- * Tamper sensors detect when a device has been physically tampered with,
- * such as being removed from its mount or opened.
  */
 class TamperSensor : public Sensor {
 public:
-    /**
-     * @brief Construct a TamperSensor
-     * @param id Sensor unique identifier
-     * @param bridge Pointer to parent bridge
-     */
     TamperSensor(const std::string& id, Bridge* bridge);
-    
-    /**
-     * @brief Get the sensor type
-     * @return SensorType::Tamper
-     */
+
     SensorType getType() const override;
-    
-    /**
-     * @brief Get current tamper state
-     * @return TamperState with tamper detection status
-     */
-    TamperState getTamperState() const;
+
+    /** @brief Whether physical tampering has been detected (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<bool> Tampered{
+        [this]() { return _tampered; }
+    };
+
+    /** @brief Whether the tamper reading is valid (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<bool> TamperValid{
+        [this]() { return _tamper_valid; }
+    };
+
+private:
+    bool _tampered     = false;
+    bool _tamper_valid = false;
+
+    void notifyStateProperties(const nlohmann::json& delta) override;
+
+    friend class Bridge;
 };
 
 } // namespace hue4cpp

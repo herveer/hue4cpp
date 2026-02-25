@@ -81,28 +81,23 @@ void printSensorInfo(const Sensor* sensor) {
 	std::cout << "  Type: " << sensorTypeToString(sensor->getType()) << std::endl;
 	std::cout << "  Enabled: " << (sensor->isEnabled() ? "Yes" : "No") << std::endl;
 
-	// Print type-specific state using dynamic_cast
-	if (const auto* motion_sensor = dynamic_cast<const MotionSensor*>(sensor)) {
-		auto state = motion_sensor->getMotionState();
-		std::cout << "  Motion Detected: " << (state.motion ? "YES" : "NO") << std::endl;
-		std::cout << "  Valid: " << (state.motion_valid ? "Yes" : "No") << std::endl;
+	if (const auto* s = dynamic_cast<const MotionSensor*>(sensor)) {
+		std::cout << "  Motion Detected: " << ((bool)s->Motion     ? "YES" : "NO") << std::endl;
+		std::cout << "  Valid: "           << ((bool)s->MotionValid ? "Yes" : "No") << std::endl;
 	}
-	else if (const auto* temp_sensor = dynamic_cast<const TemperatureSensor*>(sensor)) {
-		auto state = temp_sensor->getTemperatureState();
+	else if (const auto* s = dynamic_cast<const TemperatureSensor*>(sensor)) {
 		std::cout << "  Temperature: " << std::fixed << std::setprecision(2)
-			<< state.temperature << " °C" << std::endl;
-		std::cout << "  Valid: " << (state.temperature_valid ? "Yes" : "No") << std::endl;
+		          << (float)s->Temperature << " °C" << std::endl;
+		std::cout << "  Valid: " << ((bool)s->TemperatureValid ? "Yes" : "No") << std::endl;
 	}
-	else if (const auto* light_sensor = dynamic_cast<const LightLevelSensor*>(sensor)) {
-		auto state = light_sensor->getLightLevelState();
-		std::cout << "  Light Level: " << state.light_level << std::endl;
-		std::cout << "  Valid: " << (state.light_level_valid ? "Yes" : "No") << std::endl;
+	else if (const auto* s = dynamic_cast<const LightLevelSensor*>(sensor)) {
+		std::cout << "  Light Level: " << (uint32_t)s->LightLevel << std::endl;
+		std::cout << "  Valid: "       << ((bool)s->LightLevelValid ? "Yes" : "No") << std::endl;
 	}
-	else if (const auto* button_sensor = dynamic_cast<const ButtonSensor*>(sensor)) {
-		auto state = button_sensor->getButtonState();
-		std::cout << "  Last Event: " << buttonEventToString(state.last_event) << std::endl;
-		std::cout << "  Button ID: " << state.button_id << std::endl;
-		std::cout << "  Event Sequence: " << state.event_sequence << std::endl;
+	else if (const auto* s = dynamic_cast<const ButtonSensor*>(sensor)) {
+		std::cout << "  Last Event: "     << buttonEventToString((ButtonEvent)s->LastEvent) << std::endl;
+		std::cout << "  Button ID: "      << (uint32_t)s->ButtonId      << std::endl;
+		std::cout << "  Event Sequence: " << (uint32_t)s->EventSequence << std::endl;
 	}
 }
 

@@ -12,43 +12,15 @@ namespace hue4cpp {
 		return SensorType::Temperature;
 	}
 
-	TemperatureState TemperatureSensor::getTemperatureState() const {
-		// Extract temperature state from cached JSON
-		auto extractTemperature = [](const std::string& state_json) -> TemperatureState {
-			TemperatureState result;
-			if (!state_json.empty()) {
-				try {
-					auto state = json_utils::parse(state_json);
-					if (state.contains("temperature") && state["temperature"].is_object()) {
-						auto temp_obj = state["temperature"];
-						// Temperature is in deci-degrees Celsius (divide by 100)
-						int temp_raw = json_utils::getValueOr<int>(temp_obj, "temperature", 0);
-						result.temperature = temp_raw / 100.0f;
-						result.temperature_valid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", true);
-					}
-				}
-				catch (...) {
-					// Return default-constructed state
-				}
-			}
-			return result;
-		};
-
-		if (!getBridge()) {
-			// No bridge - cannot get state, return default
-			return TemperatureState();
+	void TemperatureSensor::notifyStateProperties(const nlohmann::json& delta) {
+		if (delta.contains("temperature")) {
+			auto temp_obj = delta["temperature"];
+			int temp_raw       = json_utils::getValueOr<int>(temp_obj, "temperature",       0);
+			_temperature       = temp_raw / 100.0f;
+			_temperature_valid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", _temperature_valid);
+			NotifyPropertyChanged<&TemperatureSensor::Temperature>();
+			NotifyPropertyChanged<&TemperatureSensor::TemperatureValid>();
 		}
-
-		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), false);
-		auto temp_state = extractTemperature(state_json);
-		if (temp_state.temperature_valid) {
-			return temp_state;
-		}
-
-		// Try refreshing cache
-		state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), true);
-		return extractTemperature(state_json);
 	}
 
 } // namespace hue4cpp

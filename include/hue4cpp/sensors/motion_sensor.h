@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sensor_base.h"
+#include <ReactiveLitepp/ObservableObject.h>
 
 /**
  * @file motion_sensor.h
@@ -11,29 +12,30 @@ namespace hue4cpp {
 
 /**
  * @brief Represents a motion sensor
- * 
- * Motion sensors detect movement and provide motion state information.
  */
 class MotionSensor : public Sensor {
 public:
-    /**
-     * @brief Construct a MotionSensor
-     * @param id Sensor unique identifier
-     * @param bridge Pointer to parent bridge
-     */
     MotionSensor(const std::string& id, Bridge* bridge);
-    
-    /**
-     * @brief Get the sensor type
-     * @return SensorType::Motion
-     */
+
     SensorType getType() const override;
-    
-    /**
-     * @brief Get current motion state
-     * @return MotionState with motion detection status
-     */
-    MotionState getMotionState() const;
+
+    /** @brief Whether motion is currently detected (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<bool> Motion{
+        [this]() { return _motion; }
+    };
+
+    /** @brief Whether the motion reading is valid (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<bool> MotionValid{
+        [this]() { return _motion_valid; }
+    };
+
+private:
+    bool _motion       = false;
+    bool _motion_valid = false;
+
+    void notifyStateProperties(const nlohmann::json& delta) override;
+
+    friend class Bridge;
 };
 
 } // namespace hue4cpp

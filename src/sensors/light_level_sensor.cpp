@@ -12,41 +12,14 @@ namespace hue4cpp {
 		return SensorType::LightLevel;
 	}
 
-	LightLevelState LightLevelSensor::getLightLevelState() const {
-		// Extract light level state from cached JSON
-		auto extractLightLevel = [](const std::string& state_json) -> LightLevelState {
-			LightLevelState result;
-			if (!state_json.empty()) {
-				try {
-					auto state = json_utils::parse(state_json);
-					if (state.contains("light") && state["light"].is_object()) {
-						auto light_obj = state["light"];
-						result.light_level = json_utils::getValueOr<uint32_t>(light_obj, "light_level", 0);
-						result.light_level_valid = json_utils::getValueOr<bool>(light_obj, "light_level_valid", false);
-					}
-				}
-				catch (...) {
-					// Return default-constructed state
-				}
-			}
-			return result;
-		};
-
-		if (!getBridge()) {
-			// No bridge - cannot get state, return default
-			return LightLevelState();
+	void LightLevelSensor::notifyStateProperties(const nlohmann::json& delta) {
+		if (delta.contains("light")) {
+			auto light_obj     = delta["light"];
+			_light_level       = json_utils::getValueOr<uint32_t>(light_obj, "light_level",       _light_level);
+			_light_level_valid = json_utils::getValueOr<bool>(light_obj,     "light_level_valid",  _light_level_valid);
+			NotifyPropertyChanged<&LightLevelSensor::LightLevel>();
+			NotifyPropertyChanged<&LightLevelSensor::LightLevelValid>();
 		}
-
-		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), false);
-		auto light_state = extractLightLevel(state_json);
-		if (light_state.light_level_valid) {
-			return light_state;
-		}
-
-		// Try refreshing cache
-		state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), true);
-		return extractLightLevel(state_json);
 	}
 
 } // namespace hue4cpp

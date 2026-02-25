@@ -32,51 +32,21 @@ namespace hue4cpp {
 		return SensorType::RelativeRotary;
 	}
 
-	RelativeRotaryState RelativeRotarySensor::getRelativeRotaryState() const {
-		// Extract relative rotary state from cached JSON
-		auto extractRelativeRotary = [](const std::string& state_json) -> RelativeRotaryState {
-			RelativeRotaryState result;
-			if (!state_json.empty()) {
-				try {
-					auto state = json_utils::parse(state_json);
-					if (state.contains("relative_rotary") && state["relative_rotary"].is_object()) {
-						auto rotary_obj = state["relative_rotary"];
-						
-						// Get rotation data
-						if (rotary_obj.contains("last_event") && rotary_obj["last_event"].is_object()) {
-							auto event_obj = rotary_obj["last_event"];
-							result.steps = json_utils::getValueOr<int32_t>(event_obj, "rotation", 0);
-							std::string direction_str = json_utils::getValueOr<std::string>(event_obj, "direction", "");
-							result.direction = parseRotationDirection(direction_str);
-							std::string action_str = json_utils::getValueOr<std::string>(event_obj, "action", "");
-							result.action = parseButtonEvent(action_str);
-						}
-						
-						result.event_sequence = json_utils::getValueOr<uint32_t>(rotary_obj, "event_sequence", 0);
-					}
-				}
-				catch (...) {
-					// Return default-constructed state
-				}
+	void RelativeRotarySensor::notifyStateProperties(const nlohmann::json& delta) {
+		if (delta.contains("relative_rotary")) {
+			auto rotary_obj = delta["relative_rotary"];
+			if (rotary_obj.contains("last_event") && rotary_obj["last_event"].is_object()) {
+				auto event_obj = rotary_obj["last_event"];
+				_steps     = json_utils::getValueOr<int32_t>(event_obj, "rotation",  _steps);
+				_direction = parseRotationDirection(json_utils::getValueOr<std::string>(event_obj, "direction", ""));
+				_action    = parseButtonEvent(json_utils::getValueOr<std::string>(event_obj, "action", ""));
 			}
-			return result;
-		};
-
-		if (!getBridge()) {
-			// No bridge - cannot get state, return default
-			return RelativeRotaryState();
+			_event_sequence = json_utils::getValueOr<uint32_t>(rotary_obj, "event_sequence", _event_sequence);
+			NotifyPropertyChanged<&RelativeRotarySensor::Steps>();
+			NotifyPropertyChanged<&RelativeRotarySensor::Direction>();
+			NotifyPropertyChanged<&RelativeRotarySensor::Action>();
+			NotifyPropertyChanged<&RelativeRotarySensor::EventSequence>();
 		}
-
-		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), false);
-		auto rotary_state = extractRelativeRotary(state_json);
-		if (rotary_state.direction != RotationDirection::Unknown || rotary_state.action != ButtonEvent::Unknown) {
-			return rotary_state;
-		}
-
-		// Try refreshing cache
-		state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), true);
-		return extractRelativeRotary(state_json);
 	}
 
 } // namespace hue4cpp

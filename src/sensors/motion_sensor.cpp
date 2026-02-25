@@ -12,41 +12,14 @@ namespace hue4cpp {
 		return SensorType::Motion;
 	}
 
-	MotionState MotionSensor::getMotionState() const {
-		// Extract motion state from cached JSON
-		auto extractMotion = [](const std::string& state_json) -> MotionState {
-			MotionState result;
-			if (!state_json.empty()) {
-				try {
-					auto state = json_utils::parse(state_json);
-					if (state.contains("motion") && state["motion"].is_object()) {
-						auto motion_obj = state["motion"];
-						result.motion = json_utils::getValueOr<bool>(motion_obj, "motion", false);
-						result.motion_valid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", false);
-					}
-				}
-				catch (...) {
-					// Return default-constructed state
-				}
-			}
-			return result;
-		};
-
-		if (!getBridge()) {
-			// No bridge - cannot get state, return default
-			return MotionState();
+	void MotionSensor::notifyStateProperties(const nlohmann::json& delta) {
+		if (delta.contains("motion")) {
+			auto motion_obj = delta["motion"];
+			_motion       = json_utils::getValueOr<bool>(motion_obj, "motion",       _motion);
+			_motion_valid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", _motion_valid);
+			NotifyPropertyChanged<&MotionSensor::Motion>();
+			NotifyPropertyChanged<&MotionSensor::MotionValid>();
 		}
-
-		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), false);
-		auto motion_state = extractMotion(state_json);
-		if (motion_state.motion_valid) {
-			return motion_state;
-		}
-
-		// Try refreshing cache
-		state_json = getBridge()->getSensorState(getId(), getResourceTypeString(), true);
-		return extractMotion(state_json);
 	}
 
 } // namespace hue4cpp

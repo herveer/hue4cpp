@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sensor_base.h"
+#include <ReactiveLitepp/ObservableObject.h>
 
 /**
  * @file temperature_sensor.h
@@ -11,29 +12,30 @@ namespace hue4cpp {
 
 /**
  * @brief Represents a temperature sensor
- * 
- * Temperature sensors measure ambient temperature in degrees Celsius.
  */
 class TemperatureSensor : public Sensor {
 public:
-    /**
-     * @brief Construct a TemperatureSensor
-     * @param id Sensor unique identifier
-     * @param bridge Pointer to parent bridge
-     */
     TemperatureSensor(const std::string& id, Bridge* bridge);
-    
-    /**
-     * @brief Get the sensor type
-     * @return SensorType::Temperature
-     */
+
     SensorType getType() const override;
-    
-    /**
-     * @brief Get current temperature reading
-     * @return TemperatureState with temperature in degrees Celsius
-     */
-    TemperatureState getTemperatureState() const;
+
+    /** @brief Current temperature in degrees Celsius (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<float> Temperature{
+        [this]() { return _temperature; }
+    };
+
+    /** @brief Whether the temperature reading is valid (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<bool> TemperatureValid{
+        [this]() { return _temperature_valid; }
+    };
+
+private:
+    float _temperature       = 0.0f;
+    bool  _temperature_valid = false;
+
+    void notifyStateProperties(const nlohmann::json& delta) override;
+
+    friend class Bridge;
 };
 
 } // namespace hue4cpp

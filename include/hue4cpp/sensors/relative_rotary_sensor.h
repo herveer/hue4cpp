@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sensor_base.h"
+#include <ReactiveLitepp/ObservableObject.h>
 
 /**
  * @file relative_rotary_sensor.h
@@ -11,9 +12,6 @@ namespace hue4cpp {
 
 /**
  * @brief Represents a relative rotary sensor (dial/knob)
- * 
- * Relative rotary sensors capture rotation events from dials and knobs,
- * providing information about rotation direction and steps.
  */
 class RelativeRotarySensor : public Sensor {
 public:
@@ -23,18 +21,42 @@ public:
      * @param bridge Pointer to parent bridge
      */
     RelativeRotarySensor(const std::string& id, Bridge* bridge);
-    
+
     /**
      * @brief Get the sensor type
      * @return SensorType::RelativeRotary
      */
     SensorType getType() const override;
-    
-    /**
-     * @brief Get current relative rotary state
-     * @return RelativeRotaryState with rotation information
-     */
-    RelativeRotaryState getRelativeRotaryState() const;
+
+    /** @brief Number of rotation steps in the last event (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<int32_t> Steps{
+        [this]() { return _steps; }
+    };
+
+    /** @brief Direction of the last rotation (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<RotationDirection> Direction{
+        [this]() { return _direction; }
+    };
+
+    /** @brief Button action associated with the last rotation event (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<ButtonEvent> Action{
+        [this]() { return _action; }
+    };
+
+    /** @brief Monotonically increasing event counter (reactive, read-only) */
+    ReactiveLitepp::ReadonlyProperty<uint32_t> EventSequence{
+        [this]() { return _event_sequence; }
+    };
+
+private:
+    int32_t          _steps          = 0;
+    RotationDirection _direction      = RotationDirection::Unknown;
+    ButtonEvent       _action         = ButtonEvent::Unknown;
+    uint32_t          _event_sequence = 0;
+
+    void notifyStateProperties(const nlohmann::json& delta) override;
+
+    friend class Bridge;
 };
 
 } // namespace hue4cpp

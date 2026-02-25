@@ -34,6 +34,7 @@ namespace hue4cpp {
 	// Base Sensor implementation
 	Sensor::Sensor(const std::string& id, Bridge* bridge, SensorType type)
 		: _id(id), _bridge(bridge), _type(type) {
+			subscribeToBridgeEvents();
 	}
 
 	std::string Sensor::getId() const {
@@ -127,6 +128,36 @@ namespace hue4cpp {
 		}
 		catch (const std::exception& e) {
 			std::cerr << "Error parsing sensor JSON: " << e.what() << std::endl;
+		}
+	}
+
+	void Sensor::subscribeToBridgeEvents() {
+		if (!_bridge) {
+			return;
+		}
+
+		_bridgeEventSubscription = _bridge->getStateManager().OnResourceEvent.SubscribeScoped(
+			[this](const ResourceEventArgs& e) {
+				onResourceEvent(e);
+			});
+	}
+
+	void Sensor::onResourceEvent(const ResourceEventArgs& e) {
+		// Only react to sensor state changes that concern this specific sensor.
+		if (!e.isSensorEvent() || e.type != EventType::SensorStateChanged || e.resource_id != _id) {
+			return;
+		}
+
+		// Fire the generic per-sensor event so any external subscriber is notified.
+		OnStateChanged.Notify(e);
+
+		// Let the derived class fire its typed property notifications.
+		try {
+			auto delta = nlohmann::json::parse(e.state_json);
+			notifyStateProperties(delta);
+		}
+		catch (...) {
+			// Malformed delta — derived class will handle its own fallback.
 		}
 	}
 

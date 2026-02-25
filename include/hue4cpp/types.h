@@ -110,46 +110,6 @@ namespace hue4cpp {
 	};
 
 	/**
-	 * @brief Motion sensor state
-	 */
-	struct MotionState {
-		bool motion;       ///< Motion detected
-		bool motion_valid; ///< Motion data is valid
-
-		MotionState() : motion(false), motion_valid(false) {}
-	};
-
-	/**
-	 * @brief Camera motion sensor state
-	 */
-	struct CameraMotionState {
-		bool motion;       ///< Motion detected by camera
-		bool motion_valid; ///< Motion data is valid
-
-		CameraMotionState() : motion(false), motion_valid(false) {}
-	};
-
-	/**
-	 * @brief Temperature sensor reading
-	 */
-	struct TemperatureState {
-		float temperature; ///< Temperature in degrees Celsius
-		bool temperature_valid; ///< Temperature data is valid
-
-		TemperatureState() : temperature(0.0f), temperature_valid(false) {}
-	};
-
-	/**
-	 * @brief Light level sensor reading
-	 */
-	struct LightLevelState {
-		uint32_t light_level; ///< Illuminance in raw units (logarithmic scale)
-		bool light_level_valid; ///< Light level data is valid
-
-		LightLevelState() : light_level(0), light_level_valid(false) {}
-	};
-
-	/**
 	 * @brief Button event types
 	 */
 	enum class ButtonEvent {
@@ -163,66 +123,12 @@ namespace hue4cpp {
 	};
 
 	/**
-	 * @brief Button sensor state
-	 */
-	struct ButtonState {
-		ButtonEvent last_event; ///< Last button event
-		uint32_t button_id;     ///< Button ID (for multi-button devices)
-		uint32_t event_sequence; ///< Event sequence number
-
-		ButtonState() : last_event(ButtonEvent::Unknown), button_id(0), event_sequence(0) {}
-	};
-
-	/**
-	 * @brief Bell button sensor state
-	 */
-	struct BellButtonState {
-		ButtonEvent last_event; ///< Last button event (doorbell press)
-		uint32_t event_sequence; ///< Event sequence number
-
-		BellButtonState() : last_event(ButtonEvent::Unknown), event_sequence(0) {}
-	};
-
-	/**
 	 * @brief Rotation direction for rotary sensors
 	 */
 	enum class RotationDirection {
 		Unknown,
 		ClockWise,
 		CounterClockWise
-	};
-
-	/**
-	 * @brief Relative rotary sensor state
-	 */
-	struct RelativeRotaryState {
-		int32_t steps;                    ///< Number of rotation steps
-		RotationDirection direction;      ///< Direction of rotation
-		ButtonEvent action;               ///< Associated button action
-		uint32_t event_sequence;          ///< Event sequence number
-
-		RelativeRotaryState() 
-			: steps(0), direction(RotationDirection::Unknown), 
-			  action(ButtonEvent::Unknown), event_sequence(0) {}
-	};
-
-	/**
-	 * @brief Geolocation sensor state
-	 */
-	struct GeolocationState {
-		bool is_configured; ///< Whether geofencing is configured
-
-		GeolocationState() : is_configured(false) {}
-	};
-
-	/**
-	 * @brief Tamper detection sensor state
-	 */
-	struct TamperState {
-		bool tampered;       ///< Tamper detected
-		bool tamper_valid;   ///< Tamper data is valid
-
-		TamperState() : tampered(false), tamper_valid(false) {}
 	};
 
 	/**
