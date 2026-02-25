@@ -31,65 +31,42 @@ namespace hue4cpp {
 		}
 	}
 
-	// Sensor::Impl - shared implementation for all sensor types
-	class Sensor::Impl {
-	public:
-		std::string id;
-		Bridge* bridge;
-		SensorType type;
-
-		Impl(const std::string& sensor_id, Bridge* parent_bridge, SensorType sensor_type)
-			: id(sensor_id), bridge(parent_bridge), type(sensor_type) {
-		}
-
-		// Helper to get the resource type string from SensorType enum
-		std::string getResourceTypeString() const {
-			switch (type) {
-			case SensorType::Motion:
-				return "motion";
-			case SensorType::Temperature:
-				return "temperature";
-			case SensorType::LightLevel:
-				return "light_level";
-			case SensorType::Button:
-				return "button";
-			case SensorType::CameraMotion:
-				return "camera_motion";
-			case SensorType::BellButton:
-				return "bell_button";
-			case SensorType::RelativeRotary:
-				return "relative_rotary";
-			case SensorType::Geolocation:
-				return "geolocation";
-			case SensorType::Tamper:
-				return "tamper";
-			default:
-				return "";
-			}
-		}
-	};
-
 	// Base Sensor implementation
 	Sensor::Sensor(const std::string& id, Bridge* bridge, SensorType type)
-		: pImpl(std::make_unique<Impl>(id, bridge, type)) {
+		: _id(id), _bridge(bridge), _type(type) {
 	}
 
-	Sensor::~Sensor() = default;
-
-	Sensor::Sensor(Sensor&&) noexcept = default;
-
-	Sensor& Sensor::operator=(Sensor&&) noexcept = default;
-
 	std::string Sensor::getId() const {
-		return pImpl->id;
+		return _id;
 	}
 
 	std::string Sensor::getResourceTypeString() const {
-		return pImpl->getResourceTypeString();
+		switch (_type) {
+		case SensorType::Motion:
+			return "motion";
+		case SensorType::Temperature:
+			return "temperature";
+		case SensorType::LightLevel:
+			return "light_level";
+		case SensorType::Button:
+			return "button";
+		case SensorType::CameraMotion:
+			return "camera_motion";
+		case SensorType::BellButton:
+			return "bell_button";
+		case SensorType::RelativeRotary:
+			return "relative_rotary";
+		case SensorType::Geolocation:
+			return "geolocation";
+		case SensorType::Tamper:
+			return "tamper";
+		default:
+			return "";
+		}
 	}
 
 	Bridge* Sensor::getBridge() const {
-		return pImpl->bridge;
+		return _bridge;
 	}
 
 	bool Sensor::isEnabled() const {
@@ -109,31 +86,27 @@ namespace hue4cpp {
 			return std::nullopt;
 		};
 
-		if (!pImpl->bridge) {
-			// No bridge - cannot get state, return false
+		if (!_bridge) {
 			return false;
 		}
 
-		// Ask bridge for sensor state (cache-first, API-fallback)
-		std::string state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), false);
+		std::string state_json = _bridge->getSensorState(_id, getResourceTypeString(), false);
 		auto enabled_opt = extractEnabled(state_json);
 		if (enabled_opt.has_value()) {
 			return enabled_opt.value();
 		}
 
-		// Try refreshing cache
-		state_json = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		state_json = _bridge->getSensorState(_id, getResourceTypeString(), true);
 		enabled_opt = extractEnabled(state_json);
 		return enabled_opt.value_or(false);
 	}
 
 	Result<void> Sensor::refresh() {
-		if (!pImpl->bridge) {
+		if (!_bridge) {
 			return Result<void>(ErrorCode::InvalidParameter, "No bridge associated with sensor");
 		}
 
-		// Force a cache refresh by calling getSensorState with refreshCache=true
-		std::string state = pImpl->bridge->getSensorState(pImpl->id, pImpl->getResourceTypeString(), true);
+		std::string state = _bridge->getSensorState(_id, getResourceTypeString(), true);
 		
 		if (state.empty()) {
 			return Result<void>(ErrorCode::NetworkError, "Failed to refresh sensor state");
@@ -144,15 +117,12 @@ namespace hue4cpp {
 
 	void Sensor::initFromJson(const nlohmann::json& json) {
 		try {
-			// Update ID if present
 			if (json.contains("id")) {
-				pImpl->id = json_utils::getValueOr<std::string>(json, "id", pImpl->id);
+				_id = json_utils::getValueOr<std::string>(json, "id", _id);
 			}
 
-			// Cache the full JSON state in StateManager if we have a bridge
-			// This allows the getters to retrieve the state from cache
-			if (pImpl->bridge && !pImpl->id.empty()) {
-				pImpl->bridge->getStateManager().setResourceState(pImpl->id, json.dump());
+			if (_bridge && !_id.empty()) {
+				_bridge->getStateManager().setResourceState(_id, json.dump());
 			}
 		}
 		catch (const std::exception& e) {

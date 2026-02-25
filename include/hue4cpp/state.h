@@ -3,6 +3,9 @@
 #include "types.h"
 #include <functional>
 #include <string>
+#include <map>
+#include <atomic>
+#include <mutex>
 #include <memory>
 
 /**
@@ -16,6 +19,7 @@ namespace hue4cpp {
 	class Light;
 	class Sensor;
 	class Bridge;
+	class SSEClient;
 
 	/**
 	 * @brief Event types for state changes
@@ -144,8 +148,19 @@ namespace hue4cpp {
 		void clearCache();
 
 	private:
-		class Impl;
-		std::unique_ptr<Impl> pImpl;
+		Bridge* _bridge;
+		std::atomic<bool> _running;
+		std::unique_ptr<SSEClient> _sse_client;
+
+		mutable std::mutex _state_mutex;
+		std::map<std::string, std::string> _resource_states;
+
+		std::mutex _callback_mutex;
+		std::map<uint64_t, EventCallback> _callbacks;
+		uint64_t _next_callback_id;
+
+		void notifyCallbacks(const Event& event);
+		void mergeResourceState(const std::string& resource_id, const std::string& delta_json);
 	};
 
 } // namespace hue4cpp

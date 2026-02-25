@@ -371,7 +371,7 @@ int main() {
 
 	// Use the first light that supports color
 	for (auto& light : lights) {
-		std::cout << "  - " << light->getName() << " (ID: " << light->getId() << ")" << std::endl;
+		std::cout << "  - " << light->Name << " (ID: " << light->Id << ")" << std::endl;
 		auto caps = light->getCapabilities();
 		std::cout << "    Capabilities: ";
 		if (caps.brightness) std::cout << "brightness ";
@@ -419,8 +419,8 @@ int main() {
 			else
 				std::cout << "   ";
 
-			std::cout << colorLights[i]->getName()
-				<< " (ID: " << colorLights[i]->getId() << ")\n";
+			std::cout << colorLights[i]->Name
+				<< " (ID: " << colorLights[i]->Id << ")\n";
 		}
 
 		Key key = readKey();
@@ -434,7 +434,7 @@ int main() {
 	}
 
 	Light* color_light = colorLights[selected];
-	std::cout << "\nUsing light: " << color_light->getName() << std::endl;
+	std::cout << "\nUsing light: " << color_light->Name << std::endl;
 
 	// Run demonstrations
 	try {
