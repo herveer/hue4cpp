@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['id_0',['id',['../structhue4cpp_1_1SSEEventArgs.html#ad977b1e4e43e6490b3cc23c9d5bf447e',1,'hue4cpp::SSEEventArgs::id'],['../structhue4cpp_1_1BridgeInfo.html#a5c620ac59e974c37f077eb94e4b917e2',1,'hue4cpp::BridgeInfo::id'],['../classhue4cpp_1_1Sensor_1_1Impl.html#a8d6aedd28e3136566b9c991358cd88c9',1,'hue4cpp::Sensor::Impl::id'],['../classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e',1,'hue4cpp::Light::Id'],['../discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3',1,'id:&#160;discovery.cpp']]],
-  ['info_1',['info',['../classhue4cpp_1_1Bridge_1_1Impl.html#a65e451d8a84c551af527ad17ee9be285',1,'hue4cpp::Bridge::Impl']]],
-  ['ip_5faddress_2',['ip_address',['../structhue4cpp_1_1BridgeInfo.html#a79aa08a60ae27bc5f759fc5ac3a86e0f',1,'hue4cpp::BridgeInfo::ip_address'],['../discovery_8cpp.html#a83e5ce1decdba404059af51acb743b7a',1,'ip_address:&#160;discovery.cpp']]],
-  ['is_5fconfigured_3',['is_configured',['../structhue4cpp_1_1GeolocationState.html#a0a7b579992180d33c259ca5ee57adb18',1,'hue4cpp::GeolocationState']]],
-  ['is_5fipv6_4',['is_ipv6',['../discovery_8cpp.html#ad4030b0c38ff0d527471cd6f5b951ecf',1,'discovery.cpp']]],
-  ['isconnected_5',['IsConnected',['../classhue4cpp_1_1SSEClient.html#a389709843ddb8f8eaeed0e9130b96851',1,'hue4cpp::SSEClient']]],
-  ['ison_6',['IsOn',['../classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0',1,'hue4cpp::Light']]]
+  ['headers_0',['headers',['../structhue4cpp_1_1HttpResponse.html#a2628fa3d431daa6f5581a671f1689d0c',1,'hue4cpp::HttpResponse']]],
+  ['host_5fto_5fip_1',['host_to_ip',['../discovery_8cpp.html#a97d3da3ffa31dc58367d5e2f39deeb8f',1,'discovery.cpp']]],
+  ['hostname_2',['hostname',['../discovery_8cpp.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'discovery.cpp']]]
 ];

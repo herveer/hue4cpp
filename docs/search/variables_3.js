@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['data_0',['data',['../structhue4cpp_1_1SSEEventArgs.html#ad0c75ed3bc337dbe709a79facd32c018',1,'hue4cpp::SSEEventArgs::data'],['../structhue4cpp_1_1Event.html#aacdffb7a29490caf7440cb07d7db87ff',1,'hue4cpp::Event::data']]],
-  ['daylight_1',['Daylight',['../namespacehue4cpp_1_1colors.html#a2f282395747e6f7b61ec40f02524be46',1,'hue4cpp::colors']]],
-  ['direction_2',['direction',['../structhue4cpp_1_1RelativeRotaryState.html#a10330194241ed59037360eb9552b4a97',1,'hue4cpp::RelativeRotaryState']]]
+  ['candlelight_0',['Candlelight',['../namespacehue4cpp_1_1colors.html#afc6d3f00908b9583e2fbed1862cc9273',1,'hue4cpp::colors']]],
+  ['color_1',['color',['../structhue4cpp_1_1LightCapabilities.html#a6d7ce14c29d7810abeab95f2e0722a6e',1,'hue4cpp::LightCapabilities']]],
+  ['color_5ftemperature_2',['color_temperature',['../structhue4cpp_1_1LightCapabilities.html#ad9b1ee1e43ef19e51aa59ec1174a99dc',1,'hue4cpp::LightCapabilities']]],
+  ['colortemperature_5f_3',['ColorTemperature_',['../classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d',1,'hue4cpp::Light']]],
+  ['coolwhite_4',['CoolWhite',['../namespacehue4cpp_1_1colors.html#aba6da866948962b7dc1723b68ec800b0',1,'hue4cpp::colors']]],
+  ['cyan_5',['Cyan',['../namespacehue4cpp_1_1colors.html#acacccfcd3e2acac0cf8e82322624b7cf',1,'hue4cpp::colors']]]
 ];

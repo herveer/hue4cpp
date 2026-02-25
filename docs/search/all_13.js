@@ -1,8 +1,27 @@
 var searchData=
 [
-  ['unknown_0',['unknown',['../namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a88183b946cc5f0e8c96b2e66e1c74a7e',1,'hue4cpp::Unknown'],['../namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a88183b946cc5f0e8c96b2e66e1c74a7e',1,'hue4cpp::Unknown'],['../namespacehue4cpp.html#a0ecc80e2f206fdef7c207b36f31aeffca88183b946cc5f0e8c96b2e66e1c74a7e',1,'hue4cpp::Unknown'],['../namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333a88183b946cc5f0e8c96b2e66e1c74a7e',1,'hue4cpp::Unknown']]],
-  ['unknownerror_1',['UnknownError',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680abfaef30f1c8011c5cefa38ae470fb7aa',1,'hue4cpp']]],
-  ['unregistercallback_2',['unregisterCallback',['../classhue4cpp_1_1StateManager.html#a8118962a187b78de2b071e0a9ff2372a',1,'hue4cpp::StateManager']]],
-  ['updatefromevent_3',['updateFromEvent',['../classhue4cpp_1_1StateManager.html#a9a3379ae0e4232f525c45e25fbd4faae',1,'hue4cpp::StateManager']]],
-  ['usage_20example_4',['Usage Example',['../index.html#autotoc_md8',1,'']]]
+  ['tamper_0',['Tamper',['../namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5aba46030b4636ce895023d71a54396eb7',1,'hue4cpp']]],
+  ['tamper_5fsensor_2ecpp_1',['tamper_sensor.cpp',['../tamper__sensor_8cpp.html',1,'']]],
+  ['tamper_5fsensor_2eh_2',['tamper_sensor.h',['../tamper__sensor_8h.html',1,'']]],
+  ['tamper_5fvalid_3',['tamper_valid',['../structhue4cpp_1_1TamperState.html#a377079e1bd0c0c34232fc9ec7b2ec3e5',1,'hue4cpp::TamperState']]],
+  ['tampered_4',['tampered',['../structhue4cpp_1_1TamperState.html#a4d12b66ad3138194a268669df4e17ce2',1,'hue4cpp::TamperState']]],
+  ['tampersensor_5',['tampersensor',['../classhue4cpp_1_1TamperSensor.html',1,'hue4cpp::TamperSensor'],['../classhue4cpp_1_1TamperSensor.html#a4dd5ea85787fc0ee4e481a1a98edff90',1,'hue4cpp::TamperSensor::TamperSensor()']]],
+  ['tamperstate_6',['tamperstate',['../structhue4cpp_1_1TamperState.html',1,'hue4cpp::TamperState'],['../structhue4cpp_1_1TamperState.html#aaff7e8db9e06b9f96155fbe5a6ba65ba',1,'hue4cpp::TamperState::TamperState()']]],
+  ['temperature_7',['temperature',['../namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5aee7a8e262285ed49ea1b4e4ae11525bd',1,'hue4cpp::Temperature'],['../structhue4cpp_1_1TemperatureState.html#a58ede94d4bb9aa11d9465afe55ecc3e6',1,'hue4cpp::TemperatureState::temperature']]],
+  ['temperature_5fsensor_2ecpp_8',['temperature_sensor.cpp',['../temperature__sensor_8cpp.html',1,'']]],
+  ['temperature_5fsensor_2eh_9',['temperature_sensor.h',['../temperature__sensor_8h.html',1,'']]],
+  ['temperature_5fvalid_10',['temperature_valid',['../structhue4cpp_1_1TemperatureState.html#a2fc16efc0a9cc74fb7d0bfa46b27b972',1,'hue4cpp::TemperatureState']]],
+  ['temperaturesensor_11',['temperaturesensor',['../classhue4cpp_1_1TemperatureSensor.html#ae9e8002430c3a76bf357254b758fd3e7',1,'hue4cpp::TemperatureSensor::TemperatureSensor()'],['../classhue4cpp_1_1TemperatureSensor.html',1,'hue4cpp::TemperatureSensor']]],
+  ['temperaturestate_12',['temperaturestate',['../structhue4cpp_1_1TemperatureState.html#a15a1c4e3521f169757f2a9decf0ffb91',1,'hue4cpp::TemperatureState::TemperatureState()'],['../structhue4cpp_1_1TemperatureState.html',1,'hue4cpp::TemperatureState']]],
+  ['testing_13',['Testing',['../index.html#autotoc_md14',1,'']]],
+  ['time_20state_20monitoring_14',['Real-time State Monitoring',['../index.html#autotoc_md9',1,'']]],
+  ['timeouterror_15',['TimeoutError',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a2ce01afd7e833fc13c63448689ea762a',1,'hue4cpp']]],
+  ['timeoutexception_16',['timeoutexception',['../classhue4cpp_1_1TimeoutException.html',1,'hue4cpp::TimeoutException'],['../classhue4cpp_1_1TimeoutException.html#a814e28c9149b2a8440dd45ea53afa423',1,'hue4cpp::TimeoutException::TimeoutException()']]],
+  ['tokelvin_17',['toKelvin',['../structhue4cpp_1_1ColorTemperature.html#a2e6dc6c5af46633aeac0394fc68e5170',1,'hue4cpp::ColorTemperature']]],
+  ['tostring_18',['toString',['../namespacehue4cpp_1_1json__utils.html#a52dc7e3f7ec34170ebdfc06b50022218',1,'hue4cpp::json_utils']]],
+  ['transitiontime_19',['TransitionTime',['../namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b',1,'hue4cpp']]],
+  ['transitiontime_5f_20',['TransitionTime_',['../classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228',1,'hue4cpp::Light']]],
+  ['txt_5fmax_21',['TXT_MAX',['../discovery_8cpp.html#a1078689b4b0609f1faa5db8352447463',1,'discovery.cpp']]],
+  ['type_22',['type',['../structhue4cpp_1_1Event.html#a5408acfcb45e34194618c1e7ac711d75',1,'hue4cpp::Event']]],
+  ['types_2eh_23',['types.h',['../types_8h.html',1,'']]]
 ];

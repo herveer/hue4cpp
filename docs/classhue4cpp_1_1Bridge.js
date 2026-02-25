@@ -1,6 +1,5 @@
 var classhue4cpp_1_1Bridge =
 [
-    [ "Impl", "classhue4cpp_1_1Bridge_1_1Impl.html", "classhue4cpp_1_1Bridge_1_1Impl" ],
     [ "Bridge", "classhue4cpp_1_1Bridge.html#a15e047cbf0e8b46c3f00967d7a1027b3", null ],
     [ "Bridge", "classhue4cpp_1_1Bridge.html#a458cdd444e9db660118dbb6b1b7e2855", null ],
     [ "~Bridge", "classhue4cpp_1_1Bridge.html#a8eef72b65e5dbac553bb7a849b1c4b9a", null ],

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['on_5foff_0',['on_off',['../structhue4cpp_1_1LightCapabilities.html#a97b0d5d79f1a95fd13774b35c1ebfb27',1,'hue4cpp::LightCapabilities']]],
-  ['onevent_1',['OnEvent',['../classhue4cpp_1_1SSEClient.html#a5bf6a82b5aaec4c11a221680a4978eb1',1,'hue4cpp::SSEClient']]],
-  ['orange_2',['Orange',['../namespacehue4cpp_1_1colors.html#aab300fdbe9b7b2507f6a220afaf71668',1,'hue4cpp::colors']]]
+  ['name_0',['name',['../classhue4cpp_1_1Light.html#aa1f6971eba3b24d28e4c708406901721',1,'hue4cpp::Light::Name'],['../structhue4cpp_1_1BridgeInfo.html#abc6a3afdfe4344d8262327ad5ae82d89',1,'hue4cpp::BridgeInfo::name']]],
+  ['name_5fbuffer_1',['name_buffer',['../discovery_8cpp.html#aa40b7ed5c391756197b0d1fcf352e20c',1,'discovery.cpp']]]
 ];

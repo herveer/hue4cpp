@@ -1,13 +1,10 @@
 var searchData=
 [
-  ['parse_0',['parse',['../namespacehue4cpp_1_1json__utils.html#affd914a335f5ff9130a0d74214e00aa1',1,'hue4cpp::json_utils']]],
-  ['patch_1',['PATCH',['../structhue4cpp_1_1Version.html#a4833dfe1a5f6a1e347052e72d2b632b5',1,'hue4cpp::Version']]],
-  ['pimpl_2',['pImpl',['../classhue4cpp_1_1Sensor.html#ab616811617c9edbf2d7ab9bee6cf3c27',1,'hue4cpp::Sensor']]],
-  ['pink_3',['Pink',['../namespacehue4cpp_1_1colors.html#a35bc2ce143ba78439c42daf24e868b39',1,'hue4cpp::colors']]],
-  ['port_4',['port',['../discovery_8cpp.html#a8e0798404bf2cf5dabb84c5ba9a4f236',1,'discovery.cpp']]],
-  ['post_5',['post',['../classhue4cpp_1_1HttpClient.html#a01e323478f39c56862683e45792c6a25',1,'hue4cpp::HttpClient']]],
-  ['project_20status_6',['Project Status',['../index.html#autotoc_md3',1,'']]],
-  ['project_20structure_7',['Project Structure',['../index.html#autotoc_md16',1,'']]],
-  ['purple_8',['Purple',['../namespacehue4cpp_1_1colors.html#a2528265136c5126a56689976f471a55a',1,'hue4cpp::colors']]],
-  ['put_9',['put',['../classhue4cpp_1_1HttpClient.html#a9a5f0b8db2e46a7728a0b68eae74d459',1,'hue4cpp::HttpClient']]]
+  ['on_5foff_0',['on_off',['../structhue4cpp_1_1LightCapabilities.html#a97b0d5d79f1a95fd13774b35c1ebfb27',1,'hue4cpp::LightCapabilities']]],
+  ['onevent_1',['OnEvent',['../classhue4cpp_1_1SSEClient.html#a5bf6a82b5aaec4c11a221680a4978eb1',1,'hue4cpp::SSEClient']]],
+  ['operator_20bool_2',['operator bool',['../structhue4cpp_1_1Result.html#a42062eacc86c34fb41d7ab14e3b1b5e5',1,'hue4cpp::Result::operator bool()'],['../structhue4cpp_1_1Result_3_01void_01_4.html#ad134c16eaeb33aa4c51dbc8e77405220',1,'hue4cpp::Result&lt; void &gt;::operator bool()']]],
+  ['operator_3d_3',['operator=',['../classhue4cpp_1_1Sensor.html#acf4c7f4e4daba0928b90a0d4cc0276fb',1,'hue4cpp::Sensor::operator=()'],['../structhue4cpp_1_1BridgeInfo.html#a722ab28dc2a4438acf65e23155cff4bc',1,'hue4cpp::BridgeInfo::operator=()'],['../classhue4cpp_1_1StateManager.html#ab892c99144c7544bf30938be537c4596',1,'hue4cpp::StateManager::operator=(StateManager &amp;&amp;) noexcept'],['../classhue4cpp_1_1StateManager.html#a3be01f3f00132fdf39b0c2c222b0800a',1,'hue4cpp::StateManager::operator=(const StateManager &amp;)=delete'],['../classhue4cpp_1_1SSEClient.html#a012b002cb9964c4f558d3e5ddfde4781',1,'hue4cpp::SSEClient::operator=(SSEClient &amp;&amp;)=delete'],['../classhue4cpp_1_1SSEClient.html#a1d740d9c636f5147cad315306818ccbb',1,'hue4cpp::SSEClient::operator=(const SSEClient &amp;)=delete'],['../classhue4cpp_1_1Sensor.html#a97d76c1698547800d6107918e3450375',1,'hue4cpp::Sensor::operator=()'],['../classhue4cpp_1_1Light.html#aa7ae28615f5a87fb1ef811ae2c4ac021',1,'hue4cpp::Light::operator=(Light &amp;&amp;)=delete'],['../classhue4cpp_1_1Light.html#a15fa122aab86ada6d108a32eda4d0109',1,'hue4cpp::Light::operator=(const Light &amp;)=delete'],['../classhue4cpp_1_1HttpClient.html#a165dd1e5fe0304c300113f488451ff8a',1,'hue4cpp::HttpClient::operator=(HttpClient &amp;&amp;) noexcept=default'],['../classhue4cpp_1_1HttpClient.html#a2a51b7cb4d386d709e06d43dbdfc8fd2',1,'hue4cpp::HttpClient::operator=(const HttpClient &amp;)=delete'],['../classhue4cpp_1_1Bridge.html#af78e3da2302b5dbbdf1f01168f539b1c',1,'hue4cpp::Bridge::operator=(Bridge &amp;&amp;) noexcept'],['../classhue4cpp_1_1Bridge.html#aec2eee95b5a8a736a9d7678717165d45',1,'hue4cpp::Bridge::operator=(const Bridge &amp;)=delete']]],
+  ['options_4',['Build Options',['../index.html#autotoc_md13',1,'']]],
+  ['orange_5',['Orange',['../namespacehue4cpp_1_1colors.html#aab300fdbe9b7b2507f6a220afaf71668',1,'hue4cpp::colors']]],
+  ['overview_6',['Overview',['../index.html#autotoc_md1',1,'']]]
 ];

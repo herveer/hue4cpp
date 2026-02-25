@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['effects_0',['effects',['../structhue4cpp_1_1LightCapabilities.html#a0e9feb5c1294801e164caaab808af163',1,'hue4cpp::LightCapabilities']]],
-  ['error_1',['error',['../structhue4cpp_1_1Result.html#abed1609156ded04ffa7c46d65362c537',1,'hue4cpp::Result::error'],['../structhue4cpp_1_1Result_3_01void_01_4.html#a3b88b7c1b38552836067950688f17b82',1,'hue4cpp::Result&lt; void &gt;::error']]],
-  ['error_5fmessage_2',['error_message',['../structhue4cpp_1_1HttpResponse.html#ad882f3240f1cc29a0e088524136ddb4b',1,'hue4cpp::HttpResponse::error_message'],['../structhue4cpp_1_1Result.html#a941164fa05b3f9a4e4c07210f631c2a6',1,'hue4cpp::Result::error_message'],['../structhue4cpp_1_1Result_3_01void_01_4.html#a1e5a6e2eb313a21362db118ec915b7dc',1,'hue4cpp::Result&lt; void &gt;::error_message']]],
-  ['event_5fsequence_3',['event_sequence',['../structhue4cpp_1_1ButtonState.html#ad655dc298624ed8bfe9c06933faf8c75',1,'hue4cpp::ButtonState::event_sequence'],['../structhue4cpp_1_1BellButtonState.html#a56dcfb42ac1317a6a962a790f2529c80',1,'hue4cpp::BellButtonState::event_sequence'],['../structhue4cpp_1_1RelativeRotaryState.html#aa6402caea9f9f8868d7efd422303870e',1,'hue4cpp::RelativeRotaryState::event_sequence']]],
-  ['event_5ftype_4',['event_type',['../structhue4cpp_1_1SSEEventArgs.html#a32434361ed09ffa29cf82974ddf8280b',1,'hue4cpp::SSEEventArgs']]]
+  ['data_0',['data',['../structhue4cpp_1_1SSEEventArgs.html#ad0c75ed3bc337dbe709a79facd32c018',1,'hue4cpp::SSEEventArgs::data'],['../structhue4cpp_1_1Event.html#aacdffb7a29490caf7440cb07d7db87ff',1,'hue4cpp::Event::data']]],
+  ['daylight_1',['Daylight',['../namespacehue4cpp_1_1colors.html#a2f282395747e6f7b61ec40f02524be46',1,'hue4cpp::colors']]],
+  ['direction_2',['direction',['../structhue4cpp_1_1RelativeRotaryState.html#a10330194241ed59037360eb9552b4a97',1,'hue4cpp::RelativeRotaryState']]]
 ];

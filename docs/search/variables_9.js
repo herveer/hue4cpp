@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['magenta_0',['Magenta',['../namespacehue4cpp_1_1colors.html#ae767ad852995652ac675fd33240b655a',1,'hue4cpp::colors']]],
-  ['major_1',['MAJOR',['../structhue4cpp_1_1Version.html#a0fdce1ce59ce1d34df2bcf1c8672567a',1,'hue4cpp::Version']]],
-  ['minor_2',['MINOR',['../structhue4cpp_1_1Version.html#a1cbbb64c9fe5ecc2eaf2762ef225200d',1,'hue4cpp::Version']]],
-  ['mireds_3',['mireds',['../structhue4cpp_1_1ColorTemperature.html#af9a27e6c8202fd782451e741825a3449',1,'hue4cpp::ColorTemperature']]],
-  ['model_5fid_4',['model_id',['../structhue4cpp_1_1BridgeInfo.html#a48147c7675ed5715fb89ac66bc62c7bc',1,'hue4cpp::BridgeInfo']]],
-  ['motion_5',['motion',['../structhue4cpp_1_1MotionState.html#a035148fb9c86cbf650ee3be8de2dd931',1,'hue4cpp::MotionState::motion'],['../structhue4cpp_1_1CameraMotionState.html#adfb9c1ba53bc0501be2dc45206f3b9fa',1,'hue4cpp::CameraMotionState::motion']]],
-  ['motion_5fvalid_6',['motion_valid',['../structhue4cpp_1_1MotionState.html#a86489b1c9d4b86ff8a1133a6c3c1d7cc',1,'hue4cpp::MotionState::motion_valid'],['../structhue4cpp_1_1CameraMotionState.html#af32d21d3d94c5497ffb2ea770541f626',1,'hue4cpp::CameraMotionState::motion_valid']]]
+  ['last_5fevent_0',['last_event',['../structhue4cpp_1_1ButtonState.html#a5c9d5cf1a89b4296876b8aa8ff60aa28',1,'hue4cpp::ButtonState::last_event'],['../structhue4cpp_1_1BellButtonState.html#a10afcafd28dea05ace8a8a23766ca3de',1,'hue4cpp::BellButtonState::last_event']]],
+  ['light_5flevel_1',['light_level',['../structhue4cpp_1_1LightLevelState.html#af88766f29a655440572661eb6d9b66bb',1,'hue4cpp::LightLevelState']]],
+  ['light_5flevel_5fvalid_2',['light_level_valid',['../structhue4cpp_1_1LightLevelState.html#a9e528b181c6bb3d9af7489e2f914376c',1,'hue4cpp::LightLevelState']]],
+  ['lightblue_3',['LightBlue',['../namespacehue4cpp_1_1colors.html#ad04529328dc3632b9df700faa8af3748',1,'hue4cpp::colors']]],
+  ['lightgreen_4',['LightGreen',['../namespacehue4cpp_1_1colors.html#a3945749ba1764060fea45327f969a9b2',1,'hue4cpp::colors']]]
 ];

@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['last_5fevent_0',['last_event',['../structhue4cpp_1_1ButtonState.html#a5c9d5cf1a89b4296876b8aa8ff60aa28',1,'hue4cpp::ButtonState::last_event'],['../structhue4cpp_1_1BellButtonState.html#a10afcafd28dea05ace8a8a23766ca3de',1,'hue4cpp::BellButtonState::last_event']]],
-  ['light_5flevel_1',['light_level',['../structhue4cpp_1_1LightLevelState.html#af88766f29a655440572661eb6d9b66bb',1,'hue4cpp::LightLevelState']]],
-  ['light_5flevel_5fvalid_2',['light_level_valid',['../structhue4cpp_1_1LightLevelState.html#a9e528b181c6bb3d9af7489e2f914376c',1,'hue4cpp::LightLevelState']]],
-  ['lightblue_3',['LightBlue',['../namespacehue4cpp_1_1colors.html#ad04529328dc3632b9df700faa8af3748',1,'hue4cpp::colors']]],
-  ['lightgreen_4',['LightGreen',['../namespacehue4cpp_1_1colors.html#a3945749ba1764060fea45327f969a9b2',1,'hue4cpp::colors']]]
+  ['id_0',['id',['../structhue4cpp_1_1SSEEventArgs.html#ad977b1e4e43e6490b3cc23c9d5bf447e',1,'hue4cpp::SSEEventArgs::id'],['../structhue4cpp_1_1BridgeInfo.html#a5c620ac59e974c37f077eb94e4b917e2',1,'hue4cpp::BridgeInfo::id'],['../classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e',1,'hue4cpp::Light::Id'],['../discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3',1,'id:&#160;discovery.cpp']]],
+  ['ip_5faddress_1',['ip_address',['../structhue4cpp_1_1BridgeInfo.html#a79aa08a60ae27bc5f759fc5ac3a86e0f',1,'hue4cpp::BridgeInfo::ip_address'],['../discovery_8cpp.html#a83e5ce1decdba404059af51acb743b7a',1,'ip_address:&#160;discovery.cpp']]],
+  ['is_5fconfigured_2',['is_configured',['../structhue4cpp_1_1GeolocationState.html#a0a7b579992180d33c259ca5ee57adb18',1,'hue4cpp::GeolocationState']]],
+  ['is_5fipv6_3',['is_ipv6',['../discovery_8cpp.html#ad4030b0c38ff0d527471cd6f5b951ecf',1,'discovery.cpp']]],
+  ['isconnected_4',['IsConnected',['../classhue4cpp_1_1SSEClient.html#a389709843ddb8f8eaeed0e9130b96851',1,'hue4cpp::SSEClient']]],
+  ['ison_5',['IsOn',['../classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0',1,'hue4cpp::Light']]]
 ];

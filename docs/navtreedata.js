@@ -83,9 +83,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classhue4cpp_1_1MotionSensor.html#a29e75a2f18d350943980083c12f9100a",
-"functions_r.html",
-"structhue4cpp_1_1ColorTemperature.html#af9a27e6c8202fd782451e741825a3449"
+"classhue4cpp_1_1SSEClient.html#a20e56c7cd11076b9910024fd1c4c299b",
+"light_8h_source.html",
+"structhue4cpp_1_1RGBColor.html#a7819efb39f0a16857d7c61514b625f78"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,6 +1,5 @@
 var classhue4cpp_1_1StateManager =
 [
-    [ "Impl", "classhue4cpp_1_1StateManager_1_1Impl.html", "classhue4cpp_1_1StateManager_1_1Impl" ],
     [ "StateManager", "classhue4cpp_1_1StateManager.html#ab5ff79c0ad00f821a606f6fd8c1a27f7", null ],
     [ "StateManager", "classhue4cpp_1_1StateManager.html#a4c1b58eb9ed7276975ef8a26bcaae116", null ],
     [ "~StateManager", "classhue4cpp_1_1StateManager.html#ad796cc65b5658691971e2975c7688a1f", null ],

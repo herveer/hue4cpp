@@ -1,15 +1,16 @@
 var searchData=
 [
-  ['effects_0',['effects',['../structhue4cpp_1_1LightCapabilities.html#a0e9feb5c1294801e164caaab808af163',1,'hue4cpp::LightCapabilities']]],
-  ['error_1',['error',['../structhue4cpp_1_1Result.html#abed1609156ded04ffa7c46d65362c537',1,'hue4cpp::Result::error'],['../structhue4cpp_1_1Result_3_01void_01_4.html#a3b88b7c1b38552836067950688f17b82',1,'hue4cpp::Result&lt; void &gt;::error']]],
-  ['error_5fmessage_2',['error_message',['../structhue4cpp_1_1HttpResponse.html#ad882f3240f1cc29a0e088524136ddb4b',1,'hue4cpp::HttpResponse::error_message'],['../structhue4cpp_1_1Result.html#a941164fa05b3f9a4e4c07210f631c2a6',1,'hue4cpp::Result::error_message'],['../structhue4cpp_1_1Result_3_01void_01_4.html#a1e5a6e2eb313a21362db118ec915b7dc',1,'hue4cpp::Result&lt; void &gt;::error_message']]],
-  ['errorcode_3',['ErrorCode',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680',1,'hue4cpp']]],
-  ['errorcodetostring_4',['errorCodeToString',['../namespacehue4cpp.html#a307dfd84341d9a9460fcf7f0a8993f1f',1,'hue4cpp']]],
-  ['event_5',['event',['../structhue4cpp_1_1Event.html',1,'hue4cpp::Event'],['../structhue4cpp_1_1Event.html#a1a16154a5ac30bd98e7610934582552e',1,'hue4cpp::Event::Event()']]],
-  ['event_5fsequence_6',['event_sequence',['../structhue4cpp_1_1ButtonState.html#ad655dc298624ed8bfe9c06933faf8c75',1,'hue4cpp::ButtonState::event_sequence'],['../structhue4cpp_1_1BellButtonState.html#a56dcfb42ac1317a6a962a790f2529c80',1,'hue4cpp::BellButtonState::event_sequence'],['../structhue4cpp_1_1RelativeRotaryState.html#aa6402caea9f9f8868d7efd422303870e',1,'hue4cpp::RelativeRotaryState::event_sequence']]],
-  ['event_5ftype_7',['event_type',['../structhue4cpp_1_1SSEEventArgs.html#a32434361ed09ffa29cf82974ddf8280b',1,'hue4cpp::SSEEventArgs']]],
-  ['eventcallback_8',['EventCallback',['../namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484',1,'hue4cpp']]],
-  ['eventtype_9',['EventType',['../namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159',1,'hue4cpp']]],
-  ['example_10',['Usage Example',['../index.html#autotoc_md8',1,'']]],
-  ['exceptions_2eh_11',['exceptions.h',['../exceptions_8h.html',1,'']]]
+  ['data_0',['data',['../structhue4cpp_1_1SSEEventArgs.html#ad0c75ed3bc337dbe709a79facd32c018',1,'hue4cpp::SSEEventArgs::data'],['../structhue4cpp_1_1Event.html#aacdffb7a29490caf7440cb07d7db87ff',1,'hue4cpp::Event::data']]],
+  ['daylight_1',['Daylight',['../namespacehue4cpp_1_1colors.html#a2f282395747e6f7b61ec40f02524be46',1,'hue4cpp::colors']]],
+  ['del_2',['del',['../classhue4cpp_1_1HttpClient.html#a8be0937ddf8715d878a902d498557a5e',1,'hue4cpp::HttpClient']]],
+  ['dependencies_3',['Dependencies',['../index.html#autotoc_md5',1,'']]],
+  ['development_20guidelines_4',['Development Guidelines',['../index.html#autotoc_md18',1,'']]],
+  ['direction_5',['direction',['../structhue4cpp_1_1RelativeRotaryState.html#a10330194241ed59037360eb9552b4a97',1,'hue4cpp::RelativeRotaryState']]],
+  ['disconnect_6',['disconnect',['../classhue4cpp_1_1SSEClient.html#a5df08263e49d86ea770d588a78f5d6ed',1,'hue4cpp::SSEClient']]],
+  ['discover_7',['discover',['../classhue4cpp_1_1Bridge.html#a6d45bac89be65619d6b4380ec5cb2ad1',1,'hue4cpp::Bridge']]],
+  ['discovermdns_8',['discoverMDNS',['../classhue4cpp_1_1Bridge.html#aea0d73f0d8bda166f3acc823398e70ec',1,'hue4cpp::Bridge']]],
+  ['discovernupnp_9',['discoverNUPnP',['../classhue4cpp_1_1Bridge.html#ab5a975900a3f598416e5a904265d811f',1,'hue4cpp::Bridge']]],
+  ['discovery_2ecpp_10',['discovery.cpp',['../discovery_8cpp.html',1,'']]],
+  ['documentation_11',['Documentation',['../index.html#autotoc_md15',1,'']]],
+  ['doubleshortrelease_12',['DoubleShortRelease',['../namespacehue4cpp.html#a0ecc80e2f206fdef7c207b36f31aeffca06d43cc21c825bdd9812a9626bab6b2e',1,'hue4cpp']]]
 ];
