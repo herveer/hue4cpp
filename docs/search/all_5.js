@@ -8,8 +8,7 @@ var searchData=
   ['event_5',['event',['../structhue4cpp_1_1Event.html',1,'hue4cpp::Event'],['../structhue4cpp_1_1Event.html#a1a16154a5ac30bd98e7610934582552e',1,'hue4cpp::Event::Event()']]],
   ['event_5fsequence_6',['event_sequence',['../structhue4cpp_1_1ButtonState.html#ad655dc298624ed8bfe9c06933faf8c75',1,'hue4cpp::ButtonState::event_sequence'],['../structhue4cpp_1_1BellButtonState.html#a56dcfb42ac1317a6a962a790f2529c80',1,'hue4cpp::BellButtonState::event_sequence'],['../structhue4cpp_1_1RelativeRotaryState.html#aa6402caea9f9f8868d7efd422303870e',1,'hue4cpp::RelativeRotaryState::event_sequence']]],
   ['event_5ftype_7',['event_type',['../structhue4cpp_1_1SSEEventArgs.html#a32434361ed09ffa29cf82974ddf8280b',1,'hue4cpp::SSEEventArgs']]],
-  ['eventcallback_8',['EventCallback',['../namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484',1,'hue4cpp']]],
-  ['eventtype_9',['EventType',['../namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159',1,'hue4cpp']]],
-  ['example_10',['Usage Example',['../index.html#autotoc_md8',1,'']]],
-  ['exceptions_2eh_11',['exceptions.h',['../exceptions_8h.html',1,'']]]
+  ['eventtype_8',['EventType',['../namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159',1,'hue4cpp']]],
+  ['example_9',['Usage Example',['../index.html#autotoc_md8',1,'']]],
+  ['exceptions_2eh_10',['exceptions.h',['../exceptions_8h.html',1,'']]]
 ];

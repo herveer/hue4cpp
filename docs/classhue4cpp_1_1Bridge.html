@@ -211,7 +211,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Represents a Philips Hue <a class="el" href="classhue4cpp_1_1Bridge.html" title="Represents a Philips Hue Bridge.">Bridge</a>. </p>
 <p>The <a class="el" href="classhue4cpp_1_1Bridge.html" title="Represents a Philips Hue Bridge.">Bridge</a> class is the main entry point for interacting with a Hue system. It handles discovery, authentication, and provides access to lights and other resources. </p>
 
-<p class="definition">Definition at line <a class="el" href="bridge_8h_source.html#l00034">34</a> of file <a class="el" href="bridge_8h_source.html">bridge.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bridge_8h_source.html#l00035">35</a> of file <a class="el" href="bridge_8h_source.html">bridge.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a15e047cbf0e8b46c3f00967d7a1027b3" name="a15e047cbf0e8b46c3f00967d7a1027b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a15e047cbf0e8b46c3f00967d7a1027b3">&#9670;&#160;</a></span>Bridge() <span class="overload">[1/4]</span></h2>
@@ -508,7 +508,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="bridge_8cpp_source.html#l00165">165</a> of file <a class="el" href="bridge_8cpp_source.html">bridge.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00078">hue4cpp::StateManager::start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00062">hue4cpp::StateManager::start()</a>.</p>
 
 </div>
 </div>
@@ -636,7 +636,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="bridge_8cpp_source.html#l00354">354</a> of file <a class="el" href="bridge_8cpp_source.html">bridge.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="discovery_8cpp_source.html#l00410">isReachable()</a>, and <a class="el" href="state_8cpp_source.html#l00078">hue4cpp::StateManager::start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="discovery_8cpp_source.html#l00410">isReachable()</a>, and <a class="el" href="state_8cpp_source.html#l00062">hue4cpp::StateManager::start()</a>.</p>
 
 </div>
 </div>
@@ -663,13 +663,13 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Unique pointer to <a class="el" href="classhue4cpp_1_1Light.html" title="Represents a single Hue light.">Light</a> object (nullptr if not found) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Unique pointer to <a class="el" href="classhue4cpp_1_1Light.html" title="From state.h - forward declared to avoid circular includes.">Light</a> object (nullptr if not found) </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="bridge_8cpp_source.html#l00298">298</a> of file <a class="el" href="bridge_8cpp_source.html">bridge.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="http__client_8cpp_source.html#l00047">hue4cpp::HttpClient::get()</a>, <a class="el" href="types_8h_source.html#l00232">hue4cpp::BridgeInfo::ip_address</a>, <a class="el" href="bridge_8cpp_source.html#l00169">isAuthenticated()</a>, <a class="el" href="json__utils_8cpp_source.html#l00006">hue4cpp::json_utils::parse()</a>, <a class="el" href="http__client_8cpp_source.html#l00007">hue4cpp::HttpClient::setTimeout()</a>, and <a class="el" href="http__client_8cpp_source.html#l00011">hue4cpp::HttpClient::setVerifySsl()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="light_8cpp_source.html#l00361">hue4cpp::Light::refresh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="light_8cpp_source.html#l00363">hue4cpp::Light::refresh()</a>.</p>
 
 </div>
 </div>
@@ -715,7 +715,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get all lights connected to this bridge. </p>
-<dl class="section return"><dt>Returns</dt><dd>Vector of <a class="el" href="classhue4cpp_1_1Light.html" title="Represents a single Hue light.">Light</a> objects </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Vector of <a class="el" href="classhue4cpp_1_1Light.html" title="From state.h - forward declared to avoid circular includes.">Light</a> objects </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="bridge_8cpp_source.html#l00237">237</a> of file <a class="el" href="bridge_8cpp_source.html">bridge.cpp</a>.</p>
 
@@ -943,7 +943,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="bridge_8cpp_source.html#l00358">358</a> of file <a class="el" href="bridge_8cpp_source.html">bridge.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="light_8cpp_source.html#l00379">hue4cpp::Light::initFromJson()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00118">hue4cpp::Sensor::initFromJson()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="light_8cpp_source.html#l00381">hue4cpp::Light::initFromJson()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00118">hue4cpp::Sensor::initFromJson()</a>.</p>
 
 </div>
 </div>
@@ -1019,7 +1019,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="bridge_8cpp_source.html#l00169">169</a> of file <a class="el" href="bridge_8cpp_source.html">bridge.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="bridge_8cpp_source.html#l00684">getBellButtonSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00670">getButtonSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00677">getCameraMotionSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00698">getGeolocationSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00298">getLight()</a>, <a class="el" href="bridge_8cpp_source.html#l00663">getLightLevelSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00237">getLights()</a>, <a class="el" href="bridge_8cpp_source.html#l00362">getLightState()</a>, <a class="el" href="bridge_8cpp_source.html#l00649">getMotionSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00691">getRelativeRotarySensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00532">getSensor()</a>, <a class="el" href="bridge_8cpp_source.html#l00424">getSensorState()</a>, <a class="el" href="bridge_8cpp_source.html#l00705">getTamperSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00656">getTemperatureSensors()</a>, and <a class="el" href="light_8cpp_source.html#l00361">hue4cpp::Light::refresh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="bridge_8cpp_source.html#l00684">getBellButtonSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00670">getButtonSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00677">getCameraMotionSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00698">getGeolocationSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00298">getLight()</a>, <a class="el" href="bridge_8cpp_source.html#l00663">getLightLevelSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00237">getLights()</a>, <a class="el" href="bridge_8cpp_source.html#l00362">getLightState()</a>, <a class="el" href="bridge_8cpp_source.html#l00649">getMotionSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00691">getRelativeRotarySensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00532">getSensor()</a>, <a class="el" href="bridge_8cpp_source.html#l00424">getSensorState()</a>, <a class="el" href="bridge_8cpp_source.html#l00705">getTamperSensors()</a>, <a class="el" href="bridge_8cpp_source.html#l00656">getTemperatureSensors()</a>, and <a class="el" href="light_8cpp_source.html#l00363">hue4cpp::Light::refresh()</a>.</p>
 
 </div>
 </div>

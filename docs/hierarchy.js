@@ -12,6 +12,7 @@ var hierarchy =
     [ "hue4cpp::HttpResponse", "structhue4cpp_1_1HttpResponse.html", null ],
     [ "hue4cpp::LightCapabilities", "structhue4cpp_1_1LightCapabilities.html", null ],
     [ "hue4cpp::LightLevelState", "structhue4cpp_1_1LightLevelState.html", null ],
+    [ "hue4cpp::LightStateChangedArgs", "structhue4cpp_1_1LightStateChangedArgs.html", null ],
     [ "hue4cpp::MotionState", "structhue4cpp_1_1MotionState.html", null ],
     [ "ObservableObject", null, [
       [ "hue4cpp::Light", "classhue4cpp_1_1Light.html", null ]
@@ -20,6 +21,7 @@ var hierarchy =
       [ "hue4cpp::SSEClient", "classhue4cpp_1_1SSEClient.html", null ]
     ] ],
     [ "hue4cpp::RelativeRotaryState", "structhue4cpp_1_1RelativeRotaryState.html", null ],
+    [ "hue4cpp::ResourceEventArgs", "structhue4cpp_1_1ResourceEventArgs.html", null ],
     [ "hue4cpp::Result< T >", "structhue4cpp_1_1Result.html", null ],
     [ "hue4cpp::Result< void >", "structhue4cpp_1_1Result_3_01void_01_4.html", null ],
     [ "hue4cpp::RGBColor", "structhue4cpp_1_1RGBColor.html", null ],

@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('classhue4cpp_1_1StateManager.html','')
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classhue4cpp_1_1StateManager-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">hue4cpp::StateManager Class Reference</div></div>
 </div><!--header-->
@@ -130,12 +131,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a941ebb982675b4541fc42139e2cea7a4" id="r_a941ebb982675b4541fc42139e2cea7a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html#a941ebb982675b4541fc42139e2cea7a4">isRunning</a> () const</td></tr>
 <tr class="memdesc:a941ebb982675b4541fc42139e2cea7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if state manager is running.  <br /></td></tr>
 <tr class="separator:a941ebb982675b4541fc42139e2cea7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc2e6bfa82926c14483eaf0161dcca3b" id="r_abc2e6bfa82926c14483eaf0161dcca3b"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html#abc2e6bfa82926c14483eaf0161dcca3b">registerCallback</a> (<a class="el" href="namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484">EventCallback</a> callback)</td></tr>
-<tr class="memdesc:abc2e6bfa82926c14483eaf0161dcca3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback for state change events.  <br /></td></tr>
-<tr class="separator:abc2e6bfa82926c14483eaf0161dcca3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8118962a187b78de2b071e0a9ff2372a" id="r_a8118962a187b78de2b071e0a9ff2372a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html#a8118962a187b78de2b071e0a9ff2372a">unregisterCallback</a> (uint64_t callback_id)</td></tr>
-<tr class="memdesc:a8118962a187b78de2b071e0a9ff2372a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregister a previously registered callback.  <br /></td></tr>
-<tr class="separator:a8118962a187b78de2b071e0a9ff2372a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fcf02f205606e9f3d0b8fea53e66f25" id="r_a0fcf02f205606e9f3d0b8fea53e66f25"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html#a0fcf02f205606e9f3d0b8fea53e66f25">getResourceState</a> (const std::string &amp;resource_id) const</td></tr>
 <tr class="memdesc:a0fcf02f205606e9f3d0b8fea53e66f25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current state of any resource (generic)  <br /></td></tr>
 <tr class="separator:a0fcf02f205606e9f3d0b8fea53e66f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,12 +146,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae182f089b1c31c3dead424e56ff49c8d" id="r_ae182f089b1c31c3dead424e56ff49c8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html#ae182f089b1c31c3dead424e56ff49c8d">clearCache</a> ()</td></tr>
 <tr class="memdesc:ae182f089b1c31c3dead424e56ff49c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all cached resource states.  <br /></td></tr>
 <tr class="separator:ae182f089b1c31c3dead424e56ff49c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a434074fd5ae12d756a02bec722eb8e6b" id="r_a434074fd5ae12d756a02bec722eb8e6b"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Event&lt; const <a class="el" href="structhue4cpp_1_1ResourceEventArgs.html">ResourceEventArgs</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html#a434074fd5ae12d756a02bec722eb8e6b">OnResourceEvent</a></td></tr>
+<tr class="memdesc:a434074fd5ae12d756a02bec722eb8e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single unified event fired for every resource change.  <br /></td></tr>
+<tr class="separator:a434074fd5ae12d756a02bec722eb8e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages state synchronization via Server-Sent Events. </p>
 <p>The <a class="el" href="classhue4cpp_1_1StateManager.html" title="Manages state synchronization via Server-Sent Events.">StateManager</a> maintains an up-to-date view of the bridge state by listening to SSE events from the bridge. </p>
 
-<p class="definition">Definition at line <a class="el" href="state_8h_source.html#l00065">65</a> of file <a class="el" href="state_8h_source.html">state.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8h_source.html#l00140">140</a> of file <a class="el" href="state_8h_source.html">state.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab5ff79c0ad00f821a606f6fd8c1a27f7" name="ab5ff79c0ad00f821a606f6fd8c1a27f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab5ff79c0ad00f821a606f6fd8c1a27f7">&#9670;&#160;</a></span>StateManager() <span class="overload">[1/4]</span></h2>
@@ -211,7 +212,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00014">14</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00015">15</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
 </div>
 </div>
@@ -232,9 +233,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00017">17</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00019">19</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="state_8cpp_source.html#l00134">stop()</a>.</p>
+<p class="reference">References <a class="el" href="state_8cpp_source.html#l00116">stop()</a>.</p>
 
 </div>
 </div>
@@ -288,7 +289,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00021">21</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00023">23</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
 </div>
 </div>
@@ -310,9 +311,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Clear all cached resource states. </p>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00268">268</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00250">250</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00078">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00062">start()</a>.</p>
 
 </div>
 </div>
@@ -341,9 +342,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>JSON string representing resource state, or empty if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00168">168</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00189">updateFromEvent()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00133">133</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
 </div>
 </div>
@@ -365,9 +364,9 @@ Public Member Functions</h2></td></tr>
 <p>Check if state manager is running. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if running, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00147">147</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00129">129</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00181">setResourceState()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00146">setResourceState()</a>.</p>
 
 </div>
 </div>
@@ -425,37 +424,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abc2e6bfa82926c14483eaf0161dcca3b" name="abc2e6bfa82926c14483eaf0161dcca3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc2e6bfa82926c14483eaf0161dcca3b">&#9670;&#160;</a></span>registerCallback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t hue4cpp::StateManager::registerCallback </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484">EventCallback</a>&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Register a callback for state change events. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">callback</td><td>Function to call when events occur </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Callback ID for later removal </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00151">151</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="discovery_8cpp_source.html#l00041">id</a>.</p>
-
-</div>
-</div>
 <a id="ae2262b17f2c2ff6c88a47c8bc4ecd412" name="ae2262b17f2c2ff6c88a47c8bc4ecd412"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2262b17f2c2ff6c88a47c8bc4ecd412">&#9670;&#160;</a></span>setBridge()</h2>
 
@@ -480,7 +448,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00264">264</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00246">246</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
 </div>
 </div>
@@ -519,11 +487,11 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00181">181</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00146">146</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="state_8cpp_source.html#l00147">isRunning()</a>, and <a class="el" href="state_8cpp_source.html#l00078">start()</a>.</p>
+<p class="reference">References <a class="el" href="state_8cpp_source.html#l00129">isRunning()</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a6378f934151ef05160adc5aac5dcf88e">hue4cpp::LightStateChanged</a>, <a class="el" href="state_8h_source.html#l00185">OnResourceEvent</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159ac0b82d58b341ec71d47abdf32355b1e8">hue4cpp::SensorStateChanged</a>, <a class="el" href="state_8cpp_source.html#l00062">start()</a>, and <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a88183b946cc5f0e8c96b2e66e1c74a7e">hue4cpp::Unknown</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="light_8cpp_source.html#l00379">hue4cpp::Light::initFromJson()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00118">hue4cpp::Sensor::initFromJson()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="light_8cpp_source.html#l00381">hue4cpp::Light::initFromJson()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00118">hue4cpp::Sensor::initFromJson()</a>.</p>
 
 </div>
 </div>
@@ -545,11 +513,11 @@ Public Member Functions</h2></td></tr>
 <p>Start listening for SSE events. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structhue4cpp_1_1Result.html" title="Result type for operations that can fail.">Result</a> indicating success or failure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00078">78</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00062">62</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a1dd42c9ca5eaa052950053ee8e47fa2f">hue4cpp::AuthenticationRequired</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159afaf2740831be392a9a687ae4fbaa9d49">hue4cpp::BridgeConnected</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a98839233e5c2d2801943bb85cec9c07b">hue4cpp::BridgeDisconnected</a>, <a class="el" href="state_8cpp_source.html#l00268">clearCache()</a>, <a class="el" href="bridge_8cpp_source.html#l00165">hue4cpp::Bridge::getAuthenticationKey()</a>, <a class="el" href="bridge_8cpp_source.html#l00354">hue4cpp::Bridge::getInfo()</a>, <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680ad544eb3da2f68d24cf92a8519ed53a31">hue4cpp::InvalidRequest</a>, and <a class="el" href="state_8cpp_source.html#l00189">updateFromEvent()</a>.</p>
+<p class="reference">References <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a1dd42c9ca5eaa052950053ee8e47fa2f">hue4cpp::AuthenticationRequired</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159afaf2740831be392a9a687ae4fbaa9d49">hue4cpp::BridgeConnected</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a98839233e5c2d2801943bb85cec9c07b">hue4cpp::BridgeDisconnected</a>, <a class="el" href="state_8cpp_source.html#l00250">clearCache()</a>, <a class="el" href="bridge_8cpp_source.html#l00165">hue4cpp::Bridge::getAuthenticationKey()</a>, <a class="el" href="bridge_8cpp_source.html#l00354">hue4cpp::Bridge::getInfo()</a>, <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680ad544eb3da2f68d24cf92a8519ed53a31">hue4cpp::InvalidRequest</a>, <a class="el" href="state_8h_source.html#l00185">OnResourceEvent</a>, and <a class="el" href="state_8cpp_source.html#l00174">updateFromEvent()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00181">setResourceState()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00146">setResourceState()</a>.</p>
 
 </div>
 </div>
@@ -570,37 +538,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Stop listening for SSE events. </p>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00134">134</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00116">116</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00017">~StateManager()</a>.</p>
-
-</div>
-</div>
-<a id="a8118962a187b78de2b071e0a9ff2372a" name="a8118962a187b78de2b071e0a9ff2372a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8118962a187b78de2b071e0a9ff2372a">&#9670;&#160;</a></span>unregisterCallback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void hue4cpp::StateManager::unregisterCallback </td>
-          <td>(</td>
-          <td class="paramtype">uint64_t&#160;</td>
-          <td class="paramname"><em>callback_id</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Unregister a previously registered callback. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">callback_id</td><td>ID returned from registerCallback </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00163">163</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00019">~StateManager()</a>.</p>
 
 </div>
 </div>
@@ -628,11 +568,43 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00189">189</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="state_8cpp_source.html#l00174">174</a> of file <a class="el" href="state_8cpp_source.html">state.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="state_8cpp_source.html#l00168">getResourceState()</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a40495ab88ea885eccaf3652334fccf5a">hue4cpp::LightAdded</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a92108d0c6efd079db8d1053a5c7b2568">hue4cpp::LightRemoved</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a6378f934151ef05160adc5aac5dcf88e">hue4cpp::LightStateChanged</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a5c42f07cf070e74edca7482d6d0e7c97">hue4cpp::SensorAdded</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a1c901e07e3458d982027d3c467b79dfe">hue4cpp::SensorRemoved</a>, and <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159ac0b82d58b341ec71d47abdf32355b1e8">hue4cpp::SensorStateChanged</a>.</p>
+<p class="reference">References <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a40495ab88ea885eccaf3652334fccf5a">hue4cpp::LightAdded</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a92108d0c6efd079db8d1053a5c7b2568">hue4cpp::LightRemoved</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a6378f934151ef05160adc5aac5dcf88e">hue4cpp::LightStateChanged</a>, <a class="el" href="state_8h_source.html#l00185">OnResourceEvent</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a5c42f07cf070e74edca7482d6d0e7c97">hue4cpp::SensorAdded</a>, <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a1c901e07e3458d982027d3c467b79dfe">hue4cpp::SensorRemoved</a>, and <a class="el" href="namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159ac0b82d58b341ec71d47abdf32355b1e8">hue4cpp::SensorStateChanged</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00078">start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00062">start()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a434074fd5ae12d756a02bec722eb8e6b" name="a434074fd5ae12d756a02bec722eb8e6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a434074fd5ae12d756a02bec722eb8e6b">&#9670;&#160;</a></span>OnResourceEvent</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ReactiveLitepp::Event&lt;const <a class="el" href="structhue4cpp_1_1ResourceEventArgs.html">ResourceEventArgs</a>&amp;&gt; hue4cpp::StateManager::OnResourceEvent</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Single unified event fired for every resource change. </p>
+<p>Covers lights (added / changed / removed), sensors (added / changed / removed) and bridge connectivity changes. Use <a class="el" href="structhue4cpp_1_1ResourceEventArgs.html#a321b7cedb0a667e1256e95d6f29c2080" title="What happened.">ResourceEventArgs::type</a> or the helper predicates (isLightEvent, isSensorEvent, isBridgeEvent) to filter the events you care about.</p>
+<div class="fragment"><div class="line"><span class="keyword">auto</span> sub = state_manager.OnResourceEvent.SubscribeScoped(</div>
+<div class="line">    [](<span class="keyword">const</span> <a class="code hl_struct" href="structhue4cpp_1_1ResourceEventArgs.html">ResourceEventArgs</a>&amp; e) {</div>
+<div class="line">        <span class="keywordflow">if</span> (e.<a class="code hl_function" href="structhue4cpp_1_1ResourceEventArgs.html#a468a1d298ee70f7b99b3ff8f1ba912f3">isLightEvent</a>())   { ... }</div>
+<div class="line">        if (e.<a class="code hl_function" href="structhue4cpp_1_1ResourceEventArgs.html#a7c7cbf9989b47619f1127e2608ee2ee1">isSensorEvent</a>())  { ... }</div>
+<div class="line">        if (e.<a class="code hl_function" href="structhue4cpp_1_1ResourceEventArgs.html#a20012f786b5d815c84f25f167c47397d">isBridgeEvent</a>())  { ... }</div>
+<div class="line">    });</div>
+<div class="ttc" id="astructhue4cpp_1_1ResourceEventArgs_html"><div class="ttname"><a href="structhue4cpp_1_1ResourceEventArgs.html">hue4cpp::ResourceEventArgs</a></div><div class="ttdoc">Unified event args for StateManager::OnResourceEvent.</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00096">state.h:96</a></div></div>
+<div class="ttc" id="astructhue4cpp_1_1ResourceEventArgs_html_a20012f786b5d815c84f25f167c47397d"><div class="ttname"><a href="structhue4cpp_1_1ResourceEventArgs.html#a20012f786b5d815c84f25f167c47397d">hue4cpp::ResourceEventArgs::isBridgeEvent</a></div><div class="ttdeci">bool isBridgeEvent() const</div><div class="ttdoc">Returns true when this event concerns bridge connectivity.</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00128">state.h:128</a></div></div>
+<div class="ttc" id="astructhue4cpp_1_1ResourceEventArgs_html_a468a1d298ee70f7b99b3ff8f1ba912f3"><div class="ttname"><a href="structhue4cpp_1_1ResourceEventArgs.html#a468a1d298ee70f7b99b3ff8f1ba912f3">hue4cpp::ResourceEventArgs::isLightEvent</a></div><div class="ttdeci">bool isLightEvent() const</div><div class="ttdoc">Returns true when this event concerns a light resource.</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00114">state.h:114</a></div></div>
+<div class="ttc" id="astructhue4cpp_1_1ResourceEventArgs_html_a7c7cbf9989b47619f1127e2608ee2ee1"><div class="ttname"><a href="structhue4cpp_1_1ResourceEventArgs.html#a7c7cbf9989b47619f1127e2608ee2ee1">hue4cpp::ResourceEventArgs::isSensorEvent</a></div><div class="ttdeci">bool isSensorEvent() const</div><div class="ttdoc">Returns true when this event concerns a sensor resource.</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00121">state.h:121</a></div></div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="state_8h_source.html#l00185">185</a> of file <a class="el" href="state_8h_source.html">state.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="state_8cpp_source.html#l00146">setResourceState()</a>, <a class="el" href="state_8cpp_source.html#l00062">start()</a>, and <a class="el" href="state_8cpp_source.html#l00174">updateFromEvent()</a>.</p>
 
 </div>
 </div>

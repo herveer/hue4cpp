@@ -10,11 +10,10 @@ var classhue4cpp_1_1StateManager =
     [ "isRunning", "classhue4cpp_1_1StateManager.html#a941ebb982675b4541fc42139e2cea7a4", null ],
     [ "operator=", "classhue4cpp_1_1StateManager.html#a3be01f3f00132fdf39b0c2c222b0800a", null ],
     [ "operator=", "classhue4cpp_1_1StateManager.html#ab892c99144c7544bf30938be537c4596", null ],
-    [ "registerCallback", "classhue4cpp_1_1StateManager.html#abc2e6bfa82926c14483eaf0161dcca3b", null ],
     [ "setBridge", "classhue4cpp_1_1StateManager.html#ae2262b17f2c2ff6c88a47c8bc4ecd412", null ],
     [ "setResourceState", "classhue4cpp_1_1StateManager.html#a5df17f3fc7f7bd469aaa141d885bf3e0", null ],
     [ "start", "classhue4cpp_1_1StateManager.html#ac65570d0f17ba81e25e105b3eccc3d0e", null ],
     [ "stop", "classhue4cpp_1_1StateManager.html#aa08e59f232ffdda5a1ef3ce0a5b797e5", null ],
-    [ "unregisterCallback", "classhue4cpp_1_1StateManager.html#a8118962a187b78de2b071e0a9ff2372a", null ],
-    [ "updateFromEvent", "classhue4cpp_1_1StateManager.html#a9a3379ae0e4232f525c45e25fbd4faae", null ]
+    [ "updateFromEvent", "classhue4cpp_1_1StateManager.html#a9a3379ae0e4232f525c45e25fbd4faae", null ],
+    [ "OnResourceEvent", "classhue4cpp_1_1StateManager.html#a434074fd5ae12d756a02bec722eb8e6b", null ]
 ];

@@ -11,10 +11,13 @@ var searchData=
   ['is_5fconfigured_8',['is_configured',['../structhue4cpp_1_1GeolocationState.html#a0a7b579992180d33c259ca5ee57adb18',1,'hue4cpp::GeolocationState']]],
   ['is_5fipv6_9',['is_ipv6',['../discovery_8cpp.html#ad4030b0c38ff0d527471cd6f5b951ecf',1,'discovery.cpp']]],
   ['isauthenticated_10',['isAuthenticated',['../classhue4cpp_1_1Bridge.html#a02ed5c5960b2a883ffb33924d5744223',1,'hue4cpp::Bridge']]],
-  ['isconnected_11',['IsConnected',['../classhue4cpp_1_1SSEClient.html#a389709843ddb8f8eaeed0e9130b96851',1,'hue4cpp::SSEClient']]],
-  ['isenabled_12',['isEnabled',['../classhue4cpp_1_1Sensor.html#a64ffb45ec05cd770fb28f2380f505acc',1,'hue4cpp::Sensor']]],
-  ['ison_13',['IsOn',['../classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0',1,'hue4cpp::Light']]],
-  ['isreachable_14',['isReachable',['../classhue4cpp_1_1Bridge.html#a043c570f28a7ffc55db99498a4c805f0',1,'hue4cpp::Bridge']]],
-  ['isrunning_15',['isRunning',['../classhue4cpp_1_1StateManager.html#a941ebb982675b4541fc42139e2cea7a4',1,'hue4cpp::StateManager']]],
-  ['issuccess_16',['issuccess',['../structhue4cpp_1_1Result_3_01void_01_4.html#abb55894922877f10afcd0c9808c09131',1,'hue4cpp::Result&lt; void &gt;::isSuccess()'],['../structhue4cpp_1_1Result.html#aab8d74be6f7b6104497068be0e1af0a3',1,'hue4cpp::Result::isSuccess()'],['../structhue4cpp_1_1HttpResponse.html#a2b1e77c0349778f91c69db2da3d27a3a',1,'hue4cpp::HttpResponse::isSuccess()']]]
+  ['isbridgeevent_11',['isBridgeEvent',['../structhue4cpp_1_1ResourceEventArgs.html#a20012f786b5d815c84f25f167c47397d',1,'hue4cpp::ResourceEventArgs']]],
+  ['isconnected_12',['IsConnected',['../classhue4cpp_1_1SSEClient.html#a389709843ddb8f8eaeed0e9130b96851',1,'hue4cpp::SSEClient']]],
+  ['isenabled_13',['isEnabled',['../classhue4cpp_1_1Sensor.html#a64ffb45ec05cd770fb28f2380f505acc',1,'hue4cpp::Sensor']]],
+  ['islightevent_14',['isLightEvent',['../structhue4cpp_1_1ResourceEventArgs.html#a468a1d298ee70f7b99b3ff8f1ba912f3',1,'hue4cpp::ResourceEventArgs']]],
+  ['ison_15',['IsOn',['../classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0',1,'hue4cpp::Light']]],
+  ['isreachable_16',['isReachable',['../classhue4cpp_1_1Bridge.html#a043c570f28a7ffc55db99498a4c805f0',1,'hue4cpp::Bridge']]],
+  ['isrunning_17',['isRunning',['../classhue4cpp_1_1StateManager.html#a941ebb982675b4541fc42139e2cea7a4',1,'hue4cpp::StateManager']]],
+  ['issensorevent_18',['isSensorEvent',['../structhue4cpp_1_1ResourceEventArgs.html#a7c7cbf9989b47619f1127e2608ee2ee1',1,'hue4cpp::ResourceEventArgs']]],
+  ['issuccess_19',['issuccess',['../structhue4cpp_1_1HttpResponse.html#a2b1e77c0349778f91c69db2da3d27a3a',1,'hue4cpp::HttpResponse::isSuccess()'],['../structhue4cpp_1_1Result.html#aab8d74be6f7b6104497068be0e1af0a3',1,'hue4cpp::Result::isSuccess()'],['../structhue4cpp_1_1Result_3_01void_01_4.html#abb55894922877f10afcd0c9808c09131',1,'hue4cpp::Result&lt; void &gt;::isSuccess()']]]
 ];

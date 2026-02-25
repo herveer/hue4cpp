@@ -2,5 +2,6 @@ var searchData=
 [
   ['light_0',['light',['../classhue4cpp_1_1Light.html#a214c4bba9faf5a7786ab2fea2dbf7813',1,'hue4cpp::Light::Light()'],['../classhue4cpp_1_1Light.html#af35eebedbc20324381f29c3e122fc485',1,'hue4cpp::Light::Light(const std::string &amp;id, Bridge *bridge)'],['../classhue4cpp_1_1Light.html#afe96d76c7ee4322270ab4d263770710b',1,'hue4cpp::Light::Light(const Light &amp;)=delete'],['../classhue4cpp_1_1Light.html#a2fddf49973b0bc43fb1a783db0bc6561',1,'hue4cpp::Light::Light(Light &amp;&amp;)=delete']]],
   ['lightlevelsensor_1',['LightLevelSensor',['../classhue4cpp_1_1LightLevelSensor.html#aaa3d256f76ff62a82873943929e0cca3',1,'hue4cpp::LightLevelSensor']]],
-  ['lightlevelstate_2',['LightLevelState',['../structhue4cpp_1_1LightLevelState.html#a5ea92047fd1fc750c56a79c9d59d4649',1,'hue4cpp::LightLevelState']]]
+  ['lightlevelstate_2',['LightLevelState',['../structhue4cpp_1_1LightLevelState.html#a5ea92047fd1fc750c56a79c9d59d4649',1,'hue4cpp::LightLevelState']]],
+  ['lightstatechangedargs_3',['lightstatechangedargs',['../structhue4cpp_1_1LightStateChangedArgs.html#ae90df70da48822e27b2fc501f236b920',1,'hue4cpp::LightStateChangedArgs::LightStateChangedArgs()=default'],['../structhue4cpp_1_1LightStateChangedArgs.html#a37e6cd0a588cb05345fc0169f085b967',1,'hue4cpp::LightStateChangedArgs::LightStateChangedArgs(const std::string &amp;id, const std::string &amp;json)'],['../structhue4cpp_1_1LightStateChangedArgs.html#a558bfc82d29bf7b61022f5cdbafbd4df',1,'hue4cpp::LightStateChangedArgs::LightStateChangedArgs(const Event &amp;event)']]]
 ];

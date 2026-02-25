@@ -84,8 +84,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classhue4cpp_1_1SSEClient.html#a20e56c7cd11076b9910024fd1c4c299b",
-"light_8h_source.html",
-"structhue4cpp_1_1RGBColor.html#a7819efb39f0a16857d7c61514b625f78"
+"light__level__sensor_8cpp_source.html",
+"structhue4cpp_1_1MotionState.html#aa84af3d522787492e5eea3c906e62408"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

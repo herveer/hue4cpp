@@ -93,7 +93,6 @@ $(document).ready(function(){initNavTree('state_8h.html',''); initResizable(); }
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">state.h File Reference</div></div>
 </div><!--header-->
@@ -102,12 +101,12 @@ $(document).ready(function(){initNavTree('state_8h.html',''); initResizable(); }
 <p>State management and event handling.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="types_8h_source.html">types.h</a>&quot;</code><br />
-<code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
 <code>#include &lt;atomic&gt;</code><br />
 <code>#include &lt;mutex&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
+<code>#include &lt;ReactiveLitepp/Event.h&gt;</code><br />
 </div>
 <p><a href="state_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -115,6 +114,12 @@ $(document).ready(function(){initNavTree('state_8h.html',''); initResizable(); }
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhue4cpp_1_1Event.html">hue4cpp::Event</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structhue4cpp_1_1Event.html" title="Event data structure.">Event</a> data structure.  <a href="structhue4cpp_1_1Event.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhue4cpp_1_1LightStateChangedArgs.html">hue4cpp::LightStateChangedArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structhue4cpp_1_1Event.html" title="Event data structure.">Event</a> args for Bridge::LightStateChanged.  <a href="structhue4cpp_1_1LightStateChangedArgs.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhue4cpp_1_1ResourceEventArgs.html">hue4cpp::ResourceEventArgs</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unified event args for <a class="el" href="classhue4cpp_1_1StateManager.html#a434074fd5ae12d756a02bec722eb8e6b" title="Single unified event fired for every resource change.">StateManager::OnResourceEvent</a>.  <a href="structhue4cpp_1_1ResourceEventArgs.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1StateManager.html">hue4cpp::StateManager</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages state synchronization via Server-Sent Events.  <a href="classhue4cpp_1_1StateManager.html#details">More...</a><br /></td></tr>
@@ -125,12 +130,6 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacehue4cpp" id="r_namespacehue4cpp"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html">hue4cpp</a></td></tr>
 <tr class="memdesc:namespacehue4cpp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main namespace for the <a class="el" href="namespacehue4cpp.html" title="Main namespace for the hue4cpp library.">hue4cpp</a> library. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a6402e04da3a1e47cf8cea916a1005484" id="r_a6402e04da3a1e47cf8cea916a1005484"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484">hue4cpp::EventCallback</a> = std::function&lt; void(const <a class="el" href="structhue4cpp_1_1Event.html">Event</a> &amp;)&gt;</td></tr>
-<tr class="memdesc:a6402e04da3a1e47cf8cea916a1005484"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback function for state change events.  <br /></td></tr>
-<tr class="separator:a6402e04da3a1e47cf8cea916a1005484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>

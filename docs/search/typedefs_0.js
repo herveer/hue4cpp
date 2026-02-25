@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['eventcallback_0',['EventCallback',['../namespacehue4cpp.html#a6402e04da3a1e47cf8cea916a1005484',1,'hue4cpp']]]
+  ['transitiontime_0',['TransitionTime',['../namespacehue4cpp.html#a6032ad60ec55a649cda6f3432961d93b',1,'hue4cpp']]]
 ];
