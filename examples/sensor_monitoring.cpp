@@ -300,9 +300,35 @@ int main() {
 
 		auto& state_manager = bridge.getStateManager();
 
-		// Register callback for all events
-		auto callback_id = state_manager.registerCallback([](const hue4cpp::Event& event) {
-			printEventInfo(event);
+		// Subscribe to sensor events using ReactiveLitepp
+		auto event_sub = state_manager.OnResourceEvent.SubscribeScoped(
+			[](const ResourceEventArgs& e) {
+				std::cout << "[" << getCurrentTime() << "] ";
+				switch (e.type) {
+				case EventType::SensorStateChanged:
+					std::cout << "Sensor state changed: " << e.resource_id << "\n";
+					if (!e.state_json.empty())
+						std::cout << "               Data: "
+							<< nlohmann::json::parse(e.state_json).dump(2) << "\n";
+					break;
+				case EventType::SensorAdded:
+					std::cout << "Sensor added: " << e.resource_id << "\n";
+					break;
+				case EventType::SensorRemoved:
+					std::cout << "Sensor removed: " << e.resource_id << "\n";
+					break;
+				case EventType::LightStateChanged:
+					std::cout << "Light state changed: " << e.resource_id << "\n";
+					break;
+				case EventType::BridgeConnected:
+					std::cout << "Bridge connected\n";
+					break;
+				case EventType::BridgeDisconnected:
+					std::cout << "Bridge disconnected\n";
+					break;
+				default:
+					break;
+				}
 			});
 
 		std::cout << "Waiting for sensor events..." << std::endl << std::endl;
@@ -312,9 +338,8 @@ int main() {
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
 
-		// Cleanup
+		// Cleanup – scoped subscriptions auto-unsubscribe when they go out of scope
 		std::cout << "\nStopping state monitoring..." << std::endl;
-		state_manager.unregisterCallback(callback_id);
 		state_manager.stop();
 
 		std::cout << "Done!" << std::endl;

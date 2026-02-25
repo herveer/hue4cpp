@@ -4,6 +4,7 @@
 #include "state.h"
 #include <vector>
 #include <string>
+#include <ReactiveLitepp/ObservableObject.h>
 
 /**
  * @file bridge.h

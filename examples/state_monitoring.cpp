@@ -42,41 +42,6 @@ std::string getCurrentTime() {
 	return ss.str();
 }
 
-void printEventInfo(const hue4cpp::Event& event) {
-	std::cout << "[" << getCurrentTime() << "] ";
-
-	switch (event.type) {
-	case EventType::LightStateChanged:
-		std::cout << "Light state changed: " << event.resource_id << std::endl;
-		if (!event.data.empty()) {
-			// Pretty print the light state (simplified)
-			std::cout << "               Data: " << nlohmann::json::parse(event.data).dump(4) << std::endl;
-		}
-		break;
-
-	case EventType::LightAdded:
-		std::cout << "Light added: " << event.resource_id << std::endl;
-		break;
-
-	case EventType::LightRemoved:
-		std::cout << "Light removed: " << event.resource_id << std::endl;
-		break;
-
-	case EventType::BridgeConnected:
-		std::cout << "Bridge connected\n";
-		break;
-
-	case EventType::BridgeDisconnected:
-		std::cout << "Bridge disconnected\n";
-		break;
-
-	case EventType::Unknown:
-	default:
-		std::cout << "Unknown event\n";
-		break;
-	}
-}
-
 
 // Simple file-based key storage for demonstration
 // In production, use OS keychain integration for better security
@@ -196,10 +161,12 @@ int main() {
 
 		// Step 3: Get available lights
 		std::cout << "Fetching lights...\n";
-		auto lights = bridge.getLights();
-		std::cout << "Found " << lights.size() << " light(s)\n";
-		for (const auto& light : lights) {
-			std::cout << "   - " << light->Name << " (" << light->Id << ")\n";
+		{
+			auto lights = bridge.getLights();
+			std::cout << "Found " << lights.size() << " light(s)\n";
+			for (const auto& light : lights) {
+				std::cout << "   - " << light->Name << " (" << light->Id << ")\n";
+			}
 		}
 		std::cout << std::endl;
 
@@ -207,8 +174,33 @@ int main() {
 		std::cout << "Setting up real-time state monitoring...\n";
 		auto& state_manager = bridge.getStateManager();
 
-		// Register event callback
-		auto callback_id = state_manager.registerCallback(printEventInfo);
+		// Single subscription for all resource events
+		auto event_sub = state_manager.OnResourceEvent.SubscribeScoped(
+			[](const ResourceEventArgs& e) {
+				std::cout << "[" << getCurrentTime() << "] ";
+				switch (e.type) {
+				case EventType::LightStateChanged:
+					std::cout << "Light state changed: " << e.resource_id << "\n";
+					if (!e.state_json.empty())
+						std::cout << "               Data: "
+							<< nlohmann::json::parse(e.state_json).dump(4) << "\n";
+					break;
+				case EventType::LightAdded:
+					std::cout << "Light added: " << e.resource_id << "\n";
+					break;
+				case EventType::LightRemoved:
+					std::cout << "Light removed: " << e.resource_id << "\n";
+					break;
+				case EventType::BridgeConnected:
+					std::cout << "Bridge connected\n";
+					break;
+				case EventType::BridgeDisconnected:
+					std::cout << "Bridge disconnected\n";
+					break;
+				default:
+					break;
+				}
+			});
 
 		std::cout << "State monitoring active!\n\n";
 		std::cout << "===========================================\n";
@@ -277,8 +269,8 @@ int main() {
 
 		// Step 7: Clean shutdown
 		std::cout << "\nStopping state monitoring...\n";
+		// Scoped subscription auto-unsubscribes when it goes out of scope
 		state_manager.stop();
-		state_manager.unregisterCallback(callback_id);
 
 		std::cout << "Shutdown complete.\n";
 

@@ -9,10 +9,12 @@ namespace hue4cpp {
 
 	// StateManager implementation
 	StateManager::StateManager()
-		: _bridge(nullptr), _running(false), _next_callback_id(1) {}
+		: _bridge(nullptr), _running(false) {
+	}
 
 	StateManager::StateManager(Bridge* bridge)
-		: _bridge(bridge), _running(false), _next_callback_id(1) {}
+		: _bridge(bridge), _running(false) {
+	}
 
 	StateManager::~StateManager() {
 		stop();
@@ -20,11 +22,9 @@ namespace hue4cpp {
 
 	StateManager::StateManager(StateManager&& other) noexcept
 		: _bridge(other._bridge),
-		  _running(other._running.load()),
-		  _sse_client(std::move(other._sse_client)),
-		  _resource_states(std::move(other._resource_states)),
-		  _callbacks(std::move(other._callbacks)),
-		  _next_callback_id(other._next_callback_id) {
+		_running(other._running.load()),
+		_sse_client(std::move(other._sse_client)),
+		_resource_states(std::move(other._resource_states)) {
 		other._running = false;
 	}
 
@@ -34,25 +34,9 @@ namespace hue4cpp {
 			_running = other._running.load();
 			_sse_client = std::move(other._sse_client);
 			_resource_states = std::move(other._resource_states);
-			_callbacks = std::move(other._callbacks);
-			_next_callback_id = other._next_callback_id;
 			other._running = false;
 		}
 		return *this;
-	}
-
-	void StateManager::notifyCallbacks(const Event& event) {
-		std::lock_guard<std::mutex> lock(_callback_mutex);
-		for (const auto& [id, callback] : _callbacks) {
-			if (callback) {
-				try {
-					callback(event);
-				}
-				catch (...) {
-					// Ignore exceptions from user callbacks
-				}
-			}
-		}
 	}
 
 	void StateManager::mergeResourceState(const std::string& resource_id, const std::string& delta_json) {
@@ -103,23 +87,21 @@ namespace hue4cpp {
 
 		_sse_client->OnEvent += [this](const SSEEventArgs& sse_event) {
 			updateFromEvent(sse_event.data);
-		};
+			};
 
 		_sse_client->PropertyChanged += [this]([[maybe_unused]] ReactiveLitepp::ObservableObject& obj, ReactiveLitepp::PropertyChangedArgs args) {
-			if(args.PropertyName() != nameof::nameof_member<&SSEClient::IsConnected>()) {
+			if (args.PropertyName() != nameof::nameof_member<&SSEClient::IsConnected>()) {
 				return;
 			}
 
 			clearCache();
 			if (_sse_client->IsConnected) {
-				Event event(EventType::BridgeConnected, "", "");
-				notifyCallbacks(event);
+				OnResourceEvent.Notify(ResourceEventArgs(EventType::BridgeConnected, ""));
 			}
 			else {
-				Event event(EventType::BridgeDisconnected, "", "");
-				notifyCallbacks(event);
+				OnResourceEvent.Notify(ResourceEventArgs(EventType::BridgeDisconnected, ""));
 			}
-		};
+			};
 
 		auto result = _sse_client->connect();
 		if (!result) {
@@ -148,23 +130,6 @@ namespace hue4cpp {
 		return _running;
 	}
 
-	uint64_t StateManager::registerCallback(EventCallback callback) {
-		std::lock_guard<std::mutex> lock(_callback_mutex);
-		uint64_t id = _next_callback_id++;
-
-		if (_next_callback_id == 0) {
-			_next_callback_id = 1;
-		}
-
-		_callbacks[id] = callback;
-		return id;
-	}
-
-	void StateManager::unregisterCallback(uint64_t callback_id) {
-		std::lock_guard<std::mutex> lock(_callback_mutex);
-		_callbacks.erase(callback_id);
-	}
-
 	std::string StateManager::getResourceState(const std::string& resource_id) const {
 		std::lock_guard<std::mutex> lock(_state_mutex);
 		if (!_sse_client || !(bool)_sse_client->IsConnected) {
@@ -184,6 +149,26 @@ namespace hue4cpp {
 			start();
 		}
 		_resource_states[resource_id] = state_json;
+		EventType evtType = EventType::Unknown;
+		try {
+			auto json = nlohmann::json::parse(state_json);
+			if (json.contains("type")) {
+				std::string resource_type = json["type"];
+				if (resource_type == "light") {
+					evtType = EventType::LightStateChanged;
+				}
+
+				else if (resource_type == "motion" || resource_type == "temperature" ||
+					resource_type == "light_level" || resource_type == "button") {
+					evtType = EventType::SensorStateChanged;
+				}
+			}
+		}
+		catch (...) {
+			// ...
+		}
+		OnResourceEvent.Notify(ResourceEventArgs(evtType, resource_id, state_json));
+
 	}
 
 	void StateManager::updateFromEvent(const std::string& event_json) {
@@ -227,30 +212,27 @@ namespace hue4cpp {
 					}
 
 					if (resource_type == "light") {
-						EventType evt_type = EventType::LightStateChanged;
 						if (event_type == "add") {
-							evt_type = EventType::LightAdded;
+							OnResourceEvent.Notify(ResourceEventArgs(EventType::LightAdded, resource_id, resource.dump()));
 						}
 						else if (event_type == "delete") {
-							evt_type = EventType::LightRemoved;
+							OnResourceEvent.Notify(ResourceEventArgs(EventType::LightRemoved, resource_id));
 						}
-
-						std::string current_state = getResourceState(resource_id);
-						Event event(evt_type, resource_id, resource.dump());
-						notifyCallbacks(event);
+						else {
+							OnResourceEvent.Notify(ResourceEventArgs(EventType::LightStateChanged, resource_id, resource.dump()));
+						}
 					}
 					else if (resource_type == "motion" || resource_type == "temperature" ||
 						resource_type == "light_level" || resource_type == "button") {
-						EventType evt_type = EventType::SensorStateChanged;
 						if (event_type == "add") {
-							evt_type = EventType::SensorAdded;
+							OnResourceEvent.Notify(ResourceEventArgs(EventType::SensorAdded, resource_id, resource.dump()));
 						}
 						else if (event_type == "delete") {
-							evt_type = EventType::SensorRemoved;
+							OnResourceEvent.Notify(ResourceEventArgs(EventType::SensorRemoved, resource_id, resource.dump()));
 						}
-
-						Event event(evt_type, resource_id, resource.dump());
-						notifyCallbacks(event);
+						else {
+							OnResourceEvent.Notify(ResourceEventArgs(EventType::SensorStateChanged, resource_id, resource.dump()));
+						}
 					}
 					// TODO: Add more resource types here (rooms, zones, scenes, etc.)
 				}

@@ -65,45 +65,42 @@ void benchmarkEventProcessing() {
 
 void benchmarkCallbackInvocation() {
     std::cout << "\n=== Callback Invocation Benchmark ===\n";
-    
+
     StateManager state_manager;
-    
-    // Register multiple callbacks
-    std::vector<uint64_t> callback_ids;
+
+    // Subscribe 10 handlers to the single OnResourceEvent
     int callback_count = 0;
-    
+    std::vector<ReactiveLitepp::Subscription> subscriptions;
+    subscriptions.reserve(10);
+
     for (int i = 0; i < 10; ++i) {
-        auto id = state_manager.registerCallback([&callback_count](const hue4cpp::Event& event) {
-            callback_count++;
-        });
-        callback_ids.push_back(id);
+        subscriptions.push_back(
+            state_manager.OnResourceEvent += [&callback_count](const ResourceEventArgs&) {
+                callback_count++;
+            });
     }
-    
+
     // Prepare event
     nlohmann::json event_json = nlohmann::json::array();
-    nlohmann::json event_item = {
+    event_json.push_back({
         {"type", "update"},
         {"data", nlohmann::json::array({
             {{"id", "light-123"}, {"type", "light"}}
         })}
-    };
-    event_json.push_back(event_item);
+    });
     std::string event_str = event_json.dump();
-    
-    // Benchmark with 10 callbacks
+
+    // Benchmark with 10 subscriptions
     auto time = measureTime([&]() {
         state_manager.updateFromEvent(event_str);
     }, 5000);
-    
-    std::cout << "Time with 10 callbacks: " << std::fixed << std::setprecision(2) 
+
+    std::cout << "Time with 10 subscriptions: " << std::fixed << std::setprecision(2)
               << time << " μs/event\n";
-    std::cout << "Overhead per callback: " << std::fixed << std::setprecision(3) 
+    std::cout << "Overhead per subscription: " << std::fixed << std::setprecision(3)
               << (time / 10.0) << " μs\n";
-    
-    // Cleanup
-    for (auto id : callback_ids) {
-        state_manager.unregisterCallback(id);
-    }
+
+    // Subscriptions are automatically removed when the vector goes out of scope
 }
 
 void benchmarkStateCache() {

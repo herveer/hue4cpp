@@ -14,8 +14,10 @@
 
 namespace hue4cpp {
 	using namespace ReactiveLitepp;
-	// Forward declaration
+
+	// Forward declarations
 	class Bridge;
+	struct ResourceEventArgs; ///< From state.h - forward declared to avoid circular includes
 
 	/**
 	 * @brief Represents a single Hue light
@@ -147,20 +149,20 @@ namespace hue4cpp {
 				try {
 					return getBrightness();
 				}
- catch (const HueException&) {
-  throw;
-}
-},
-[this](uint8_t& value) {
-	try {
-		NotifyPropertyChanging<&Light::Brightness>();
-		setBrightness(value);
-		NotifyPropertyChanged<&Light::Brightness>();
-	}
-catch (const HueException&) {
- throw;
-}
-}
+				catch (const HueException&) {
+					throw;
+				}
+			},
+			[this](uint8_t& value) {
+				try {
+					NotifyPropertyChanging<&Light::Brightness>();
+					setBrightness(value);
+					NotifyPropertyChanged<&Light::Brightness>();
+				}
+				catch (const HueException&) {
+					throw;
+				}
+			}
 		};
 
 		/**
@@ -175,20 +177,20 @@ catch (const HueException&) {
 				try {
 					return getColor();
 				}
- catch (const HueException&) {
-  throw;
-}
-},
-[this](XYColor& value) {
-	try {
-		NotifyPropertyChanging<&Light::XYColor_>();
-		setColor(value);
-		NotifyPropertyChanged<&Light::XYColor_>();
-	}
-catch (const HueException&) {
- throw;
-}
-}
+				catch (const HueException&) {
+					throw;
+				}
+			},
+			[this](XYColor& value) {
+				try {
+					NotifyPropertyChanging<&Light::XYColor_>();
+					setColor(value);
+					NotifyPropertyChanged<&Light::XYColor_>();
+				}
+				catch (const HueException&) {
+					throw;
+				}
+			}
 		};
 
 		/**
@@ -203,20 +205,20 @@ catch (const HueException&) {
 				try {
 					return color_utils::xyToRgb(getColor());
 				}
- catch (const HueException&) {
-  throw;
-}
-},
-[this](RGBColor& value) {
-	try {
-		NotifyPropertyChanging<&Light::RGBColor_>();
-		setColor(value);
-		NotifyPropertyChanged<&Light::RGBColor_>();
-	}
-catch (const HueException&) {
- throw;
-}
-}
+				catch (const HueException&) {
+					throw;
+				}
+			},
+			[this](RGBColor& value) {
+				try {
+					NotifyPropertyChanging<&Light::RGBColor_>();
+					setColor(value);
+					NotifyPropertyChanged<&Light::RGBColor_>();
+				}
+				catch (const HueException&) {
+					throw;
+				}
+			}
 		};
 
 		/**
@@ -231,20 +233,20 @@ catch (const HueException&) {
 				try {
 					return getColorTemperature();
 				}
- catch (const HueException&) {
-  throw;
-}
-},
-[this](ColorTemperature& value) {
-	try {
-		NotifyPropertyChanging<&Light::ColorTemperature_>();
-		setColorTemperature(value);
-		NotifyPropertyChanged<&Light::ColorTemperature_>();
-	}
-catch (const HueException&) {
- throw;
-}
-}
+				catch (const HueException&) {
+					throw;
+				}
+			},
+			[this](ColorTemperature& value) {
+				try {
+					NotifyPropertyChanging<&Light::ColorTemperature_>();
+					setColorTemperature(value);
+					NotifyPropertyChanged<&Light::ColorTemperature_>();
+				}
+				catch (const HueException&) {
+					throw;
+				}
+			}
 		};
 
 	private:
@@ -282,6 +284,23 @@ catch (const HueException&) {
 		std::string _name;
 		Bridge* _bridge;
 		LightCapabilities _capabilities;
+
+		/**
+		 * @brief Subscribe to bridge StateManager::OnResourceEvent and set up property notifications.
+		 * Called from both constructors when a bridge is available.
+		 */
+		void subscribeToBridgeEvents();
+
+		/**
+		 * @brief Handle a StateManager resource event.
+		 * Fires ObservableObject property-change notifications for all affected properties.
+		 * @param e The unified resource event args
+		 */
+		void onResourceEvent(const ResourceEventArgs& e);
+
+		/// Scoped subscription to StateManager::OnResourceEvent.
+		/// Automatically unsubscribes when this Light is destroyed.
+		ScopedSubscription _bridgeEventSubscription;
 
 		friend class Bridge;
 	};
