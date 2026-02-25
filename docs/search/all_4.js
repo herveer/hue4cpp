@@ -5,7 +5,7 @@ var searchData=
   ['del_2',['del',['../classhue4cpp_1_1HttpClient.html#a8be0937ddf8715d878a902d498557a5e',1,'hue4cpp::HttpClient']]],
   ['dependencies_3',['Dependencies',['../index.html#autotoc_md5',1,'']]],
   ['development_20guidelines_4',['Development Guidelines',['../index.html#autotoc_md18',1,'']]],
-  ['direction_5',['direction',['../structhue4cpp_1_1RelativeRotaryState.html#a10330194241ed59037360eb9552b4a97',1,'hue4cpp::RelativeRotaryState']]],
+  ['direction_5',['Direction',['../classhue4cpp_1_1RelativeRotarySensor.html#af30a5f18a0d5a820965264ecdea2eb17',1,'hue4cpp::RelativeRotarySensor']]],
   ['disconnect_6',['disconnect',['../classhue4cpp_1_1SSEClient.html#a5df08263e49d86ea770d588a78f5d6ed',1,'hue4cpp::SSEClient']]],
   ['discover_7',['discover',['../classhue4cpp_1_1Bridge.html#a6d45bac89be65619d6b4380ec5cb2ad1',1,'hue4cpp::Bridge']]],
   ['discovermdns_8',['discoverMDNS',['../classhue4cpp_1_1Bridge.html#aea0d73f0d8bda166f3acc823398e70ec',1,'hue4cpp::Bridge']]],

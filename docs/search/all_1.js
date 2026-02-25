@@ -1,7 +1,7 @@
 var searchData=
 [
   ['acknowledgments_0',['Acknowledgments',['../index.html#autotoc_md20',1,'']]],
-  ['action_1',['action',['../structhue4cpp_1_1RelativeRotaryState.html#ae5cf91d574b212a63c4656835c3d61d7',1,'hue4cpp::RelativeRotaryState']]],
+  ['action_1',['Action',['../classhue4cpp_1_1RelativeRotarySensor.html#a84d30ae30160b53d6eb2308a7da39954',1,'hue4cpp::RelativeRotarySensor']]],
   ['authenticate_2',['authenticate',['../classhue4cpp_1_1Bridge.html#ac8a20fba54418c9bc976afcdddb9b9ba',1,'hue4cpp::Bridge']]],
   ['authenticationexception_3',['authenticationexception',['../classhue4cpp_1_1AuthenticationException.html',1,'hue4cpp::AuthenticationException'],['../classhue4cpp_1_1AuthenticationException.html#a7fd2689f8884bda0875937e5374bb44e',1,'hue4cpp::AuthenticationException::AuthenticationException()']]],
   ['authenticationfailed_4',['AuthenticationFailed',['../namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a730ba86d0a072b20156e225e13d8833e',1,'hue4cpp']]],

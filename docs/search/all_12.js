@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['sensor_0',['sensor',['../classhue4cpp_1_1Sensor.html#abc01ef2802a97a302121d0a18374de02',1,'hue4cpp::Sensor::Sensor(const std::string &amp;id, Bridge *bridge, SensorType type)'],['../classhue4cpp_1_1Sensor.html#a8ed102059539851026ba7e80e14b3c04',1,'hue4cpp::Sensor::Sensor(Sensor &amp;&amp;) noexcept=default'],['../classhue4cpp_1_1Sensor.html#a2d0eee46b0e817bba5194686ee069d2c',1,'hue4cpp::Sensor::Sensor(const Sensor &amp;)=delete'],['../classhue4cpp_1_1Sensor.html',1,'hue4cpp::Sensor']]],
+  ['sensor_0',['sensor',['../classhue4cpp_1_1Sensor.html#abc01ef2802a97a302121d0a18374de02',1,'hue4cpp::Sensor::Sensor(const std::string &amp;id, Bridge *bridge, SensorType type)'],['../classhue4cpp_1_1Sensor.html#ad0c4fe51a0e2187e1c2cae19df4a2d81',1,'hue4cpp::Sensor::Sensor(Sensor &amp;&amp;)=delete'],['../classhue4cpp_1_1Sensor.html#a2d0eee46b0e817bba5194686ee069d2c',1,'hue4cpp::Sensor::Sensor(const Sensor &amp;)=delete'],['../classhue4cpp_1_1Sensor.html',1,'hue4cpp::Sensor']]],
   ['sensor_20monitoring_1',['Sensor Monitoring',['../index.html#autotoc_md10',1,'']]],
   ['sensor_5fbase_2ecpp_2',['sensor_base.cpp',['../sensor__base_8cpp.html',1,'']]],
   ['sensor_5fbase_2eh_3',['sensor_base.h',['../sensor__base_8h.html',1,'']]],
@@ -33,7 +33,7 @@ var searchData=
   ['statemanager_30',['statemanager',['../classhue4cpp_1_1StateManager.html#a4c1b58eb9ed7276975ef8a26bcaae116',1,'hue4cpp::StateManager::StateManager()'],['../classhue4cpp_1_1StateManager.html',1,'hue4cpp::StateManager'],['../classhue4cpp_1_1StateManager.html#a4f2d656812024c27ec58213951511aee',1,'hue4cpp::StateManager::StateManager(StateManager &amp;&amp;) noexcept'],['../classhue4cpp_1_1StateManager.html#a08f24999b096896ffae42906d1414a43',1,'hue4cpp::StateManager::StateManager(const StateManager &amp;)=delete'],['../classhue4cpp_1_1StateManager.html#ab5ff79c0ad00f821a606f6fd8c1a27f7',1,'hue4cpp::StateManager::StateManager()']]],
   ['status_31',['Project Status',['../index.html#autotoc_md3',1,'']]],
   ['status_5fcode_32',['status_code',['../structhue4cpp_1_1HttpResponse.html#a01bdf4778594d8c9d2fd129afb30c21d',1,'hue4cpp::HttpResponse']]],
-  ['steps_33',['steps',['../structhue4cpp_1_1RelativeRotaryState.html#ac9d3b65d780a8c01ebb692df73354773',1,'hue4cpp::RelativeRotaryState']]],
+  ['steps_33',['Steps',['../classhue4cpp_1_1RelativeRotarySensor.html#a6a9c4c78fd7ac8eaa19f32a6c5699f1b',1,'hue4cpp::RelativeRotarySensor']]],
   ['stop_34',['stop',['../classhue4cpp_1_1StateManager.html#aa08e59f232ffdda5a1ef3ce0a5b797e5',1,'hue4cpp::StateManager']]],
   ['string_35',['STRING',['../structhue4cpp_1_1Version.html#a00d79713cb346a31a3d1dc3e12dc3000',1,'hue4cpp::Version']]],
   ['structure_36',['Project Structure',['../index.html#autotoc_md16',1,'']]],

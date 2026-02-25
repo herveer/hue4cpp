@@ -101,53 +101,68 @@ $(document).ready(function(){initNavTree('light__level__sensor_8h_source.html','
 <a href="light__level__sensor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="sensor__base_8h.html">sensor_base.h</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"></span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * @file light_level_sensor.h</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * @brief Light level sensor class</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacehue4cpp.html">hue4cpp</a> {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"></span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * @brief Represents a light level sensor</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * </span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Light level sensors measure ambient illuminance.</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> */</span></div>
-<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1LightLevelSensor.html">   17</a></span><span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1LightLevelSensor.html">LightLevelSensor</a> : <span class="keyword">public</span> <a class="code hl_class" href="classhue4cpp_1_1Sensor.html">Sensor</a> {</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">     * @brief Construct a LightLevelSensor</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">     * @param id Sensor unique identifier</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">     * @param bridge Pointer to parent bridge</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_class" href="classhue4cpp_1_1LightLevelSensor.html">LightLevelSensor</a>(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>, <a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>* bridge);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="comment"></span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">     * @brief Get the sensor type</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">     * @return SensorType::LightLevel</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_enumeration" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a> <a class="code hl_function" href="classhue4cpp_1_1LightLevelSensor.html#acd502419ffda2f7433913182d80dd227">getType</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="comment"></span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">     * @brief Get current light level reading</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">     * @return LightLevelState with illuminance measurement</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_struct" href="structhue4cpp_1_1LightLevelState.html">LightLevelState</a> <a class="code hl_function" href="classhue4cpp_1_1LightLevelSensor.html#a67f2aafc813e35809995eddac148ef59">getLightLevelState</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;ReactiveLitepp/ObservableObject.h&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"></span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * @file light_level_sensor.h</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * @brief Light level sensor class</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacehue4cpp.html">hue4cpp</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * @brief Represents a light level sensor</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1LightLevelSensor.html">   16</a></span><span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1LightLevelSensor.html">LightLevelSensor</a> : <span class="keyword">public</span> <a class="code hl_class" href="classhue4cpp_1_1Sensor.html">Sensor</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">     * @brief Construct a LightLevelSensor</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">     * @param id Sensor unique identifier</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">     * @param bridge Pointer to parent bridge</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_class" href="classhue4cpp_1_1LightLevelSensor.html">LightLevelSensor</a>(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>, <a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>* bridge);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"></span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment">     * @brief Get the sensor type</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">     * @return SensorType::LightLevel</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_enumeration" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a> <a class="code hl_function" href="classhue4cpp_1_1LightLevelSensor.html#acd502419ffda2f7433913182d80dd227">getType</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"></span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">    /** @brief Illuminance in raw units (logarithmic scale) (reactive, read-only) */</span></div>
+<div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1LightLevelSensor.html#af74ed6d26f405e29fde73bcfe94fbac8">   32</a></span>    ReactiveLitepp::ReadonlyProperty&lt;uint32_t&gt; <a class="code hl_variable" href="classhue4cpp_1_1LightLevelSensor.html#af74ed6d26f405e29fde73bcfe94fbac8">LightLevel</a>{</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> _light_level; }</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    };</div>
 </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>} <span class="comment">// namespace hue4cpp</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"></span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">    /** @brief Whether the light level reading is valid (reactive, read-only) */</span></div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1LightLevelSensor.html#a18e4de90a59a6b6d50f0dadd89fae7f6">   37</a></span>    ReactiveLitepp::ReadonlyProperty&lt;bool&gt; <a class="code hl_variable" href="classhue4cpp_1_1LightLevelSensor.html#a18e4de90a59a6b6d50f0dadd89fae7f6">LightLevelValid</a>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> _light_level_valid; }</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    };</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    uint32_t _light_level       = 0;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">bool</span>     _light_level_valid = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">void</span> notifyStateProperties(<span class="keyword">const</span> nlohmann::json&amp; delta) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1LightLevelSensor.html#a644eecdcd6c05c66b1505bc66985f9da">   47</a></span>    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>};</div>
+</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>} <span class="comment">// namespace hue4cpp</span></div>
 <div class="ttc" id="aclasshue4cpp_1_1Bridge_html"><div class="ttname"><a href="classhue4cpp_1_1Bridge.html">hue4cpp::Bridge</a></div><div class="ttdoc">Represents a Philips Hue Bridge.</div><div class="ttdef"><b>Definition</b> <a href="bridge_8h_source.html#l00035">bridge.h:35</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1LightLevelSensor_html"><div class="ttname"><a href="classhue4cpp_1_1LightLevelSensor.html">hue4cpp::LightLevelSensor</a></div><div class="ttdoc">Represents a light level sensor.</div><div class="ttdef"><b>Definition</b> <a href="light__level__sensor_8h_source.html#l00017">light_level_sensor.h:17</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1LightLevelSensor_html_a67f2aafc813e35809995eddac148ef59"><div class="ttname"><a href="classhue4cpp_1_1LightLevelSensor.html#a67f2aafc813e35809995eddac148ef59">hue4cpp::LightLevelSensor::getLightLevelState</a></div><div class="ttdeci">LightLevelState getLightLevelState() const</div><div class="ttdoc">Get current light level reading.</div><div class="ttdef"><b>Definition</b> <a href="light__level__sensor_8cpp_source.html#l00015">light_level_sensor.cpp:15</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1LightLevelSensor_html"><div class="ttname"><a href="classhue4cpp_1_1LightLevelSensor.html">hue4cpp::LightLevelSensor</a></div><div class="ttdoc">Represents a light level sensor.</div><div class="ttdef"><b>Definition</b> <a href="light__level__sensor_8h_source.html#l00016">light_level_sensor.h:16</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1LightLevelSensor_html_a18e4de90a59a6b6d50f0dadd89fae7f6"><div class="ttname"><a href="classhue4cpp_1_1LightLevelSensor.html#a18e4de90a59a6b6d50f0dadd89fae7f6">hue4cpp::LightLevelSensor::LightLevelValid</a></div><div class="ttdeci">ReactiveLitepp::ReadonlyProperty&lt; bool &gt; LightLevelValid</div><div class="ttdoc">Whether the light level reading is valid (reactive, read-only)</div><div class="ttdef"><b>Definition</b> <a href="light__level__sensor_8h_source.html#l00037">light_level_sensor.h:37</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1LightLevelSensor_html_acd502419ffda2f7433913182d80dd227"><div class="ttname"><a href="classhue4cpp_1_1LightLevelSensor.html#acd502419ffda2f7433913182d80dd227">hue4cpp::LightLevelSensor::getType</a></div><div class="ttdeci">SensorType getType() const override</div><div class="ttdoc">Get the sensor type.</div><div class="ttdef"><b>Definition</b> <a href="light__level__sensor_8cpp_source.html#l00011">light_level_sensor.cpp:11</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Sensor_html"><div class="ttname"><a href="classhue4cpp_1_1Sensor.html">hue4cpp::Sensor</a></div><div class="ttdoc">Abstract base class for all Hue sensors.</div><div class="ttdef"><b>Definition</b> <a href="sensor__base_8h_source.html#l00024">sensor_base.h:24</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1LightLevelSensor_html_af74ed6d26f405e29fde73bcfe94fbac8"><div class="ttname"><a href="classhue4cpp_1_1LightLevelSensor.html#af74ed6d26f405e29fde73bcfe94fbac8">hue4cpp::LightLevelSensor::LightLevel</a></div><div class="ttdeci">ReactiveLitepp::ReadonlyProperty&lt; uint32_t &gt; LightLevel</div><div class="ttdoc">Illuminance in raw units (logarithmic scale) (reactive, read-only)</div><div class="ttdef"><b>Definition</b> <a href="light__level__sensor_8h_source.html#l00032">light_level_sensor.h:32</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Sensor_html"><div class="ttname"><a href="classhue4cpp_1_1Sensor.html">hue4cpp::Sensor</a></div><div class="ttdoc">Abstract base class for all Hue sensors.</div><div class="ttdef"><b>Definition</b> <a href="sensor__base_8h_source.html#l00028">sensor_base.h:28</a></div></div>
 <div class="ttc" id="anamespacehue4cpp_html"><div class="ttname"><a href="namespacehue4cpp.html">hue4cpp</a></div><div class="ttdoc">Main namespace for the hue4cpp library.</div><div class="ttdef"><b>Definition</b> <a href="bridge_8h_source.html#l00014">bridge.h:14</a></div></div>
 <div class="ttc" id="anamespacehue4cpp_html_a735a4f15dfb3f6e12a6d1bfd4b3f43f5"><div class="ttname"><a href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">hue4cpp::SensorType</a></div><div class="ttdeci">SensorType</div><div class="ttdoc">Sensor types supported by the Hue API.</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00099">types.h:99</a></div></div>
 <div class="ttc" id="asensor__base_8h_html"><div class="ttname"><a href="sensor__base_8h.html">sensor_base.h</a></div><div class="ttdoc">Base class for all sensor types.</div></div>
-<div class="ttc" id="astructhue4cpp_1_1LightLevelState_html"><div class="ttname"><a href="structhue4cpp_1_1LightLevelState.html">hue4cpp::LightLevelState</a></div><div class="ttdoc">Light level sensor reading.</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00145">types.h:145</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

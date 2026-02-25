@@ -101,54 +101,62 @@ $(document).ready(function(){initNavTree('geolocation__sensor_8h_source.html',''
 <a href="geolocation__sensor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="sensor__base_8h.html">sensor_base.h</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"></span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * @file geolocation_sensor.h</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * @brief Geolocation sensor class (geofencing)</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacehue4cpp.html">hue4cpp</a> {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment"></span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"> * @brief Represents a geolocation sensor</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * </span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> * Geolocation sensors provide geofencing capabilities,</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * detecting when users enter or leave a defined area.</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> */</span></div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1GeolocationSensor.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1GeolocationSensor.html">GeolocationSensor</a> : <span class="keyword">public</span> <a class="code hl_class" href="classhue4cpp_1_1Sensor.html">Sensor</a> {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">     * @brief Construct a GeolocationSensor</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">     * @param id Sensor unique identifier</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">     * @param bridge Pointer to parent bridge</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_class" href="classhue4cpp_1_1GeolocationSensor.html">GeolocationSensor</a>(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>, <a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>* bridge);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment"></span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">     * @brief Get the sensor type</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">     * @return SensorType::Geolocation</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_enumeration" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a> <a class="code hl_function" href="classhue4cpp_1_1GeolocationSensor.html#a0f1c0ffec7f47dcfa01074fcb898dfae">getType</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="comment"></span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">     * @brief Get current geolocation state</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">     * @return GeolocationState with configuration status</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_struct" href="structhue4cpp_1_1GeolocationState.html">GeolocationState</a> <a class="code hl_function" href="classhue4cpp_1_1GeolocationSensor.html#a12af29cf098a47468f23c8d7498a936d">getGeolocationState</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;ReactiveLitepp/ObservableObject.h&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"></span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * @file geolocation_sensor.h</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * @brief Geolocation sensor class (geofencing)</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacehue4cpp.html">hue4cpp</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment"></span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment"> * @brief Represents a geolocation sensor</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment"> *</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment"> * Geolocation sensors provide geofencing capabilities as a reactive</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"> * ReadonlyProperty. Subscribe to OnStateChanged for real-time updates.</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00019" data-start="{" data-end="};">
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1GeolocationSensor.html">   19</a></span><span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1GeolocationSensor.html">GeolocationSensor</a> : <span class="keyword">public</span> <a class="code hl_class" href="classhue4cpp_1_1Sensor.html">Sensor</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">     * @brief Construct a GeolocationSensor</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">     * @param id Sensor unique identifier</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">     * @param bridge Pointer to parent bridge</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_class" href="classhue4cpp_1_1GeolocationSensor.html">GeolocationSensor</a>(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>, <a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>* bridge);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">     * @brief Get the sensor type</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">     * @return SensorType::Geolocation</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <a class="code hl_enumeration" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a> <a class="code hl_function" href="classhue4cpp_1_1GeolocationSensor.html#a0f1c0ffec7f47dcfa01074fcb898dfae">getType</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"></span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">    /** @brief Whether geofencing has been configured on the bridge (reactive, read-only) */</span></div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1GeolocationSensor.html#a8f37ccdb91b0e08a674a3e90be0a418a">   35</a></span>    ReactiveLitepp::ReadonlyProperty&lt;bool&gt; <a class="code hl_variable" href="classhue4cpp_1_1GeolocationSensor.html#a8f37ccdb91b0e08a674a3e90be0a418a">IsConfigured</a>{</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> _is_configured; }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    };</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>} <span class="comment">// namespace hue4cpp</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">bool</span> _is_configured = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> notifyStateProperties(<span class="keyword">const</span> nlohmann::json&amp; delta) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classhue4cpp_1_1GeolocationSensor.html#a644eecdcd6c05c66b1505bc66985f9da">   44</a></span>    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classhue4cpp_1_1Bridge.html">Bridge</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>};</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace hue4cpp</span></div>
 <div class="ttc" id="aclasshue4cpp_1_1Bridge_html"><div class="ttname"><a href="classhue4cpp_1_1Bridge.html">hue4cpp::Bridge</a></div><div class="ttdoc">Represents a Philips Hue Bridge.</div><div class="ttdef"><b>Definition</b> <a href="bridge_8h_source.html#l00035">bridge.h:35</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1GeolocationSensor_html"><div class="ttname"><a href="classhue4cpp_1_1GeolocationSensor.html">hue4cpp::GeolocationSensor</a></div><div class="ttdoc">Represents a geolocation sensor.</div><div class="ttdef"><b>Definition</b> <a href="geolocation__sensor_8h_source.html#l00018">geolocation_sensor.h:18</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1GeolocationSensor_html"><div class="ttname"><a href="classhue4cpp_1_1GeolocationSensor.html">hue4cpp::GeolocationSensor</a></div><div class="ttdoc">Represents a geolocation sensor.</div><div class="ttdef"><b>Definition</b> <a href="geolocation__sensor_8h_source.html#l00019">geolocation_sensor.h:19</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1GeolocationSensor_html_a0f1c0ffec7f47dcfa01074fcb898dfae"><div class="ttname"><a href="classhue4cpp_1_1GeolocationSensor.html#a0f1c0ffec7f47dcfa01074fcb898dfae">hue4cpp::GeolocationSensor::getType</a></div><div class="ttdeci">SensorType getType() const override</div><div class="ttdoc">Get the sensor type.</div><div class="ttdef"><b>Definition</b> <a href="geolocation__sensor_8cpp_source.html#l00011">geolocation_sensor.cpp:11</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1GeolocationSensor_html_a12af29cf098a47468f23c8d7498a936d"><div class="ttname"><a href="classhue4cpp_1_1GeolocationSensor.html#a12af29cf098a47468f23c8d7498a936d">hue4cpp::GeolocationSensor::getGeolocationState</a></div><div class="ttdeci">GeolocationState getGeolocationState() const</div><div class="ttdoc">Get current geolocation state.</div><div class="ttdef"><b>Definition</b> <a href="geolocation__sensor_8cpp_source.html#l00015">geolocation_sensor.cpp:15</a></div></div>
-<div class="ttc" id="aclasshue4cpp_1_1Sensor_html"><div class="ttname"><a href="classhue4cpp_1_1Sensor.html">hue4cpp::Sensor</a></div><div class="ttdoc">Abstract base class for all Hue sensors.</div><div class="ttdef"><b>Definition</b> <a href="sensor__base_8h_source.html#l00024">sensor_base.h:24</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1GeolocationSensor_html_a8f37ccdb91b0e08a674a3e90be0a418a"><div class="ttname"><a href="classhue4cpp_1_1GeolocationSensor.html#a8f37ccdb91b0e08a674a3e90be0a418a">hue4cpp::GeolocationSensor::IsConfigured</a></div><div class="ttdeci">ReactiveLitepp::ReadonlyProperty&lt; bool &gt; IsConfigured</div><div class="ttdoc">Whether geofencing has been configured on the bridge (reactive, read-only)</div><div class="ttdef"><b>Definition</b> <a href="geolocation__sensor_8h_source.html#l00035">geolocation_sensor.h:35</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Sensor_html"><div class="ttname"><a href="classhue4cpp_1_1Sensor.html">hue4cpp::Sensor</a></div><div class="ttdoc">Abstract base class for all Hue sensors.</div><div class="ttdef"><b>Definition</b> <a href="sensor__base_8h_source.html#l00028">sensor_base.h:28</a></div></div>
 <div class="ttc" id="anamespacehue4cpp_html"><div class="ttname"><a href="namespacehue4cpp.html">hue4cpp</a></div><div class="ttdoc">Main namespace for the hue4cpp library.</div><div class="ttdef"><b>Definition</b> <a href="bridge_8h_source.html#l00014">bridge.h:14</a></div></div>
 <div class="ttc" id="anamespacehue4cpp_html_a735a4f15dfb3f6e12a6d1bfd4b3f43f5"><div class="ttname"><a href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">hue4cpp::SensorType</a></div><div class="ttdeci">SensorType</div><div class="ttdoc">Sensor types supported by the Hue API.</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00099">types.h:99</a></div></div>
 <div class="ttc" id="asensor__base_8h_html"><div class="ttname"><a href="sensor__base_8h.html">sensor_base.h</a></div><div class="ttdoc">Base class for all sensor types.</div></div>
-<div class="ttc" id="astructhue4cpp_1_1GeolocationState_html"><div class="ttname"><a href="structhue4cpp_1_1GeolocationState.html">hue4cpp::GeolocationState</a></div><div class="ttdoc">Geolocation sensor state.</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00212">types.h:212</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

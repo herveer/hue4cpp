@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['sensor_0',['sensor',['../classhue4cpp_1_1Sensor.html#a8ed102059539851026ba7e80e14b3c04',1,'hue4cpp::Sensor::Sensor(Sensor &amp;&amp;) noexcept=default'],['../classhue4cpp_1_1Sensor.html#abc01ef2802a97a302121d0a18374de02',1,'hue4cpp::Sensor::Sensor(const std::string &amp;id, Bridge *bridge, SensorType type)'],['../classhue4cpp_1_1Sensor.html#a2d0eee46b0e817bba5194686ee069d2c',1,'hue4cpp::Sensor::Sensor(const Sensor &amp;)=delete']]],
+  ['sensor_0',['sensor',['../classhue4cpp_1_1Sensor.html#ad0c4fe51a0e2187e1c2cae19df4a2d81',1,'hue4cpp::Sensor::Sensor(Sensor &amp;&amp;)=delete'],['../classhue4cpp_1_1Sensor.html#abc01ef2802a97a302121d0a18374de02',1,'hue4cpp::Sensor::Sensor(const std::string &amp;id, Bridge *bridge, SensorType type)'],['../classhue4cpp_1_1Sensor.html#a2d0eee46b0e817bba5194686ee069d2c',1,'hue4cpp::Sensor::Sensor(const Sensor &amp;)=delete']]],
   ['setauthenticationkey_1',['setAuthenticationKey',['../classhue4cpp_1_1Bridge.html#a67904a7c29943792c531ee69d1919379',1,'hue4cpp::Bridge']]],
   ['setauthheader_2',['setAuthHeader',['../classhue4cpp_1_1SSEClient.html#ad61a3b151b0949885df54233696b5ea2',1,'hue4cpp::SSEClient']]],
   ['setbridge_3',['setBridge',['../classhue4cpp_1_1StateManager.html#ae2262b17f2c2ff6c88a47c8bc4ecd412',1,'hue4cpp::StateManager']]],
