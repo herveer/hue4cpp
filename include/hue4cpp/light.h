@@ -14,8 +14,9 @@
 
 namespace hue4cpp {
 	using namespace ReactiveLitepp;
-	// Forward declaration
+	// Forward declarations
 	class Bridge;
+	struct Event;
 
 	/**
 	 * @brief Represents a single Hue light
@@ -28,7 +29,7 @@ namespace hue4cpp {
 	 * @throws InvalidParameterException if invalid parameters are provided
 	 * @throws BridgeNotReachableException if bridge cannot be accessed
 	 */
-	class Light : ObservableObject {
+	class Light : public ObservableObject {
 	public:
 		/**
 		 * @brief Default constructor
@@ -45,7 +46,7 @@ namespace hue4cpp {
 		/**
 		 * @brief Destructor
 		 */
-		~Light() = default;
+		~Light();
 
 		// Prevent copying and moving
 		Light(const Light&) = delete;
@@ -276,12 +277,14 @@ catch (const HueException&) {
 
 		void sendUpdate(const nlohmann::json& state_update);
 		void addTransitionTime(nlohmann::json& update, TransitionTime transition);
+		void onBridgeEvent(const Event& event);
 		TransitionTime _transitionTime = std::chrono::milliseconds(400);
 
 		std::string _id;
 		std::string _name;
 		Bridge* _bridge;
 		LightCapabilities _capabilities;
+		uint64_t _callback_id = 0;
 
 		friend class Bridge;
 	};

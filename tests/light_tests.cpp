@@ -3,7 +3,9 @@
 #include <hue4cpp/light.h>
 #include <hue4cpp/bridge.h>
 #include <hue4cpp/exceptions.h>
+#include <hue4cpp/state.h>
 #include <nlohmann/json.hpp>
+#include <algorithm>
 
 using namespace hue4cpp;
 
@@ -265,5 +267,154 @@ TEST_CASE("Light control with missing capabilities", "[light][capabilities]") {
     SECTION("Color temperature control on non-CT light") {
         ColorTemperature temp(250);
         REQUIRE_THROWS_AS(light.ColorTemperature_ = temp, InvalidParameterException);
+    }
+}
+
+TEST_CASE("Light subscribes to bridge events on construction", "[light][notifications]") {
+    Bridge bridge;
+    Light light("notify-test", &bridge);
+
+    SECTION("PropertyChanged fires when bridge emits LightStateChanged for IsOn") {
+        bool changed = false;
+        std::string changed_name;
+        light.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            changed = true;
+            changed_name = args.PropertyName();
+        };
+
+        nlohmann::json event_json = nlohmann::json::array();
+        event_json.push_back({
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {{"id", "notify-test"}, {"type", "light"}, {"on", {{"on", true}}}}
+            })}
+        });
+        bridge.getStateManager().updateFromEvent(event_json.dump());
+
+        REQUIRE(changed);
+        REQUIRE(changed_name == "IsOn");
+    }
+
+    SECTION("PropertyChanged fires when bridge emits LightStateChanged for Brightness") {
+        bool changed = false;
+        std::string changed_name;
+        light.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            changed = true;
+            changed_name = args.PropertyName();
+        };
+
+        nlohmann::json event_json = nlohmann::json::array();
+        event_json.push_back({
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {{"id", "notify-test"}, {"type", "light"}, {"dimming", {{"brightness", 80.0}}}}
+            })}
+        });
+        bridge.getStateManager().updateFromEvent(event_json.dump());
+
+        REQUIRE(changed);
+        REQUIRE(changed_name == "Brightness");
+    }
+
+    SECTION("PropertyChanged fires for XYColor and RGBColor when color changes") {
+        std::vector<std::string> changed_names;
+        light.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            changed_names.push_back(args.PropertyName());
+        };
+
+        nlohmann::json event_json = nlohmann::json::array();
+        event_json.push_back({
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {{"id", "notify-test"}, {"type", "light"}, {"color", {{"xy", {{"x", 0.3}, {"y", 0.3}}}}}}
+            })}
+        });
+        bridge.getStateManager().updateFromEvent(event_json.dump());
+
+        REQUIRE(std::find(changed_names.begin(), changed_names.end(), "XYColor_") != changed_names.end());
+        REQUIRE(std::find(changed_names.begin(), changed_names.end(), "RGBColor_") != changed_names.end());
+    }
+
+    SECTION("PropertyChanged fires for ColorTemperature when color temperature changes") {
+        bool changed = false;
+        std::string changed_name;
+        light.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            changed = true;
+            changed_name = args.PropertyName();
+        };
+
+        nlohmann::json event_json = nlohmann::json::array();
+        event_json.push_back({
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {{"id", "notify-test"}, {"type", "light"}, {"color_temperature", {{"mirek", 300}}}}
+            })}
+        });
+        bridge.getStateManager().updateFromEvent(event_json.dump());
+
+        REQUIRE(changed);
+        REQUIRE(changed_name == "ColorTemperature_");
+    }
+
+    SECTION("PropertyChanged fires for Name when metadata changes") {
+        bool changed = false;
+        std::string changed_name;
+        light.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            changed = true;
+            changed_name = args.PropertyName();
+        };
+
+        nlohmann::json event_json = nlohmann::json::array();
+        event_json.push_back({
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {{"id", "notify-test"}, {"type", "light"}, {"metadata", {{"name", "New Name"}}}}
+            })}
+        });
+        bridge.getStateManager().updateFromEvent(event_json.dump());
+
+        REQUIRE(changed);
+        REQUIRE(changed_name == "Name");
+    }
+
+    SECTION("Events for a different light ID do not trigger notifications") {
+        bool changed = false;
+        light.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            changed = true;
+        };
+
+        nlohmann::json event_json = nlohmann::json::array();
+        event_json.push_back({
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {{"id", "other-light"}, {"type", "light"}, {"on", {{"on", true}}}}
+            })}
+        });
+        bridge.getStateManager().updateFromEvent(event_json.dump());
+
+        REQUIRE_FALSE(changed);
+    }
+
+    SECTION("PropertyChanging fires before PropertyChanged") {
+        std::vector<std::string> events;
+        light.PropertyChanging += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangingArgs) {
+            events.push_back("changing");
+        };
+        light.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            events.push_back("changed");
+        };
+
+        nlohmann::json event_json = nlohmann::json::array();
+        event_json.push_back({
+            {"type", "update"},
+            {"data", nlohmann::json::array({
+                {{"id", "notify-test"}, {"type", "light"}, {"on", {{"on", true}}}}
+            })}
+        });
+        bridge.getStateManager().updateFromEvent(event_json.dump());
+
+        REQUIRE(events.size() == 2);
+        REQUIRE(events[0] == "changing");
+        REQUIRE(events[1] == "changed");
     }
 }

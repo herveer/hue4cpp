@@ -26,16 +26,64 @@ Light::Light() : _bridge(nullptr) {
 }
 
 Light::Light(const std::string& light_id, Bridge* parent_bridge)
-    : _id(light_id), _bridge(parent_bridge) {
+    : _id(light_id), _bridge(parent_bridge), _callback_id(0) {
     _capabilities.on_off = true;
     _capabilities.brightness = false;
     _capabilities.color = false;
     _capabilities.color_temperature = false;
     _capabilities.effects = false;
+
+    if (_bridge) {
+        _callback_id = _bridge->getStateManager().registerCallback(
+            [this](const Event& event) {
+                if (event.type == EventType::LightStateChanged && event.resource_id == _id) {
+                    onBridgeEvent(event);
+                }
+            }
+        );
+    }
 }
 
 LightCapabilities Light::getCapabilities() const {
     return _capabilities;
+}
+
+Light::~Light() {
+    if (_bridge && _callback_id != 0) {
+        _bridge->getStateManager().unregisterCallback(_callback_id);
+    }
+}
+
+void Light::onBridgeEvent(const Event& event) {
+    try {
+        auto json = nlohmann::json::parse(event.data);
+
+        if (json.contains("on")) {
+            NotifyPropertyChanging<&Light::IsOn>();
+            NotifyPropertyChanged<&Light::IsOn>();
+        }
+        if (json.contains("dimming")) {
+            NotifyPropertyChanging<&Light::Brightness>();
+            NotifyPropertyChanged<&Light::Brightness>();
+        }
+        if (json.contains("color")) {
+            NotifyPropertyChanging<&Light::XYColor_>();
+            NotifyPropertyChanged<&Light::XYColor_>();
+            NotifyPropertyChanging<&Light::RGBColor_>();
+            NotifyPropertyChanged<&Light::RGBColor_>();
+        }
+        if (json.contains("color_temperature")) {
+            NotifyPropertyChanging<&Light::ColorTemperature_>();
+            NotifyPropertyChanged<&Light::ColorTemperature_>();
+        }
+        if (json.contains("metadata")) {
+            NotifyPropertyChanging<&Light::Name>();
+            NotifyPropertyChanged<&Light::Name>();
+        }
+    }
+    catch (...) {
+        // Ignore parsing errors
+    }
 }
 
 bool Light::isOn() const {
