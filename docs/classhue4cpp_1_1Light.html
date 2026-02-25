@@ -626,20 +626,20 @@ Friends</h2></td></tr>
 <div class="line">                <span class="keywordflow">try</span> {</div>
 <div class="line">                    <span class="keywordflow">return</span> isOn();</div>
 <div class="line">                }</div>
-<div class="line"> <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
-<div class="line">  <span class="keywordflow">throw</span>;</div>
-<div class="line">}</div>
-<div class="line">},</div>
-<div class="line">[<span class="keyword">this</span>](<span class="keywordtype">bool</span>&amp; value) {</div>
-<div class="line">    <span class="keywordflow">try</span> {</div>
-<div class="line">        NotifyPropertyChanging&lt;&amp;Light::IsOn&gt;();</div>
-<div class="line">        value ? turnOn() : turnOff();</div>
-<div class="line">        NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
-<div class="line">    }</div>
-<div class="line"><span class="keywordflow">catch</span> (<span class="keyword">const</span> HueException&amp;) {</div>
-<div class="line"> <span class="keywordflow">throw</span>;</div>
-<div class="line">}</div>
-<div class="line">}</div>
+<div class="line">                <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) {</div>
+<div class="line">                    <span class="keywordflow">throw</span>;</div>
+<div class="line">                }</div>
+<div class="line">            },</div>
+<div class="line">            [<span class="keyword">this</span>](<span class="keywordtype">bool</span>&amp; value) {</div>
+<div class="line">                <span class="keywordflow">try</span> {</div>
+<div class="line">                    NotifyPropertyChanging&lt;&amp;Light::IsOn&gt;();</div>
+<div class="line">                    value ? turnOn() : turnOff();</div>
+<div class="line">                    NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
+<div class="line">                }</div>
+<div class="line">                <span class="keywordflow">catch</span> (<span class="keyword">const</span> HueException&amp;) {</div>
+<div class="line">                    <span class="keywordflow">throw</span>;</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
 <div class="line">        }</div>
 </div><!-- fragment -->
 <p>Get or set the on/off state. </p>
