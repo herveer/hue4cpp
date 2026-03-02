@@ -7,6 +7,7 @@
 #include "hue4cpp/color_utils.h"
 #include "hue4cpp/exceptions.h"
 #include <ReactiveLitepp/ObservableObject.h>
+#include <ReactiveLitepp/ScopedSubscription.h>
 /**
  * @file light.h
  * @brief Light control and management
@@ -30,7 +31,7 @@ namespace hue4cpp {
 	 * @throws InvalidParameterException if invalid parameters are provided
 	 * @throws BridgeNotReachableException if bridge cannot be accessed
 	 */
-	class Light : ObservableObject {
+	class Light : public ObservableObject {
 	public:
 		/**
 		 * @brief Default constructor

@@ -536,6 +536,13 @@ namespace hue4cpp {
 		try {
 			auto delta = nlohmann::json::parse(e.state_json);
 
+			if (delta.contains("metadata") && delta["metadata"].is_object()) {
+				const auto& meta = delta["metadata"];
+				if (meta.contains("name") && meta["name"].is_string()) {
+					auto newName = meta["name"].get<std::string>();
+					SetPropertyValueAndNotify<&Light::Name>(_name, newName);
+				}
+			}
 			if (delta.contains("on")) {
 				NotifyPropertyChanged<&Light::IsOn>();
 			}
@@ -554,6 +561,7 @@ namespace hue4cpp {
 		}
 		catch (...) {
 			// Malformed delta — fall back to notifying all properties
+			NotifyPropertyChanged<&Light::Name>();
 			NotifyPropertyChanged<&Light::IsOn>();
 			NotifyPropertyChanged<&Light::Brightness>();
 			NotifyPropertyChanged<&Light::XYColor_>();

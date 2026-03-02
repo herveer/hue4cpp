@@ -80,6 +80,73 @@ TEST_CASE("Light initFromJson - basic metadata", "[light][json]") {
     }
 }
 
+TEST_CASE("Light Name updates from SSE metadata event", "[light][sse]") {
+    Bridge bridge;
+    Light light("f79caea0-0766-4196-bbd6-c77401b951da", &bridge);
+
+    // Seed an initial name via initFromJson
+    nlohmann::json initial = {
+        {"id",   "f79caea0-0766-4196-bbd6-c77401b951da"},
+        {"type", "light"},
+        {"metadata", {{"name", "Old Name"}}}
+    };
+    light.initFromJson(initial);
+    REQUIRE(light.Name == "Old Name");
+
+    SECTION("Name updates and fires PropertyChanged when metadata.name arrives") {
+        std::string notified_property;
+        light.PropertyChanged += [&notified_property](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        // Simulate the SSE delta the bridge sends when the user renames a light
+        nlohmann::json sse_delta = {
+            {"id",   "f79caea0-0766-4196-bbd6-c77401b951da"},
+            {"type", "light"},
+            {"metadata", {{"name", "Plafond chambre"}}}
+        };
+        light.initFromJson(sse_delta);
+
+        REQUIRE(light.Name == "Plafond chambre");
+        REQUIRE(notified_property == "Name");
+    }
+
+    SECTION("Name is unchanged and no notification fires when metadata.name is absent") {
+        bool notified = false;
+        light.PropertyChanged += [&notified](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        // Delta without metadata (e.g. brightness-only event)
+        nlohmann::json sse_delta = {
+            {"id",   "f79caea0-0766-4196-bbd6-c77401b951da"},
+            {"type", "light"},
+            {"dimming", {{"brightness", 80.0}}}
+        };
+        light.initFromJson(sse_delta);
+
+        REQUIRE(light.Name == "Old Name");
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Name is unchanged and no notification fires when value is identical") {
+        bool notified = false;
+        light.PropertyChanged += [&notified](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        nlohmann::json sse_delta = {
+            {"id",   "f79caea0-0766-4196-bbd6-c77401b951da"},
+            {"type", "light"},
+            {"metadata", {{"name", "Old Name"}}}   // same value
+        };
+        light.initFromJson(sse_delta);
+
+        REQUIRE(light.Name == "Old Name");
+        REQUIRE_FALSE(notified);
+    }
+}
+
 TEST_CASE("Light initFromJson - on/off state", "[light][json]") {
     Light light;
     
