@@ -82,21 +82,21 @@ void printSensorInfo(const Sensor* sensor) {
 	std::cout << "  Enabled: " << (sensor->isEnabled() ? "Yes" : "No") << std::endl;
 
 	if (const auto* s = dynamic_cast<const MotionSensor*>(sensor)) {
-		std::cout << "  Motion Detected: " << ((bool)s->Motion     ? "YES" : "NO") << std::endl;
-		std::cout << "  Valid: "           << ((bool)s->MotionValid ? "Yes" : "No") << std::endl;
+		std::cout << "  Motion Detected: " << ((bool)s->Motion ? "YES" : "NO") << std::endl;
+		std::cout << "  Valid: " << ((bool)s->MotionValid ? "Yes" : "No") << std::endl;
 	}
 	else if (const auto* s = dynamic_cast<const TemperatureSensor*>(sensor)) {
 		std::cout << "  Temperature: " << std::fixed << std::setprecision(2)
-		          << (float)s->Temperature << " °C" << std::endl;
+			<< (float)s->Temperature << " °C" << std::endl;
 		std::cout << "  Valid: " << ((bool)s->TemperatureValid ? "Yes" : "No") << std::endl;
 	}
 	else if (const auto* s = dynamic_cast<const LightLevelSensor*>(sensor)) {
 		std::cout << "  Light Level: " << (uint32_t)s->LightLevel << std::endl;
-		std::cout << "  Valid: "       << ((bool)s->LightLevelValid ? "Yes" : "No") << std::endl;
+		std::cout << "  Valid: " << ((bool)s->LightLevelValid ? "Yes" : "No") << std::endl;
 	}
 	else if (const auto* s = dynamic_cast<const ButtonSensor*>(sensor)) {
-		std::cout << "  Last Event: "     << buttonEventToString((ButtonEvent)s->LastEvent) << std::endl;
-		std::cout << "  Button ID: "      << (uint32_t)s->ButtonId      << std::endl;
+		std::cout << "  Last Event: " << buttonEventToString((ButtonEvent)s->LastEvent) << std::endl;
+		std::cout << "  Button ID: " << (uint32_t)s->ButtonId << std::endl;
 		std::cout << "  Event Sequence: " << (uint32_t)s->EventSequence << std::endl;
 	}
 }
@@ -293,6 +293,11 @@ int main() {
 		std::cout << "\n--- Starting Real-Time Monitoring ---" << std::endl;
 		std::cout << "Monitoring sensor state changes (Press Ctrl+C to stop)...\n" << std::endl;
 
+		for (auto& button : button_sensors) {
+			button->PropertyChanged += [](ObservableObject& _, const PropertyChangeArgs& event) {
+				std::cout << "[" << getCurrentTime() << "] Button sensor property changed: " << event.PropertyName() << std::endl;
+				};
+		}
 		auto& state_manager = bridge.getStateManager();
 
 		// Subscribe to sensor events using ReactiveLitepp
@@ -304,7 +309,7 @@ int main() {
 					std::cout << "Sensor state changed: " << e.resource_id << "\n";
 					if (!e.state_json.empty())
 						std::cout << "               Data: "
-							<< nlohmann::json::parse(e.state_json).dump(2) << "\n";
+						<< nlohmann::json::parse(e.state_json).dump(2) << "\n";
 					break;
 				case EventType::SensorAdded:
 					std::cout << "Sensor added: " << e.resource_id << "\n";

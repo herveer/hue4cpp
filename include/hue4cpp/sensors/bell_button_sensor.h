@@ -47,6 +47,11 @@ public:
         [this]() { return _event_sequence; }
     };
 
+    /** @brief Events fired for each button event type */
+    ReactiveLitepp::Event<> Pressed;
+	ReactiveLitepp::Event<> Repeated;
+	ReactiveLitepp::Event<> Released;
+
 private:
     ButtonEvent _last_event     = ButtonEvent::Unknown;
     uint32_t    _event_sequence = 0;

@@ -49,6 +49,24 @@ namespace hue4cpp {
 				SetPropertyValueAndNotify<&ButtonSensor::LastEvent>(_last_event, newEvent);
 				auto newSeq = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
 				SetPropertyValueAndNotify<&ButtonSensor::EventSequence>(_event_sequence, newSeq);
+
+				// Fire specific events based on the button event type
+				switch (newEvent) {
+				case ButtonEvent::InitialPress:
+					Pressed.Notify();
+					break;
+				case ButtonEvent::ShortRelease:
+				case ButtonEvent::LongRelease:
+					Released.Notify();
+					break;
+				case ButtonEvent::LongPress:
+				case ButtonEvent::DoubleShortRelease:
+				case ButtonEvent::Repeat:
+					Repeated.Notify();
+					break;
+				default:
+					break;
+				}
 			}
 			if (delta.contains("metadata") && delta["metadata"].contains("control_id")) {
 				auto newBtnId = json_utils::getValueOr<uint32_t>(delta["metadata"], "control_id", _button_id);

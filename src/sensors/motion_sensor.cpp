@@ -31,6 +31,14 @@ namespace hue4cpp {
 				SetPropertyValueAndNotify<&MotionSensor::Motion>(_motion, newMotion);
 				auto newValid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", _motion_valid);
 				SetPropertyValueAndNotify<&MotionSensor::MotionValid>(_motion_valid, newValid);
+
+				// Fire events based on motion state changes
+				if (newMotion && newValid) {
+					MotionDetected.Notify();
+				}
+				else if (!newMotion && newValid) {
+					MotionCleared.Notify();
+				}
 			}
 		}
 		catch (...) {

@@ -45,6 +45,24 @@ namespace hue4cpp {
 				SetPropertyValueAndNotify<&BellButtonSensor::LastEvent>(_last_event, newEvent);
 				auto newSeq = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
 				SetPropertyValueAndNotify<&BellButtonSensor::EventSequence>(_event_sequence, newSeq);
+
+				// Fire specific events based on the button event type
+				switch (newEvent) {
+				case ButtonEvent::InitialPress:
+					Pressed.Notify();
+					break;
+				case ButtonEvent::ShortRelease:
+				case ButtonEvent::LongRelease:
+					Released.Notify();
+					break;
+				case ButtonEvent::LongPress:
+				case ButtonEvent::DoubleShortRelease:
+				case ButtonEvent::Repeat:
+					Repeated.Notify();
+					break;
+				default:
+					break;
+				}
 			}
 		}
 		catch (...) {

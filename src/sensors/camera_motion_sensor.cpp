@@ -31,6 +31,13 @@ namespace hue4cpp {
 				SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotion>(_motion, newMotion);
 				auto newValid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", _motion_valid);
 				SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotionValid>(_motion_valid, newValid);
+
+				if (newMotion && newValid) {
+					MotionDetected.Notify();
+				}
+				else if (!newMotion && newValid) {
+					MotionCleared.Notify();
+				}
 			}
 		}
 		catch (...) {

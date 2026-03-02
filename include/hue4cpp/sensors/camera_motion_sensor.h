@@ -35,6 +35,10 @@ public:
         [this]() { return _motion_valid; }
     };
 
+	/** @brief Events fired when motion is detected or cleared */
+    ReactiveLitepp::Event<> MotionDetected;
+	ReactiveLitepp::Event<> MotionCleared;
+
 private:
     bool _motion       = false;
     bool _motion_valid = false;
