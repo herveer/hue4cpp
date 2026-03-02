@@ -31,6 +31,12 @@ public:
      */
     SensorType getType() const override;
 
+    /**
+     * @brief Initialize geolocation sensor state from JSON data
+     * @param json JSON object containing sensor data from API
+     */
+    void initFromJson(const nlohmann::json& json) override;
+
     /** @brief Whether geofencing has been configured on the bridge (reactive, read-only) */
     ReactiveLitepp::ReadonlyProperty<bool> IsConfigured{
         [this]() { return _is_configured; }

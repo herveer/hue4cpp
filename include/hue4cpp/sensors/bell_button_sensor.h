@@ -31,6 +31,12 @@ public:
      */
     SensorType getType() const override;
 
+    /**
+     * @brief Initialize bell button sensor state from JSON data
+     * @param json JSON object containing sensor data from API
+     */
+    void initFromJson(const nlohmann::json& json) override;
+
     /** @brief Last doorbell button event (reactive, read-only) */
     ReactiveLitepp::ReadonlyProperty<ButtonEvent> LastEvent{
         [this]() { return _last_event; }

@@ -25,6 +25,7 @@ TEST_CASE("MotionSensor construction and state", "[sensor][motion]") {
 
         REQUIRE(sensor.getId() == "motion-sensor-123");
         REQUIRE(sensor.isEnabled());
+        REQUIRE((bool)sensor.Enabled == true);
         REQUIRE((bool)sensor.Motion == true);
         REQUIRE((bool)sensor.MotionValid == true);
     }
@@ -386,5 +387,485 @@ TEST_CASE("New sensor types in factory", "[sensor][factory]") {
         auto s = createSensorFromJson({{"id","tam-mno"},{"type","tamper"},{"enabled",true}}, &bridge);
         REQUIRE(s != nullptr);
         REQUIRE(s->getType() == SensorType::Tamper);
+    }
+}
+
+TEST_CASE("MotionSensor PropertyChanged and equality guard", "[sensor][motion][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        MotionSensor sensor("m-1", &bridge);
+        sensor.initFromJson({{"id","m-1"},{"type","motion"},{"enabled",true},
+            {"motion",{{"motion",false},{"motion_valid",false}}}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","m-1"},{"type","motion"},{"enabled",true},
+            {"motion",{{"motion",true},{"motion_valid",true}}}});
+
+        REQUIRE((bool)sensor.Motion == true);
+        REQUIRE(!notified_property.empty());
+    }
+
+    SECTION("No notification when same value is fed again") {
+        MotionSensor sensor("m-2", &bridge);
+        sensor.initFromJson({{"id","m-2"},{"type","motion"},{"enabled",true},
+            {"motion",{{"motion",true},{"motion_valid",true}}}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","m-2"},{"type","motion"},{"enabled",true},
+            {"motion",{{"motion",true},{"motion_valid",true}}}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        MotionSensor sensor("m-3", &bridge);
+        sensor.initFromJson({{"id","m-3"},{"type","motion"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","m-3"},{"type","motion"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("TemperatureSensor PropertyChanged and equality guard", "[sensor][temperature][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        TemperatureSensor sensor("t-1", &bridge);
+        sensor.initFromJson({{"id","t-1"},{"type","temperature"},{"enabled",true},
+            {"temperature",{{"temperature",2100},{"temperature_valid",true}}}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","t-1"},{"type","temperature"},{"enabled",true},
+            {"temperature",{{"temperature",2300},{"temperature_valid",true}}}});
+
+        REQUIRE((float)sensor.Temperature == Catch::Approx(23.0f).epsilon(0.01));
+        REQUIRE(notified_property == "Temperature");
+    }
+
+    SECTION("No notification when same value is fed again") {
+        TemperatureSensor sensor("t-2", &bridge);
+        sensor.initFromJson({{"id","t-2"},{"type","temperature"},{"enabled",true},
+            {"temperature",{{"temperature",2150},{"temperature_valid",true}}}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","t-2"},{"type","temperature"},{"enabled",true},
+            {"temperature",{{"temperature",2150},{"temperature_valid",true}}}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        TemperatureSensor sensor("t-3", &bridge);
+        sensor.initFromJson({{"id","t-3"},{"type","temperature"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","t-3"},{"type","temperature"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("LightLevelSensor PropertyChanged and equality guard", "[sensor][lightlevel][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        LightLevelSensor sensor("ll-1", &bridge);
+        sensor.initFromJson({{"id","ll-1"},{"type","light_level"},{"enabled",true},
+            {"light",{{"light_level",10000},{"light_level_valid",true}}}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","ll-1"},{"type","light_level"},{"enabled",true},
+            {"light",{{"light_level",20000},{"light_level_valid",true}}}});
+
+        REQUIRE((uint32_t)sensor.LightLevel == 20000u);
+        REQUIRE(notified_property == "LightLevel");
+    }
+
+    SECTION("No notification when same value is fed again") {
+        LightLevelSensor sensor("ll-2", &bridge);
+        sensor.initFromJson({{"id","ll-2"},{"type","light_level"},{"enabled",true},
+            {"light",{{"light_level",12345},{"light_level_valid",true}}}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","ll-2"},{"type","light_level"},{"enabled",true},
+            {"light",{{"light_level",12345},{"light_level_valid",true}}}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        LightLevelSensor sensor("ll-3", &bridge);
+        sensor.initFromJson({{"id","ll-3"},{"type","light_level"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","ll-3"},{"type","light_level"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("ButtonSensor PropertyChanged and equality guard", "[sensor][button][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        ButtonSensor sensor("b-1", &bridge);
+        sensor.initFromJson({{"id","b-1"},{"type","button"},{"enabled",true},
+            {"button",{{"last_event","initial_press"},{"event_sequence",1}}},
+            {"metadata",{{"control_id",1}}}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","b-1"},{"type","button"},{"enabled",true},
+            {"button",{{"last_event","short_release"},{"event_sequence",2}}},
+            {"metadata",{{"control_id",1}}}});
+
+        REQUIRE((ButtonEvent)sensor.LastEvent == ButtonEvent::ShortRelease);
+        REQUIRE(!notified_property.empty());
+    }
+
+    SECTION("No notification when same value is fed again") {
+        ButtonSensor sensor("b-2", &bridge);
+        sensor.initFromJson({{"id","b-2"},{"type","button"},{"enabled",true},
+            {"button",{{"last_event","initial_press"},{"event_sequence",5}}},
+            {"metadata",{{"control_id",2}}}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","b-2"},{"type","button"},{"enabled",true},
+            {"button",{{"last_event","initial_press"},{"event_sequence",5}}},
+            {"metadata",{{"control_id",2}}}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        ButtonSensor sensor("b-3", &bridge);
+        sensor.initFromJson({{"id","b-3"},{"type","button"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","b-3"},{"type","button"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("CameraMotionSensor PropertyChanged and equality guard", "[sensor][cameramotion][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        CameraMotionSensor sensor("cm-1", &bridge);
+        sensor.initFromJson({{"id","cm-1"},{"type","camera_motion"},{"enabled",true},
+            {"motion",{{"motion",false},{"motion_valid",true}}}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","cm-1"},{"type","camera_motion"},{"enabled",true},
+            {"motion",{{"motion",true},{"motion_valid",true}}}});
+
+        REQUIRE((bool)sensor.CameraMotion == true);
+        REQUIRE(notified_property == "CameraMotion");
+    }
+
+    SECTION("No notification when same value is fed again") {
+        CameraMotionSensor sensor("cm-2", &bridge);
+        sensor.initFromJson({{"id","cm-2"},{"type","camera_motion"},{"enabled",true},
+            {"motion",{{"motion",true},{"motion_valid",true}}}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","cm-2"},{"type","camera_motion"},{"enabled",true},
+            {"motion",{{"motion",true},{"motion_valid",true}}}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        CameraMotionSensor sensor("cm-3", &bridge);
+        sensor.initFromJson({{"id","cm-3"},{"type","camera_motion"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","cm-3"},{"type","camera_motion"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("BellButtonSensor PropertyChanged and equality guard", "[sensor][bellbutton][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        BellButtonSensor sensor("bb-1", &bridge);
+        sensor.initFromJson({{"id","bb-1"},{"type","bell_button"},{"enabled",true},
+            {"button",{{"last_event","initial_press"},{"event_sequence",1}}}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","bb-1"},{"type","bell_button"},{"enabled",true},
+            {"button",{{"last_event","short_release"},{"event_sequence",2}}}});
+
+        REQUIRE((ButtonEvent)sensor.LastEvent == ButtonEvent::ShortRelease);
+        REQUIRE(!notified_property.empty());
+    }
+
+    SECTION("No notification when same value is fed again") {
+        BellButtonSensor sensor("bb-2", &bridge);
+        sensor.initFromJson({{"id","bb-2"},{"type","bell_button"},{"enabled",true},
+            {"button",{{"last_event","initial_press"},{"event_sequence",5}}}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","bb-2"},{"type","bell_button"},{"enabled",true},
+            {"button",{{"last_event","initial_press"},{"event_sequence",5}}}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        BellButtonSensor sensor("bb-3", &bridge);
+        sensor.initFromJson({{"id","bb-3"},{"type","bell_button"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","bb-3"},{"type","bell_button"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("RelativeRotarySensor PropertyChanged and equality guard", "[sensor][rotary][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        RelativeRotarySensor sensor("r-1", &bridge);
+        sensor.initFromJson({{"id","r-1"},{"type","relative_rotary"},{"enabled",true},
+            {"relative_rotary",{
+                {"last_event",{{"rotation",5},{"direction","clock_wise"},{"action","short_release"}}},
+                {"event_sequence",10}
+            }}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","r-1"},{"type","relative_rotary"},{"enabled",true},
+            {"relative_rotary",{
+                {"last_event",{{"rotation",10},{"direction","counter_clock_wise"},{"action","initial_press"}}},
+                {"event_sequence",11}
+            }}});
+
+        REQUIRE((int32_t)sensor.Steps == 10);
+        REQUIRE(!notified_property.empty());
+    }
+
+    SECTION("No notification when same value is fed again") {
+        RelativeRotarySensor sensor("r-2", &bridge);
+        sensor.initFromJson({{"id","r-2"},{"type","relative_rotary"},{"enabled",true},
+            {"relative_rotary",{
+                {"last_event",{{"rotation",5},{"direction","clock_wise"},{"action","short_release"}}},
+                {"event_sequence",10}
+            }}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","r-2"},{"type","relative_rotary"},{"enabled",true},
+            {"relative_rotary",{
+                {"last_event",{{"rotation",5},{"direction","clock_wise"},{"action","short_release"}}},
+                {"event_sequence",10}
+            }}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        RelativeRotarySensor sensor("r-3", &bridge);
+        sensor.initFromJson({{"id","r-3"},{"type","relative_rotary"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","r-3"},{"type","relative_rotary"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("GeolocationSensor PropertyChanged and equality guard", "[sensor][geolocation][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        GeolocationSensor sensor("g-1", &bridge);
+        sensor.initFromJson({{"id","g-1"},{"type","geolocation"},{"enabled",true},{"is_configured",false}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","g-1"},{"type","geolocation"},{"enabled",true},{"is_configured",true}});
+
+        REQUIRE((bool)sensor.IsConfigured == true);
+        REQUIRE(notified_property == "IsConfigured");
+    }
+
+    SECTION("No notification when same value is fed again") {
+        GeolocationSensor sensor("g-2", &bridge);
+        sensor.initFromJson({{"id","g-2"},{"type","geolocation"},{"enabled",true},{"is_configured",true}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","g-2"},{"type","geolocation"},{"enabled",true},{"is_configured",true}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        GeolocationSensor sensor("g-3", &bridge);
+        sensor.initFromJson({{"id","g-3"},{"type","geolocation"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","g-3"},{"type","geolocation"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
+    }
+}
+
+TEST_CASE("TamperSensor PropertyChanged and equality guard", "[sensor][tamper][reactive]") {
+    Bridge bridge;
+
+    SECTION("PropertyChanged fires on value change via initFromJson") {
+        TamperSensor sensor("tp-1", &bridge);
+        sensor.initFromJson({{"id","tp-1"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",false},{"tamper_valid",true}}}});
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","tp-1"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",true},{"tamper_valid",true}}}});
+
+        REQUIRE((bool)sensor.Tampered == true);
+        REQUIRE(notified_property == "Tampered");
+    }
+
+    SECTION("No notification when same value is fed again") {
+        TamperSensor sensor("tp-2", &bridge);
+        sensor.initFromJson({{"id","tp-2"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",true},{"tamper_valid",true}}}});
+
+        bool notified = false;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        sensor.initFromJson({{"id","tp-2"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",true},{"tamper_valid",true}}}});
+
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Enabled property is correctly parsed and notified") {
+        TamperSensor sensor("tp-3", &bridge);
+        sensor.initFromJson({{"id","tp-3"},{"type","tamper"},{"enabled",false}});
+        REQUIRE((bool)sensor.Enabled == false);
+
+        std::string notified_property;
+        sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        sensor.initFromJson({{"id","tp-3"},{"type","tamper"},{"enabled",true}});
+        REQUIRE((bool)sensor.Enabled == true);
+        REQUIRE(notified_property == "Enabled");
     }
 }

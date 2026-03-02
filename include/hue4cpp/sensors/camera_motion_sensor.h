@@ -19,6 +19,12 @@ public:
 
     SensorType getType() const override;
 
+    /**
+     * @brief Initialize camera motion sensor state from JSON data
+     * @param json JSON object containing sensor data from API
+     */
+    void initFromJson(const nlohmann::json& json) override;
+
     /** @brief Whether motion is currently detected by the camera (reactive, read-only) */
     ReactiveLitepp::ReadonlyProperty<bool> CameraMotion{
         [this]() { return _motion; }

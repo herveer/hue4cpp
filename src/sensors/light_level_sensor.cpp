@@ -12,13 +12,30 @@ namespace hue4cpp {
 		return SensorType::LightLevel;
 	}
 
+	void LightLevelSensor::initFromJson(const nlohmann::json& json) {
+		Sensor::initFromJson(json);
+		if (json.contains("light") && json["light"].is_object()) {
+			auto light_obj = json["light"];
+			auto newLevel = json_utils::getValueOr<uint32_t>(light_obj, "light_level", _light_level);
+			SetPropertyValueAndNotify<&LightLevelSensor::LightLevel>(_light_level, newLevel);
+			auto newValid = json_utils::getValueOr<bool>(light_obj, "light_level_valid", _light_level_valid);
+			SetPropertyValueAndNotify<&LightLevelSensor::LightLevelValid>(_light_level_valid, newValid);
+		}
+	}
+
 	void LightLevelSensor::notifyStateProperties(const nlohmann::json& delta) {
-		if (delta.contains("light")) {
-			auto light_obj     = delta["light"];
-			_light_level       = json_utils::getValueOr<uint32_t>(light_obj, "light_level",       _light_level);
-			_light_level_valid = json_utils::getValueOr<bool>(light_obj,     "light_level_valid",  _light_level_valid);
-			NotifyPropertyChanged<&LightLevelSensor::LightLevel>();
-			NotifyPropertyChanged<&LightLevelSensor::LightLevelValid>();
+		try {
+			if (delta.contains("light")) {
+				auto light_obj = delta["light"];
+				auto newLevel = json_utils::getValueOr<uint32_t>(light_obj, "light_level", _light_level);
+				SetPropertyValueAndNotify<&LightLevelSensor::LightLevel>(_light_level, newLevel);
+				auto newValid = json_utils::getValueOr<bool>(light_obj, "light_level_valid", _light_level_valid);
+				SetPropertyValueAndNotify<&LightLevelSensor::LightLevelValid>(_light_level_valid, newValid);
+			}
+		}
+		catch (...) {
+			SetPropertyValueAndNotify<&LightLevelSensor::LightLevel>(_light_level, _light_level);
+			SetPropertyValueAndNotify<&LightLevelSensor::LightLevelValid>(_light_level_valid, _light_level_valid);
 		}
 	}
 

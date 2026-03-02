@@ -12,13 +12,30 @@ namespace hue4cpp {
 		return SensorType::CameraMotion;
 	}
 
+	void CameraMotionSensor::initFromJson(const nlohmann::json& json) {
+		Sensor::initFromJson(json);
+		if (json.contains("motion") && json["motion"].is_object()) {
+			auto motion_obj = json["motion"];
+			auto newMotion = json_utils::getValueOr<bool>(motion_obj, "motion", _motion);
+			SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotion>(_motion, newMotion);
+			auto newValid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", _motion_valid);
+			SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotionValid>(_motion_valid, newValid);
+		}
+	}
+
 	void CameraMotionSensor::notifyStateProperties(const nlohmann::json& delta) {
-		if (delta.contains("motion")) {
-			auto motion_obj = delta["motion"];
-			_motion       = json_utils::getValueOr<bool>(motion_obj, "motion",       _motion);
-			_motion_valid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", _motion_valid);
-			NotifyPropertyChanged<&CameraMotionSensor::CameraMotion>();
-			NotifyPropertyChanged<&CameraMotionSensor::CameraMotionValid>();
+		try {
+			if (delta.contains("motion")) {
+				auto motion_obj = delta["motion"];
+				auto newMotion = json_utils::getValueOr<bool>(motion_obj, "motion", _motion);
+				SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotion>(_motion, newMotion);
+				auto newValid = json_utils::getValueOr<bool>(motion_obj, "motion_valid", _motion_valid);
+				SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotionValid>(_motion_valid, newValid);
+			}
+		}
+		catch (...) {
+			SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotion>(_motion, _motion);
+			SetPropertyValueAndNotify<&CameraMotionSensor::CameraMotionValid>(_motion_valid, _motion_valid);
 		}
 	}
 

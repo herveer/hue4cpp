@@ -71,35 +71,7 @@ namespace hue4cpp {
 	}
 
 	bool Sensor::isEnabled() const {
-		// Extract enabled state from cached JSON
-		std::function extractEnabled = [](const std::string& state_json) -> std::optional<bool> {
-			if (!state_json.empty()) {
-				try {
-					auto state = json_utils::parse(state_json);
-					if (state.contains("enabled") && state["enabled"].is_boolean()) {
-						return state["enabled"].template get<bool>();
-					}
-				}
-				catch (...) {
-					// Fall through to refresh cache or return default
-				}
-			}
-			return std::nullopt;
-		};
-
-		if (!_bridge) {
-			return false;
-		}
-
-		std::string state_json = _bridge->getSensorState(_id, getResourceTypeString(), false);
-		auto enabled_opt = extractEnabled(state_json);
-		if (enabled_opt.has_value()) {
-			return enabled_opt.value();
-		}
-
-		state_json = _bridge->getSensorState(_id, getResourceTypeString(), true);
-		enabled_opt = extractEnabled(state_json);
-		return enabled_opt.value_or(false);
+		return _enabled;
 	}
 
 	Result<void> Sensor::refresh() {
@@ -120,6 +92,11 @@ namespace hue4cpp {
 		try {
 			if (json.contains("id")) {
 				_id = json_utils::getValueOr<std::string>(json, "id", _id);
+			}
+
+			if (json.contains("enabled")) {
+				auto val = json_utils::getValueOr<bool>(json, "enabled", _enabled);
+				SetPropertyValueAndNotify<&Sensor::Enabled>(_enabled, val);
 			}
 
 			if (_bridge && !_id.empty()) {
@@ -154,10 +131,16 @@ namespace hue4cpp {
 		// Let the derived class fire its typed property notifications.
 		try {
 			auto delta = nlohmann::json::parse(e.state_json);
+
+			if (delta.contains("enabled")) {
+				auto val = json_utils::getValueOr<bool>(delta, "enabled", _enabled);
+				SetPropertyValueAndNotify<&Sensor::Enabled>(_enabled, val);
+			}
+
 			notifyStateProperties(delta);
 		}
 		catch (...) {
-			// Malformed delta — derived class will handle its own fallback.
+			// Malformed delta â€” derived class will handle its own fallback.
 		}
 	}
 

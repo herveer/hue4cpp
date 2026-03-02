@@ -32,20 +32,46 @@ namespace hue4cpp {
 		return SensorType::RelativeRotary;
 	}
 
-	void RelativeRotarySensor::notifyStateProperties(const nlohmann::json& delta) {
-		if (delta.contains("relative_rotary")) {
-			auto rotary_obj = delta["relative_rotary"];
+	void RelativeRotarySensor::initFromJson(const nlohmann::json& json) {
+		Sensor::initFromJson(json);
+		if (json.contains("relative_rotary") && json["relative_rotary"].is_object()) {
+			auto rotary_obj = json["relative_rotary"];
 			if (rotary_obj.contains("last_event") && rotary_obj["last_event"].is_object()) {
 				auto event_obj = rotary_obj["last_event"];
-				_steps     = json_utils::getValueOr<int32_t>(event_obj, "rotation",  _steps);
-				_direction = parseRotationDirection(json_utils::getValueOr<std::string>(event_obj, "direction", ""));
-				_action    = parseButtonEvent(json_utils::getValueOr<std::string>(event_obj, "action", ""));
+				auto newSteps = json_utils::getValueOr<int32_t>(event_obj, "rotation", _steps);
+				SetPropertyValueAndNotify<&RelativeRotarySensor::Steps>(_steps, newSteps);
+				auto newDir = parseRotationDirection(json_utils::getValueOr<std::string>(event_obj, "direction", ""));
+				SetPropertyValueAndNotify<&RelativeRotarySensor::Direction>(_direction, newDir);
+				auto newAction = parseButtonEvent(json_utils::getValueOr<std::string>(event_obj, "action", ""));
+				SetPropertyValueAndNotify<&RelativeRotarySensor::Action>(_action, newAction);
 			}
-			_event_sequence = json_utils::getValueOr<uint32_t>(rotary_obj, "event_sequence", _event_sequence);
-			NotifyPropertyChanged<&RelativeRotarySensor::Steps>();
-			NotifyPropertyChanged<&RelativeRotarySensor::Direction>();
-			NotifyPropertyChanged<&RelativeRotarySensor::Action>();
-			NotifyPropertyChanged<&RelativeRotarySensor::EventSequence>();
+			auto newSeq = json_utils::getValueOr<uint32_t>(rotary_obj, "event_sequence", _event_sequence);
+			SetPropertyValueAndNotify<&RelativeRotarySensor::EventSequence>(_event_sequence, newSeq);
+		}
+	}
+
+	void RelativeRotarySensor::notifyStateProperties(const nlohmann::json& delta) {
+		try {
+			if (delta.contains("relative_rotary")) {
+				auto rotary_obj = delta["relative_rotary"];
+				if (rotary_obj.contains("last_event") && rotary_obj["last_event"].is_object()) {
+					auto event_obj = rotary_obj["last_event"];
+					auto newSteps = json_utils::getValueOr<int32_t>(event_obj, "rotation", _steps);
+					SetPropertyValueAndNotify<&RelativeRotarySensor::Steps>(_steps, newSteps);
+					auto newDir = parseRotationDirection(json_utils::getValueOr<std::string>(event_obj, "direction", ""));
+					SetPropertyValueAndNotify<&RelativeRotarySensor::Direction>(_direction, newDir);
+					auto newAction = parseButtonEvent(json_utils::getValueOr<std::string>(event_obj, "action", ""));
+					SetPropertyValueAndNotify<&RelativeRotarySensor::Action>(_action, newAction);
+				}
+				auto newSeq = json_utils::getValueOr<uint32_t>(rotary_obj, "event_sequence", _event_sequence);
+				SetPropertyValueAndNotify<&RelativeRotarySensor::EventSequence>(_event_sequence, newSeq);
+			}
+		}
+		catch (...) {
+			SetPropertyValueAndNotify<&RelativeRotarySensor::Steps>(_steps, _steps);
+			SetPropertyValueAndNotify<&RelativeRotarySensor::Direction>(_direction, _direction);
+			SetPropertyValueAndNotify<&RelativeRotarySensor::Action>(_action, _action);
+			SetPropertyValueAndNotify<&RelativeRotarySensor::EventSequence>(_event_sequence, _event_sequence);
 		}
 	}
 

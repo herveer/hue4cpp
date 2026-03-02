@@ -24,25 +24,41 @@ namespace hue4cpp {
 		return SensorType::Button;
 	}
 
-	void ButtonSensor::notifyStateProperties(const nlohmann::json& delta) {
-		bool changed = false;
-
-		if (delta.contains("button")) {
-			auto button_obj  = delta["button"];
+	void ButtonSensor::initFromJson(const nlohmann::json& json) {
+		Sensor::initFromJson(json);
+		if (json.contains("button") && json["button"].is_object()) {
+			auto button_obj = json["button"];
 			std::string event_str = json_utils::getValueOr<std::string>(button_obj, "last_event", "");
-			_last_event      = parseButtonEvent(event_str);
-			_event_sequence  = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
-			changed = true;
+			auto newEvent = parseButtonEvent(event_str);
+			SetPropertyValueAndNotify<&ButtonSensor::LastEvent>(_last_event, newEvent);
+			auto newSeq = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
+			SetPropertyValueAndNotify<&ButtonSensor::EventSequence>(_event_sequence, newSeq);
 		}
-		if (delta.contains("metadata") && delta["metadata"].contains("control_id")) {
-			_button_id = json_utils::getValueOr<uint32_t>(delta["metadata"], "control_id", _button_id);
-			changed = true;
+		if (json.contains("metadata") && json["metadata"].is_object()) {
+			auto newBtnId = json_utils::getValueOr<uint32_t>(json["metadata"], "control_id", _button_id);
+			SetPropertyValueAndNotify<&ButtonSensor::ButtonId>(_button_id, newBtnId);
 		}
+	}
 
-		if (changed) {
-			NotifyPropertyChanged<&ButtonSensor::LastEvent>();
-			NotifyPropertyChanged<&ButtonSensor::ButtonId>();
-			NotifyPropertyChanged<&ButtonSensor::EventSequence>();
+	void ButtonSensor::notifyStateProperties(const nlohmann::json& delta) {
+		try {
+			if (delta.contains("button")) {
+				auto button_obj = delta["button"];
+				std::string event_str = json_utils::getValueOr<std::string>(button_obj, "last_event", "");
+				auto newEvent = parseButtonEvent(event_str);
+				SetPropertyValueAndNotify<&ButtonSensor::LastEvent>(_last_event, newEvent);
+				auto newSeq = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
+				SetPropertyValueAndNotify<&ButtonSensor::EventSequence>(_event_sequence, newSeq);
+			}
+			if (delta.contains("metadata") && delta["metadata"].contains("control_id")) {
+				auto newBtnId = json_utils::getValueOr<uint32_t>(delta["metadata"], "control_id", _button_id);
+				SetPropertyValueAndNotify<&ButtonSensor::ButtonId>(_button_id, newBtnId);
+			}
+		}
+		catch (...) {
+			SetPropertyValueAndNotify<&ButtonSensor::LastEvent>(_last_event, _last_event);
+			SetPropertyValueAndNotify<&ButtonSensor::ButtonId>(_button_id, _button_id);
+			SetPropertyValueAndNotify<&ButtonSensor::EventSequence>(_event_sequence, _event_sequence);
 		}
 	}
 
