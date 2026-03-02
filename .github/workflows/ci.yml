@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Export GitHub Actions cache variables for vcpkg binary caching
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Detect vcpkg triplet
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            echo "VCPKG_DEFAULT_TRIPLET=x64-linux" >> "$GITHUB_ENV"
+          elif [ "$RUNNER_OS" = "macOS" ]; then
+            if [ "$(uname -m)" = "arm64" ]; then
+              echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> "$GITHUB_ENV"
+            else
+              echo "VCPKG_DEFAULT_TRIPLET=x64-osx" >> "$GITHUB_ENV"
+            fi
+          else
+            echo "VCPKG_DEFAULT_TRIPLET=x64-windows" >> "$GITHUB_ENV"
+          fi
+
+      - name: Set up vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: '05442024c3fda64320bd25d2251cc9807b84fb6f'
+
+      - name: Configure CMake
+        shell: bash
+        run: |
+          cmake -B build \
+            -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" \
+            -DVCPKG_TARGET_TRIPLET="$VCPKG_DEFAULT_TRIPLET" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTS=ON \
+            -DBUILD_EXAMPLES=OFF
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Stage test binary
+        shell: bash
+        run: |
+          mkdir -p staging
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            cp build/tests/Release/hue4cpp_tests.exe staging/
+          else
+            cp build/tests/hue4cpp_tests staging/
+          fi
+
+      - name: Upload test binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-bin-${{ matrix.os }}
+          path: staging/
+          retention-days: 7
+
+  test:
+    name: Test (${{ matrix.os }})
+    needs: build
+    runs-on: ${{ matrix.os }}
+    permissions: {}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Download test binary
+        uses: actions/download-artifact@v4
+        with:
+          name: test-bin-${{ matrix.os }}
+          path: test-bin/
+
+      - name: Run tests (Linux / macOS)
+        if: runner.os != 'Windows'
+        run: |
+          chmod +x test-bin/hue4cpp_tests
+          test-bin/hue4cpp_tests
+
+      - name: Run tests (Windows)
+        if: runner.os == 'Windows'
+        run: test-bin\hue4cpp_tests.exe
