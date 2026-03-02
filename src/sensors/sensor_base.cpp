@@ -11,6 +11,8 @@
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/state.h"
 #include "hue4cpp/json_utils.h"
+#include "hue4cpp/http_client.h"
+#include "hue4cpp/exceptions.h"
 #include <iostream>
 
 namespace hue4cpp {
@@ -35,10 +37,6 @@ namespace hue4cpp {
 	Sensor::Sensor(const std::string& id, Bridge* bridge, SensorType type)
 		: _id(id), _bridge(bridge), _type(type) {
 			subscribeToBridgeEvents();
-	}
-
-	std::string Sensor::getId() const {
-		return _id;
 	}
 
 	std::string Sensor::getResourceTypeString() const {
@@ -91,7 +89,13 @@ namespace hue4cpp {
 	void Sensor::initFromJson(const nlohmann::json& json) {
 		try {
 			if (json.contains("id")) {
-				_id = json_utils::getValueOr<std::string>(json, "id", _id);
+				auto idVal = json_utils::getValueOr<std::string>(json, "id", _id);
+				SetPropertyValueAndNotify<&Sensor::Id>(_id, idVal);
+			}
+
+			if (json.contains("metadata") && json["metadata"].is_object()) {
+				auto nameVal = json_utils::getValueOr<std::string>(json["metadata"], "name", "");
+				SetPropertyValueAndNotify<&Sensor::Name>(_name, nameVal);
 			}
 
 			if (json.contains("enabled")) {
@@ -135,6 +139,15 @@ namespace hue4cpp {
 			if (delta.contains("enabled")) {
 				auto val = json_utils::getValueOr<bool>(delta, "enabled", _enabled);
 				SetPropertyValueAndNotify<&Sensor::Enabled>(_enabled, val);
+      }
+      
+			// Metadata rename pushed from the bridge.
+			if (delta.contains("metadata") && delta["metadata"].is_object()) {
+				const auto& meta = delta["metadata"];
+				if (meta.contains("name") && meta["name"].is_string()) {
+					auto newName = meta["name"].get<std::string>();
+					SetPropertyValueAndNotify<&Sensor::Name>(_name, newName);
+				}
 			}
 
 			notifyStateProperties(delta);
@@ -142,6 +155,66 @@ namespace hue4cpp {
 		catch (...) {
 			// Malformed delta — derived class will handle its own fallback.
 		}
+	}
+
+	void Sensor::sendUpdate(const nlohmann::json& state_update) {
+		if (!_bridge || !_bridge->isAuthenticated()) {
+			throw BridgeNotReachableException("Bridge not authenticated");
+		}
+
+		const auto& bridge_info = _bridge->getInfo();
+		if (bridge_info.ip_address.empty() || _id.empty()) {
+			throw InvalidParameterException("Bridge IP or sensor ID not set");
+		}
+
+		try {
+			HttpClient client;
+			client.setVerifySsl(false);
+			client.setTimeout(std::chrono::milliseconds(5000));
+
+			std::string url = "https://" + bridge_info.ip_address +
+				"/clip/v2/resource/" + getResourceTypeString() + "/" + _id;
+
+			std::map<std::string, std::string> headers;
+			headers["hue-application-key"] = _bridge->getAuthenticationKey();
+
+			std::string body = json_utils::toString(state_update);
+			auto response = client.put(url, body, headers);
+
+			if (!response.isSuccess()) {
+				if (response.status_code == 401 || response.status_code == 403) {
+					throw AuthenticationException("Authentication failed");
+				}
+				throw NetworkException("HTTP request failed: " + response.error_message);
+			}
+
+			auto json_response = json_utils::parse(response.body);
+			if (json_response.contains("errors") && json_response["errors"].is_array()) {
+				const auto& errors = json_response["errors"];
+				if (!errors.empty()) {
+					throw InvalidParameterException(
+						json_utils::getValueOr<std::string>(errors[0], "description", "Unknown error"));
+				}
+			}
+		}
+		catch (const HueException&) { throw; }
+		catch (const std::exception& e) {
+			throw BridgeNotReachableException(std::string("Error: ") + e.what());
+		}
+	}
+
+	void Sensor::setName(const std::string& name) {
+		if (name.empty()) {
+			throw InvalidParameterException("Sensor name must not be empty");
+		}
+
+		nlohmann::json update;
+		update["metadata"] = { {"name", name} };
+		sendUpdate(update);
+
+		// Update the backing field immediately so reads are consistent
+		// while waiting for the SSE confirmation round-trip.
+		_name = name;
 	}
 
 	// Factory function to create appropriate sensor type from JSON
