@@ -646,33 +646,41 @@ $(document).ready(function(){initNavTree('light_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>        <span class="keywordflow">try</span> {</div>
 <div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>            <span class="keyword">auto</span> delta = nlohmann::json::parse(e.state_json);</div>
 <div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;on&quot;</span>)) {</div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>                NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>            }</div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;dimming&quot;</span>)) {</div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>                NotifyPropertyChanged&lt;&amp;Light::Brightness&gt;();</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>            }</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;color&quot;</span>)) {</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>                NotifyPropertyChanged&lt;&amp;Light::XYColor_&gt;();</div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>                NotifyPropertyChanged&lt;&amp;Light::RGBColor_&gt;();</div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;metadata&quot;</span>) &amp;&amp; delta[<span class="stringliteral">&quot;metadata&quot;</span>].is_object()) {</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>                <span class="keyword">const</span> <span class="keyword">auto</span>&amp; meta = delta[<span class="stringliteral">&quot;metadata&quot;</span>];</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>                <span class="keywordflow">if</span> (meta.contains(<span class="stringliteral">&quot;name&quot;</span>) &amp;&amp; meta[<span class="stringliteral">&quot;name&quot;</span>].is_string()) {</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>                    <span class="keyword">auto</span> newName = meta[<span class="stringliteral">&quot;name&quot;</span>].get&lt;std::string&gt;();</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>                    SetPropertyValueAndNotify&lt;&amp;Light::Name&gt;(_name, newName);</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>                }</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>            }</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;on&quot;</span>)) {</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>                NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
 <div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>            }</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;color_temperature&quot;</span>) &amp;&amp;</div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>                (!delta[<span class="stringliteral">&quot;color_temperature&quot;</span>].contains(<span class="stringliteral">&quot;mirek&quot;</span>) || !delta[<span class="stringliteral">&quot;color_temperature&quot;</span>][<span class="stringliteral">&quot;mirek&quot;</span>].contains(<span class="stringliteral">&quot;mirek_valid&quot;</span>) ||</div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>                    delta[<span class="stringliteral">&quot;color_temperature&quot;</span>][<span class="stringliteral">&quot;mirek&quot;</span>][<span class="stringliteral">&quot;mirek_valid&quot;</span>] == <span class="keyword">true</span>)) {</div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>                NotifyPropertyChanged&lt;&amp;Light::ColorTemperature_&gt;();</div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>            }</div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>        }</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>        <span class="keywordflow">catch</span> (...) {</div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>            <span class="comment">// Malformed delta — fall back to notifying all properties</span></div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>            NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>            NotifyPropertyChanged&lt;&amp;Light::Brightness&gt;();</div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>            NotifyPropertyChanged&lt;&amp;Light::XYColor_&gt;();</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>            NotifyPropertyChanged&lt;&amp;Light::RGBColor_&gt;();</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>            NotifyPropertyChanged&lt;&amp;Light::ColorTemperature_&gt;();</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>        }</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    }</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span> </div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>} <span class="comment">// namespace hue4cpp</span></div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;dimming&quot;</span>)) {</div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>                NotifyPropertyChanged&lt;&amp;Light::Brightness&gt;();</div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>            }</div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;color&quot;</span>)) {</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>                NotifyPropertyChanged&lt;&amp;Light::XYColor_&gt;();</div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>                NotifyPropertyChanged&lt;&amp;Light::RGBColor_&gt;();</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>            }</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>            <span class="keywordflow">if</span> (delta.contains(<span class="stringliteral">&quot;color_temperature&quot;</span>) &amp;&amp;</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>                (!delta[<span class="stringliteral">&quot;color_temperature&quot;</span>].contains(<span class="stringliteral">&quot;mirek&quot;</span>) || !delta[<span class="stringliteral">&quot;color_temperature&quot;</span>][<span class="stringliteral">&quot;mirek&quot;</span>].contains(<span class="stringliteral">&quot;mirek_valid&quot;</span>) ||</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>                    delta[<span class="stringliteral">&quot;color_temperature&quot;</span>][<span class="stringliteral">&quot;mirek&quot;</span>][<span class="stringliteral">&quot;mirek_valid&quot;</span>] == <span class="keyword">true</span>)) {</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>                NotifyPropertyChanged&lt;&amp;Light::ColorTemperature_&gt;();</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>            }</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>        }</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>        <span class="keywordflow">catch</span> (...) {</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>            <span class="comment">// Malformed delta — fall back to notifying all properties</span></div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>            NotifyPropertyChanged&lt;&amp;Light::Name&gt;();</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>            NotifyPropertyChanged&lt;&amp;Light::IsOn&gt;();</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>            NotifyPropertyChanged&lt;&amp;Light::Brightness&gt;();</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>            NotifyPropertyChanged&lt;&amp;Light::XYColor_&gt;();</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>            NotifyPropertyChanged&lt;&amp;Light::RGBColor_&gt;();</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>            NotifyPropertyChanged&lt;&amp;Light::ColorTemperature_&gt;();</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>        }</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    }</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span> </div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>} <span class="comment">// namespace hue4cpp</span></div>
 <div class="ttc" id="abridge_8h_html"><div class="ttname"><a href="bridge_8h.html">bridge.h</a></div><div class="ttdoc">Bridge discovery and connection management.</div></div>
 <div class="ttc" id="aclasshue4cpp_1_1BridgeNotReachableException_html"><div class="ttname"><a href="classhue4cpp_1_1BridgeNotReachableException.html">hue4cpp::BridgeNotReachableException</a></div><div class="ttdoc">Exception thrown when the bridge is not reachable.</div><div class="ttdef"><b>Definition</b> <a href="exceptions_8h_source.html#l00074">exceptions.h:74</a></div></div>
 <div class="ttc" id="aclasshue4cpp_1_1Bridge_html"><div class="ttname"><a href="classhue4cpp_1_1Bridge.html">hue4cpp::Bridge</a></div><div class="ttdoc">Represents a Philips Hue Bridge.</div><div class="ttdef"><b>Definition</b> <a href="bridge_8h_source.html#l00035">bridge.h:35</a></div></div>
