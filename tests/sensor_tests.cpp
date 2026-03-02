@@ -388,3 +388,90 @@ TEST_CASE("New sensor types in factory", "[sensor][factory]") {
         REQUIRE(s->getType() == SensorType::Tamper);
     }
 }
+
+TEST_CASE("Sensor Name property - initFromJson populates name", "[sensor][name]") {
+    Bridge bridge;
+
+    SECTION("Name is set from metadata in initial JSON") {
+        MotionSensor sensor("motion-abc", &bridge);
+        nlohmann::json json = {
+            {"id", "motion-abc"}, {"type", "motion"},
+            {"metadata", {{"name", "Hallway Motion"}}}
+        };
+        sensor.initFromJson(json);
+        REQUIRE(sensor.Name == "Hallway Motion");
+    }
+
+    SECTION("Id is set from initial JSON") {
+        MotionSensor sensor("", &bridge);
+        nlohmann::json json = {{"id", "motion-xyz"}, {"type", "motion"}};
+        sensor.initFromJson(json);
+        REQUIRE(sensor.Id == "motion-xyz");
+    }
+}
+
+TEST_CASE("Sensor Name property - SSE rename event", "[sensor][name][sse]") {
+    Bridge bridge;
+    MotionSensor sensor("motion-abc", &bridge);
+
+    nlohmann::json initial = {
+        {"id", "motion-abc"}, {"type", "motion"},
+        {"metadata", {{"name", "Old Name"}}}
+    };
+    sensor.initFromJson(initial);
+    REQUIRE(sensor.Name == "Old Name");
+
+    SECTION("Name updates and fires PropertyChanged when metadata.name arrives") {
+        std::string notified_property;
+        sensor.PropertyChanged += [&notified_property](
+                ReactiveLitepp::ObservableObject&,
+                ReactiveLitepp::PropertyChangedArgs args) {
+            notified_property = args.PropertyName();
+        };
+
+        nlohmann::json delta = {
+            {"id", "motion-abc"}, {"type", "motion"},
+            {"metadata", {{"name", "Entrance Motion"}}}
+        };
+        sensor.initFromJson(delta);
+
+        REQUIRE(sensor.Name == "Entrance Motion");
+        REQUIRE(notified_property == "Name");
+    }
+
+    SECTION("Name unchanged and no notification when metadata.name is absent") {
+        bool notified = false;
+        sensor.PropertyChanged += [&notified](
+                ReactiveLitepp::ObservableObject&,
+                ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        nlohmann::json delta = {
+            {"id", "motion-abc"}, {"type", "motion"},
+            {"motion", {{"motion", true}, {"motion_valid", true}}}
+        };
+        sensor.initFromJson(delta);
+
+        REQUIRE(sensor.Name == "Old Name");
+        REQUIRE_FALSE(notified);
+    }
+
+    SECTION("Name unchanged and no notification when value is identical") {
+        bool notified = false;
+        sensor.PropertyChanged += [&notified](
+                ReactiveLitepp::ObservableObject&,
+                ReactiveLitepp::PropertyChangedArgs) {
+            notified = true;
+        };
+
+        nlohmann::json delta = {
+            {"id", "motion-abc"}, {"type", "motion"},
+            {"metadata", {{"name", "Old Name"}}}   // same value
+        };
+        sensor.initFromJson(delta);
+
+        REQUIRE(sensor.Name == "Old Name");
+        REQUIRE_FALSE(notified);
+    }
+}
