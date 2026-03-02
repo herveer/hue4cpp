@@ -2,10 +2,12 @@
 
 #include "../types.h"
 #include "../state.h"
+#include "../exceptions.h"
 #include <nlohmann/json.hpp>
 #include <string>
 #include <memory>
 #include <ReactiveLitepp/ObservableObject.h>
+#include <ReactiveLitepp/ScopedSubscription.h>
 
 /**
  * @file sensor_base.h
@@ -39,10 +41,39 @@ public:
     Sensor& operator=(Sensor&&) = delete;
 
     /**
-     * @brief Get the sensor's unique identifier
+     * @brief Sensor unique identifier (read-only)
+     */
+    ReactiveLitepp::ReadonlyProperty<std::string> Id{
+        [this]() { return _id; }
+    };
+
+    /**
+     * @brief Get or set the sensor's display name
+     *
+     * Assigning a new value PUTs @c {"metadata":{"name":"\u2026"}} to the bridge
+     * immediately. The bridge confirms the rename via an SSE event which
+     * updates the backing field and fires @c PropertyChanged a second time.
+     * @throws InvalidParameterException if the name is empty
+     * @throws BridgeNotReachableException if the bridge is not available
+     * @throws AuthenticationException if not authenticated
+     */
+    ReactiveLitepp::Property<std::string> Name{
+        [this]() { return _name; },
+        [this](std::string& value) {
+            try {
+                NotifyPropertyChanging<&Sensor::Name>();
+                setName(value);
+                NotifyPropertyChanged<&Sensor::Name>();
+            }
+            catch (const HueException&) { throw; }
+        }
+    };
+
+    /**
+     * @brief Compatibility helper – prefer the Id property for new code
      * @return Sensor ID
      */
-    std::string getId() const;
+    std::string getId() const { return _id; }
 
     /**
      * @brief Get the sensor's type
@@ -88,6 +119,12 @@ public:
      */
     ReactiveLitepp::Event<const ResourceEventArgs&> OnStateChanged;
 
+    /**
+     * @brief Get the resource type string for this sensor (e.g., "motion", "temperature")
+     * @return API resource type string
+     */
+    std::string getResourceTypeString() const;
+
 protected:
     /**
      * @brief Protected constructor - only derived classes can construct
@@ -98,12 +135,6 @@ protected:
     Sensor(const std::string& id, Bridge* bridge, SensorType type);
 
     /**
-     * @brief Get the resource type string for API calls
-     * @return Resource type string (e.g., "motion", "temperature")
-     */
-    std::string getResourceTypeString() const;
-
-    /**
      * @brief Get the bridge pointer (for derived classes)
      * @return Pointer to parent bridge (may be nullptr)
      */
@@ -111,10 +142,13 @@ protected:
 
     std::string _id;
     bool _enabled = false;
+    std::string _name;
     Bridge* _bridge;
     SensorType _type;
 
 private:
+    void setName(const std::string& name);
+    void sendUpdate(const nlohmann::json& state_update);
     /**
      * @brief Subscribe to StateManager::OnResourceEvent and set up notifications.
      * Called from the constructor when a bridge is available.

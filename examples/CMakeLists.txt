@@ -63,3 +63,11 @@ set_target_properties(performance_benchmark PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
+
+# Rename demo
+add_executable(rename_demo rename_demo.cpp)
+target_link_libraries(rename_demo PRIVATE hue4cpp)
+set_target_properties(rename_demo PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)

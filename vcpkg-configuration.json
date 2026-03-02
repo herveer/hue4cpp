@@ -13,7 +13,7 @@
     {
       "kind": "git",
       "repository": "https://github.com/herve-er/vcpkg-registery",
-      "baseline": "f4f7fc5cefbb10ea0ca0ae99c94fcd7d135f727d",
+      "baseline": "13c060d79697a920ea8e6598d40d98cf6d8788c4",
       "packages": [ "reactivelitepp" ]
     }
   ]

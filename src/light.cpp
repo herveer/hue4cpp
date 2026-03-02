@@ -354,10 +354,24 @@ namespace hue4cpp {
 	void Light::alert() {
 		nlohmann::json update;
 		update["alert"] = {
-			{"action", "breathe"}
+				{"action", "breathe"}
 		};
 
 		sendUpdate(update);
+	}
+
+	void Light::setName(const std::string& name) {
+		if (name.empty()) {
+			throw InvalidParameterException("Light name must not be empty");
+		}
+
+		nlohmann::json update;
+		update["metadata"] = { {"name", name} };
+		sendUpdate(update);
+
+		// Update the backing field immediately so reads are consistent
+		// while waiting for the SSE confirmation round-trip.
+		_name = name;
 	}
 
 	void Light::refresh() {

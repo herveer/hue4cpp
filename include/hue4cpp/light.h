@@ -67,12 +67,24 @@ namespace hue4cpp {
 		};
 
 		/**
-		 * @brief Get the light's name
-		 * @return Light name
+		 * @brief Get or set the light's display name
+		 *
+		 * Assigning a new value PUTs @c {"metadata":{"name":"…"}} to the bridge
+		 * immediately. The bridge confirms the rename via an SSE event, which
+		 * updates the backing field and fires @c PropertyChanged a second time.
+		 * @throws InvalidParameterException if the name is empty
+		 * @throws BridgeNotReachableException if the bridge is not available
+		 * @throws AuthenticationException if not authenticated
 		 */
-		ReadonlyProperty<std::string> Name{
-			[this]() {
-					return _name;
+		Property<std::string> Name{
+			[this]() { return _name; },
+			[this](std::string& value) {
+				try {
+					NotifyPropertyChanging<&Light::Name>();
+					setName(value);
+					NotifyPropertyChanged<&Light::Name>();
+				}
+				catch (const HueException&) { throw; }
 			}
 		};
 
@@ -276,6 +288,7 @@ namespace hue4cpp {
 		void setColorTemperature(const ColorTemperature& temperature, TransitionTime transition);
 
 		void alert();
+		void setName(const std::string& name);
 
 		void sendUpdate(const nlohmann::json& state_update);
 		void addTransitionTime(nlohmann::json& update, TransitionTime transition);
