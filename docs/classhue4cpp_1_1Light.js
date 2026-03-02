@@ -15,7 +15,7 @@ var classhue4cpp_1_1Light =
     [ "ColorTemperature_", "classhue4cpp_1_1Light.html#a8d83f3e6178cf3a615ebfe6d87e9e32d", null ],
     [ "Id", "classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e", null ],
     [ "IsOn", "classhue4cpp_1_1Light.html#a5d91c572f5baba8cd40ea58b48a247d0", null ],
-    [ "Name", "classhue4cpp_1_1Light.html#aa1f6971eba3b24d28e4c708406901721", null ],
+    [ "Name", "classhue4cpp_1_1Light.html#a67e766fffc695c6650152697860e0975", null ],
     [ "RGBColor_", "classhue4cpp_1_1Light.html#aeb8342899096c7c006d52f210ee226f6", null ],
     [ "TransitionTime_", "classhue4cpp_1_1Light.html#aec1d90a71ae8976edc0d29c883f9a228", null ],
     [ "XYColor_", "classhue4cpp_1_1Light.html#aaecf805bc5a2926a61cbb50af4a948e3", null ]

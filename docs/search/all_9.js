@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['id_0',['id',['../structhue4cpp_1_1SSEEventArgs.html#ad977b1e4e43e6490b3cc23c9d5bf447e',1,'hue4cpp::SSEEventArgs::id'],['../structhue4cpp_1_1BridgeInfo.html#a5c620ac59e974c37f077eb94e4b917e2',1,'hue4cpp::BridgeInfo::id'],['../classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e',1,'hue4cpp::Light::Id'],['../discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3',1,'id:&#160;discovery.cpp']]],
+  ['id_0',['id',['../structhue4cpp_1_1SSEEventArgs.html#ad977b1e4e43e6490b3cc23c9d5bf447e',1,'hue4cpp::SSEEventArgs::id'],['../structhue4cpp_1_1BridgeInfo.html#a5c620ac59e974c37f077eb94e4b917e2',1,'hue4cpp::BridgeInfo::id'],['../classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e',1,'hue4cpp::Light::Id'],['../classhue4cpp_1_1Sensor.html#a92c6dfec84d11040c5706fa7176dd5ca',1,'hue4cpp::Sensor::Id'],['../discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3',1,'id:&#160;discovery.cpp']]],
   ['initfromjson_1',['initfromjson',['../classhue4cpp_1_1Light.html#a65ec1789b396dd845b79933c5bea90c5',1,'hue4cpp::Light::initFromJson()'],['../classhue4cpp_1_1Sensor.html#afbd29a81ad15b16f595410bd94ecd5ef',1,'hue4cpp::Sensor::initFromJson()']]],
   ['initialpress_2',['InitialPress',['../namespacehue4cpp.html#a0ecc80e2f206fdef7c207b36f31aeffca07287a0f5e4be38dddb82351a1b301dc',1,'hue4cpp']]],
   ['installation_3',['Installation',['../index.html#autotoc_md7',1,'']]],

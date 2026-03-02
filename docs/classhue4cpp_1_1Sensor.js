@@ -16,6 +16,9 @@ var classhue4cpp_1_1Sensor =
     [ "Bridge", "classhue4cpp_1_1Sensor.html#a644eecdcd6c05c66b1505bc66985f9da", null ],
     [ "_bridge", "classhue4cpp_1_1Sensor.html#afeb77fe1d070e9a2fc321998148be241", null ],
     [ "_id", "classhue4cpp_1_1Sensor.html#a09c01999769e1aa83212786bdb553e89", null ],
+    [ "_name", "classhue4cpp_1_1Sensor.html#a1852d6a4f77cd66e902259e3a7735f20", null ],
     [ "_type", "classhue4cpp_1_1Sensor.html#a112a1a87e0a260a647717b5b8123f0a6", null ],
+    [ "Id", "classhue4cpp_1_1Sensor.html#a92c6dfec84d11040c5706fa7176dd5ca", null ],
+    [ "Name", "classhue4cpp_1_1Sensor.html#a83279269ef1f6c94337e4c94597c5ef0", null ],
     [ "OnStateChanged", "classhue4cpp_1_1Sensor.html#a43c787df9a818abc775aa541d4772129", null ]
 ];

@@ -137,7 +137,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af71da33a88cbb186184651a77e3e548f" id="r_af71da33a88cbb186184651a77e3e548f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhue4cpp_1_1Sensor.html">Sensor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#af71da33a88cbb186184651a77e3e548f">operator=</a> (<a class="el" href="classhue4cpp_1_1Sensor.html">Sensor</a> &amp;&amp;)=delete</td></tr>
 <tr class="separator:af71da33a88cbb186184651a77e3e548f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e0be7702ba4ac99a02a7d20df8755c0" id="r_a5e0be7702ba4ac99a02a7d20df8755c0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a5e0be7702ba4ac99a02a7d20df8755c0">getId</a> () const</td></tr>
-<tr class="memdesc:a5e0be7702ba4ac99a02a7d20df8755c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sensor's unique identifier.  <br /></td></tr>
+<tr class="memdesc:a5e0be7702ba4ac99a02a7d20df8755c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compatibility helper – prefer the Id property for new code.  <br /></td></tr>
 <tr class="separator:a5e0be7702ba4ac99a02a7d20df8755c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92b0c704c75c744e58d7bf3287a5f8c2" id="r_a92b0c704c75c744e58d7bf3287a5f8c2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a92b0c704c75c744e58d7bf3287a5f8c2">getType</a> () const =0</td></tr>
 <tr class="memdesc:a92b0c704c75c744e58d7bf3287a5f8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sensor's type.  <br /></td></tr>
@@ -151,9 +151,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbd29a81ad15b16f595410bd94ecd5ef" id="r_afbd29a81ad15b16f595410bd94ecd5ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#afbd29a81ad15b16f595410bd94ecd5ef">initFromJson</a> (const nlohmann::json &amp;json)</td></tr>
 <tr class="memdesc:afbd29a81ad15b16f595410bd94ecd5ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update sensor state from JSON data.  <br /></td></tr>
 <tr class="separator:afbd29a81ad15b16f595410bd94ecd5ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a191c551a985b9089d9b82bec311d41a6" id="r_a191c551a985b9089d9b82bec311d41a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a191c551a985b9089d9b82bec311d41a6">getResourceTypeString</a> () const</td></tr>
+<tr class="memdesc:a191c551a985b9089d9b82bec311d41a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the resource type string for this sensor (e.g., "motion", "temperature")  <br /></td></tr>
+<tr class="separator:a191c551a985b9089d9b82bec311d41a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a92c6dfec84d11040c5706fa7176dd5ca" id="r_a92c6dfec84d11040c5706fa7176dd5ca"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::ReadonlyProperty&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a92c6dfec84d11040c5706fa7176dd5ca">Id</a></td></tr>
+<tr class="memdesc:a92c6dfec84d11040c5706fa7176dd5ca"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classhue4cpp_1_1Sensor.html" title="Abstract base class for all Hue sensors.">Sensor</a> unique identifier (read-only)  <br /></td></tr>
+<tr class="separator:a92c6dfec84d11040c5706fa7176dd5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83279269ef1f6c94337e4c94597c5ef0" id="r_a83279269ef1f6c94337e4c94597c5ef0"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Property&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a83279269ef1f6c94337e4c94597c5ef0">Name</a></td></tr>
+<tr class="memdesc:a83279269ef1f6c94337e4c94597c5ef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get or set the sensor's display name.  <br /></td></tr>
+<tr class="separator:a83279269ef1f6c94337e4c94597c5ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43c787df9a818abc775aa541d4772129" id="r_a43c787df9a818abc775aa541d4772129"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Event&lt; const <a class="el" href="structhue4cpp_1_1ResourceEventArgs.html">ResourceEventArgs</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a43c787df9a818abc775aa541d4772129">OnStateChanged</a></td></tr>
 <tr class="memdesc:a43c787df9a818abc775aa541d4772129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fired whenever the bridge reports a state change for this sensor.  <br /></td></tr>
 <tr class="separator:a43c787df9a818abc775aa541d4772129"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,9 +172,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:abc01ef2802a97a302121d0a18374de02" id="r_abc01ef2802a97a302121d0a18374de02"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#abc01ef2802a97a302121d0a18374de02">Sensor</a> (const std::string &amp;<a class="el" href="discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3">id</a>, <a class="el" href="classhue4cpp_1_1Bridge.html">Bridge</a> *bridge, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a> type)</td></tr>
 <tr class="memdesc:abc01ef2802a97a302121d0a18374de02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected constructor - only derived classes can construct.  <br /></td></tr>
 <tr class="separator:abc01ef2802a97a302121d0a18374de02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a191c551a985b9089d9b82bec311d41a6" id="r_a191c551a985b9089d9b82bec311d41a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a191c551a985b9089d9b82bec311d41a6">getResourceTypeString</a> () const</td></tr>
-<tr class="memdesc:a191c551a985b9089d9b82bec311d41a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the resource type string for API calls.  <br /></td></tr>
-<tr class="separator:a191c551a985b9089d9b82bec311d41a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd844abd6700a5aeaa29a1b77af48baf" id="r_afd844abd6700a5aeaa29a1b77af48baf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhue4cpp_1_1Bridge.html">Bridge</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#afd844abd6700a5aeaa29a1b77af48baf">getBridge</a> () const</td></tr>
 <tr class="memdesc:afd844abd6700a5aeaa29a1b77af48baf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the bridge pointer (for derived classes)  <br /></td></tr>
 <tr class="separator:afd844abd6700a5aeaa29a1b77af48baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,6 +180,8 @@ Protected Member Functions</h2></td></tr>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a09c01999769e1aa83212786bdb553e89" id="r_a09c01999769e1aa83212786bdb553e89"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a09c01999769e1aa83212786bdb553e89">_id</a></td></tr>
 <tr class="separator:a09c01999769e1aa83212786bdb553e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1852d6a4f77cd66e902259e3a7735f20" id="r_a1852d6a4f77cd66e902259e3a7735f20"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a1852d6a4f77cd66e902259e3a7735f20">_name</a></td></tr>
+<tr class="separator:a1852d6a4f77cd66e902259e3a7735f20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb77fe1d070e9a2fc321998148be241" id="r_afeb77fe1d070e9a2fc321998148be241"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhue4cpp_1_1Bridge.html">Bridge</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#afeb77fe1d070e9a2fc321998148be241">_bridge</a></td></tr>
 <tr class="separator:afeb77fe1d070e9a2fc321998148be241"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a112a1a87e0a260a647717b5b8123f0a6" id="r_a112a1a87e0a260a647717b5b8123f0a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a112a1a87e0a260a647717b5b8123f0a6">_type</a></td></tr>
@@ -188,7 +196,7 @@ Friends</h2></td></tr>
 <div class="textblock"><p>Abstract base class for all Hue sensors. </p>
 <p>Sensors are ObservableObjects. Subscribing to OnStateChanged gives real-time property-change notifications whenever the bridge reports a new reading via SSE. </p>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00028">28</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00030">30</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a032cf837ec86e34c19df84fec6ea4546" name="a032cf837ec86e34c19df84fec6ea4546"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a032cf837ec86e34c19df84fec6ea4546">&#9670;&#160;</a></span>~Sensor()</h2>
@@ -319,7 +327,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00035">35</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00037">37</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
 
 </div>
 </div>
@@ -350,9 +358,9 @@ Friends</h2></td></tr>
 <p>Get the bridge pointer (for derived classes) </p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to parent bridge (may be nullptr) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00069">69</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00067">67</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00105">_bridge</a>.</p>
+<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00137">_bridge</a>.</p>
 
 </div>
 </div>
@@ -361,6 +369,9 @@ Friends</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string hue4cpp::Sensor::getId </td>
@@ -369,14 +380,19 @@ Friends</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Get the sensor's unique identifier. </p>
+<p>Compatibility helper – prefer the Id property for new code. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classhue4cpp_1_1Sensor.html" title="Abstract base class for all Hue sensors.">Sensor</a> ID </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00040">40</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00076">76</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
-<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00104">_id</a>.</p>
+<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00135">_id</a>.</p>
 
 </div>
 </div>
@@ -385,9 +401,6 @@ Friends</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string hue4cpp::Sensor::getResourceTypeString </td>
@@ -396,21 +409,16 @@ Friends</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Get the resource type string for API calls. </p>
-<dl class="section return"><dt>Returns</dt><dd>Resource type string (e.g., "motion", "temperature") </dd></dl>
+<p>Get the resource type string for this sensor (e.g., "motion", "temperature") </p>
+<dl class="section return"><dt>Returns</dt><dd>API resource type string </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00044">44</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00042">42</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00106">_type</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a18d4109c308ad7f88e2b3a9c7078cf3e">hue4cpp::BellButton</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a87b7760f14fbff78d8819291f36ab9a0">hue4cpp::Button</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a95432e27727c4639d8e6bf6867c26ac1">hue4cpp::CameraMotion</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a323d4eb70b252acb4a04eaf9e0882597">hue4cpp::Geolocation</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a7e13b05ee34f728aa8b3499e3200fbf3">hue4cpp::LightLevel</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a8226588f03da49b857e5ddf8c508dd2d">hue4cpp::Motion</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a7552e359576879febaaed23cb1d5cee1">hue4cpp::RelativeRotary</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5aba46030b4636ce895023d71a54396eb7">hue4cpp::Tamper</a>, and <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5aee7a8e262285ed49ea1b4e4ae11525bd">hue4cpp::Temperature</a>.</p>
+<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00138">_type</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a18d4109c308ad7f88e2b3a9c7078cf3e">hue4cpp::BellButton</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a87b7760f14fbff78d8819291f36ab9a0">hue4cpp::Button</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a95432e27727c4639d8e6bf6867c26ac1">hue4cpp::CameraMotion</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a323d4eb70b252acb4a04eaf9e0882597">hue4cpp::Geolocation</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a7e13b05ee34f728aa8b3499e3200fbf3">hue4cpp::LightLevel</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a8226588f03da49b857e5ddf8c508dd2d">hue4cpp::Motion</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5a7552e359576879febaaed23cb1d5cee1">hue4cpp::RelativeRotary</a>, <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5aba46030b4636ce895023d71a54396eb7">hue4cpp::Tamper</a>, and <a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5aee7a8e262285ed49ea1b4e4ae11525bd">hue4cpp::Temperature</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00073">isEnabled()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00105">refresh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00071">isEnabled()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00103">refresh()</a>.</p>
 
 </div>
 </div>
@@ -469,9 +477,9 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is an internal method used by <a class="el" href="classhue4cpp_1_1Bridge.html" title="Represents a Philips Hue Bridge.">Bridge</a> to populate sensor data </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00119">119</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00117">117</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00105">_bridge</a>, <a class="el" href="sensor__base_8h_source.html#l00104">_id</a>, <a class="el" href="bridge_8cpp_source.html#l00358">hue4cpp::Bridge::getStateManager()</a>, <a class="el" href="json__utils_8h_source.html#l00045">hue4cpp::json_utils::getValue()</a>, and <a class="el" href="state_8cpp_source.html#l00146">hue4cpp::StateManager::setResourceState()</a>.</p>
+<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00137">_bridge</a>, <a class="el" href="sensor__base_8h_source.html#l00135">_id</a>, <a class="el" href="sensor__base_8h_source.html#l00136">_name</a>, <a class="el" href="bridge_8cpp_source.html#l00358">hue4cpp::Bridge::getStateManager()</a>, <a class="el" href="json__utils_8h_source.html#l00045">hue4cpp::json_utils::getValue()</a>, and <a class="el" href="state_8cpp_source.html#l00146">hue4cpp::StateManager::setResourceState()</a>.</p>
 
 </div>
 </div>
@@ -493,9 +501,9 @@ Friends</h2></td></tr>
 <p>Check if sensor is enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if enabled, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00073">73</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00071">71</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00105">_bridge</a>, <a class="el" href="sensor__base_8h_source.html#l00104">_id</a>, <a class="el" href="sensor__base_8cpp_source.html#l00044">getResourceTypeString()</a>, <a class="el" href="bridge_8cpp_source.html#l00424">hue4cpp::Bridge::getSensorState()</a>, and <a class="el" href="json__utils_8cpp_source.html#l00006">hue4cpp::json_utils::parse()</a>.</p>
+<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00137">_bridge</a>, <a class="el" href="sensor__base_8h_source.html#l00135">_id</a>, <a class="el" href="sensor__base_8cpp_source.html#l00042">getResourceTypeString()</a>, <a class="el" href="bridge_8cpp_source.html#l00424">hue4cpp::Bridge::getSensorState()</a>, and <a class="el" href="json__utils_8cpp_source.html#l00006">hue4cpp::json_utils::parse()</a>.</p>
 
 </div>
 </div>
@@ -569,9 +577,9 @@ Friends</h2></td></tr>
 <p>Refresh sensor state from bridge. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structhue4cpp_1_1Result.html" title="Result type for operations that can fail.">Result</a> indicating success or failure </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00105">105</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8cpp_source.html#l00103">103</a> of file <a class="el" href="sensor__base_8cpp_source.html">sensor_base.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00105">_bridge</a>, <a class="el" href="sensor__base_8h_source.html#l00104">_id</a>, <a class="el" href="sensor__base_8cpp_source.html#l00044">getResourceTypeString()</a>, <a class="el" href="bridge_8cpp_source.html#l00424">hue4cpp::Bridge::getSensorState()</a>, <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a627251310d3384b591e4138be21145d5">hue4cpp::InvalidParameter</a>, and <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a47423b8444592efbe331550c5620e821">hue4cpp::NetworkError</a>.</p>
+<p class="reference">References <a class="el" href="sensor__base_8h_source.html#l00137">_bridge</a>, <a class="el" href="sensor__base_8h_source.html#l00135">_id</a>, <a class="el" href="sensor__base_8cpp_source.html#l00042">getResourceTypeString()</a>, <a class="el" href="bridge_8cpp_source.html#l00424">hue4cpp::Bridge::getSensorState()</a>, <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a627251310d3384b591e4138be21145d5">hue4cpp::InvalidParameter</a>, and <a class="el" href="namespacehue4cpp.html#a46a73209f107f0236824be499a5e3680a47423b8444592efbe331550c5620e821">hue4cpp::NetworkError</a>.</p>
 
 </div>
 </div>
@@ -596,7 +604,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00133">133</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00167">167</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
 </div>
 </div>
@@ -621,9 +629,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00105">105</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00137">137</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00069">getBridge()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00119">initFromJson()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00073">isEnabled()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00105">refresh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00067">getBridge()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00117">initFromJson()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00071">isEnabled()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00103">refresh()</a>.</p>
 
 </div>
 </div>
@@ -647,9 +655,35 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00104">104</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00135">135</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00040">getId()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00119">initFromJson()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00073">isEnabled()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00105">refresh()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sensor__base_8h_source.html#l00076">getId()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00117">initFromJson()</a>, <a class="el" href="sensor__base_8cpp_source.html#l00071">isEnabled()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00103">refresh()</a>.</p>
+
+</div>
+</div>
+<a id="a1852d6a4f77cd66e902259e3a7735f20" name="a1852d6a4f77cd66e902259e3a7735f20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1852d6a4f77cd66e902259e3a7735f20">&#9670;&#160;</a></span>_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string hue4cpp::Sensor::_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00136">136</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00117">initFromJson()</a>.</p>
 
 </div>
 </div>
@@ -673,9 +707,70 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00106">106</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00138">138</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00044">getResourceTypeString()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sensor__base_8cpp_source.html#l00042">getResourceTypeString()</a>.</p>
+
+</div>
+</div>
+<a id="a92c6dfec84d11040c5706fa7176dd5ca" name="a92c6dfec84d11040c5706fa7176dd5ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92c6dfec84d11040c5706fa7176dd5ca">&#9670;&#160;</a></span>Id</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ReactiveLitepp::ReadonlyProperty&lt;std::string&gt; hue4cpp::Sensor::Id</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">        [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> <a class="code hl_variable" href="classhue4cpp_1_1Sensor.html#a09c01999769e1aa83212786bdb553e89">_id</a>; }</div>
+<div class="line">    }</div>
+<div class="ttc" id="aclasshue4cpp_1_1Sensor_html_a09c01999769e1aa83212786bdb553e89"><div class="ttname"><a href="classhue4cpp_1_1Sensor.html#a09c01999769e1aa83212786bdb553e89">hue4cpp::Sensor::_id</a></div><div class="ttdeci">std::string _id</div><div class="ttdef"><b>Definition</b> <a href="sensor__base_8h_source.html#l00135">sensor_base.h:135</a></div></div>
+</div><!-- fragment -->
+<p><a class="el" href="classhue4cpp_1_1Sensor.html" title="Abstract base class for all Hue sensors.">Sensor</a> unique identifier (read-only) </p>
+
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00046">46</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+
+</div>
+</div>
+<a id="a83279269ef1f6c94337e4c94597c5ef0" name="a83279269ef1f6c94337e4c94597c5ef0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83279269ef1f6c94337e4c94597c5ef0">&#9670;&#160;</a></span>Name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ReactiveLitepp::Property&lt;std::string&gt; hue4cpp::Sensor::Name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">        [<span class="keyword">this</span>]() { <span class="keywordflow">return</span> <a class="code hl_variable" href="classhue4cpp_1_1Sensor.html#a1852d6a4f77cd66e902259e3a7735f20">_name</a>; },</div>
+<div class="line">        [<span class="keyword">this</span>](std::string&amp; value) {</div>
+<div class="line">            <span class="keywordflow">try</span> {</div>
+<div class="line">                NotifyPropertyChanging&lt;&amp;Sensor::Name&gt;();</div>
+<div class="line">                setName(value);</div>
+<div class="line">                NotifyPropertyChanged&lt;&amp;Sensor::Name&gt;();</div>
+<div class="line">            }</div>
+<div class="line">            <span class="keywordflow">catch</span> (<span class="keyword">const</span> <a class="code hl_class" href="classhue4cpp_1_1HueException.html">HueException</a>&amp;) { <span class="keywordflow">throw</span>; }</div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="ttc" id="aclasshue4cpp_1_1HueException_html"><div class="ttname"><a href="classhue4cpp_1_1HueException.html">hue4cpp::HueException</a></div><div class="ttdoc">Base exception class for all hue4cpp exceptions.</div><div class="ttdef"><b>Definition</b> <a href="exceptions_8h_source.html#l00017">exceptions.h:17</a></div></div>
+<div class="ttc" id="aclasshue4cpp_1_1Sensor_html_a1852d6a4f77cd66e902259e3a7735f20"><div class="ttname"><a href="classhue4cpp_1_1Sensor.html#a1852d6a4f77cd66e902259e3a7735f20">hue4cpp::Sensor::_name</a></div><div class="ttdeci">std::string _name</div><div class="ttdef"><b>Definition</b> <a href="sensor__base_8h_source.html#l00136">sensor_base.h:136</a></div></div>
+</div><!-- fragment -->
+<p>Get or set the sensor's display name. </p>
+<p>Assigning a new value PUTs <code>{"metadata"</code>:{"name":"\u2026"}} to the bridge immediately. The bridge confirms the rename via an SSE event which updates the backing field and fires <code>PropertyChanged</code> a second time. </p><dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classhue4cpp_1_1InvalidParameterException.html" title="Exception thrown when invalid parameters are provided.">InvalidParameterException</a></td><td>if the name is empty </td></tr>
+    <tr><td class="paramname"><a class="el" href="classhue4cpp_1_1BridgeNotReachableException.html" title="Exception thrown when the bridge is not reachable.">BridgeNotReachableException</a></td><td>if the bridge is not available </td></tr>
+    <tr><td class="paramname"><a class="el" href="classhue4cpp_1_1AuthenticationException.html" title="Exception thrown when authentication fails.">AuthenticationException</a></td><td>if not authenticated </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00060">60</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
 </div>
 </div>
@@ -696,7 +791,7 @@ Friends</h2></td></tr>
 <div class="line">    [](<span class="keyword">const</span> <a class="code hl_struct" href="structhue4cpp_1_1ResourceEventArgs.html">ResourceEventArgs</a>&amp; e) { ... });</div>
 <div class="ttc" id="astructhue4cpp_1_1ResourceEventArgs_html"><div class="ttname"><a href="structhue4cpp_1_1ResourceEventArgs.html">hue4cpp::ResourceEventArgs</a></div><div class="ttdoc">Unified event args for StateManager::OnResourceEvent.</div><div class="ttdef"><b>Definition</b> <a href="state_8h_source.html#l00096">state.h:96</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00081">81</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sensor__base_8h_source.html#l00112">112</a> of file <a class="el" href="sensor__base_8h_source.html">sensor_base.h</a>.</p>
 
 </div>
 </div>

@@ -84,8 +84,8 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classhue4cpp_1_1NetworkException.html",
-"index.html",
-"structhue4cpp_1_1RGBColor.html#a751a6b5e91cb07ef074140cc3dbd640e"
+"http__client_8cpp.html",
+"structhue4cpp_1_1LightStateChangedArgs.html#ae90df70da48822e27b2fc501f236b920"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
