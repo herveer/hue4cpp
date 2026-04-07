@@ -142,6 +142,7 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::IsOn>();
 					value ? turnOn() : turnOff();
+					// NotifyPropertyChanged call when the sse event is received
 				}
 				catch (const HueException&) {
 				    throw;
@@ -169,6 +170,7 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::Brightness>();
 					setBrightness(value);
+					// NotifyPropertyChanged call when the sse event is received
 				}
 				catch (const HueException&) {
 					throw;
@@ -195,7 +197,8 @@ namespace hue4cpp {
 			[this](XYColor& value) {
 				try {
 					NotifyPropertyChanging<&Light::XYColor_>();
-					setColor(value);
+					setColor(value);					
+					// NotifyPropertyChanged call when the sse event is received
 				}
 				catch (const HueException&) {
 					throw;
@@ -223,6 +226,7 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::RGBColor_>();
 					setColor(value);
+					// NotifyPropertyChanged call when the sse event is received
 				}
 				catch (const HueException&) {
 					throw;
@@ -250,6 +254,7 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::ColorTemperature_>();
 					setColorTemperature(value);
+					// NotifyPropertyChanged call when the sse event is received
 				}
 				catch (const HueException&) {
 					throw;
