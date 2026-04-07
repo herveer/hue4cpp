@@ -142,7 +142,6 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::IsOn>();
 					value ? turnOn() : turnOff();
-					NotifyPropertyChanged<&Light::IsOn>();
 				}
 				catch (const HueException&) {
 				    throw;
@@ -170,7 +169,6 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::Brightness>();
 					setBrightness(value);
-					NotifyPropertyChanged<&Light::Brightness>();
 				}
 				catch (const HueException&) {
 					throw;
@@ -198,7 +196,6 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::XYColor_>();
 					setColor(value);
-					NotifyPropertyChanged<&Light::XYColor_>();
 				}
 				catch (const HueException&) {
 					throw;
@@ -226,7 +223,6 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::RGBColor_>();
 					setColor(value);
-					NotifyPropertyChanged<&Light::RGBColor_>();
 				}
 				catch (const HueException&) {
 					throw;
@@ -254,7 +250,6 @@ namespace hue4cpp {
 				try {
 					NotifyPropertyChanging<&Light::ColorTemperature_>();
 					setColorTemperature(value);
-					NotifyPropertyChanged<&Light::ColorTemperature_>();
 				}
 				catch (const HueException&) {
 					throw;
