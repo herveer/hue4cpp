@@ -89,13 +89,14 @@ namespace hue4cpp {
 			updateFromEvent(sse_event.data);
 			};
 
-		_sse_client->PropertyChanged += [this]([[maybe_unused]] ReactiveLitepp::ObservableObject& obj, ReactiveLitepp::PropertyChangedArgs args) {
+		_sse_client->PropertyChanged += [this](ReactiveLitepp::ObservableObject& obj, ReactiveLitepp::PropertyChangedArgs args) {
 			if (args.PropertyName() != nameof::nameof_member<&SSEClient::IsConnected>()) {
 				return;
 			}
 
 			clearCache();
-			if (_sse_client && _sse_client->IsConnected) {
+			auto& client = static_cast<SSEClient&>(obj);
+			if (client.IsConnected) {
 				OnResourceEvent.Notify(ResourceEventArgs(EventType::BridgeConnected, ""));
 			}
 			else {
