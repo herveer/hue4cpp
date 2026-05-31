@@ -95,8 +95,7 @@ namespace hue4cpp {
 			}
 
 			clearCache();
-			auto& client = static_cast<SSEClient&>(obj);
-			if (client.IsConnected) {
+			if (_sse_client && client->IsConnected) {
 				OnResourceEvent.Notify(ResourceEventArgs(EventType::BridgeConnected, ""));
 			}
 			else {
