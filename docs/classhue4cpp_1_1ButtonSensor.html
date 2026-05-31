@@ -121,6 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad8978ded50d2450c31553702aef81c2f" id="r_ad8978ded50d2450c31553702aef81c2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacehue4cpp.html#a735a4f15dfb3f6e12a6d1bfd4b3f43f5">SensorType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1ButtonSensor.html#ad8978ded50d2450c31553702aef81c2f">getType</a> () const override</td></tr>
 <tr class="memdesc:ad8978ded50d2450c31553702aef81c2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the sensor type.  <br /></td></tr>
 <tr class="separator:ad8978ded50d2450c31553702aef81c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac245858cc8902526de708fc9768fdf4" id="r_aac245858cc8902526de708fc9768fdf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1ButtonSensor.html#aac245858cc8902526de708fc9768fdf4">initFromJson</a> (const nlohmann::json &amp;json) override</td></tr>
+<tr class="memdesc:aac245858cc8902526de708fc9768fdf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize button sensor state from JSON data.  <br /></td></tr>
+<tr class="separator:aac245858cc8902526de708fc9768fdf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classhue4cpp_1_1Sensor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classhue4cpp_1_1Sensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classhue4cpp_1_1Sensor.html">hue4cpp::Sensor</a></td></tr>
 <tr class="memitem:a032cf837ec86e34c19df84fec6ea4546 inherit pub_methods_classhue4cpp_1_1Sensor" id="r_a032cf837ec86e34c19df84fec6ea4546"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a032cf837ec86e34c19df84fec6ea4546">~Sensor</a> ()=default</td></tr>
 <tr class="memdesc:a032cf837ec86e34c19df84fec6ea4546 inherit pub_methods_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor.  <br /></td></tr>
@@ -142,9 +145,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac83e1d9af010538c33065aebf1795e49 inherit pub_methods_classhue4cpp_1_1Sensor" id="r_ac83e1d9af010538c33065aebf1795e49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structhue4cpp_1_1Result.html">Result</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#ac83e1d9af010538c33065aebf1795e49">refresh</a> ()</td></tr>
 <tr class="memdesc:ac83e1d9af010538c33065aebf1795e49 inherit pub_methods_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh sensor state from bridge.  <br /></td></tr>
 <tr class="separator:ac83e1d9af010538c33065aebf1795e49 inherit pub_methods_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbd29a81ad15b16f595410bd94ecd5ef inherit pub_methods_classhue4cpp_1_1Sensor" id="r_afbd29a81ad15b16f595410bd94ecd5ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#afbd29a81ad15b16f595410bd94ecd5ef">initFromJson</a> (const nlohmann::json &amp;json)</td></tr>
-<tr class="memdesc:afbd29a81ad15b16f595410bd94ecd5ef inherit pub_methods_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update sensor state from JSON data.  <br /></td></tr>
-<tr class="separator:afbd29a81ad15b16f595410bd94ecd5ef inherit pub_methods_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a191c551a985b9089d9b82bec311d41a6 inherit pub_methods_classhue4cpp_1_1Sensor" id="r_a191c551a985b9089d9b82bec311d41a6"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a191c551a985b9089d9b82bec311d41a6">getResourceTypeString</a> () const</td></tr>
 <tr class="memdesc:a191c551a985b9089d9b82bec311d41a6 inherit pub_methods_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the resource type string for this sensor (e.g., "motion", "temperature")  <br /></td></tr>
 <tr class="separator:a191c551a985b9089d9b82bec311d41a6 inherit pub_methods_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +160,13 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7fcae789610df0d390abed1689f39df4" id="r_a7fcae789610df0d390abed1689f39df4"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::ReadonlyProperty&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1ButtonSensor.html#a7fcae789610df0d390abed1689f39df4">EventSequence</a></td></tr>
 <tr class="memdesc:a7fcae789610df0d390abed1689f39df4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Monotonically increasing event counter (reactive, read-only)  <br /></td></tr>
 <tr class="separator:a7fcae789610df0d390abed1689f39df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9223bec59673264c7f1a2f2001f25d4" id="r_ab9223bec59673264c7f1a2f2001f25d4"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1ButtonSensor.html#ab9223bec59673264c7f1a2f2001f25d4">Pressed</a></td></tr>
+<tr class="memdesc:ab9223bec59673264c7f1a2f2001f25d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Events fired for each button event type.  <br /></td></tr>
+<tr class="separator:ab9223bec59673264c7f1a2f2001f25d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b575e61696ac92a6d87a86196d15a1a" id="r_a9b575e61696ac92a6d87a86196d15a1a"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1ButtonSensor.html#a9b575e61696ac92a6d87a86196d15a1a">Repeated</a></td></tr>
+<tr class="separator:a9b575e61696ac92a6d87a86196d15a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e5f4fd23a782fb4b0044e2f8a79cdc" id="r_a26e5f4fd23a782fb4b0044e2f8a79cdc"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1ButtonSensor.html#a26e5f4fd23a782fb4b0044e2f8a79cdc">Released</a></td></tr>
+<tr class="separator:a26e5f4fd23a782fb4b0044e2f8a79cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classhue4cpp_1_1Sensor"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classhue4cpp_1_1Sensor')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classhue4cpp_1_1Sensor.html">hue4cpp::Sensor</a></td></tr>
 <tr class="memitem:a92c6dfec84d11040c5706fa7176dd5ca inherit pub_attribs_classhue4cpp_1_1Sensor" id="r_a92c6dfec84d11040c5706fa7176dd5ca"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::ReadonlyProperty&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a92c6dfec84d11040c5706fa7176dd5ca">Id</a></td></tr>
 <tr class="memdesc:a92c6dfec84d11040c5706fa7176dd5ca inherit pub_attribs_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classhue4cpp_1_1Sensor.html" title="Abstract base class for all Hue sensors.">Sensor</a> unique identifier (read-only)  <br /></td></tr>
@@ -167,6 +174,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a83279269ef1f6c94337e4c94597c5ef0 inherit pub_attribs_classhue4cpp_1_1Sensor" id="r_a83279269ef1f6c94337e4c94597c5ef0"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Property&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a83279269ef1f6c94337e4c94597c5ef0">Name</a></td></tr>
 <tr class="memdesc:a83279269ef1f6c94337e4c94597c5ef0 inherit pub_attribs_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get or set the sensor's display name.  <br /></td></tr>
 <tr class="separator:a83279269ef1f6c94337e4c94597c5ef0 inherit pub_attribs_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b1605edc5b6314b28db1271506e6fe8 inherit pub_attribs_classhue4cpp_1_1Sensor" id="r_a1b1605edc5b6314b28db1271506e6fe8"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::ReadonlyProperty&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a1b1605edc5b6314b28db1271506e6fe8">Enabled</a></td></tr>
+<tr class="memdesc:a1b1605edc5b6314b28db1271506e6fe8 inherit pub_attribs_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the sensor is enabled on the bridge (reactive, read-only)  <br /></td></tr>
+<tr class="separator:a1b1605edc5b6314b28db1271506e6fe8 inherit pub_attribs_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43c787df9a818abc775aa541d4772129 inherit pub_attribs_classhue4cpp_1_1Sensor" id="r_a43c787df9a818abc775aa541d4772129"><td class="memItemLeft" align="right" valign="top">ReactiveLitepp::Event&lt; const <a class="el" href="structhue4cpp_1_1ResourceEventArgs.html">ResourceEventArgs</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a43c787df9a818abc775aa541d4772129">OnStateChanged</a></td></tr>
 <tr class="memdesc:a43c787df9a818abc775aa541d4772129 inherit pub_attribs_classhue4cpp_1_1Sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fired whenever the bridge reports a state change for this sensor.  <br /></td></tr>
 <tr class="separator:a43c787df9a818abc775aa541d4772129 inherit pub_attribs_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -188,6 +198,8 @@ Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classhue4cpp_1_1Sensor"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classhue4cpp_1_1Sensor')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classhue4cpp_1_1Sensor.html">hue4cpp::Sensor</a></td></tr>
 <tr class="memitem:a09c01999769e1aa83212786bdb553e89 inherit pro_attribs_classhue4cpp_1_1Sensor" id="r_a09c01999769e1aa83212786bdb553e89"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a09c01999769e1aa83212786bdb553e89">_id</a></td></tr>
 <tr class="separator:a09c01999769e1aa83212786bdb553e89 inherit pro_attribs_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29fb53c3e1511e19ee69c6d2fca9ca45 inherit pro_attribs_classhue4cpp_1_1Sensor" id="r_a29fb53c3e1511e19ee69c6d2fca9ca45"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a29fb53c3e1511e19ee69c6d2fca9ca45">_enabled</a> = false</td></tr>
+<tr class="separator:a29fb53c3e1511e19ee69c6d2fca9ca45 inherit pro_attribs_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1852d6a4f77cd66e902259e3a7735f20 inherit pro_attribs_classhue4cpp_1_1Sensor" id="r_a1852d6a4f77cd66e902259e3a7735f20"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#a1852d6a4f77cd66e902259e3a7735f20">_name</a></td></tr>
 <tr class="separator:a1852d6a4f77cd66e902259e3a7735f20 inherit pro_attribs_classhue4cpp_1_1Sensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb77fe1d070e9a2fc321998148be241 inherit pro_attribs_classhue4cpp_1_1Sensor" id="r_afeb77fe1d070e9a2fc321998148be241"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classhue4cpp_1_1Bridge.html">Bridge</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Sensor.html#afeb77fe1d070e9a2fc321998148be241">_bridge</a></td></tr>
@@ -275,6 +287,46 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="aac245858cc8902526de708fc9768fdf4" name="aac245858cc8902526de708fc9768fdf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac245858cc8902526de708fc9768fdf4">&#9670;&#160;</a></span>initFromJson()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void hue4cpp::ButtonSensor::initFromJson </td>
+          <td>(</td>
+          <td class="paramtype">const nlohmann::json &amp;&#160;</td>
+          <td class="paramname"><em>json</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize button sensor state from JSON data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">json</td><td>JSON object containing sensor data from API </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classhue4cpp_1_1Sensor.html#afbd29a81ad15b16f595410bd94ecd5ef">hue4cpp::Sensor</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="button__sensor_8cpp_source.html#l00027">27</a> of file <a class="el" href="button__sensor_8cpp_source.html">button_sensor.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="json__utils_8h_source.html#l00045">hue4cpp::json_utils::getValue()</a>, and <a class="el" href="sensor__base_8cpp_source.html#l00089">hue4cpp::Sensor::initFromJson()</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Symbol Documentation</h2>
 <a id="a644eecdcd6c05c66b1505bc66985f9da" name="a644eecdcd6c05c66b1505bc66985f9da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a644eecdcd6c05c66b1505bc66985f9da">&#9670;&#160;</a></span>Bridge</h2>
@@ -296,7 +348,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00056">56</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00067">67</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -318,7 +370,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 <p>Button control ID on multi-button devices (reactive, read-only) </p>
 
-<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00040">40</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00046">46</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -339,7 +391,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 <p>Monotonically increasing event counter (reactive, read-only) </p>
 
-<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00045">45</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00051">51</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +412,57 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- fragment -->
 <p>Last button event (reactive, read-only) </p>
 
-<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00035">35</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00041">41</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
+
+</div>
+</div>
+<a id="ab9223bec59673264c7f1a2f2001f25d4" name="ab9223bec59673264c7f1a2f2001f25d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9223bec59673264c7f1a2f2001f25d4">&#9670;&#160;</a></span>Pressed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ReactiveLitepp::Event hue4cpp::ButtonSensor::Pressed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Events fired for each button event type. </p>
+
+<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00056">56</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
+
+</div>
+</div>
+<a id="a26e5f4fd23a782fb4b0044e2f8a79cdc" name="a26e5f4fd23a782fb4b0044e2f8a79cdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26e5f4fd23a782fb4b0044e2f8a79cdc">&#9670;&#160;</a></span>Released</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ReactiveLitepp::Event hue4cpp::ButtonSensor::Released</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00058">58</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
+
+</div>
+</div>
+<a id="a9b575e61696ac92a6d87a86196d15a1a" name="a9b575e61696ac92a6d87a86196d15a1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b575e61696ac92a6d87a86196d15a1a">&#9670;&#160;</a></span>Repeated</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ReactiveLitepp::Event hue4cpp::ButtonSensor::Repeated</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="button__sensor_8h_source.html#l00057">57</a> of file <a class="el" href="button__sensor_8h_source.html">button_sensor.h</a>.</p>
 
 </div>
 </div>
