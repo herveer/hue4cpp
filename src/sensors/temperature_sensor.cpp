@@ -12,14 +12,32 @@ namespace hue4cpp {
 		return SensorType::Temperature;
 	}
 
+	void TemperatureSensor::initFromJson(const nlohmann::json& json) {
+		Sensor::initFromJson(json);
+		if (json.contains("temperature") && json["temperature"].is_object()) {
+			auto temp_obj = json["temperature"];
+			int temp_raw = json_utils::getValueOr<int>(temp_obj, "temperature", 0);
+			auto newTemp = temp_raw / 100.0f;
+			SetPropertyValueAndNotify<&TemperatureSensor::Temperature>(_temperature, newTemp);
+			auto newValid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", _temperature_valid);
+			SetPropertyValueAndNotify<&TemperatureSensor::TemperatureValid>(_temperature_valid, newValid);
+		}
+	}
+
 	void TemperatureSensor::notifyStateProperties(const nlohmann::json& delta) {
-		if (delta.contains("temperature")) {
-			auto temp_obj = delta["temperature"];
-			int temp_raw       = json_utils::getValueOr<int>(temp_obj, "temperature",       0);
-			_temperature       = temp_raw / 100.0f;
-			_temperature_valid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", _temperature_valid);
-			NotifyPropertyChanged<&TemperatureSensor::Temperature>();
-			NotifyPropertyChanged<&TemperatureSensor::TemperatureValid>();
+		try {
+			if (delta.contains("temperature")) {
+				auto temp_obj = delta["temperature"];
+				int temp_raw = json_utils::getValueOr<int>(temp_obj, "temperature", 0);
+				auto newTemp = temp_raw / 100.0f;
+				SetPropertyValueAndNotify<&TemperatureSensor::Temperature>(_temperature, newTemp);
+				auto newValid = json_utils::getValueOr<bool>(temp_obj, "temperature_valid", _temperature_valid);
+				SetPropertyValueAndNotify<&TemperatureSensor::TemperatureValid>(_temperature_valid, newValid);
+			}
+		}
+		catch (...) {
+			SetPropertyValueAndNotify<&TemperatureSensor::Temperature>(_temperature, _temperature);
+			SetPropertyValueAndNotify<&TemperatureSensor::TemperatureValid>(_temperature_valid, _temperature_valid);
 		}
 	}
 

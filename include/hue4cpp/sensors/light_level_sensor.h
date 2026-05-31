@@ -28,6 +28,12 @@ public:
      */
     SensorType getType() const override;
 
+    /**
+     * @brief Initialize light level sensor state from JSON data
+     * @param json JSON object containing sensor data from API
+     */
+    void initFromJson(const nlohmann::json& json) override;
+
     /** @brief Illuminance in raw units (logarithmic scale) (reactive, read-only) */
     ReactiveLitepp::ReadonlyProperty<uint32_t> LightLevel{
         [this]() { return _light_level; }

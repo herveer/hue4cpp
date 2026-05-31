@@ -12,10 +12,23 @@ namespace hue4cpp {
 		return SensorType::Geolocation;
 	}
 
+	void GeolocationSensor::initFromJson(const nlohmann::json& json) {
+		Sensor::initFromJson(json);
+		if (json.contains("is_configured")) {
+			auto newVal = json_utils::getValueOr<bool>(json, "is_configured", _is_configured);
+			SetPropertyValueAndNotify<&GeolocationSensor::IsConfigured>(_is_configured, newVal);
+		}
+	}
+
 	void GeolocationSensor::notifyStateProperties(const nlohmann::json& delta) {
-		if (delta.contains("is_configured")) {
-			_is_configured = json_utils::getValueOr<bool>(delta, "is_configured", _is_configured);
-			NotifyPropertyChanged<&GeolocationSensor::IsConfigured>();
+		try {
+			if (delta.contains("is_configured")) {
+				auto newVal = json_utils::getValueOr<bool>(delta, "is_configured", _is_configured);
+				SetPropertyValueAndNotify<&GeolocationSensor::IsConfigured>(_is_configured, newVal);
+			}
+		}
+		catch (...) {
+			SetPropertyValueAndNotify<&GeolocationSensor::IsConfigured>(_is_configured, _is_configured);
 		}
 	}
 

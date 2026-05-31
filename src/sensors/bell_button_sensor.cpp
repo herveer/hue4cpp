@@ -24,14 +24,50 @@ namespace hue4cpp {
 		return SensorType::BellButton;
 	}
 
-	void BellButtonSensor::notifyStateProperties(const nlohmann::json& delta) {
-		if (delta.contains("button")) {
-			auto button_obj = delta["button"];
+	void BellButtonSensor::initFromJson(const nlohmann::json& json) {
+		Sensor::initFromJson(json);
+		if (json.contains("button") && json["button"].is_object()) {
+			auto button_obj = json["button"];
 			std::string event_str = json_utils::getValueOr<std::string>(button_obj, "last_event", "");
-			_last_event     = parseButtonEvent(event_str);
-			_event_sequence = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
-			NotifyPropertyChanged<&BellButtonSensor::LastEvent>();
-			NotifyPropertyChanged<&BellButtonSensor::EventSequence>();
+			auto newEvent = parseButtonEvent(event_str);
+			SetPropertyValueAndNotify<&BellButtonSensor::LastEvent>(_last_event, newEvent);
+			auto newSeq = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
+			SetPropertyValueAndNotify<&BellButtonSensor::EventSequence>(_event_sequence, newSeq);
+		}
+	}
+
+	void BellButtonSensor::notifyStateProperties(const nlohmann::json& delta) {
+		try {
+			if (delta.contains("button")) {
+				auto button_obj = delta["button"];
+				std::string event_str = json_utils::getValueOr<std::string>(button_obj, "last_event", "");
+				auto newEvent = parseButtonEvent(event_str);
+				SetPropertyValueAndNotify<&BellButtonSensor::LastEvent>(_last_event, newEvent);
+				auto newSeq = json_utils::getValueOr<uint32_t>(button_obj, "event_sequence", _event_sequence);
+				SetPropertyValueAndNotify<&BellButtonSensor::EventSequence>(_event_sequence, newSeq);
+
+				// Fire specific events based on the button event type
+				switch (newEvent) {
+				case ButtonEvent::InitialPress:
+					Pressed.Notify();
+					break;
+				case ButtonEvent::ShortRelease:
+				case ButtonEvent::LongRelease:
+					Released.Notify();
+					break;
+				case ButtonEvent::LongPress:
+				case ButtonEvent::DoubleShortRelease:
+				case ButtonEvent::Repeat:
+					Repeated.Notify();
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		catch (...) {
+			SetPropertyValueAndNotify<&BellButtonSensor::LastEvent>(_last_event, _last_event);
+			SetPropertyValueAndNotify<&BellButtonSensor::EventSequence>(_event_sequence, _event_sequence);
 		}
 	}
 

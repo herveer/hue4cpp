@@ -82,6 +82,13 @@ public:
     virtual SensorType getType() const = 0;
 
     /**
+     * @brief Whether the sensor is enabled on the bridge (reactive, read-only)
+     */
+    ReactiveLitepp::ReadonlyProperty<bool> Enabled{
+        [this]() { return _enabled; }
+    };
+
+    /**
      * @brief Check if sensor is enabled
      * @return true if enabled, false otherwise
      */
@@ -96,9 +103,10 @@ public:
     /**
      * @brief Update sensor state from JSON data
      * @param json JSON object containing sensor data from API
-     * @note This is an internal method used by Bridge to populate sensor data
+     * @note This is an internal method used by Bridge to populate sensor data.
+     *       Derived classes override to parse type-specific properties.
      */
-    void initFromJson(const nlohmann::json& json);
+    virtual void initFromJson(const nlohmann::json& json);
 
     /**
      * @brief Fired whenever the bridge reports a state change for this sensor.
@@ -133,6 +141,7 @@ protected:
     Bridge* getBridge() const;
 
     std::string _id;
+    bool _enabled = false;
     std::string _name;
     Bridge* _bridge;
     SensorType _type;
