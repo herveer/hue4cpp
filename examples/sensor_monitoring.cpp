@@ -184,7 +184,7 @@ std::string loadAuthKey(const std::string& bridge_id) {
 		std::transform(lower_case_bridge_id.begin(), lower_case_bridge_id.end(),
 			lower_case_bridge_id.begin(), ::tolower);
 
-		if (saved_bridge_id == lower_case_bridge_id) {
+		if (saved_bridge_id == lower_case_bridge_id || saved_bridge_id == bridge_id) {
 			return key;
 		}
 

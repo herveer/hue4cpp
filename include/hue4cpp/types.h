@@ -123,6 +123,15 @@ namespace hue4cpp {
 	};
 
 	/**
+	 * @brief Rotation action for rotary sensors
+	 */
+	enum class RotationAction {
+		Unknown,
+		Start,
+		Repeat
+	};
+
+	/**
 	 * @brief Rotation direction for rotary sensors
 	 */
 	enum class RotationDirection {

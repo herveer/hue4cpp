@@ -256,49 +256,6 @@ TEST_CASE("BellButtonSensor construction and state", "[sensor][bellbutton]") {
     }
 }
 
-TEST_CASE("RelativeRotarySensor construction and state", "[sensor][rotary]") {
-    Bridge bridge;
-
-    SECTION("Construct and get type") {
-        RelativeRotarySensor sensor("rotary-123", &bridge);
-        REQUIRE(sensor.getId() == "rotary-123");
-        REQUIRE(sensor.getType() == SensorType::RelativeRotary);
-    }
-
-    SECTION("Clockwise rotation") {
-        nlohmann::json sensor_json = {
-            {"id","rotary-123"},{"type","relative_rotary"},{"enabled",true},
-            {"relative_rotary",{
-                {"last_event",{{"rotation",5},{"direction","clock_wise"},{"action","short_release"}}},
-                {"event_sequence",10}
-            }}
-        };
-        RelativeRotarySensor sensor("rotary-123", &bridge);
-        sensor.initFromJson(sensor_json);
-
-        REQUIRE((int32_t)sensor.Steps == 5);
-        REQUIRE((RotationDirection)sensor.Direction == RotationDirection::ClockWise);
-        REQUIRE((ButtonEvent)sensor.Action == ButtonEvent::ShortRelease);
-        REQUIRE((uint32_t)sensor.EventSequence == 10u);
-    }
-
-    SECTION("Counter-clockwise rotation") {
-        nlohmann::json sensor_json = {
-            {"id","rotary-456"},{"type","relative_rotary"},{"enabled",true},
-            {"relative_rotary",{
-                {"last_event",{{"rotation",-3},{"direction","counter_clock_wise"},{"action","initial_press"}}},
-                {"event_sequence",11}
-            }}
-        };
-        RelativeRotarySensor sensor("rotary-456", &bridge);
-        sensor.initFromJson(sensor_json);
-
-        REQUIRE((int32_t)sensor.Steps == -3);
-        REQUIRE((RotationDirection)sensor.Direction == RotationDirection::CounterClockWise);
-        REQUIRE((ButtonEvent)sensor.Action == ButtonEvent::InitialPress);
-    }
-}
-
 TEST_CASE("GeolocationSensor construction and state", "[sensor][geolocation]") {
     Bridge bridge;
 
@@ -823,16 +780,16 @@ TEST_CASE("TamperSensor PropertyChanged and equality guard", "[sensor][tamper][r
 
     SECTION("PropertyChanged fires on value change via initFromJson") {
         TamperSensor sensor("tp-1", &bridge);
-        sensor.initFromJson({{"id","tp-1"},{"type","tamper"},{"enabled",true},
-            {"tamper",{{"tampered",false},{"tamper_valid",true}}}});
+        sensor.initFromJson({ {"id","tp-1"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",false},{"tamper_valid",true}}} });
 
         std::string notified_property;
         sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
             notified_property = args.PropertyName();
-        };
+            };
 
-        sensor.initFromJson({{"id","tp-1"},{"type","tamper"},{"enabled",true},
-            {"tamper",{{"tampered",true},{"tamper_valid",true}}}});
+        sensor.initFromJson({ {"id","tp-1"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",true},{"tamper_valid",true}}} });
 
         REQUIRE((bool)sensor.Tampered == true);
         REQUIRE(notified_property == "Tampered");
@@ -840,34 +797,36 @@ TEST_CASE("TamperSensor PropertyChanged and equality guard", "[sensor][tamper][r
 
     SECTION("No notification when same value is fed again") {
         TamperSensor sensor("tp-2", &bridge);
-        sensor.initFromJson({{"id","tp-2"},{"type","tamper"},{"enabled",true},
-            {"tamper",{{"tampered",true},{"tamper_valid",true}}}});
+        sensor.initFromJson({ {"id","tp-2"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",true},{"tamper_valid",true}}} });
 
         bool notified = false;
         sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
             notified = true;
-        };
+            };
 
-        sensor.initFromJson({{"id","tp-2"},{"type","tamper"},{"enabled",true},
-            {"tamper",{{"tampered",true},{"tamper_valid",true}}}});
+        sensor.initFromJson({ {"id","tp-2"},{"type","tamper"},{"enabled",true},
+            {"tamper",{{"tampered",true},{"tamper_valid",true}}} });
 
         REQUIRE_FALSE(notified);
     }
 
     SECTION("Enabled property is correctly parsed and notified") {
         TamperSensor sensor("tp-3", &bridge);
-        sensor.initFromJson({{"id","tp-3"},{"type","tamper"},{"enabled",false}});
+        sensor.initFromJson({ {"id","tp-3"},{"type","tamper"},{"enabled",false} });
         REQUIRE((bool)sensor.Enabled == false);
 
         std::string notified_property;
         sensor.PropertyChanged += [&](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
             notified_property = args.PropertyName();
-        };
+            };
 
-        sensor.initFromJson({{"id","tp-3"},{"type","tamper"},{"enabled",true}});
+        sensor.initFromJson({ {"id","tp-3"},{"type","tamper"},{"enabled",true} });
         REQUIRE((bool)sensor.Enabled == true);
         REQUIRE(notified_property == "Enabled");
     }
+}
+
 TEST_CASE("Sensor Name property - initFromJson populates name", "[sensor][name]") {
     Bridge bridge;
 

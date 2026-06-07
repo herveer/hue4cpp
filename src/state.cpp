@@ -223,7 +223,7 @@ namespace hue4cpp {
 						}
 					}
 					else if (resource_type == "motion" || resource_type == "temperature" ||
-						resource_type == "light_level" || resource_type == "button") {
+						resource_type == "light_level" || resource_type == "button" || resource_type == "camera_motion" || resource_type == "bell_button" || resource_type == "relative_rotary" || resource_type == "geolocation" || resource_type == "tamper") {
 						if (event_type == "add") {
 							OnResourceEvent.Notify(ResourceEventArgs(EventType::SensorAdded, resource_id, resource.dump()));
 						}
