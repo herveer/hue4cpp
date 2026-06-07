@@ -8,7 +8,7 @@ var searchData=
   ['errorcodetostring_5',['errorCodeToString',['../namespacehue4cpp.html#a307dfd84341d9a9460fcf7f0a8993f1f',1,'hue4cpp']]],
   ['event_6',['event',['../structhue4cpp_1_1Event.html',1,'hue4cpp::Event'],['../structhue4cpp_1_1Event.html#a1a16154a5ac30bd98e7610934582552e',1,'hue4cpp::Event::Event()']]],
   ['event_5ftype_7',['event_type',['../structhue4cpp_1_1SSEEventArgs.html#a32434361ed09ffa29cf82974ddf8280b',1,'hue4cpp::SSEEventArgs']]],
-  ['eventsequence_8',['eventsequence',['../classhue4cpp_1_1BellButtonSensor.html#a72689a8197ebd983e59b6989a992514a',1,'hue4cpp::BellButtonSensor::EventSequence'],['../classhue4cpp_1_1ButtonSensor.html#a7fcae789610df0d390abed1689f39df4',1,'hue4cpp::ButtonSensor::EventSequence'],['../classhue4cpp_1_1RelativeRotarySensor.html#a7d6a291ccd2b527a646048f176ad37e3',1,'hue4cpp::RelativeRotarySensor::EventSequence']]],
+  ['eventsequence_8',['eventsequence',['../classhue4cpp_1_1BellButtonSensor.html#a72689a8197ebd983e59b6989a992514a',1,'hue4cpp::BellButtonSensor::EventSequence'],['../classhue4cpp_1_1ButtonSensor.html#a7fcae789610df0d390abed1689f39df4',1,'hue4cpp::ButtonSensor::EventSequence']]],
   ['eventtype_9',['EventType',['../namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159',1,'hue4cpp']]],
   ['example_10',['Usage Example',['../index.html#autotoc_md8',1,'']]],
   ['exceptions_2eh_11',['exceptions.h',['../exceptions_8h.html',1,'']]]

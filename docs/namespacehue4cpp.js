@@ -106,6 +106,11 @@ var namespacehue4cpp =
       [ "BridgeDisconnected", "namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a98839233e5c2d2801943bb85cec9c07b", null ],
       [ "Unknown", "namespacehue4cpp.html#a59e3404e83dfff88c377f98ca5267159a88183b946cc5f0e8c96b2e66e1c74a7e", null ]
     ] ],
+    [ "RotationAction", "namespacehue4cpp.html#adbbe57f9d9d6d4377d9139e820afdbe8", [
+      [ "Unknown", "namespacehue4cpp.html#adbbe57f9d9d6d4377d9139e820afdbe8a88183b946cc5f0e8c96b2e66e1c74a7e", null ],
+      [ "Start", "namespacehue4cpp.html#adbbe57f9d9d6d4377d9139e820afdbe8aa6122a65eaa676f700ae68d393054a37", null ],
+      [ "Repeat", "namespacehue4cpp.html#adbbe57f9d9d6d4377d9139e820afdbe8a7020426cfb0a204051be4b3053d2acc8", null ]
+    ] ],
     [ "RotationDirection", "namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333", [
       [ "Unknown", "namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333a88183b946cc5f0e8c96b2e66e1c74a7e", null ],
       [ "ClockWise", "namespacehue4cpp.html#afd74b442f5952dc07afcac704785d333ad5a4d3410a83d1bcdf2ae918a53aabd6", null ],

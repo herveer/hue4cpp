@@ -25,7 +25,7 @@ var searchData=
   ['sseclient_22',['sseclient',['../classhue4cpp_1_1SSEClient.html#aa1564fd933b8e027957df5253acddb84',1,'hue4cpp::SSEClient::SSEClient(const std::string &amp;url)'],['../classhue4cpp_1_1SSEClient.html#a2529aa20be957e82cc3a27365d275140',1,'hue4cpp::SSEClient::SSEClient(const SSEClient &amp;)=delete'],['../classhue4cpp_1_1SSEClient.html#a8797a8befae2f381403898baf251a000',1,'hue4cpp::SSEClient::SSEClient(SSEClient &amp;&amp;)=delete'],['../classhue4cpp_1_1SSEClient.html',1,'hue4cpp::SSEClient']]],
   ['sseeventargs_23',['sseeventargs',['../structhue4cpp_1_1SSEEventArgs.html#a285bcc5c2f05262fa66165962df57f6b',1,'hue4cpp::SSEEventArgs::SSEEventArgs()'],['../structhue4cpp_1_1SSEEventArgs.html',1,'hue4cpp::SSEEventArgs'],['../structhue4cpp_1_1SSEEventArgs.html#ac600d4788de8771a1de9eacf2f596a49',1,'hue4cpp::SSEEventArgs::SSEEventArgs()']]],
   ['standard_20build_24',['Standard Build',['../index.html#autotoc_md12',1,'']]],
-  ['start_25',['start',['../index.html#autotoc_md6',1,'Quick Start'],['../classhue4cpp_1_1StateManager.html#ac65570d0f17ba81e25e105b3eccc3d0e',1,'hue4cpp::StateManager::start()']]],
+  ['start_25',['start',['../index.html#autotoc_md6',1,'Quick Start'],['../namespacehue4cpp.html#adbbe57f9d9d6d4377d9139e820afdbe8aa6122a65eaa676f700ae68d393054a37',1,'hue4cpp::Start'],['../classhue4cpp_1_1StateManager.html#ac65570d0f17ba81e25e105b3eccc3d0e',1,'hue4cpp::StateManager::start()']]],
   ['state_20monitoring_26',['Real-time State Monitoring',['../index.html#autotoc_md9',1,'']]],
   ['state_2ecpp_27',['state.cpp',['../state_8cpp.html',1,'']]],
   ['state_2eh_28',['state.h',['../state_8h.html',1,'']]],

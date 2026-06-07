@@ -29,6 +29,11 @@ var types_8h =
       [ "TimeoutError", "types_8h.html#a46a73209f107f0236824be499a5e3680a2ce01afd7e833fc13c63448689ea762a", null ],
       [ "UnknownError", "types_8h.html#a46a73209f107f0236824be499a5e3680abfaef30f1c8011c5cefa38ae470fb7aa", null ]
     ] ],
+    [ "RotationAction", "types_8h.html#adbbe57f9d9d6d4377d9139e820afdbe8", [
+      [ "Unknown", "types_8h.html#adbbe57f9d9d6d4377d9139e820afdbe8a88183b946cc5f0e8c96b2e66e1c74a7e", null ],
+      [ "Start", "types_8h.html#adbbe57f9d9d6d4377d9139e820afdbe8aa6122a65eaa676f700ae68d393054a37", null ],
+      [ "Repeat", "types_8h.html#adbbe57f9d9d6d4377d9139e820afdbe8a7020426cfb0a204051be4b3053d2acc8", null ]
+    ] ],
     [ "RotationDirection", "types_8h.html#afd74b442f5952dc07afcac704785d333", [
       [ "Unknown", "types_8h.html#afd74b442f5952dc07afcac704785d333a88183b946cc5f0e8c96b2e66e1c74a7e", null ],
       [ "ClockWise", "types_8h.html#afd74b442f5952dc07afcac704785d333ad5a4d3410a83d1bcdf2ae918a53aabd6", null ],

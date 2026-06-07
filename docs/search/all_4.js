@@ -12,5 +12,6 @@ var searchData=
   ['discovernupnp_9',['discoverNUPnP',['../classhue4cpp_1_1Bridge.html#ab5a975900a3f598416e5a904265d811f',1,'hue4cpp::Bridge']]],
   ['discovery_2ecpp_10',['discovery.cpp',['../discovery_8cpp.html',1,'']]],
   ['documentation_11',['Documentation',['../index.html#autotoc_md15',1,'']]],
-  ['doubleshortrelease_12',['DoubleShortRelease',['../namespacehue4cpp.html#a0ecc80e2f206fdef7c207b36f31aeffca06d43cc21c825bdd9812a9626bab6b2e',1,'hue4cpp']]]
+  ['doubleshortrelease_12',['DoubleShortRelease',['../namespacehue4cpp.html#a0ecc80e2f206fdef7c207b36f31aeffca06d43cc21c825bdd9812a9626bab6b2e',1,'hue4cpp']]],
+  ['duration_13',['Duration',['../classhue4cpp_1_1RelativeRotarySensor.html#a0642c624a92cff7333a7e0eb638debe0',1,'hue4cpp::RelativeRotarySensor']]]
 ];
