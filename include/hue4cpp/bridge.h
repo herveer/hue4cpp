@@ -4,6 +4,7 @@
 #include "state.h"
 #include <vector>
 #include <string>
+#include <nlohmann/json_fwd.hpp>
 #include <ReactiveLitepp/ObservableObject.h>
 
 /**
@@ -14,6 +15,7 @@
 namespace hue4cpp {
 
 	// Forward declarations
+	class Device;
 	class Light;
 	class Sensor;
 	class MotionSensor;
@@ -134,6 +136,23 @@ namespace hue4cpp {
 		std::unique_ptr<Sensor> getSensor(const std::string& sensor_id);
 
 		/**
+		 * @brief Get all devices connected to this bridge
+		 *
+		 * Each device aggregates the Light and Sensor objects it owns. Those lists
+		 * follow the device's declared service order, so the ordering is stable
+		 * across calls.
+		 * @return Vector of unique pointers to Device objects
+		 */
+		std::vector<std::unique_ptr<Device>> getDevices();
+
+		/**
+		 * @brief Get a specific device by ID
+		 * @param device_id The unique identifier of the device
+		 * @return Unique pointer to Device object (nullptr if not found)
+		 */
+		std::unique_ptr<Device> getDevice(const std::string& device_id);
+
+		/**
 		 * @brief Get all motion sensors
 		 * @return Vector of unique pointers to MotionSensor objects
 		 */
@@ -235,6 +254,16 @@ namespace hue4cpp {
 
 		template<typename SensorT>
 		std::vector<std::unique_ptr<SensorT>> fetchSensorsByType(const std::string& resource_type);
+
+		/**
+		 * @brief Build Device objects from the raw "data" array of a device resource response.
+		 *
+		 * Fetches all lights and sensors once, then distributes them into each device by
+		 * walking the device's services array in order so the resulting lists are stable.
+		 * @param device_data JSON array of DeviceGet objects
+		 * @return Vector of populated Device objects
+		 */
+		std::vector<std::unique_ptr<Device>> buildDevicesFromData(const nlohmann::json& device_data);
 	};
 
 } // namespace hue4cpp

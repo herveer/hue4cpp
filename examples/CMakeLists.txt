@@ -56,6 +56,14 @@ set_target_properties(sensor_monitoring PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+# Device listing example
+add_executable(device_listing device_listing.cpp)
+target_link_libraries(device_listing PRIVATE hue4cpp)
+set_target_properties(device_listing PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
 # Performance benchmark
 add_executable(performance_benchmark performance_benchmark.cpp)
 target_link_libraries(performance_benchmark PRIVATE hue4cpp)

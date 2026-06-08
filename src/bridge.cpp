@@ -1,10 +1,12 @@
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/light.h"
 #include "hue4cpp/sensors.h"
+#include "hue4cpp/device.h"
 #include "hue4cpp/http_client.h"
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/exceptions.h"
 #include <chrono>
+#include <map>
 #include <thread>
 
 namespace hue4cpp {
@@ -14,6 +16,47 @@ namespace hue4cpp {
 		constexpr std::chrono::milliseconds AUTH_TIMEOUT{ 5000 };  // 5 seconds timeout for auth requests
 		constexpr int MAX_AUTH_RETRIES = 30;  // Maximum number of retries (30 seconds with 1 second interval)
 		constexpr std::chrono::milliseconds AUTH_RETRY_INTERVAL{ 1000 };  // 1 second between retries
+
+		// GET a resource path under /clip/v2/resource/ and return its "data" array.
+		// Returns an empty array on any network/parse error or error payload.
+		nlohmann::json fetchResourceData(const std::string& ip_address,
+			const std::string& auth_key,
+			const std::string& resource_path) {
+			nlohmann::json empty = nlohmann::json::array();
+
+			try {
+				HttpClient client;
+				client.setVerifySsl(false);
+				client.setTimeout(std::chrono::milliseconds(5000));
+
+				std::string url = "https://" + ip_address + "/clip/v2/resource/" + resource_path;
+
+				std::map<std::string, std::string> headers;
+				headers["hue-application-key"] = auth_key;
+
+				auto response = client.get(url, headers);
+
+				if (!response.isSuccess()) {
+					return empty;
+				}
+
+				auto json_response = json_utils::parse(response.body);
+
+				if (json_response.contains("errors") && json_response["errors"].is_array()
+					&& !json_response["errors"].empty()) {
+					return empty;
+				}
+
+				if (!json_response.contains("data") || !json_response["data"].is_array()) {
+					return empty;
+				}
+
+				return json_response["data"];
+			}
+			catch (const std::exception&) {
+				return empty;
+			}
+		}
 	}
 
 	// Bridge implementation
@@ -589,6 +632,94 @@ namespace hue4cpp {
 		}
 
 		return nullptr;
+	}
+
+	std::vector<std::unique_ptr<Device>> Bridge::getDevices() {
+		if (!isAuthenticated() || _info.ip_address.empty()) {
+			return {};
+		}
+
+		auto device_data = fetchResourceData(_info.ip_address, _auth_key, "device");
+		return buildDevicesFromData(device_data);
+	}
+
+	std::unique_ptr<Device> Bridge::getDevice(const std::string& device_id) {
+		if (!isAuthenticated() || _info.ip_address.empty() || device_id.empty()) {
+			return nullptr;
+		}
+
+		auto device_data = fetchResourceData(_info.ip_address, _auth_key, "device/" + device_id);
+		auto devices = buildDevicesFromData(device_data);
+		if (devices.empty()) {
+			return nullptr;
+		}
+		return std::move(devices.front());
+	}
+
+	std::vector<std::unique_ptr<Device>> Bridge::buildDevicesFromData(const nlohmann::json& device_data) {
+		std::vector<std::unique_ptr<Device>> devices;
+		if (!device_data.is_array() || device_data.empty()) {
+			return devices;
+		}
+
+		// Fetch all lights and sensors once and index them by id so each device can
+		// claim the ones it owns. Lights/sensors not owned by any returned device are
+		// simply released when these maps go out of scope.
+		std::map<std::string, std::unique_ptr<Light>> light_by_id;
+		for (auto& light : getLights()) {
+			std::string id = light->Id.Get();
+			if (!id.empty()) {
+				light_by_id.emplace(std::move(id), std::move(light));
+			}
+		}
+
+		std::map<std::string, std::unique_ptr<Sensor>> sensor_by_id;
+		for (auto& sensor : getSensors()) {
+			std::string id = sensor->getId();
+			if (!id.empty()) {
+				sensor_by_id.emplace(std::move(id), std::move(sensor));
+			}
+		}
+
+		for (const auto& device_json : device_data) {
+			std::string id = json_utils::getValueOr<std::string>(device_json, "id", "");
+			if (id.empty()) {
+				continue;
+			}
+
+			auto device = std::make_unique<Device>(id, this);
+			device->initFromJson(device_json);
+
+			// Walk the services array in order so the resulting Light and Sensor lists
+			// always follow the device's declared service order (stable across calls).
+			// rids are globally unique, so a non-light/non-sensor service (e.g.
+			// zigbee_connectivity, device_power) simply misses both maps and is skipped.
+			if (device_json.contains("services") && device_json["services"].is_array()) {
+				for (const auto& service : device_json["services"]) {
+					std::string rid = json_utils::getValueOr<std::string>(service, "rid", "");
+					if (rid.empty()) {
+						continue;
+					}
+
+					auto light_it = light_by_id.find(rid);
+					if (light_it != light_by_id.end()) {
+						device->addLight(std::move(light_it->second));
+						light_by_id.erase(light_it);
+						continue;
+					}
+
+					auto sensor_it = sensor_by_id.find(rid);
+					if (sensor_it != sensor_by_id.end()) {
+						device->addSensor(std::move(sensor_it->second));
+						sensor_by_id.erase(sensor_it);
+					}
+				}
+			}
+
+			devices.push_back(std::move(device));
+		}
+
+		return devices;
 	}
 
 	template<typename SensorT>

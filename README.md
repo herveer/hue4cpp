@@ -27,6 +27,7 @@ A modern, lightweight C++ library providing a developer-friendly interface to th
   - HSV ↔ RGB color conversion
   - 17+ preset colors (Red, Blue, WarmWhite, etc.)
   - Custom color temperature presets
+- 🧩 **Device Grouping**: Aggregate the lights and sensors of a physical device together with its product metadata (model, archetype, software version, ...)
 - 🔄 **Real-time State Updates**: Server-Sent Events (SSE) for instant state synchronization
 - 📡 **Event Callbacks**: Observer pattern for light, sensor, and bridge state changes
 - 🔧 **Capability-aware**: Automatically detects and adapts to device capabilities
@@ -262,6 +263,54 @@ int main() {
 }
 ```
 
+### Devices
+
+A device is a physical product (a bulb, a dimmer switch, a motion sensor, ...) that
+groups the lights and sensors it exposes, together with its product metadata. The
+contained lights and sensors are the same reactive objects returned by `getLights()`
+and `getSensors()`, and are always ordered following the device's declared service
+order, so repeated calls yield a stable ordering.
+
+```cpp
+#include <hue4cpp/hue4cpp.h>
+#include <iostream>
+
+int main() {
+    using namespace hue4cpp;
+
+    // Set up bridge and authenticate...
+    auto bridges = Bridge::discover();
+    auto& bridge = bridges[0];
+    bridge.authenticate("your-app-name");
+
+    // Get all devices
+    auto devices = bridge.getDevices();
+
+    for (const auto& device : devices) {
+        std::cout << device->Name.Get()
+                  << " (" << device->ProductName.Get() << ")\n"
+                  << "  model:    " << device->ModelId.Get() << "\n"
+                  << "  archetype:" << device->ProductArchetype.Get() << "\n"
+                  << "  software: " << device->SoftwareVersion.Get() << "\n"
+                  << "  certified:" << (device->Certified.Get() ? "yes" : "no") << "\n";
+
+        // The lights and sensors owned by this device
+        std::cout << "  lights:   " << device->getLights().size() << "\n";
+        std::cout << "  sensors:  " << device->getSensors().size() << "\n";
+    }
+
+    // Or fetch a single device by id
+    if (!devices.empty()) {
+        auto device = bridge.getDevice(devices[0]->Id.Get());
+        if (device) {
+            std::cout << "Fetched device: " << device->Name.Get() << std::endl;
+        }
+    }
+
+    return 0;
+}
+```
+
 For more examples, see the `examples/` directory:
 - `basic_control.cpp` - Basic light control operations
 - `color_control.cpp` - Advanced color control and effects
@@ -269,6 +318,7 @@ For more examples, see the `examples/` directory:
 - `authentication.cpp` - Authentication flow
 - `state_monitoring.cpp` - Real-time state monitoring with SSE
 - `sensor_monitoring.cpp` - Sensor discovery and real-time monitoring
+- `device_listing.cpp` - List all devices with their lights, sensors, and product metadata
 - `performance_benchmark.cpp` - Performance benchmarks
 
 ## Building
@@ -325,6 +375,7 @@ hue4cpp/
 │       ├── hue4cpp.h       # Main header
 │       ├── bridge.h        # Bridge discovery and connection
 │       ├── light.h         # Light control
+│       ├── device.h        # Device grouping (lights + sensors + metadata)
 │       ├── color_utils.h   # Color conversion utilities
 │       ├── state.h         # State management
 │       ├── sse_client.h    # Server-Sent Events client
@@ -336,6 +387,7 @@ hue4cpp/
 │   ├── CMakeLists.txt
 │   ├── bridge.cpp
 │   ├── light.cpp
+│   ├── device.cpp
 │   ├── color_utils.cpp
 │   ├── state.cpp
 │   ├── sse_client.cpp

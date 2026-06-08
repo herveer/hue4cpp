@@ -13,6 +13,7 @@
 #include "hue4cpp/json_utils.h"
 #include "hue4cpp/bridge.h"
 #include "hue4cpp/light.h"
+#include "hue4cpp/device.h"
 #include "hue4cpp/sensors.h"
 #include "hue4cpp/state.h"
 #include "hue4cpp/sse_client.h"
