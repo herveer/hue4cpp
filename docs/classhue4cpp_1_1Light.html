@@ -144,6 +144,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ac274a4d0e1005783601e47897ff0894e" id="r_ac274a4d0e1005783601e47897ff0894e"><td class="memItemLeft" align="right" valign="top">ReadonlyProperty&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Light.html#ac274a4d0e1005783601e47897ff0894e">Id</a></td></tr>
 <tr class="memdesc:ac274a4d0e1005783601e47897ff0894e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the light's unique identifier.  <br /></td></tr>
 <tr class="separator:ac274a4d0e1005783601e47897ff0894e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afde766ae6105cb19b30aefcd65ef4a95" id="r_afde766ae6105cb19b30aefcd65ef4a95"><td class="memItemLeft" align="right" valign="top">ReadonlyProperty&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Light.html#afde766ae6105cb19b30aefcd65ef4a95">OwnerId</a></td></tr>
+<tr class="memdesc:afde766ae6105cb19b30aefcd65ef4a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the light's owner identifier.  <br /></td></tr>
+<tr class="separator:afde766ae6105cb19b30aefcd65ef4a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67e766fffc695c6650152697860e0975" id="r_a67e766fffc695c6650152697860e0975"><td class="memItemLeft" align="right" valign="top">Property&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhue4cpp_1_1Light.html#a67e766fffc695c6650152697860e0975">Name</a></td></tr>
 <tr class="memdesc:a67e766fffc695c6650152697860e0975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get or set the light's display name.  <br /></td></tr>
 <tr class="separator:a67e766fffc695c6650152697860e0975"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -487,7 +490,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00319">319</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00330">330</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>
@@ -536,7 +539,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00160">160</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00170">170</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>
@@ -583,7 +586,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00244">244</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00254">254</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>
@@ -654,7 +657,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00132">132</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00142">142</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>
@@ -691,7 +694,31 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00079">79</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00089">89</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+
+</div>
+</div>
+<a id="afde766ae6105cb19b30aefcd65ef4a95" name="afde766ae6105cb19b30aefcd65ef4a95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afde766ae6105cb19b30aefcd65ef4a95">&#9670;&#160;</a></span>OwnerId</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ReadonlyProperty&lt;std::string&gt; hue4cpp::Light::OwnerId</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">            [<span class="keyword">this</span>]() {</div>
+<div class="line">                    <span class="keywordflow">return</span> _ownerId;</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
+</div><!-- fragment -->
+<p>Get the light's owner identifier. </p>
+<dl class="section return"><dt>Returns</dt><dd>Owner ID </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00073">73</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>
@@ -739,7 +766,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00216">216</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00226">226</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>
@@ -766,7 +793,7 @@ Friends</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Transition time in milliseconds </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This property does not affect the current state but will be used for subsequent operations </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00117">117</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00127">127</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>
@@ -813,7 +840,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00188">188</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="light_8h_source.html#l00198">198</a> of file <a class="el" href="light_8h_source.html">light.h</a>.</p>
 
 </div>
 </div>

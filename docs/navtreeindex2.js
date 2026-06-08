@@ -1,5 +1,11 @@
 var NAVTREEINDEX2 =
 {
+"discovery_8cpp.html#a83e5ce1decdba404059af51acb743b7a":[16,0,1,3,3],
+"discovery_8cpp.html#a8e0798404bf2cf5dabb84c5ba9a4f236":[16,0,1,3,6],
+"discovery_8cpp.html#a94493c9bba9d6c12a83914ddb013467f":[16,0,1,3,8],
+"discovery_8cpp.html#a97d3da3ffa31dc58367d5e2f39deeb8f":[16,0,1,3,0],
+"discovery_8cpp.html#aa40b7ed5c391756197b0d1fcf352e20c":[16,0,1,3,5],
+"discovery_8cpp.html#ac7273a7e83cfd952262d941e5bfc73c2":[16,0,1,3,1],
 "discovery_8cpp.html#ad4030b0c38ff0d527471cd6f5b951ecf":[16,0,1,3,4],
 "discovery_8cpp.html#afd0d68c6d31ff249f3ae8662162663c3":[16,0,1,3,2],
 "discovery_8cpp_source.html":[16,0,1,3],
@@ -220,8 +226,8 @@ var NAVTREEINDEX2 =
 "state_8h.html#a59e3404e83dfff88c377f98ca5267159ac0b82d58b341ec71d47abdf32355b1e8":[16,0,0,0,10,4,3],
 "state_8h.html#a59e3404e83dfff88c377f98ca5267159afaf2740831be392a9a687ae4fbaa9d49":[16,0,0,0,10,4,6],
 "state_8h_source.html":[16,0,0,0,10],
-"structhue4cpp_1_1BridgeInfo.html":[15,0,0,3],
 "structhue4cpp_1_1BridgeInfo.html":[14,0,0,6],
+"structhue4cpp_1_1BridgeInfo.html":[15,0,0,3],
 "structhue4cpp_1_1BridgeInfo.html#a1e3151a00950d426df645c1076de388d":[14,0,0,6,1],
 "structhue4cpp_1_1BridgeInfo.html#a1e3151a00950d426df645c1076de388d":[15,0,0,3,1],
 "structhue4cpp_1_1BridgeInfo.html#a34ceff58d48b3d2710a426bc5ae3f740":[14,0,0,6,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX2 =
 "structhue4cpp_1_1BridgeInfo.html#aff95b19dd0737cd9350d90530a6274f6":[15,0,0,3,9],
 "structhue4cpp_1_1BridgeInfo.html#aff95b19dd0737cd9350d90530a6274f6":[14,0,0,6,9],
 "structhue4cpp_1_1ColorTemperature.html":[15,0,0,7],
-"structhue4cpp_1_1ColorTemperature.html":[14,0,0,10],
-"structhue4cpp_1_1ColorTemperature.html#a2e6dc6c5af46633aeac0394fc68e5170":[15,0,0,7,2],
-"structhue4cpp_1_1ColorTemperature.html#a2e6dc6c5af46633aeac0394fc68e5170":[14,0,0,10,2],
-"structhue4cpp_1_1ColorTemperature.html#a512440b1e2d15e6432c05b70bc072658":[15,0,0,7,1],
-"structhue4cpp_1_1ColorTemperature.html#a512440b1e2d15e6432c05b70bc072658":[14,0,0,10,1],
-"structhue4cpp_1_1ColorTemperature.html#af33d05a21599561b75d7a3aa0b80ce79":[14,0,0,10,0],
-"structhue4cpp_1_1ColorTemperature.html#af33d05a21599561b75d7a3aa0b80ce79":[15,0,0,7,0]
+"structhue4cpp_1_1ColorTemperature.html":[14,0,0,10]
 };

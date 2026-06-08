@@ -18,9 +18,11 @@ var classhue4cpp_1_1Sensor =
     [ "_enabled", "classhue4cpp_1_1Sensor.html#a29fb53c3e1511e19ee69c6d2fca9ca45", null ],
     [ "_id", "classhue4cpp_1_1Sensor.html#a09c01999769e1aa83212786bdb553e89", null ],
     [ "_name", "classhue4cpp_1_1Sensor.html#a1852d6a4f77cd66e902259e3a7735f20", null ],
+    [ "_ownerId", "classhue4cpp_1_1Sensor.html#a51a878899c6446f99e4ce36315ad7086", null ],
     [ "_type", "classhue4cpp_1_1Sensor.html#a112a1a87e0a260a647717b5b8123f0a6", null ],
     [ "Enabled", "classhue4cpp_1_1Sensor.html#a1b1605edc5b6314b28db1271506e6fe8", null ],
     [ "Id", "classhue4cpp_1_1Sensor.html#a92c6dfec84d11040c5706fa7176dd5ca", null ],
     [ "Name", "classhue4cpp_1_1Sensor.html#a83279269ef1f6c94337e4c94597c5ef0", null ],
-    [ "OnStateChanged", "classhue4cpp_1_1Sensor.html#a43c787df9a818abc775aa541d4772129", null ]
+    [ "OnStateChanged", "classhue4cpp_1_1Sensor.html#a43c787df9a818abc775aa541d4772129", null ],
+    [ "OwnerId", "classhue4cpp_1_1Sensor.html#a92c3119ff3228d8c09852b9e3de92781", null ]
 ];
