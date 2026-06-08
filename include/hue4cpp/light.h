@@ -67,6 +67,16 @@ namespace hue4cpp {
 		};
 
 		/**
+		 * @brief Get the light's owner identifier
+		 * @return Owner ID
+		 */
+		ReadonlyProperty<std::string> OwnerId{
+			[this]() {
+					return _ownerId;
+			}
+		};
+
+		/**
 		 * @brief Get or set the light's display name
 		 *
 		 * Assigning a new value PUTs @c {"metadata":{"name":"…"}} to the bridge
@@ -295,6 +305,7 @@ namespace hue4cpp {
 		TransitionTime _transitionTime = std::chrono::milliseconds(400);
 
 		std::string _id;
+		std::string _ownerId;
 		std::string _name;
 		Bridge* _bridge;
 		LightCapabilities _capabilities;

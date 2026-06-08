@@ -87,6 +87,7 @@ namespace hue4cpp {
 	}
 
 	void Sensor::initFromJson(const nlohmann::json& json) {
+		std::cout << "Initializing sensor from JSON: " << json.dump(4) << std::endl;
 		try {
 			if (json.contains("id")) {
 				auto idVal = json_utils::getValueOr<std::string>(json, "id", _id);
@@ -96,6 +97,11 @@ namespace hue4cpp {
 			if (json.contains("metadata") && json["metadata"].is_object()) {
 				auto nameVal = json_utils::getValueOr<std::string>(json["metadata"], "name", "");
 				SetPropertyValueAndNotify<&Sensor::Name>(_name, nameVal);
+			}
+
+			if (json.contains("owner") && json["owner"].is_object()) {
+				auto ownerIdVal = json_utils::getValueOr<std::string>(json["owner"], "rid", _ownerId);
+				SetPropertyValueAndNotify<&Sensor::OwnerId>(_ownerId, ownerIdVal);
 			}
 
 			if (json.contains("enabled")) {

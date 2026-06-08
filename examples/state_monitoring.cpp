@@ -165,7 +165,7 @@ int main() {
 			auto lights = bridge.getLights();
 			std::cout << "Found " << lights.size() << " light(s)\n";
 			for (const auto& light : lights) {
-				std::cout << "   - " << light->Name << " (" << light->Id << ")\n";
+				std::cout << "   - " << light->Name << " (" << light->Id << ") - owner id: " << light->OwnerId << "\n";
 			}
 		}
 		std::cout << std::endl;

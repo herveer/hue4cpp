@@ -404,6 +404,12 @@ namespace hue4cpp {
 			SetPropertyValueAndNotify<&Light::Name>(_name, nameVal);
 		}
 
+		if (json.contains("owner") && json["owner"].is_object()) {
+			auto owner = json["owner"];
+			auto ownerIdVal = json_utils::getValueOr<std::string>(owner, "rid", _ownerId);
+			SetPropertyValueAndNotify<&Light::OwnerId>(_ownerId, ownerIdVal);
+		}
+
 		// Extract and cache on/off state
 		if (json.contains("on") && json["on"].is_object()) {
 			auto on_obj = json["on"];
