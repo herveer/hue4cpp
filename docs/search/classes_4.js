@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['geolocationsensor_0',['GeolocationSensor',['../classhue4cpp_1_1GeolocationSensor.html',1,'hue4cpp']]]
+  ['event_0',['Event',['../structhue4cpp_1_1Event.html',1,'hue4cpp']]]
 ];

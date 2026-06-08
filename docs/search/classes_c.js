@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['sensor_0',['Sensor',['../classhue4cpp_1_1Sensor.html',1,'hue4cpp']]],
-  ['sseclient_1',['SSEClient',['../classhue4cpp_1_1SSEClient.html',1,'hue4cpp']]],
-  ['sseeventargs_2',['SSEEventArgs',['../structhue4cpp_1_1SSEEventArgs.html',1,'hue4cpp']]],
-  ['statemanager_3',['StateManager',['../classhue4cpp_1_1StateManager.html',1,'hue4cpp']]]
+  ['relativerotarysensor_0',['RelativeRotarySensor',['../classhue4cpp_1_1RelativeRotarySensor.html',1,'hue4cpp']]],
+  ['resourceeventargs_1',['ResourceEventArgs',['../structhue4cpp_1_1ResourceEventArgs.html',1,'hue4cpp']]],
+  ['resourcenotfoundexception_2',['ResourceNotFoundException',['../classhue4cpp_1_1ResourceNotFoundException.html',1,'hue4cpp']]],
+  ['result_3',['Result',['../structhue4cpp_1_1Result.html',1,'hue4cpp']]],
+  ['result_3c_20void_20_3e_4',['Result&lt; void &gt;',['../structhue4cpp_1_1Result_3_01void_01_4.html',1,'hue4cpp']]],
+  ['rgbcolor_5',['RGBColor',['../structhue4cpp_1_1RGBColor.html',1,'hue4cpp']]]
 ];

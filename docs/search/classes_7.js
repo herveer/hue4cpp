@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['jsonparseexception_0',['JsonParseException',['../classhue4cpp_1_1JsonParseException.html',1,'hue4cpp']]]
+  ['invalidparameterexception_0',['InvalidParameterException',['../classhue4cpp_1_1InvalidParameterException.html',1,'hue4cpp']]]
 ];

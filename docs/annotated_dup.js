@@ -9,6 +9,7 @@ var annotated_dup =
       [ "ButtonSensor", "classhue4cpp_1_1ButtonSensor.html", "classhue4cpp_1_1ButtonSensor" ],
       [ "CameraMotionSensor", "classhue4cpp_1_1CameraMotionSensor.html", "classhue4cpp_1_1CameraMotionSensor" ],
       [ "ColorTemperature", "structhue4cpp_1_1ColorTemperature.html", "structhue4cpp_1_1ColorTemperature" ],
+      [ "Device", "classhue4cpp_1_1Device.html", "classhue4cpp_1_1Device" ],
       [ "Event", "structhue4cpp_1_1Event.html", "structhue4cpp_1_1Event" ],
       [ "GeolocationSensor", "classhue4cpp_1_1GeolocationSensor.html", "classhue4cpp_1_1GeolocationSensor" ],
       [ "HttpClient", "classhue4cpp_1_1HttpClient.html", "classhue4cpp_1_1HttpClient" ],

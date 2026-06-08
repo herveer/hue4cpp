@@ -1,7 +1,7 @@
 var searchData=
 [
   ['lastevent_0',['lastevent',['../classhue4cpp_1_1BellButtonSensor.html#acb5ab19de3fc8096635fc168f779987d',1,'hue4cpp::BellButtonSensor::LastEvent'],['../classhue4cpp_1_1ButtonSensor.html#aa974acaddf43cd9ee42316582d49716a',1,'hue4cpp::ButtonSensor::LastEvent']]],
-  ['license_1',['License',['../index.html#autotoc_md19',1,'']]],
+  ['license_1',['License',['../index.html#autotoc_md20',1,'']]],
   ['light_2',['light',['../classhue4cpp_1_1Light.html',1,'hue4cpp::Light'],['../classhue4cpp_1_1Light.html#a214c4bba9faf5a7786ab2fea2dbf7813',1,'hue4cpp::Light::Light()'],['../classhue4cpp_1_1Light.html#af35eebedbc20324381f29c3e122fc485',1,'hue4cpp::Light::Light(const std::string &amp;id, Bridge *bridge)'],['../classhue4cpp_1_1Light.html#afe96d76c7ee4322270ab4d263770710b',1,'hue4cpp::Light::Light(const Light &amp;)=delete'],['../classhue4cpp_1_1Light.html#a2fddf49973b0bc43fb1a783db0bc6561',1,'hue4cpp::Light::Light(Light &amp;&amp;)=delete']]],
   ['light_2ecpp_3',['light.cpp',['../light_8cpp.html',1,'']]],
   ['light_2eh_4',['light.h',['../light_8h.html',1,'']]],

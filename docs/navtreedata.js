@@ -34,21 +34,22 @@ var NAVTREE =
       [ "Installation", "index.html#autotoc_md7", null ],
       [ "Usage Example", "index.html#autotoc_md8", null ],
       [ "Real-time State Monitoring", "index.html#autotoc_md9", null ],
-      [ "Sensor Monitoring", "index.html#autotoc_md10", null ]
+      [ "Sensor Monitoring", "index.html#autotoc_md10", null ],
+      [ "Devices", "index.html#autotoc_md11", null ]
     ] ],
-    [ "Building", "index.html#autotoc_md11", [
-      [ "Standard Build", "index.html#autotoc_md12", null ],
-      [ "Build Options", "index.html#autotoc_md13", null ]
+    [ "Building", "index.html#autotoc_md12", [
+      [ "Standard Build", "index.html#autotoc_md13", null ],
+      [ "Build Options", "index.html#autotoc_md14", null ]
     ] ],
-    [ "Testing", "index.html#autotoc_md14", null ],
-    [ "Documentation", "index.html#autotoc_md15", null ],
-    [ "Project Structure", "index.html#autotoc_md16", null ],
-    [ "Contributing", "index.html#autotoc_md17", [
-      [ "Development Guidelines", "index.html#autotoc_md18", null ]
+    [ "Testing", "index.html#autotoc_md15", null ],
+    [ "Documentation", "index.html#autotoc_md16", null ],
+    [ "Project Structure", "index.html#autotoc_md17", null ],
+    [ "Contributing", "index.html#autotoc_md18", [
+      [ "Development Guidelines", "index.html#autotoc_md19", null ]
     ] ],
-    [ "License", "index.html#autotoc_md19", null ],
-    [ "Acknowledgments", "index.html#autotoc_md20", null ],
-    [ "Support", "index.html#autotoc_md21", null ],
+    [ "License", "index.html#autotoc_md20", null ],
+    [ "Acknowledgments", "index.html#autotoc_md21", null ],
+    [ "Support", "index.html#autotoc_md22", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -83,9 +84,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classhue4cpp_1_1Light.html#afe96d76c7ee4322270ab4d263770710b",
-"discovery_8cpp.html#a83e5ce1decdba404059af51acb743b7a",
-"structhue4cpp_1_1ColorTemperature.html#a2e6dc6c5af46633aeac0394fc68e5170"
+"classhue4cpp_1_1InvalidParameterException.html#adf15dd4fd839864c495aff7c58414b93",
+"classhue4cpp_1_1TimeoutException.html",
+"relative__rotary__sensor_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

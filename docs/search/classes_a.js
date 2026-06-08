@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['networkexception_0',['NetworkException',['../classhue4cpp_1_1NetworkException.html',1,'hue4cpp']]]
+  ['motionsensor_0',['MotionSensor',['../classhue4cpp_1_1MotionSensor.html',1,'hue4cpp']]]
 ];

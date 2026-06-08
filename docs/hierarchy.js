@@ -9,6 +9,7 @@ var hierarchy =
     [ "hue4cpp::LightCapabilities", "structhue4cpp_1_1LightCapabilities.html", null ],
     [ "hue4cpp::LightStateChangedArgs", "structhue4cpp_1_1LightStateChangedArgs.html", null ],
     [ "ObservableObject", null, [
+      [ "hue4cpp::Device", "classhue4cpp_1_1Device.html", null ],
       [ "hue4cpp::Light", "classhue4cpp_1_1Light.html", null ]
     ] ],
     [ "ReactiveLitepp::ObservableObject", null, [

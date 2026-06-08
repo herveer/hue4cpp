@@ -13,6 +13,8 @@ var classhue4cpp_1_1Bridge =
     [ "getBellButtonSensors", "classhue4cpp_1_1Bridge.html#a204d5739e408c7d127c4295819c11e44", null ],
     [ "getButtonSensors", "classhue4cpp_1_1Bridge.html#a65e3006da79bb8112ffd04ce7a7abaef", null ],
     [ "getCameraMotionSensors", "classhue4cpp_1_1Bridge.html#ab4bea5a23ebd59ebe89327bf85a4c7c9", null ],
+    [ "getDevice", "classhue4cpp_1_1Bridge.html#a592b1ab8d14ae257af85822d78223485", null ],
+    [ "getDevices", "classhue4cpp_1_1Bridge.html#a0495772a00b7f71d9cc74d1f637ff650", null ],
     [ "getGeolocationSensors", "classhue4cpp_1_1Bridge.html#ad57b822d89a77ef7652c1c7a2d4a344c", null ],
     [ "getInfo", "classhue4cpp_1_1Bridge.html#ad39c8a3c5fa480ca85a6317b79294d63", null ],
     [ "getLight", "classhue4cpp_1_1Bridge.html#a815a930efa2650486da8b4308719670d", null ],
