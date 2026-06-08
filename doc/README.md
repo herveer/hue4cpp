@@ -2,6 +2,11 @@
 
 This directory contains documentation for the hue4cpp project.
 
+## Guides & Release Notes
+
+- [Release Notes — Device Support (v1.1.0)](release-notes-device-support.md) — the `Device` resource and `Bridge::getDevices()` / `getDevice()`
+- [Migration Guide: Classic Getter/Setter → ReactiveLitepp Properties](migration-guide-reactivelitepp.md)
+
 ## Doxygen Documentation
 
 The project uses Doxygen to generate API documentation from the source code.

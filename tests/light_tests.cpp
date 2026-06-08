@@ -11,14 +11,14 @@ TEST_CASE("Light construction", "[light]") {
     SECTION("Default constructor") {
         Light light;
         REQUIRE(light.Id.Get().empty());
-        REQUIRE_THROWS_AS((void)light.IsOn, BridgeNotReachableException);
+        REQUIRE_THROWS_AS(light.IsOn.Get(), BridgeNotReachableException);
     }
     
     SECTION("Constructor with ID and bridge") {
         Bridge bridge;
         Light light("light-id-123", &bridge);
         REQUIRE(light.Id == "light-id-123");
-        REQUIRE_THROWS_AS((void)light.IsOn, BridgeNotReachableException);
+        REQUIRE_THROWS_AS(light.IsOn.Get(), BridgeNotReachableException);
     }
 }
 
@@ -35,15 +35,15 @@ TEST_CASE("Light state queries", "[light]") {
     Light light;
     
     SECTION("Default brightness throws ResourceNotFoundException") {
-        REQUIRE_THROWS_AS((void)light.Brightness, ResourceNotFoundException);
+        REQUIRE_THROWS_AS(light.Brightness.Get(), ResourceNotFoundException);
     }
     
     SECTION("Default color throws ResourceNotFoundException") {
-        REQUIRE_THROWS_AS((void)light.XYColor_, ResourceNotFoundException);
+        REQUIRE_THROWS_AS(light.XYColor_.Get(), ResourceNotFoundException);
     }
     
     SECTION("Default color temperature throws ResourceNotFoundException") {
-        REQUIRE_THROWS_AS((void)light.ColorTemperature_, ResourceNotFoundException);
+        REQUIRE_THROWS_AS(light.ColorTemperature_.Get(), ResourceNotFoundException);
     }
 }
 
@@ -112,12 +112,13 @@ TEST_CASE("Light Name updates from SSE metadata event", "[light][sse]") {
     }
 
     SECTION("Name is unchanged and no notification fires when metadata.name is absent") {
-        bool notified = false;
-        light.PropertyChanged += [&notified](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs) {
-            notified = true;
+        bool name_notified = false;
+        light.PropertyChanged += [&name_notified](ReactiveLitepp::ObservableObject&, ReactiveLitepp::PropertyChangedArgs args) {
+            if (args.PropertyName() == "Name") name_notified = true;
         };
 
-        // Delta without metadata (e.g. brightness-only event)
+        // Delta without metadata (e.g. brightness-only event). The brightness
+        // change legitimately notifies Brightness; only Name must stay silent.
         nlohmann::json sse_delta = {
             {"id",   "f79caea0-0766-4196-bbd6-c77401b951da"},
             {"type", "light"},
@@ -126,7 +127,7 @@ TEST_CASE("Light Name updates from SSE metadata event", "[light][sse]") {
         light.initFromJson(sse_delta);
 
         REQUIRE(light.Name == "Old Name");
-        REQUIRE_FALSE(notified);
+        REQUIRE_FALSE(name_notified);
     }
 
     SECTION("Name is unchanged and no notification fires when value is identical") {

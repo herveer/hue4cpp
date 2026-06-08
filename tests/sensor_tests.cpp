@@ -670,8 +670,8 @@ TEST_CASE("RelativeRotarySensor PropertyChanged and equality guard", "[sensor][r
         RelativeRotarySensor sensor("r-1", &bridge);
         sensor.initFromJson({{"id","r-1"},{"type","relative_rotary"},{"enabled",true},
             {"relative_rotary",{
-                {"last_event",{{"rotation",5},{"direction","clock_wise"},{"action","short_release"}}},
-                {"event_sequence",10}
+                {"last_event",{{"action","start"},
+                    {"rotation",{{"steps",5},{"duration",200},{"direction","clock_wise"}}}}}
             }}});
 
         std::string notified_property;
@@ -681,8 +681,8 @@ TEST_CASE("RelativeRotarySensor PropertyChanged and equality guard", "[sensor][r
 
         sensor.initFromJson({{"id","r-1"},{"type","relative_rotary"},{"enabled",true},
             {"relative_rotary",{
-                {"last_event",{{"rotation",10},{"direction","counter_clock_wise"},{"action","initial_press"}}},
-                {"event_sequence",11}
+                {"last_event",{{"action","repeat"},
+                    {"rotation",{{"steps",10},{"duration",400},{"direction","counter_clock_wise"}}}}}
             }}});
 
         REQUIRE((int32_t)sensor.Steps == 10);
@@ -693,8 +693,8 @@ TEST_CASE("RelativeRotarySensor PropertyChanged and equality guard", "[sensor][r
         RelativeRotarySensor sensor("r-2", &bridge);
         sensor.initFromJson({{"id","r-2"},{"type","relative_rotary"},{"enabled",true},
             {"relative_rotary",{
-                {"last_event",{{"rotation",5},{"direction","clock_wise"},{"action","short_release"}}},
-                {"event_sequence",10}
+                {"last_event",{{"action","start"},
+                    {"rotation",{{"steps",5},{"duration",200},{"direction","clock_wise"}}}}}
             }}});
 
         bool notified = false;
@@ -704,8 +704,8 @@ TEST_CASE("RelativeRotarySensor PropertyChanged and equality guard", "[sensor][r
 
         sensor.initFromJson({{"id","r-2"},{"type","relative_rotary"},{"enabled",true},
             {"relative_rotary",{
-                {"last_event",{{"rotation",5},{"direction","clock_wise"},{"action","short_release"}}},
-                {"event_sequence",10}
+                {"last_event",{{"action","start"},
+                    {"rotation",{{"steps",5},{"duration",200},{"direction","clock_wise"}}}}}
             }}});
 
         REQUIRE_FALSE(notified);
@@ -878,13 +878,14 @@ TEST_CASE("Sensor Name property - SSE rename event", "[sensor][name][sse]") {
     }
 
     SECTION("Name unchanged and no notification when metadata.name is absent") {
-        bool notified = false;
-        sensor.PropertyChanged += [&notified](
+        bool name_notified = false;
+        sensor.PropertyChanged += [&name_notified](
                 ReactiveLitepp::ObservableObject&,
-                ReactiveLitepp::PropertyChangedArgs) {
-            notified = true;
+                ReactiveLitepp::PropertyChangedArgs args) {
+            if (args.PropertyName() == "Name") name_notified = true;
         };
 
+        // A motion-only delta legitimately notifies Motion; only Name must stay silent.
         nlohmann::json delta = {
             {"id", "motion-abc"}, {"type", "motion"},
             {"motion", {{"motion", true}, {"motion_valid", true}}}
@@ -892,7 +893,7 @@ TEST_CASE("Sensor Name property - SSE rename event", "[sensor][name][sse]") {
         sensor.initFromJson(delta);
 
         REQUIRE(sensor.Name == "Old Name");
-        REQUIRE_FALSE(notified);
+        REQUIRE_FALSE(name_notified);
     }
 
     SECTION("Name unchanged and no notification when value is identical") {

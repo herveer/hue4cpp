@@ -23,7 +23,7 @@ namespace hue4cpp {
 		_capabilities.color = false;
 		_capabilities.color_temperature = false;
 		_capabilities.effects = false;
-		// No bridge — nothing to subscribe to yet.
+		// No bridge ï¿½ nothing to subscribe to yet.
 	}
 
 	Light::Light(const std::string& light_id, Bridge* parent_bridge)
@@ -78,7 +78,7 @@ namespace hue4cpp {
 				return is_on_opt.value();
 			}
 
-			throw ResourceNotFoundException("Light on/off state not available");
+			throw BridgeNotReachableException("Unable to read on/off state from bridge");
 		}
 		catch (const HueException&) {
 			throw;
@@ -124,6 +124,10 @@ namespace hue4cpp {
 	}
 
 	uint8_t Light::getBrightness() const {
+		if (!_capabilities.brightness) {
+			throw ResourceNotFoundException("Brightness level not available");
+		}
+
 		std::function extractBrightness = [this](std::string state_json) -> std::optional<uint8_t> {
 			if (!state_json.empty()) {
 				try {
@@ -173,6 +177,10 @@ namespace hue4cpp {
 	}
 
 	void Light::setBrightness(uint8_t brightness, TransitionTime transition) {
+		if (!_bridge) {
+			throw BridgeNotReachableException("Bridge not available");
+		}
+
 		if (!_capabilities.brightness) {
 			throw InvalidParameterException(
 				"Light does not support brightness control");
@@ -191,6 +199,10 @@ namespace hue4cpp {
 	}
 
 	XYColor Light::getColor() const {
+		if (!_capabilities.color) {
+			throw ResourceNotFoundException("Color not available");
+		}
+
 		std::function extractColor = [this](std::string state_json) -> std::optional<XYColor> {
 			if (!state_json.empty()) {
 				try {
@@ -246,6 +258,10 @@ namespace hue4cpp {
 	}
 
 	void Light::setColor(const XYColor& color, TransitionTime transition) {
+		if (!_bridge) {
+			throw BridgeNotReachableException("Bridge not available");
+		}
+
 		if (!_capabilities.color) {
 			throw InvalidParameterException(
 				"Light does not support color control");
@@ -280,6 +296,10 @@ namespace hue4cpp {
 	}
 
 	ColorTemperature Light::getColorTemperature() const {
+		if (!_capabilities.color_temperature) {
+			throw ResourceNotFoundException("Color temperature not available");
+		}
+
 		std::function extractColorTemperature = [this](std::string state_json) -> std::optional<ColorTemperature> {
 			if (!state_json.empty()) {
 				try {
@@ -330,6 +350,10 @@ namespace hue4cpp {
 
 	void Light::setColorTemperature(const ColorTemperature& temperature,
 		TransitionTime transition) {
+		if (!_bridge) {
+			throw BridgeNotReachableException("Bridge not available");
+		}
+
 		if (!_capabilities.color_temperature) {
 			throw InvalidParameterException(
 				"Light does not support color temperature control");
@@ -580,7 +604,7 @@ namespace hue4cpp {
 			}
 		}
 		catch (...) {
-			// Malformed delta — fall back to notifying all properties
+			// Malformed delta ï¿½ fall back to notifying all properties
 			NotifyPropertyChanged<&Light::Name>();
 			NotifyPropertyChanged<&Light::IsOn>();
 			NotifyPropertyChanged<&Light::Brightness>();
