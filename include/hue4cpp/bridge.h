@@ -6,6 +6,7 @@
 #include <string>
 #include <nlohmann/json_fwd.hpp>
 #include <ReactiveLitepp/ObservableObject.h>
+#include <unordered_set>
 
 /**
  * @file bridge.h
@@ -255,6 +256,11 @@ namespace hue4cpp {
 		template<typename SensorT>
 		std::vector<std::unique_ptr<SensorT>> fetchSensorsByType(const std::string& resource_type);
 
+		const std::unordered_set<std::string> _supported_sensor_types = {
+			"motion", "temperature", "light_level", "button",
+			"camera_motion", "bell_button", "relative_rotary", "geolocation", "tamper"
+		};
+
 		/**
 		 * @brief Build Device objects from the raw "data" array of a device resource response.
 		 *
@@ -264,6 +270,19 @@ namespace hue4cpp {
 		 * @return Vector of populated Device objects
 		 */
 		std::vector<std::unique_ptr<Device>> buildDevicesFromData(const nlohmann::json& device_data);
+
+		void refreshBuildDevicesFromDataCache();
+
+		/**
+		 * @brief Internal cache of lights and sensors by ID for quick lookup in buildDevicesFromData.
+		 * Their's no guarantee that these are always up-to-date with the bridge state, so use getLight/getSensor if a 
+		 * Light or Sensor is not found in the cache. The cache is (re)populated when buildDevicesFromDataCache is called,
+		 * and is updated when SSE events are received.
+		 * 
+		 */
+		std::map<std::string, std::unique_ptr<Light>> _light_by_id;
+		std::map<std::string, std::unique_ptr<Sensor>> _sensor_by_id;
+
 	};
 
 } // namespace hue4cpp

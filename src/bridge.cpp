@@ -656,7 +656,20 @@ namespace hue4cpp {
 		}
 		return std::move(devices.front());
 	}
+	void Bridge::refreshBuildDevicesFromDataCache()
+	{
+		for (auto& light : getLights()) {
+			std::string id = light->Id;
+			if (!id.empty() && !_light_by_id.contains(id)) _light_by_id.emplace(std::move(id), std::move(light));
+		}
 
+
+		for (auto& sensor : getSensors()) {
+			std::string id = sensor->Id;
+			if (!id.empty() && !_sensor_by_id.contains(id)) _sensor_by_id.emplace(std::move(id), std::move(sensor));
+		}
+
+	}
 	std::vector<std::unique_ptr<Device>> Bridge::buildDevicesFromData(const nlohmann::json& device_data) {
 		std::vector<std::unique_ptr<Device>> devices;
 		if (!device_data.is_array() || device_data.empty()) {
@@ -689,13 +702,33 @@ namespace hue4cpp {
 					}
 
 					if (rtype == "light") {
-						auto light = getLight(rid);
+						std::unique_ptr<Light> light;
+						if (!_light_by_id.contains(rid))
+							refreshBuildDevicesFromDataCache();
+
+						if (!_light_by_id.contains(rid))
+							continue;
+
+						light = std::move(_light_by_id[rid]);
+						_light_by_id.erase(rid);
 						if (light) device->addLight(std::move(light));
 
 						continue;
 					}
 
-					auto sensor = getSensor(rid);
+					std::unique_ptr<Sensor> sensor;
+					if (!_sensor_by_id.contains(rid))
+						if (_supported_sensor_types.contains(rtype))
+							refreshBuildDevicesFromDataCache();
+						else
+							continue;
+
+					if (!_sensor_by_id.contains(rid))
+						continue;
+
+					sensor = std::move(_sensor_by_id[rid]);
+					_sensor_by_id.erase(rid);
+
 					if (sensor) device->addSensor(std::move(sensor));
 				}
 			}
@@ -711,6 +744,8 @@ namespace hue4cpp {
 		if (_auth_key.empty() || _info.ip_address.empty()) {
 			return {};
 		}
+
+		if (_supported_sensor_types.find(resource_type) == _supported_sensor_types.end()) throw std::invalid_argument("Unsupported sensor type: " + resource_type);
 
 		try {
 			HttpClient client;
