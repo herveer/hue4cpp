@@ -63,7 +63,8 @@ namespace hue4cpp {
 	Bridge::Bridge() : _state_manager(std::make_unique<StateManager>(this)) {}
 
 	Bridge::Bridge(const BridgeInfo& info)
-		: _info(info), _state_manager(std::make_unique<StateManager>(this)) {}
+		: _info(info), _state_manager(std::make_unique<StateManager>(this)) {
+	}
 
 	Bridge::~Bridge() {
 		if (_state_manager && _state_manager->isRunning()) {
@@ -73,8 +74,8 @@ namespace hue4cpp {
 
 	Bridge::Bridge(Bridge&& other) noexcept
 		: _info(std::move(other._info)),
-		  _auth_key(std::move(other._auth_key)),
-		  _state_manager(std::move(other._state_manager))
+		_auth_key(std::move(other._auth_key)),
+		_state_manager(std::move(other._state_manager))
 	{
 		if (_state_manager) {
 			_state_manager->setBridge(this);
@@ -662,25 +663,6 @@ namespace hue4cpp {
 			return devices;
 		}
 
-		// Fetch all lights and sensors once and index them by id so each device can
-		// claim the ones it owns. Lights/sensors not owned by any returned device are
-		// simply released when these maps go out of scope.
-		std::map<std::string, std::unique_ptr<Light>> light_by_id;
-		for (auto& light : getLights()) {
-			std::string id = light->Id.Get();
-			if (!id.empty()) {
-				light_by_id.emplace(std::move(id), std::move(light));
-			}
-		}
-
-		std::map<std::string, std::unique_ptr<Sensor>> sensor_by_id;
-		for (auto& sensor : getSensors()) {
-			std::string id = sensor->getId();
-			if (!id.empty()) {
-				sensor_by_id.emplace(std::move(id), std::move(sensor));
-			}
-		}
-
 		for (const auto& device_json : device_data) {
 			std::string id = json_utils::getValueOr<std::string>(device_json, "id", "");
 			if (id.empty()) {
@@ -701,18 +683,20 @@ namespace hue4cpp {
 						continue;
 					}
 
-					auto light_it = light_by_id.find(rid);
-					if (light_it != light_by_id.end()) {
-						device->addLight(std::move(light_it->second));
-						light_by_id.erase(light_it);
+					std::string rtype = json_utils::getValueOr<std::string>(service, "rtype", "");
+					if (rtype.empty()) {
 						continue;
 					}
 
-					auto sensor_it = sensor_by_id.find(rid);
-					if (sensor_it != sensor_by_id.end()) {
-						device->addSensor(std::move(sensor_it->second));
-						sensor_by_id.erase(sensor_it);
+					if (rtype == "light") {
+						auto light = getLight(rid);
+						if (light) device->addLight(std::move(light));
+
+						continue;
 					}
+
+					auto sensor = getSensor(rid);
+					if (sensor) device->addSensor(std::move(sensor));
 				}
 			}
 
